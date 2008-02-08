@@ -47,4 +47,6 @@ set CP=%CP%;lib/wsdl4j-1.5.1.jar
 set CP=%CP%;lib/commons-discovery-0.2.jar
 set CP=%CP%;lib/commons-logging-1.0.4.jar
 
+set CP=%CP%;locales/
+
 start /B javaw -cp %CP% -Dswing.defaultlaf=com.sun.java.swing.plaf.windows.WindowsLookAndFeel -Djava.library.path=lib/Windows/i368-mingw32 com.openbravo.pos.forms.StartPOS

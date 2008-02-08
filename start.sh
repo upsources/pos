@@ -47,6 +47,6 @@ CP=$CP:lib/wsdl4j-1.5.1.jar
 CP=$CP:lib/commons-discovery-0.2.jar
 CP=$CP:lib/commons-logging-1.0.4.jar
 
-
+CP=$CP:locales/
 
 java -cp $CP -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -Djava.library.path=lib/Linux/i686-unknown-linux-gnu com.openbravo.pos.forms.StartPOS

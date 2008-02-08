@@ -29,7 +29,7 @@ import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 
-public class TicketInfo implements /*SerializableWrite, */ SerializableRead, Externalizable {
+public class TicketInfo implements SerializableRead, Externalizable {
  
     private static DateFormat m_dateformat = new SimpleDateFormat("hh:mm");
  
@@ -69,14 +69,6 @@ public class TicketInfo implements /*SerializableWrite, */ SerializableRead, Ext
         m_aPayment = new ArrayList<PaymentInfo>();        
         m_aLines = (List<TicketLineInfo>) in.readObject();
     }
-   
-//    public void writeValues(DataWrite dp) throws BasicException {
-//        dp.setString(1, m_sId);
-//        dp.setInt(2, new Integer(m_iTicketId));
-//        dp.setTimestamp(3, m_dDate);
-//        dp.setString(4, m_sActiveCash);
-//        dp.setString(5, m_User.getId());       
-//    }
     
     public void readValues(DataRead dr) throws BasicException {
         m_sId = dr.getString(1);
@@ -238,7 +230,6 @@ public class TicketInfo implements /*SerializableWrite, */ SerializableRead, Ext
     
     public TicketTaxInfo getTaxLine(TaxInfo tax) {
         
-        double dSuma = 0.0;
         TicketTaxInfo taxinfo = new TicketTaxInfo(tax);
 
         TicketLineInfo oLine;            
@@ -257,7 +248,6 @@ public class TicketInfo implements /*SerializableWrite, */ SerializableRead, Ext
         
         Map<TaxInfo, TicketTaxInfo> m = new HashMap<TaxInfo, TicketTaxInfo>();
         
-        double dSuma = 0.0;
         TicketLineInfo oLine;            
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();

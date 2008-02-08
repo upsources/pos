@@ -54,7 +54,7 @@
     <property name="dest.dist" value="${basedir}/dist"/>
 
     <!-- where the class files go -->
-    <property name="dest.classes" value="${basedir}/classes"/>
+    <property name="dest.classes" value="${basedir}/build/classes"/>
 
 
     <!-- ================================================================= -->

@@ -20,8 +20,6 @@ package com.openbravo.editor;
 
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 import com.openbravo.basic.BasicException;
 
