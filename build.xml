@@ -1,0 +1,264 @@
+﻿<?xml version="1.0"?>
+
+<!-- 
+    Openbravo POS is a point of sales application designed for touch screens.
+    Copyright (C) 2008 Openbravo, S.L.
+    http://sourceforge.net/projects/
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ -->
+ 
+<project name="openbravopos" basedir="." default="dist">
+
+    <!-- ================================================================= -->
+    <!-- P R O P E R T I E S                                               -->
+    <!-- ================================================================= -->
+	
+    <!-- program name -->
+    <property name="name" value="openbravopos"/>
+
+    <!-- project version -->
+    <property name="version" value="2.00"/>
+
+    <!-- javac properties -->
+    <property name="javac.deprecation" value="off"/>
+    <property name="javac.optimize" value="on"/>
+    <property name="javac.debug" value="off"/>
+    <property name="javac.minVMVersion" value="1.5"/>
+
+    <!-- read in property files -->
+    <property file="build.properties" />
+
+    <property name="src.pos" value="${basedir}/src-pos"/>
+    <property name="src.data" value="${basedir}/src-data"/>
+    <property name="src.beans" value="${basedir}/src-beans"/>
+    <property name="src.erp" value="${basedir}/src-erp"/>
+
+
+    <!-- where the release files go -->
+    <property name="dest.release" value="${basedir}/release"/>
+
+    <!-- the destination directory -->
+    <property name="dest.dist" value="${basedir}/dist"/>
+
+    <!-- where the class files go -->
+    <property name="dest.classes" value="${basedir}/classes"/>
+
+
+    <!-- ================================================================= -->
+    <!-- I N I T                                                           -->
+    <!-- ================================================================= -->
+
+    <target name="init">
+        <delete dir="${dest.classes}" />
+        <delete dir="${dest.dist}" />
+    </target>
+    
+    <!-- ================================================================= -->
+    <!-- C O M P I L E                                                     -->
+    <!-- ================================================================= -->
+
+    <target name="compilebeans" depends="init">
+        <mkdir dir="${dest.classes}/beans" />
+        <javac srcdir="${src.beans}"
+               destdir="${dest.classes}/beans"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               optimize="${javac.optimize}"
+               target="${javac.minVMVersion}">
+        </javac>
+        <copy todir="${dest.classes}/beans">
+            <fileset dir="${src.beans}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.form"/>
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>                
+    </target>
+
+    <target name="compiledata" depends="init,compilebeans">
+        <mkdir dir="${dest.classes}/data" />
+        <javac srcdir="${src.data}"
+               destdir="${dest.classes}/data"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               optimize="${javac.optimize}"
+               target="${javac.minVMVersion}">
+            <classpath>
+                <pathelement location="${dest.classes}/beans"/>
+            </classpath>
+		</javac>
+        <copy todir="${dest.classes}/data">
+            <fileset dir="${src.data}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.form"/>
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>                
+    </target>
+
+    <target name="compilepos" depends="init,compilebeans,compiledata">
+        <mkdir dir="${dest.classes}/pos" />
+        <javac srcdir="${src.pos}"
+               destdir="${dest.classes}/pos"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               optimize="${javac.optimize}"
+               target="${javac.minVMVersion}">
+            <classpath>
+                  <fileset dir="${basedir}/lib">
+                    <include name="**/*.jar"/>
+                  </fileset>
+                <pathelement location="${dest.classes}/beans"/>
+                <pathelement location="${dest.classes}/data"/>
+            </classpath>
+        </javac>
+        <copy todir="${dest.classes}/pos">
+            <fileset dir="${src.pos}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.form"/>
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>                
+    </target>
+
+    <target name="compileerp" depends="init,compilebeans,compiledata,compilepos">
+        <mkdir dir="${dest.classes}/erp" />
+        <javac srcdir="${src.erp}"
+               destdir="${dest.classes}/erp"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               optimize="${javac.optimize}"
+               target="${javac.minVMVersion}">
+            <classpath>
+                  <fileset dir="${basedir}/lib">
+                    <include name="**/*.jar"/>
+                  </fileset>
+                <pathelement location="${dest.classes}/beans"/>
+                <pathelement location="${dest.classes}/data"/>
+                <pathelement location="${dest.classes}/pos"/>
+            </classpath>
+        </javac>
+        <copy todir="${dest.classes}/erp">
+            <fileset dir="${src.erp}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.form"/>
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>                
+    </target>
+    
+    <!-- ================================================================= -->
+    <!-- J A R                                                             -->
+    <!-- ================================================================= -->
+
+    <target name="jar" depends="compilebeans,compiledata,compilepos,compileerp" description="Generate the .jar file.">
+        <copy todir="${dest.classes}/openbravopos">
+            <fileset dir="${dest.classes}/beans"/>
+            <fileset dir="${dest.classes}/data"/>
+            <fileset dir="${dest.classes}/pos"/>
+            <fileset dir="${dest.classes}/erp"/>
+        </copy>  
+        <mkdir dir="${dest.dist}" />
+        <jar jarfile="${dest.dist}/openbravopos.jar"
+             compress="true"
+             basedir="${dest.classes}/openbravopos">
+        </jar>
+    </target>
+    
+    <!-- ================================================================= -->
+    <!-- D I S T R I B U T I O N  F I L E S                                -->
+    <!-- ================================================================= -->
+
+    <target name="dist" depends="dist.bin,dist.src" description="Generate the release files">
+    </target>
+
+   
+    <target name="dist.bin" depends="init,jar" description="Generate the bin zip file.">
+        <mkdir dir="${basedir}/zip" />
+
+        <copy file="${basedir}/license.txt" todir="${basedir}/zip"/>
+        <copy file="${basedir}/start.bat" todir="${basedir}/zip"/>
+        <copy file="${basedir}/configure.bat" todir="${basedir}/zip"/>
+        <copy file="${basedir}/start.sh" todir="${basedir}/zip"/>
+        <copy file="${basedir}/configure.sh" todir="${basedir}/zip"/>
+        <copy file="${dest.dist}/openbravopos.jar" todir="${basedir}/zip"/>		
+		
+		<copy todir="${basedir}/zip/lib">
+            <fileset dir="${basedir}/lib"/>
+        </copy>
+
+		<copy todir="${basedir}/zip/locales">
+            <fileset dir="${basedir}/locales"/>
+        </copy>
+		
+        <zip zipfile="${dest.dist}/${name}_${version}_bin.zip" basedir="${basedir}/zip" />
+        <delete dir="${basedir}/zip" />
+    </target>            
+    
+    <target name="dist.src" depends="init" description="Generate the src zip file.">
+        <mkdir dir="${basedir}/zip" />
+
+        <copy todir="${basedir}/zip/src-beans">
+            <fileset dir="${src.beans}">
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/zip/src-data">
+            <fileset dir="${src.data}">
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>
+        <copy todir="${basedir}/zip/src-pos">
+            <fileset dir="${src.pos}">
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>        
+        <copy todir="${basedir}/zip/src-erp">
+            <fileset dir="${src.erp}">
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy> 
+		<copy todir="${basedir}/zip/locales">
+            <fileset dir="${basedir}/locales"/>
+        </copy>
+		
+        <copy file="${basedir}/license.txt" todir="${basedir}/zip"/>
+        <copy file="${basedir}/start.bat" todir="${basedir}/zip"/>
+        <copy file="${basedir}/configure.bat" todir="${basedir}/zip"/>
+        <copy file="${basedir}/start.sh" todir="${basedir}/zip"/>
+        <copy file="${basedir}/configure.sh" todir="${basedir}/zip"/>
+        <copy file="${basedir}/build.xml" todir="${basedir}/zip" />
+
+        <zip zipfile="${dest.dist}/${name}_${version}_src.zip" basedir="${basedir}/zip" />
+        <delete dir="${basedir}/zip" />
+    </target>     
+</project>

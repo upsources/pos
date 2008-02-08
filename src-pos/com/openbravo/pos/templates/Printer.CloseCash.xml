@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Openbravo POS is a point of sales application designed for touch screens.
+    Copyright (C) 2008 Openbravo, S.L.
+    http://sourceforge.net/projects/
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ -->
+ 
+<output>
+    <ticket>
+        <image>Printer.Ticket.Logo</image>
+
+        <line></line>
+        <line>
+            <text align ="center" length="42" bold="true">Close cash</text>            
+        </line>
+        <line></line>
+        
+        <line>
+            <text bold="true">Payments</text>
+        </line>
+        <line>
+            <text align ="right" length="42">Total</text>
+        </line>
+        <line>
+            <text>------------------------------------------</text>
+        </line> 
+        #foreach ($line in $payments.getPaymentLines())
+        <line>
+            <text align ="left" length="32">${line.printType()}</text>
+            <text align ="right" length="10">${line.printValue()}</text>
+        </line> 
+        #end
+        <line>
+            <text>------------------------------------------</text>
+        </line> 
+        
+        <line>
+            <text align ="left" length="32">Payments:</text>
+            <text align ="right" length="10">${payments.printPayments()}</text>
+        </line>
+        <line size="1">
+            <text align ="left" length="32" bold="true">Total</text>
+            <text align ="right" length="10" bold="true">${payments.printPaymentsTotal()}</text>
+        </line>
+        
+
+        <line></line>
+        <line>
+            <text bold="true">Taxes</text>
+        </line>
+        <line>
+            <text align ="right" length="32">Subtotal</text>
+            <text align ="right" length="10">Total</text>
+        </line>
+        <line>
+            <text>------------------------------------------</text>
+        </line>
+        #foreach ($line in $payments.getSaleLines())
+        <line>
+            <text align ="left" length="22">${line.printTax()}</text>
+            <text align ="right" length="10">${line.printSubtotal()}</text>
+            <text align ="right" length="10">${line.printTotal()}</text>
+        </line> 
+        #end        
+        <line>
+            <text>------------------------------------------</text>
+        </line>
+        <line>
+            <text align ="left" length="32">Receipts:</text>
+            <text align ="right" length="10">${payments.printSales()}</text>
+        </line>
+        <line size="1">
+            <text align ="left" length="22" bold="true">Total</text>
+            <text align ="right" length="10" bold="true">${payments.printSalesSubtotal()}</text>
+            <text align ="right" length="10" bold="true">${payments.printSalesTotal()}</text>
+        </line>
+
+        <line></line>
+        <line>
+            <text length="18">Machine:</text>
+            <text>${payments.printHost()}</text>
+        </line>    
+        <line>
+            <text length="18">Start date:</text>
+            <text>${payments.printDateStart()}</text>
+        </line>  
+        <line>
+            <text length="18">End date:</text>
+            <text>${payments.printDateEnd()}</text>
+        </line>  
+
+        <cut/>
+
+    </ticket>
+</output>
