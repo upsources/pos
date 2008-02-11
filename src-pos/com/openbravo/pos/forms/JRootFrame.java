@@ -59,7 +59,7 @@ public class JRootFrame extends javax.swing.JFrame implements AppMessage {
             // Show the application
             add(m_rootapp, BorderLayout.CENTER);            
  
-            setTitle(AppLocal.APP_NAME + " - " + m_rootapp.getDataBaseVersion());
+            setTitle(AppLocal.APP_NAME + " - " + AppLocal.APP_VERSION);
             pack();
             setLocationRelativeTo(null);        
             

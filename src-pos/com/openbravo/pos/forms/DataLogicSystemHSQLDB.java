@@ -36,7 +36,7 @@ public class DataLogicSystemHSQLDB extends DataLogicSystem {
     public void init(Session s) {
         super.init(s);
         
-        m_sInitScript = "/com/openbravo/pos/scripts/scripthsqldb";
+        m_sInitScript = "/com/openbravo/pos/scripts/hsqldb";
 
         m_peoplevisible = new StaticSentence(s
             , "SELECT ID, NAME, APPPASSWORD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = TRUE"

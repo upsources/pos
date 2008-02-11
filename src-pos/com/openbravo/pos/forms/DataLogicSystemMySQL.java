@@ -36,7 +36,7 @@ public class DataLogicSystemMySQL extends DataLogicSystem {
     public void init(Session s) {
         super.init(s);
         
-        m_sInitScript = "/com/openbravo/pos/scripts/scriptmysql";
+        m_sInitScript = "/com/openbravo/pos/scripts/mysql";
         
         m_peoplevisible = new StaticSentence(s
             , "SELECT ID, NAME, APPPASSWORD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = 1"

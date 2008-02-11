@@ -38,6 +38,14 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         initComponents();
         
         jcboLAF.setRenderer(new LAFCellRenderer());
+        
+        // Substance skins
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Emerald Dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Mango", "org.jvnet.substance.skin.SubstanceMangoLookAndFeel"));
+        
+        // Installed skins
         LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
         for (int i = 0 ; i < lafs.length; i++) {
             jcboLAF.addItem(lafs[i]);

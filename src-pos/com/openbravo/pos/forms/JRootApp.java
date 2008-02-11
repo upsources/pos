@@ -101,23 +101,34 @@ public class JRootApp extends JPanel implements AppView {
             return false;
         }
         
-        // Comprobamos si existe la base de datos        
-        String sDBVersion = getDataBaseVersion();
-        String sScript = m_dlSystem.getInitScript() + "_" + sDBVersion + ".sql";
-        
-        if (JRootApp.class.getResource(sScript) != null) {
-            // hay un script para actualizar o crear la base de datos.
-            if (JOptionPane.showConfirmDialog(this
-                    , AppLocal.getIntString("create".equals(sDBVersion) ? "message.createdatabase" : "message.updatedatabase")
-                    , AppLocal.getIntString("message.title")
-                    , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
-                
-                do { // ejecutamos todos los scripts de upgrade disponibles...
+        // Create or upgrade the database if database version is not the expected
+        String sDBVersion = readDataBaseVersion();        
+        if (!AppLocal.APP_VERSION.equals(sDBVersion)) {
+            
+            // Create or upgrade database
+            
+            String sScript = sDBVersion == null 
+                    ? m_dlSystem.getInitScript() + "-create.sql"
+                    : m_dlSystem.getInitScript() + "-upgrade-" + sDBVersion + ".sql";
+
+            if (JRootApp.class.getResource(sScript) == null) {
+                // Upgrade script does not exist.
+                JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, AppLocal.getIntString("message.noupdatescript")));
+                m_appcnt.disconnect();
+                return false;
+            } else {
+                // Create or upgrade script exists.
+                if (JOptionPane.showConfirmDialog(this
+                        , AppLocal.getIntString(sDBVersion == null ? "message.createdatabase" : "message.updatedatabase")
+                        , AppLocal.getIntString("message.title")
+                        , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
+
                     try {
                         BatchSentence bsentence = new BatchSentenceResource(m_appcnt.getSession(), sScript);
                         bsentence.putParameter("APP_ID", Matcher.quoteReplacement(AppLocal.APP_ID));
                         bsentence.putParameter("APP_NAME", Matcher.quoteReplacement(AppLocal.APP_NAME));
-                        
+                        bsentence.putParameter("APP_VERSION", Matcher.quoteReplacement(AppLocal.APP_VERSION));
+
                         java.util.List l = bsentence.list();
                         if (l.size() > 0) {
                             JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("Database.ScriptWarning"), l.toArray(new Throwable[l.size()])));
@@ -127,20 +138,18 @@ public class JRootApp extends JPanel implements AppView {
                         m_appcnt.disconnect();
                         return false;
                     }     
-                    sScript = m_dlSystem.getInitScript() + "_" + getDataBaseVersion() + ".sql";                   
-                } while (JRootApp.class.getResource(sScript) != null);
-            } else {
-                // sin base de datos no hay registradora.
-                m_appcnt.disconnect();
-                return false;
-            }
-        }          
+                } else {
+                    m_appcnt.disconnect();
+                    return false;
+                }
+            }   
+        }
 
         // Cargamos las propiedades de base de datos
         m_propsdb = m_dlSystem.getResourceAsProperties(m_props.getHost() + "/properties");
         if (m_propsdb == null) {
             m_propsdb = new Properties();            
-            // Compatibilidad hacia atras
+            // Backward compatibility
             String soldvalue = m_props.getProperty("machine.activecash");
             if (soldvalue != null) {
                 m_propsdb.setProperty("activecash", soldvalue);
@@ -210,11 +219,15 @@ public class JRootApp extends JPanel implements AppView {
         return true;
     }
     
-    public String getDataBaseVersion() {
+    private String readDataBaseVersion() {
         try {
             return m_dlSystem.findVersion();
         } catch (BasicException ed) {
-            return "create";
+            try {
+                return m_dlSystem.findLibreposVersion();
+            } catch (BasicException ed2) {
+                return null;
+            }
         }
     }
     

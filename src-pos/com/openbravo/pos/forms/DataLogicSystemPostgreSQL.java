@@ -36,7 +36,7 @@ public class DataLogicSystemPostgreSQL extends DataLogicSystem {
     public void init(Session s) {
         super.init(s);
         
-        m_sInitScript = "/com/openbravo/pos/scripts/scriptpostgresql";
+        m_sInitScript = "/com/openbravo/pos/scripts/postgresql";
  
         m_peoplevisible = new StaticSentence(s
             , "SELECT ID, NAME, APPPASSWORD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = TRUE"

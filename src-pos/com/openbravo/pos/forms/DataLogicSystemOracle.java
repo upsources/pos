@@ -36,7 +36,7 @@ public class DataLogicSystemOracle extends DataLogicSystem {
     public void init(Session s) {
         super.init(s);
         
-        m_sInitScript = "/com/openbravo/pos/scripts/scriptoracle";
+        m_sInitScript = "/com/openbravo/pos/scripts/oracle";
  
         m_peoplevisible = new StaticSentence(s
             , "SELECT ID, NAME, APPPASSWORD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = 1"

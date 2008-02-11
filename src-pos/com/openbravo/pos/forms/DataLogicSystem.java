@@ -35,6 +35,7 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     
     protected String m_sInitScript;
     private SentenceFind m_version;    
+    private SentenceFind m_libreposversion;    
     private SentenceExec m_dummy;
     
     protected SentenceList m_peoplevisible;  
@@ -56,6 +57,7 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     public void init(Session s){
         
         m_version = new PreparedSentence(s, "SELECT VERSION FROM APPLICATIONS WHERE ID = ?", SerializerWriteString.INSTANCE, SerializerReadString.INSTANCE);
+        m_libreposversion = new PreparedSentence(s, "SELECT VERSION FROM LIBREPOS", null, SerializerReadString.INSTANCE);
         m_dummy = new StaticSentence(s, "SELECT * FROM PEOPLE WHERE 1 = 0");
          
         m_resourcebytes = new PreparedSentence(s
@@ -104,6 +106,9 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     
     public final String findVersion() throws BasicException {
         return (String) m_version.find(AppLocal.APP_ID);
+    }
+    public final String findLibreposVersion() throws BasicException {
+        return (String) m_libreposversion.find();
     }
     public final void execDummy() throws BasicException {
         m_dummy.exec();

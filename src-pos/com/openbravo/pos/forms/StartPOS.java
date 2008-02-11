@@ -85,8 +85,9 @@ public class StartPOS {
 //                    UIManager.setLookAndFeel("net.beeger.squareness.SquarenessLookAndFeel");
                     
 //                    org.jvnet.substance.SubstanceLookAndFeel.setCurrentTheme("org.jvnet.substance.theme.SubstanceLimeGreenTheme");
-                    org.jvnet.substance.SubstanceLookAndFeel.setCurrentTheme("org.jvnet.substance.theme.SubstanceBottleGreenTheme");
-                    UIManager.setLookAndFeel("org.jvnet.substance.SubstanceLookAndFeel");
+//                    UIManager.setLookAndFeel("org.jvnet.substance.SubstanceLookAndFeel");
+                    
+//                    UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel");
                     
 //                    javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme(new javax.swing.plaf.metal.DefaultMetalTheme());
 //                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
