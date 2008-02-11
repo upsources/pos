@@ -2,7 +2,7 @@
 
 REM    Openbravo POS is a point of sales application designed for touch screens.
 REM    Copyright (C) 2008 Openbravo, S.L.
-REM    http://sourceforge.net/projects/
+REM    http://sourceforge.net/projects/openbravopos
 REM
 REM    This program is free software; you can redistribute it and/or modify
 REM    it under the terms of the GNU General Public License as published by
@@ -20,4 +20,6 @@ REM    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 set CP=openbravopos.jar
 
-java -cp %CP% -Dswing.defaultlaf=com.sun.java.swing.plaf.windows.WindowsLookAndFeel com.openbravo.pos.config.JFrmConfig
+set CP=%CP%;locales/
+
+start /B javaw -cp %CP% com.openbravo.pos.config.JFrmConfig
