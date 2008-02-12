@@ -447,8 +447,8 @@ public class JRootApp extends JPanel implements AppView {
             m_principalapp = new JPrincipalApp(this, user);
 
             // el indicador
-            m_jPanelDown.add(m_principalapp.getNotificator());
-            m_jPanelDown.revalidate();
+            panelTask.add(m_principalapp.getNotificator());
+            panelTask.revalidate();
             // el panel principal
             m_jPanelContainer.add(m_principalapp, "_" + m_principalapp.getUser().getId());
             showView("_" + m_principalapp.getUser().getId());
@@ -465,9 +465,9 @@ public class JRootApp extends JPanel implements AppView {
             return false;
         } else {
             // the status label
-            m_jPanelDown.remove(m_principalapp.getNotificator());
-            m_jPanelDown.revalidate();
-            m_jPanelDown.repaint();
+            panelTask.remove(m_principalapp.getNotificator());
+            panelTask.revalidate();
+            panelTask.repaint();
 
             // remove the card
             m_jPanelContainer.remove(m_principalapp);
@@ -494,9 +494,6 @@ public class JRootApp extends JPanel implements AppView {
 
         m_jPanelTitle = new javax.swing.JPanel();
         m_jLblTitle = new javax.swing.JLabel();
-        m_jPanelDown = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        m_jHost = new javax.swing.JLabel();
         m_jPanelContainer = new javax.swing.JPanel();
         m_jPanelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -506,6 +503,11 @@ public class JRootApp extends JPanel implements AppView {
         jPanel2 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         m_jClose = new javax.swing.JButton();
+        m_jPanelDown = new javax.swing.JPanel();
+        panelTask = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        m_jHost = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new java.awt.BorderLayout());
@@ -518,25 +520,12 @@ public class JRootApp extends JPanel implements AppView {
 
         add(m_jPanelTitle, java.awt.BorderLayout.NORTH);
 
-        m_jPanelDown.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.lightGray), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));
-        jPanel3.setLayout(new java.awt.BorderLayout());
-
-        m_jHost.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/display.png"))); // NOI18N
-        m_jHost.setText("*Hostname");
-        jPanel3.add(m_jHost, java.awt.BorderLayout.CENTER);
-
-        m_jPanelDown.add(jPanel3);
-
-        add(m_jPanelDown, java.awt.BorderLayout.SOUTH);
-
         m_jPanelContainer.setLayout(new java.awt.CardLayout());
 
         m_jPanelLogin.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/logo.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/logo.png"))); // NOI18N
         jLabel1.setText("<html><center>Openbravo POS is a point of sale application designed for touch screens.<br>" +
             "Copyright \u00A9 2007-2008 Openbravo, S.L.<br>" +
             "http://www.openbravo.com<br>" +
@@ -590,6 +579,24 @@ public class JRootApp extends JPanel implements AppView {
         m_jPanelContainer.add(m_jPanelLogin, "login");
 
         add(m_jPanelContainer, java.awt.BorderLayout.CENTER);
+
+        m_jPanelDown.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.lightGray), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        m_jHost.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/display.png"))); // NOI18N
+        m_jHost.setText("*Hostname");
+        jPanel3.add(m_jHost, java.awt.BorderLayout.CENTER);
+
+        panelTask.add(jPanel3);
+
+        m_jPanelDown.add(panelTask, java.awt.BorderLayout.WEST);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
+        m_jPanelDown.add(jLabel2, java.awt.BorderLayout.EAST);
+
+        add(m_jPanelDown, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -602,6 +609,7 @@ public class JRootApp extends JPanel implements AppView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
@@ -615,5 +623,6 @@ public class JRootApp extends JPanel implements AppView {
     private javax.swing.JPanel m_jPanelDown;
     private javax.swing.JPanel m_jPanelLogin;
     private javax.swing.JPanel m_jPanelTitle;
+    private javax.swing.JPanel panelTask;
     // End of variables declaration//GEN-END:variables
 }

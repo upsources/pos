@@ -78,16 +78,17 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         
         // Anado el panel nulo
         m_jPanelContainer.add(new JPanel(), "<NULL>");
-        showView("<NULL>");       
-
+        showView("<NULL>");      
+        
         JTaskPane taskPane = new JTaskPane();
         JTaskPaneGroup taskGroup;
+//        JXTaskPaneContainer taskPane = new JXTaskPaneContainer();
+//        JXTaskPane taskGroup;
         
         taskGroup = new JTaskPaneGroup();
         taskGroup.setFocusable(false);
         taskGroup.setRequestFocusEnabled(false);
         taskGroup.setTitle(AppLocal.getIntString("Menu.Main"));
-        //taskGroup.setIcon();
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.Ticket", "com.openbravo.pos.sales.JPanelTicketSales"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.TicketEdit", "com.openbravo.pos.sales.JPanelTicketEdits"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.Payments", "com.openbravo.pos.panels.JPanelPayments"));        
@@ -102,17 +103,12 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.StockManagement", "com.openbravo.pos.forms.MenuStockManagement"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.Maintenance", "com.openbravo.pos.forms.MenuMaintenance"));
-//        menudef = new MenuDefinition("Menu.ThirdParties");
-//        menudef.addMenuItem(new PanelAction("/com/openbravo/images/bookmark.png", "Menu.ThirdPartiesManagement", "com.openbravo.pos.thirdparties.ThirdPartiesPanel"));
-//        m_aBeanFactories.put(menudef.getKey(), new BeanFactoryObj(new JPanelMenu(menudef)));        
-//        addTask(taskGroup, new PanelAction("/com/openbravo/images/contents.png", menudef.getKey(), menudef.getKey()));
         if (taskGroup.getContentPane().getComponentCount() > 0) taskPane.add(taskGroup);
                 
         taskGroup = new JTaskPaneGroup();
         taskGroup.setFocusable(false);
         taskGroup.setRequestFocusEnabled(false);
         taskGroup.setTitle(AppLocal.getIntString("Menu.System"));
-        //taskGroup.setIcon();
         addTask(taskGroup, new ChangePasswordAction("/com/openbravo/images/yast_security.png", "Menu.ChangePassword"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/package_settings.png", "Menu.Configuration", "com.openbravo.pos.config.JPanelConfiguration"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/fileprint.png", "Menu.Printer", "com.openbravo.pos.panels.JPanelPrinter"));

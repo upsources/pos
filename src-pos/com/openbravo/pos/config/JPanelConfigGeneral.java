@@ -39,17 +39,21 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         
         jcboLAF.setRenderer(new LAFCellRenderer());
         
-        // Substance skins
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Emerald Dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Mango", "org.jvnet.substance.skin.SubstanceMangoLookAndFeel"));
-        
+//        // Openbravo Skin
+//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Openbravo", "com.openbravo.pos.skin.OpenbravoLookAndFeel"));
+                
         // Installed skins
         LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
         for (int i = 0 ; i < lafs.length; i++) {
             jcboLAF.addItem(lafs[i]);
         }
+        
+        // Substance skins
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Emerald Dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel"));
+        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Mango", "org.jvnet.substance.skin.SubstanceMangoLookAndFeel"));
         
         jcboMachineScreenmode.addItem("window");
         jcboMachineScreenmode.addItem("fullscreen");

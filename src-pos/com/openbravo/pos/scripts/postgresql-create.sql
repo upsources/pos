@@ -232,7 +232,7 @@ CREATE TABLE FLOORS (
     PRIMARY KEY (ID)
 );
 CREATE UNIQUE INDEX FLOORS_NAME_INX ON FLOORS(NAME);
-INSERT INTO FLOORS(ID, NAME, IMAGE) VALUES ('0', 'Restaurant floor', $FILE{/com/openbravo/pos/templates/restaurantsample.jpg});
+INSERT INTO FLOORS(ID, NAME, IMAGE) VALUES ('0', 'Restaurant floor', $FILE{/com/openbravo/pos/templates/restaurantsample.png});
 
 CREATE TABLE PLACES (
     ID VARCHAR NOT NULL,
