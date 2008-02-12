@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.forms;
 
+import com.openbravo.pos.config.JFrmConfig;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.rmi.RemoteException;
@@ -70,7 +71,7 @@ public class JRootKiosk extends javax.swing.JFrame implements AppMessage {
             
             setVisible(true);                        
         } else {
-            System.exit(1);
+            new JFrmConfig().setVisible(true); // Show the configuration window.
         }        
     }
     

@@ -18,7 +18,6 @@
 
 package com.openbravo.data.loader;
 
-import java.sql.Connection;
 import com.openbravo.basic.BasicException;
 
 

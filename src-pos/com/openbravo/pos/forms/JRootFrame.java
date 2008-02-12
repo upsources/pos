@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.forms;
 
+import com.openbravo.pos.config.JFrmConfig;
 import java.awt.BorderLayout;
 import java.rmi.RemoteException;
 import javax.swing.JFrame;
@@ -71,7 +72,7 @@ public class JRootFrame extends javax.swing.JFrame implements AppMessage {
             
             setVisible(true);                        
         } else {
-            System.exit(1);
+            new JFrmConfig().setVisible(true); // Show the configuration window.
         }
     }
     
@@ -95,7 +96,6 @@ public class JRootFrame extends javax.swing.JFrame implements AppMessage {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle(AppLocal.APP_NAME);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);

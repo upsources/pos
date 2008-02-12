@@ -266,7 +266,12 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
     
     public String printId() {
-        return Formats.INT.formatValue(new Integer(m_iTicketId));
+        if (m_iTicketId > 0) {
+            // valid ticket id
+            return Formats.INT.formatValue(new Integer(m_iTicketId));
+        } else {
+            return "";
+        }
     }
     public String printDate() {
         return Formats.TIMESTAMP.formatValue(m_dDate);
