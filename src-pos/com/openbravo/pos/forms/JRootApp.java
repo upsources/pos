@@ -493,6 +493,8 @@ public class JRootApp extends JPanel implements AppView {
     private void initComponents() {
 
         m_jPanelTitle = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         m_jLblTitle = new javax.swing.JLabel();
         m_jPanelContainer = new javax.swing.JPanel();
         m_jPanelLogin = new javax.swing.JPanel();
@@ -507,16 +509,24 @@ public class JRootApp extends JPanel implements AppView {
         panelTask = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         m_jHost = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new java.awt.BorderLayout());
 
         m_jPanelTitle.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
+        m_jPanelTitle.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
+        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        m_jPanelTitle.add(jLabel2, java.awt.BorderLayout.EAST);
+
+        jPanel1.setOpaque(false);
 
         m_jLblTitle.setForeground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleForeground"));
         m_jLblTitle.setText("Window.Title");
-        m_jPanelTitle.add(m_jLblTitle);
+        jPanel1.add(m_jLblTitle);
+
+        m_jPanelTitle.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         add(m_jPanelTitle, java.awt.BorderLayout.NORTH);
 
@@ -593,9 +603,6 @@ public class JRootApp extends JPanel implements AppView {
 
         m_jPanelDown.add(panelTask, java.awt.BorderLayout.WEST);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
-        m_jPanelDown.add(jLabel2, java.awt.BorderLayout.EAST);
-
         add(m_jPanelDown, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -610,6 +617,7 @@ public class JRootApp extends JPanel implements AppView {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
