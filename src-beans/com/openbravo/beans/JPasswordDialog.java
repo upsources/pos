@@ -174,7 +174,7 @@ public class JPasswordDialog extends javax.swing.JDialog {
         getContentPane().add(m_jPanelTitle, java.awt.BorderLayout.NORTH);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-258)/2, (screenSize.height-404)/2, 258, 404);
+        setBounds((screenSize.width-258)/2, (screenSize.height-428)/2, 258, 428);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jNumberKeys21KeyPerformed(com.openbravo.beans.JNumberEvent evt) {//GEN-FIRST:event_jNumberKeys21KeyPerformed

@@ -493,9 +493,9 @@ public class JRootApp extends JPanel implements AppView {
     private void initComponents() {
 
         m_jPanelTitle = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         m_jLblTitle = new javax.swing.JLabel();
+        poweredby = new javax.swing.JLabel();
+        blankspace = new javax.swing.JLabel();
         m_jPanelContainer = new javax.swing.JPanel();
         m_jPanelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -516,17 +516,17 @@ public class JRootApp extends JPanel implements AppView {
         m_jPanelTitle.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
         m_jPanelTitle.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
-        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        m_jPanelTitle.add(jLabel2, java.awt.BorderLayout.EAST);
-
-        jPanel1.setOpaque(false);
-
         m_jLblTitle.setForeground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleForeground"));
+        m_jLblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jLblTitle.setText("Window.Title");
-        jPanel1.add(m_jLblTitle);
+        m_jPanelTitle.add(m_jLblTitle, java.awt.BorderLayout.CENTER);
 
-        m_jPanelTitle.add(jPanel1, java.awt.BorderLayout.CENTER);
+        poweredby.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
+        poweredby.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        m_jPanelTitle.add(poweredby, java.awt.BorderLayout.EAST);
+
+        blankspace.setPreferredSize(new java.awt.Dimension(142, 34));
+        m_jPanelTitle.add(blankspace, java.awt.BorderLayout.WEST);
 
         add(m_jPanelTitle, java.awt.BorderLayout.NORTH);
 
@@ -615,9 +615,8 @@ public class JRootApp extends JPanel implements AppView {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel blankspace;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
@@ -632,5 +631,6 @@ public class JRootApp extends JPanel implements AppView {
     private javax.swing.JPanel m_jPanelLogin;
     private javax.swing.JPanel m_jPanelTitle;
     private javax.swing.JPanel panelTask;
+    private javax.swing.JLabel poweredby;
     // End of variables declaration//GEN-END:variables
 }
