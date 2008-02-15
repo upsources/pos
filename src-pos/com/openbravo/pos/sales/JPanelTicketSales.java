@@ -45,7 +45,7 @@ public class JPanelTicketSales extends JPanelTicket {
     }
     
     protected Component getSouthComponent() {
-        m_cat = new JCatalog(m_dlSales,
+        m_cat = new JCatalog(dlSales,
                 m_jbtnconfig.isPriceVisible() 
                 ? (m_jbtnconfig.isTaxesIncluded() 
                     ? ThumbNailBuilderProduct.PRICE_SELLTAX 

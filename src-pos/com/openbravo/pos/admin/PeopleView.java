@@ -79,7 +79,7 @@ public class PeopleView extends JPanel implements EditorRecord {
         m_jName.setText(null);
         m_sPassword = null;
         m_RoleModel.setSelectedKey(null);
-        m_jVisible.setSelected(false);
+        m_jVisible.setSelected(true);
         m_jImage.setImage(null);
         m_jName.setEnabled(true);
         m_jRole.setEnabled(true);

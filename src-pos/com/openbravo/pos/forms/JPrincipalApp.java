@@ -100,6 +100,7 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         taskGroup.setFocusable(false);
         taskGroup.setRequestFocusEnabled(false);
         taskGroup.setTitle(AppLocal.getIntString("Menu.Backoffice"));
+        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.Customers", "com.openbravo.pos.forms.MenuCustomers"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.StockManagement", "com.openbravo.pos.forms.MenuStockManagement"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement"));
         addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.Maintenance", "com.openbravo.pos.forms.MenuMaintenance"));

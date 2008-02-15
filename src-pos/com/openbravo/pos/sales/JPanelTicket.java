@@ -40,6 +40,8 @@ import com.openbravo.pos.payment.JPaymentSelect;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.pos.customers.DataLogicCustomers;
+import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
@@ -85,20 +87,24 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     protected JPanelButtons m_jbtnconfig;
     
     protected AppView m_App;
-    protected DataLogicSystem m_dlSystem;
-    protected DataLogicSales m_dlSales;
+    protected DataLogicSystem dlSystem;
+    protected DataLogicSales dlSales;
+    protected DataLogicCustomers dlCustomers;
 
     /** Creates new form JTicketView */
     public JPanelTicket(AppView oApp) {
 
         m_App = oApp;
         try {
-            m_dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-            m_dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+            dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
+            dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+            dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         } catch (BeanFactoryException e) {
         }
         
         initComponents (); 
+        
+        jButton1.setVisible(false);
             
         // borramos el boton de bascula si no hay bascula conectada
         if (!m_App.getDeviceScale().existsScale()) {
@@ -109,10 +115,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jPanelBag.add(m_ticketsbag.getBagComponent(), BorderLayout.CENTER);
         add(m_ticketsbag.getNullComponent(), "null");
 
-        m_ticketlines = new JTicketLines(m_dlSystem);
+        m_ticketlines = new JTicketLines(dlSystem);
         m_jPanelCentral.add(m_ticketlines, java.awt.BorderLayout.CENTER);
         
-        m_TTP = new TicketParser(m_App.getDeviceTicket(), m_dlSystem);
+        m_TTP = new TicketParser(m_App.getDeviceTicket(), dlSystem);
                
         // Los botones configurables...
         m_jbtnconfig = new JPanelButtons("Ticket.Buttons", new ScriptObject());
@@ -122,7 +128,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jPanContainer.add(getSouthComponent(), BorderLayout.SOUTH);
         
         // El modelo de impuestos
-        m_senttax = m_dlSales.getTaxList();
+        m_senttax = dlSales.getTaxList();
         m_TaxModel = new ComboBoxValModel();
         
         // ponemos a cero el estado
@@ -194,7 +200,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         } else {         
             
             // The ticket name
-            m_jTicketId.setText(m_oTicket.getName());
+            m_jTicketId.setText(m_oTicket.getName(oTicketExt));
 
             // Limpiamos todas las filas y anadimos las del ticket actual
             m_ticketlines.clearTicketLines();
@@ -357,7 +363,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     // precondicion: sCode != null
         
         try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByCode(sCode);
+            ProductInfoExt oProduct = dlSales.getProductInfoByCode(sCode);
             if (oProduct == null) {                  
                 Toolkit.getDefaultToolkit().beep();                   
                 new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.noproduct")).show(this);           
@@ -376,7 +382,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     // precondicion: sCode != null
         
         try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByCode(sCode);
+            ProductInfoExt oProduct = dlSales.getProductInfoByCode(sCode);
             if (oProduct == null) {                  
                 Toolkit.getDefaultToolkit().beep();                   
                 new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.noproduct")).show(this);           
@@ -705,7 +711,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     
     private void printTicket(String sresourcename) {
 
-        String sresource = m_dlSystem.getResourceAsXML(sresourcename);
+        String sresource = dlSystem.getResourceAsXML(sresourcename);
         if (sresource == null) {
             MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"));
             msg.show(JPanelTicket.this);
@@ -733,7 +739,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
                 script.put("ticketline", oLine);
-                m_TTP.printTicket(script.eval(m_dlSystem.getResourceAsXML("Printer.TicketLine")).toString());
+                m_TTP.printTicket(script.eval(dlSystem.getResourceAsXML("Printer.TicketLine")).toString());
             } catch (ScriptException e) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintline"), e);
                 msg.show(JPanelTicket.this);
@@ -788,11 +794,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         }
         
         public String getResourceAsXML(String sresourcename) {
-            return m_dlSystem.getResourceAsXML(sresourcename);
+            return dlSystem.getResourceAsXML(sresourcename);
         }
         
         public BufferedImage getResourceAsImage(String sresourcename) {
-            return m_dlSystem.getResourceAsImage(sresourcename);
+            return dlSystem.getResourceAsImage(sresourcename);
         }
     }
        
@@ -810,6 +816,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jButtons = new javax.swing.JPanel();
         m_lblTicketId = new javax.swing.JLabel();
         m_jTicketId = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         m_jPanelBag = new javax.swing.JPanel();
         m_jButtonsExt = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -859,6 +866,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jTicketId.setPreferredSize(new java.awt.Dimension(100, 25));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
+        jButton1.setText("jButton1");
+        jButton1.setFocusPainted(false);
+        jButton1.setFocusable(false);
+        jButton1.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jButton1.setRequestFocusEnabled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        m_jButtons.add(jButton1);
 
         m_jOptions.add(m_jButtons, java.awt.BorderLayout.WEST);
 
@@ -1213,15 +1233,29 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
 
     private void m_jListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jListActionPerformed
 
-        ProductInfoExt prod = JProductFinder.showMessage(JPanelTicket.this, m_dlSales);    
+        ProductInfoExt prod = JProductFinder.showMessage(JPanelTicket.this, dlSales);    
         if (prod != null) {
             buttonTransition(prod);
         }
         
     }//GEN-LAST:event_m_jListActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+//        finder.search(txtCustomer.getText());
+        finder.setVisible(true);
+        Object [] selectedcustomer = finder.getSelectedCustomer();
+        
+//        txtCustomer.setText((String) selectedcustomer[1]);
+//        customer = selectedcustomer[0];
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

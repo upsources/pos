@@ -35,10 +35,6 @@ public class JTicketsBagRestaurant extends javax.swing.JPanel {
         
         initComponents();
     }
-    
-    public void setTableName(String sValue) {
-        m_jTicketId.setText(sValue);      
-    }
 
     public void activate() {
         
@@ -54,30 +50,11 @@ public class JTicketsBagRestaurant extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        m_lblTicketId = new javax.swing.JLabel();
-        m_jTicketId = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         m_jDelTicket = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setLayout(new java.awt.BorderLayout());
-
-        m_lblTicketId.setText(AppLocal.getIntString("label.table")); // NOI18N
-        jPanel1.add(m_lblTicketId);
-
-        m_jTicketId.setBackground(java.awt.Color.white);
-        m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
-        m_jTicketId.setOpaque(true);
-        m_jTicketId.setPreferredSize(new java.awt.Dimension(75, 25));
-        m_jTicketId.setRequestFocusEnabled(false);
-        jPanel1.add(m_jTicketId);
-
-        add(jPanel1, java.awt.BorderLayout.WEST);
-
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         m_jDelTicket.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editdelete.png"))); // NOI18N
         m_jDelTicket.setText(AppLocal.getIntString("Button.DeleteTicket")); // NOI18N
@@ -90,7 +67,7 @@ public class JTicketsBagRestaurant extends javax.swing.JPanel {
                 m_jDelTicketActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jDelTicket);
+        add(m_jDelTicket);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/redo16.png"))); // NOI18N
         jButton2.setText(AppLocal.getIntString("button.movetable")); // NOI18N
@@ -103,7 +80,7 @@ public class JTicketsBagRestaurant extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2);
+        add(jButton2);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/atlantikdesignersmall.png"))); // NOI18N
         jButton1.setText(AppLocal.getIntString("button.tables")); // NOI18N
@@ -116,9 +93,7 @@ public class JTicketsBagRestaurant extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1);
-
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        add(jButton1);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -146,11 +121,7 @@ public class JTicketsBagRestaurant extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton m_jDelTicket;
-    private javax.swing.JLabel m_jTicketId;
-    private javax.swing.JLabel m_lblTicketId;
     // End of variables declaration//GEN-END:variables
     
 }

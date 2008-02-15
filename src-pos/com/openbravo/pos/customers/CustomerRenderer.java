@@ -16,38 +16,33 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.openbravo.pos.ticket;
+package com.openbravo.pos.customers;
 
 import javax.swing.*;
 import java.awt.*;
 import javax.imageio.ImageIO;
 
-import com.openbravo.pos.util.ThumbNailBuilder;
-import com.openbravo.format.Formats;
-
-public class ProductRenderer extends DefaultListCellRenderer {
+public class CustomerRenderer extends DefaultListCellRenderer {
                 
-    ThumbNailBuilder tnbprod;
+    private Icon icocustomer;
 
     /** Creates a new instance of ProductRenderer */
-    public ProductRenderer() {
-        Image defimg;
+    public CustomerRenderer() {
         try {
-            defimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("com/openbravo/images/package.png"));               
+            icocustomer = new ImageIcon(ImageIO.read(getClass().getClassLoader().getResourceAsStream("com/openbravo/images/kdmconfig.png")));
         } catch (Exception fnfe) {
-            defimg = null;
+            icocustomer = null;
         }   
-        tnbprod = new ThumbNailBuilder(64, 32, defimg);
     }
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
         
-        ProductInfoExt prod = (ProductInfoExt) value;
-        if (prod != null) {
-            setText("<html>" + prod.getReference() + " - " + prod.getCode() + " - " + prod.getName() + "<br>&nbsp;&nbsp;&nbsp;&nbsp;" + prod.getTaxName() + " " + Formats.CURRENCY.formatValue(new Double(prod.getPriceSell())));
-            Image img = tnbprod.getThumbNail(prod.getImage());
-            setIcon(img == null ? null :new ImageIcon(img));
+        Object[] customer = (Object[]) value;
+        if (customer != null) {
+            setText((String) customer[1]);
+            setIcon(icocustomer);
         }
         return this;
     }      

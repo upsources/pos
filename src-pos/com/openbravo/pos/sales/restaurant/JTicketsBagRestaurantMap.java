@@ -62,7 +62,6 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         m_restaurantmap = new JTicketsBagRestaurant(app, this);
         m_PlaceCurrent = null;
         m_PlaceClipboard = null;
-        m_restaurantmap.setTableName(null);
             
         try {
             SentenceList sent = new StaticSentence(
@@ -181,7 +180,6 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                 }                                  
  
                 m_PlaceCurrent = null;
-                m_restaurantmap.setTableName(null);
             }
 
             // desactivamos cositas.
@@ -218,7 +216,6 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
             // me guardo el ticket que quiero copiar.
             m_PlaceClipboard = m_PlaceCurrent;        
             m_PlaceCurrent = null;
-            m_restaurantmap.setTableName(null);
         }
         
         printState();     
@@ -252,7 +249,6 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
             }              
 
             m_PlaceCurrent = null;
-            m_restaurantmap.setTableName(null);
         }
         
         printState();     
@@ -274,7 +270,6 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
             m_PlaceCurrent.setPeople(false);
             
             m_PlaceCurrent = null;
-            m_restaurantmap.setTableName(null);
         }        
         
         printState();     
@@ -334,7 +329,6 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     
     private void setActivePlace(Place place, TicketInfo ticket) {
         m_PlaceCurrent = place;
-        m_restaurantmap.setTableName(m_PlaceCurrent.getName());
         m_panelticket.setActiveTicket(ticket, m_PlaceCurrent.getName());
     }
 

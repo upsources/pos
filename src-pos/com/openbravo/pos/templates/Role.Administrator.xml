@@ -37,6 +37,9 @@
     <class name="refund.paper"/>
     <class name="refund.magcard"/>
 
+    <class name="com.openbravo.pos.forms.MenuCustomers"/>
+    <class name="com.openbravo.pos.customers.CustomersPanel"/>
+
     <class name="com.openbravo.pos.forms.MenuStockManagement"/>
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>
     <class name="com.openbravo.pos.inventory.ProductsWarehousePanel"/>
@@ -56,7 +59,7 @@
     <class name="com.openbravo.pos.reports.JReportClosedProducts"/>
     <class name="com.openbravo.pos.reports.JReportTaxes"/>
     <class name="com.openbravo.pos.reports.JChartSales"/>  
-
+    
     <class name="com.openbravo.pos.forms.MenuMaintenance"/>
     <class name="com.openbravo.pos.admin.PeoplePanel"/>
     <class name="com.openbravo.pos.admin.RolesPanel"/>

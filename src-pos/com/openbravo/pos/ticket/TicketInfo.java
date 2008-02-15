@@ -113,8 +113,20 @@ public class TicketInfo implements SerializableRead, Externalizable {
         refreshLines();
     }   
     
+    public String getName(Object info) {
+        if (info == null) {
+            if (m_iTicketId == 0) {
+                return "(" + m_dateformat.format(m_dDate) + " " + Long.toString(m_dDate.getTime() % 1000) + ")";
+            } else {
+                return Integer.toString(m_iTicketId);
+            }
+        } else {
+            return info.toString();
+        }
+    }
+    
     public String getName() {
-        return "(" + m_dateformat.format(m_dDate) + " " + Long.toString(m_dDate.getTime() % 1000) + ")";
+        return getName(null);
     }
     
     public java.util.Date getDate() {
