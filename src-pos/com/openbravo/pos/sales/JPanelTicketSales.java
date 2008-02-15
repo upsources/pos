@@ -27,7 +27,6 @@ import com.openbravo.pos.catalog.CatalogSelector;
 import com.openbravo.pos.catalog.JCatalog;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.ticket.ProductInfoExt;
-import com.openbravo.pos.ticket.ThumbNailBuilderProduct;
 
 public class JPanelTicketSales extends JPanelTicket {
 
@@ -48,9 +47,9 @@ public class JPanelTicketSales extends JPanelTicket {
         m_cat = new JCatalog(dlSales,
                 m_jbtnconfig.isPriceVisible() 
                 ? (m_jbtnconfig.isTaxesIncluded() 
-                    ? ThumbNailBuilderProduct.PRICE_SELLTAX 
-                    : ThumbNailBuilderProduct.PRICE_SELL)
-                : ThumbNailBuilderProduct.PRICE_NONE);
+                    ? JCatalog.PRICE_SELLTAX 
+                    : JCatalog.PRICE_SELL)
+                : JCatalog.PRICE_NONE);
         m_cat.addActionListener(new CatalogListener());
         return m_cat.getComponent();
     }

@@ -48,6 +48,7 @@ import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.util.LabelIcon;
 
 public abstract class JPanelTicket extends JPanel implements JPanelView, TicketsEditor {
    
@@ -86,6 +87,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     
     protected JPanelButtons m_jbtnconfig;
     
+    protected LabelIcon labelb;
+    
     protected AppView m_App;
     protected DataLogicSystem dlSystem;
     protected DataLogicSales dlSales;
@@ -104,7 +107,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         
         initComponents (); 
         
-        jButton1.setVisible(false);
+        btnCustomer.setVisible(false); //TODO: Finish customer implementation
+        
+        labelb = new LabelIcon(80, 16);
+        labelb.setIcon(new ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png")));
+        labelb.setText(null);
+        btnCustomer.setIcon(labelb);
             
         // borramos el boton de bascula si no hay bascula conectada
         if (!m_App.getDeviceScale().existsScale()) {
@@ -816,7 +824,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jButtons = new javax.swing.JPanel();
         m_lblTicketId = new javax.swing.JLabel();
         m_jTicketId = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCustomer = new javax.swing.JButton();
         m_jPanelBag = new javax.swing.JPanel();
         m_jButtonsExt = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -860,25 +868,23 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jButtons.add(m_lblTicketId);
 
         m_jTicketId.setBackground(java.awt.Color.white);
-        m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
         m_jTicketId.setPreferredSize(new java.awt.Dimension(100, 25));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
-        jButton1.setText("jButton1");
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
-        jButton1.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jButton1.setRequestFocusEnabled(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCustomer.setFocusPainted(false);
+        btnCustomer.setFocusable(false);
+        btnCustomer.setMargin(new java.awt.Insets(8, 2, 8, 2));
+        btnCustomer.setRequestFocusEnabled(false);
+        btnCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCustomerActionPerformed(evt);
             }
         });
-        m_jButtons.add(jButton1);
+        m_jButtons.add(btnCustomer);
 
         m_jOptions.add(m_jButtons, java.awt.BorderLayout.WEST);
 
@@ -1240,22 +1246,23 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         
     }//GEN-LAST:event_m_jListActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
 
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-//        finder.search(txtCustomer.getText());
+        finder.search(labelb.getText());
         finder.setVisible(true);
         Object [] selectedcustomer = finder.getSelectedCustomer();
         
-//        txtCustomer.setText((String) selectedcustomer[1]);
+        labelb.setText((String) selectedcustomer[1]);
+        btnCustomer.setIcon(labelb); // repaint
 //        customer = selectedcustomer[0];
         
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_btnCustomerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCustomer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

@@ -27,8 +27,11 @@ import javax.swing.JFrame;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
-import com.openbravo.pos.forms.AppUserView;
 
+/**
+ *
+ * @author adrianromero
+ */
 public class JPaymentSelect extends javax.swing.JDialog 
                             implements JPaymentNotifier {
     
@@ -108,7 +111,7 @@ public class JPaymentSelect extends javax.swing.JDialog
                     "tab.paper", 
                     "/com/openbravo/images/knotes.png");            
             addTabPayment(new JPaymentMagcard(app, this), 
-                    app.getAppUserView().getUser().hasPermission("refund.magdard"),
+                    app.getAppUserView().getUser().hasPermission("refund.magcard"),
                     "tab.magcard", 
                     "/com/openbravo/images/vcard.png");
             
@@ -313,7 +316,7 @@ public class JPaymentSelect extends javax.swing.JDialog
         getContentPane().add(jPanel2, java.awt.BorderLayout.SOUTH);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-631)/2, (screenSize.height-497)/2, 631, 497);
+        setBounds((screenSize.width-672)/2, (screenSize.height-497)/2, 672, 497);
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jButtonRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonRemoveActionPerformed

@@ -33,7 +33,6 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.JMessageDialog;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.ticket.ThumbNailBuilderProduct;
 
 /**
  *
@@ -62,7 +61,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales) {
-        this(dlSales, ThumbNailBuilderProduct.PRICE_NONE);
+        this(dlSales, PRICE_NONE);
     }
     
     public JCatalog(DataLogicSales dlSales, int pricemode) {

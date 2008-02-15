@@ -241,7 +241,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jButtons.add(m_lblTicketId);
 
         m_jTicketId.setBackground(java.awt.Color.white);
-        m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
         m_jTicketId.setPreferredSize(new java.awt.Dimension(100, 25));

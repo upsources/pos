@@ -18,6 +18,10 @@
 
 package com.openbravo.pos.payment;
 
+/**
+ *
+ * @author adrianromero
+ */
 public class MagCardReaderFac {
     
     /** Creates a new instance of MagCarReaderFac */
