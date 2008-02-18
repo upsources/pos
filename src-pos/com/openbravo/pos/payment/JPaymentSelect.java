@@ -164,12 +164,10 @@ public class JPaymentSelect extends javax.swing.JDialog
         return myMsg.init(app, ticket);
     }  
     
-    @Override
     public void setOKEnabled(boolean bValue) {
         m_jButtonOK.setEnabled(bValue);
     }
     
-    @Override
     public void setAddEnabled(boolean bValue) {
         m_jButtonAdd.setEnabled(bValue);
     }

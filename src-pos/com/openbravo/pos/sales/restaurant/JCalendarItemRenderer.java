@@ -92,7 +92,6 @@ public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCel
         return this;
     }
 
-    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
@@ -106,23 +105,14 @@ public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCel
    /**
     * Overridden for performance reasons.
     */
-    @Override
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, char oldValue, char newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, short oldValue, short newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, int oldValue, int newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, long oldValue, long newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, float oldValue, float newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, double oldValue, double newValue) {}
-    @Override
     public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
     
     /** This method is called from within the constructor to

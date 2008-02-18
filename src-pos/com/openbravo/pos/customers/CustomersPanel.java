@@ -64,17 +64,14 @@ public class CustomersPanel extends JPanelTable {
         return new SaveProvider(tcustomers);      
     }
     
-    @Override
     public Vectorer getVectorer() {
         return tcustomers.getVectorerBasic(new int[]{1, 2, 3});
     }
     
-    @Override
     public ComparatorCreator getComparatorCreator() {
         return tcustomers.getComparatorCreator(new int[] {1, 2, 3});
     }
     
-    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(tcustomers.getRenderStringBasic(new int[]{1}));
     }
