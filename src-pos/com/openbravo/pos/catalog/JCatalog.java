@@ -138,7 +138,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         listeners.add(ActionListener.class, l);
     }
     public void removeActionListener(ActionListener l) {
-        listeners.add(ActionListener.class, l);
+        listeners.remove(ActionListener.class, l);
     }
 
     public void valueChanged(ListSelectionEvent evt) {
