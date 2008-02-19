@@ -21,7 +21,6 @@ package com.openbravo.pos.reports;
 import java.util.HashMap;
 import java.util.Map;
 import com.openbravo.pos.forms.AppLocal;
-import net.sf.jasperreports.engine.JRException;
 
 public class ReportFieldsArray implements ReportFields {
     

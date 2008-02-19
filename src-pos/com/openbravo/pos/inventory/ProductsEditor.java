@@ -296,8 +296,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         myprod[1] = m_jRef.getText();
         myprod[2] = m_jCode.getText();
         myprod[3] = m_jName.getText();
-        myprod[4] = new Boolean(m_jComment.isSelected());
-        myprod[5] = new Boolean(m_jScale.isSelected());
+        myprod[4] = Boolean.valueOf(m_jComment.isSelected());
+        myprod[5] = Boolean.valueOf(m_jScale.isSelected());
         myprod[6] = Formats.CURRENCY.parseValue(m_jPriceBuy.getText());
         myprod[7] = m_dPriceSell; // Formats.CURRENCY.parseValue(m_jPriceSell.getText());
         myprod[8] = m_CategoryModel.getSelectedKey();
@@ -305,8 +305,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         myprod[10] = m_jImage.getImage();
         myprod[11] = Formats.CURRENCY.parseValue(m_jstockcost.getText());
         myprod[12] = Formats.DOUBLE.parseValue(m_jstockvolume.getText());
-        myprod[13] = new Boolean(m_jInCatalog.isSelected());       
-        myprod[14] = Formats.INT.parseValue(m_jCatalogOrder.getText());;       
+        myprod[13] = Boolean.valueOf(m_jInCatalog.isSelected());       
+        myprod[14] = Formats.INT.parseValue(m_jCatalogOrder.getText()); 
         return myprod;
     }    
     
@@ -471,15 +471,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             return null;
         }
     }
-    
-    private final static Double readDouble(String sValue) {
-        try {
-            return (Double) Formats.DOUBLE.parseValue(sValue);
-        } catch (BasicException e) {
-            return null;
-        }
-    }
-    
+        
     private final static Double readPercent(String sValue) {
         try {
             return (Double) Formats.PERCENT.parseValue(sValue);

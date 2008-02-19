@@ -22,7 +22,6 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.IKeyed;
 import com.openbravo.data.loader.SerializableRead;
-import com.openbravo.format.Formats;
 
 /**
  *

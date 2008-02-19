@@ -27,7 +27,6 @@ import com.openbravo.data.gui.NullIcon;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.basic.BasicException;
-import com.openbravo.pos.sales.SharedTicketInfo;
 
 public class Place implements SerializableRead, java.io.Serializable {
     

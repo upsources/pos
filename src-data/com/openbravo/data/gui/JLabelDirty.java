@@ -20,7 +20,6 @@ package com.openbravo.data.gui;
 
 import javax.swing.*;
 import com.openbravo.data.user.DirtyManager;
-import com.openbravo.data.user.BrowsableEditableData;
 import com.openbravo.data.user.DirtyListener;
 
 public class JLabelDirty extends JLabel {

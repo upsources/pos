@@ -33,7 +33,6 @@ public class PaymentGatewayAuthorizeNet implements PaymentGateway {
     
     private String m_sCommerceID;
     private String m_sCommercePassword;
-    private String m_sCurrency;
     private boolean m_bTestMode;
 
     /** Creates a new instance of PaymentGatewayAuthorizeNet */
@@ -42,7 +41,6 @@ public class PaymentGatewayAuthorizeNet implements PaymentGateway {
         m_sCommerceID = props.getProperty("payment.commerceid");
         m_sCommercePassword = props.getProperty("payment.commercepassword");
         m_bTestMode = Boolean.valueOf(props.getProperty("payment.testmode")).booleanValue();
-        m_sCurrency = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
     }  
 
     public void execute(PaymentInfoMagcard payinfo) {

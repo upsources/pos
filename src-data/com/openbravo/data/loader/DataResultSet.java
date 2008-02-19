@@ -18,7 +18,6 @@
 
 package com.openbravo.data.loader;
 
-import java.util.Date;
 import com.openbravo.basic.BasicException;
 
 public interface DataResultSet extends DataRead {

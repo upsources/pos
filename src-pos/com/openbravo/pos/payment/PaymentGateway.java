@@ -19,7 +19,6 @@
 package com.openbravo.pos.payment;
 
 import com.openbravo.pos.forms.*;
-import com.openbravo.pos.ticket.TicketInfo;
 
 public interface PaymentGateway {
 

@@ -28,7 +28,6 @@ import javax.swing.JLabel;
 public class PrintItemLine implements PrintItem {
     
     private static final Font BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
-    private static final int FONTASCENT = 13; //
     private static final int FONTHEIGHT = 17; //
     private static final int FONTWIDTH = 7; //
     

@@ -20,9 +20,6 @@ package com.openbravo.pos.printer.escpos;
     
 import java.io.*;
 import java.util.*;
-import java.awt.image.ColorModel;
-import java.awt.image.BufferedImage;
-import javax.swing.JComponent;
 
 import com.openbravo.pos.printer.*;
 import com.openbravo.pos.forms.AppLocal;

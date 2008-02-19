@@ -23,7 +23,6 @@ import java.awt.*;
 import java.util.Comparator;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.ComparatorCreator;
-import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.LocalRes;
 
 public class JSort extends JDialog {

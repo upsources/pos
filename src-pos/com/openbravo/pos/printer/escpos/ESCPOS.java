@@ -18,9 +18,6 @@
 
 package com.openbravo.pos.printer.escpos;
 
-import java.awt.image.ColorModel;
-import java.awt.image.BufferedImage;
-
 public class ESCPOS {
 
     public static final byte[] INIT = {0x1B, 0x40};

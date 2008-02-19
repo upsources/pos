@@ -121,7 +121,7 @@ public class PeopleView extends JPanel implements EditorRecord {
         people[1] = m_jName.getText();
         people[2] = m_sPassword;
         people[3] = m_RoleModel.getSelectedKey();
-        people[4] = new Boolean(m_jVisible.isSelected());
+        people[4] = Boolean.valueOf(m_jVisible.isSelected());
         people[5] = m_jImage.getImage();
         return people;
     }    

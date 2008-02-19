@@ -28,7 +28,7 @@ public class CodesEpson extends Codes {
     private static final byte[] OPEN_DRAWER = {0x1B, 0x70, 0x00, 0x32, -0x06};
     
     private static final byte[] PARTIAL_CUT_1 = {0x1B, 0x69};
-    private static final byte[] PARTIAL_CUT_3 = {0x1B, 0x6D};
+    // private static final byte[] PARTIAL_CUT_3 = {0x1B, 0x6D};
     
     /** Creates a new instance of CodesEpson */
     public CodesEpson() {

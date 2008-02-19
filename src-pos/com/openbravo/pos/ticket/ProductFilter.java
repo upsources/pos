@@ -18,17 +18,14 @@
 
 package com.openbravo.pos.ticket;
 
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.AppLocal;
 
 import java.util.List;
-import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListQBFModelNumber;
 import com.openbravo.data.gui.ComboBoxValModel;
-import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorCreator;
 import com.openbravo.pos.forms.DataLogicSales;

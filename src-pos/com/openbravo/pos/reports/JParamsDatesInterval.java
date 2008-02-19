@@ -20,7 +20,6 @@ package com.openbravo.pos.reports;
 
 import java.util.Date;
 import com.openbravo.beans.JCalendarDialog;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.format.Formats;

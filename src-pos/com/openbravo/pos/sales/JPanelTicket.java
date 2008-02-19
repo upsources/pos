@@ -758,12 +758,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         } 
     }    
     
-    private static double signum(double value) {
-        if (value > 0.0) return 1.0;
-        if (value < 0.0) return -1.0;
-        return 0.0;
-    }
-    
     public class ScriptObject {
         public double getInputValue() {
             if (m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO) {

@@ -21,8 +21,6 @@ package com.openbravo.data.gui;
 import java.util.*;
 import javax.swing.*;
 import com.openbravo.format.Formats;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.BrowsableData;
 import com.openbravo.data.user.BrowseListener;
 import com.openbravo.data.user.BrowsableEditableData;
 import com.openbravo.data.user.StateListener;

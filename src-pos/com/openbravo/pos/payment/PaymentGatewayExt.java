@@ -18,8 +18,6 @@
 
 package com.openbravo.pos.payment;
 
-import com.openbravo.pos.forms.AppProperties;
-
 public class PaymentGatewayExt implements PaymentGateway {
     
     /** Creates a new instance of PaymentGatewayExt */

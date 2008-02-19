@@ -28,8 +28,6 @@ import java.text.SimpleDateFormat;
  */
 public class DataWriteUtils {
     
-    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private static DateFormat tf = new SimpleDateFormat("HH:mm:ss.SSS");
     private static DateFormat tsf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"); 
     
     /** Creates a new instance of DataWriteUtils */

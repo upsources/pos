@@ -123,13 +123,11 @@ public class JTimePanel extends javax.swing.JPanel {
     public void setDate(Date dNewDate) {        
          
         Date dOldDate = m_jclock.getTime();
-        if ((dNewDate == null && dOldDate != null)|| (dNewDate != null && !dNewDate.equals(dOldDate))) {
-        
-            if (checkDates(dNewDate)) {               
+        if (((dNewDate == null && dOldDate != null) || (dNewDate != null && !dNewDate.equals(dOldDate)))
+            && checkDates(dNewDate)) {             
                 m_jclock.setTime(dNewDate);
                 renderTime();                
                 firePropertyChange("Date", dOldDate, dNewDate); // decimos al mundo que ha cambiado la propiedad fecha
-            }
         }
     }
     

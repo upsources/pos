@@ -19,7 +19,6 @@
 package com.openbravo.pos.payment;
 
 import java.awt.Component;
-import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 
 public class JPaymentFree extends javax.swing.JPanel implements JPaymentInterface {

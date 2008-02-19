@@ -18,12 +18,6 @@
 
 package com.openbravo.editor;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Icon;
-import javax.swing.Timer;
-import com.openbravo.basic.BasicException;
-
 public class JEditorString extends JEditorText {
     
     /** Creates a new instance of JEditorString */

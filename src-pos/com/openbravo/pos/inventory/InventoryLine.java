@@ -38,7 +38,7 @@ public class InventoryLine {
         m_sProdID = oProduct.getID();
         m_sProdName = oProduct.getName();
         m_dMultiply = 1.0;
-        m_dPrice = oProduct.getPriceBuy();;
+        m_dPrice = oProduct.getPriceBuy();
     }
     
     public InventoryLine(ProductInfoExt oProduct, double dpor, double dprice) {

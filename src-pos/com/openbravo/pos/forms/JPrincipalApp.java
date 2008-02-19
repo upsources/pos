@@ -212,16 +212,13 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
             JPanelView m_jMyView = (JPanelView) m_aCreatedViews.get(sTaskClass);
 
             // cierro la antigua
-            if ((m_jLastView != null && m_jMyView != m_jLastView && m_jLastView.deactivate())
-                || m_jLastView == null) {
+            if (m_jLastView == null || (m_jMyView != m_jLastView && m_jLastView.deactivate())) {
 
-                // Primero me construyo
-                if (m_jMyView == null) {
-                   
+                // Construct the new view
+                if (m_jMyView == null) {                   
                     
                     try {
                         m_jMyView = (JPanelView) m_appview.getBean(sTaskClass);
-
                     } catch (BeanFactoryException e) {
                         m_jMyView = new JPanelNull(m_appview, e);
                     }

@@ -8,6 +8,8 @@ import java.io.UnsupportedEncodingException;
 
 import com.openbravo.pos.forms.*;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.Security;
 import javax.xml.namespace.QName;
 import java.rmi.RemoteException;
@@ -15,7 +17,6 @@ import java.rmi.RemoteException;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import javax.xml.rpc.ServiceException;
-import com.openbravo.pos.ticket.TicketInfo;
 
 public class PaymentGatewaySECPay implements PaymentGateway {
     
@@ -59,7 +60,7 @@ public class PaymentGatewaySECPay implements PaymentGateway {
                     m_sCommerceID,
                     m_sCommercePassword,
                     payinfo.getTransactionID(),
-                    "127.0.0.1",
+                    InetAddress.getLocalHost().getHostAddress(),
                     payinfo.getHolderName(),
                     payinfo.getCardNumber(),
                     Double.toString(payinfo.getTotal()),
@@ -167,8 +168,9 @@ public class PaymentGatewaySECPay implements PaymentGateway {
                         }
                     }
                 }
+            } catch (UnknownHostException eUH) {
+                payinfo.paymentError(AppLocal.getIntString("message.paymentexceptionservice") + "\n" + eUH.getMessage());
             } catch (UnsupportedEncodingException eUE) {
-                // no pasa nunca
                 payinfo.paymentError(AppLocal.getIntString("message.paymentexceptionservice") + "\n" + eUE.getMessage());
             } catch (ServiceException serviceException) {
                 payinfo.paymentError(AppLocal.getIntString("message.paymentexceptionservice") + "\n" + serviceException.getMessage());

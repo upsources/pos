@@ -192,7 +192,6 @@ public class JPaymentSelect extends javax.swing.JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDialog1 = new javax.swing.JDialog();
         jPanel4 = new javax.swing.JPanel();
         m_jLblTotalEuros1 = new javax.swing.JLabel();
         m_jTotalEuros = new javax.swing.JLabel();
@@ -357,7 +356,6 @@ public class JPaymentSelect extends javax.swing.JDialog
     }//GEN-LAST:event_m_jButtonCancelActionPerformed
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

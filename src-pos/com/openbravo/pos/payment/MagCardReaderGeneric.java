@@ -18,7 +18,6 @@
 
 package com.openbravo.pos.payment;
 
-import java.awt.Toolkit;
 import java.util.*;
 
 public class MagCardReaderGeneric implements MagCardReader {

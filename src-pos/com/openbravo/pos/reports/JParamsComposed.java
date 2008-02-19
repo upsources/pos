@@ -18,9 +18,7 @@
 
 package com.openbravo.pos.reports;
 
-import java.util.List;
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.data.user.EditorCreator;
 
 public class JParamsComposed extends javax.swing.JPanel implements EditorCreator {

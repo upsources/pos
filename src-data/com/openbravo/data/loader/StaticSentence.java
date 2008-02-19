@@ -20,8 +20,6 @@ package com.openbravo.data.loader;
 
 import java.sql.*;
 import java.util.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import com.openbravo.basic.BasicException;
 
 /**

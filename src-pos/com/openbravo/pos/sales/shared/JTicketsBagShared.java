@@ -31,8 +31,6 @@ import com.openbravo.pos.forms.*;
 
 public class JTicketsBagShared extends JTicketsBag {
     
-    private static NumberFormat m_fmtid = new DecimalFormat("000000000");
-    
     private String m_sCurrentTicket = null;
     private DataLogicReceipts dlReceipts = null;
     

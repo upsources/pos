@@ -21,7 +21,6 @@ package com.openbravo.beans;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
 import java.util.*;
 import java.text.*;
 import javax.swing.*;
@@ -282,7 +281,6 @@ public class JCalendarPanel extends javax.swing.JPanel {
         
         DateFormat fmtWeekDay = new SimpleDateFormat("E");
         Calendar oCalRender = new GregorianCalendar();
-        int iDayOfWeek = oCalRender.getFirstDayOfWeek();
         int iCol;
         for (int j = 0; j < 7; j++) {
             oCalRender.add(Calendar.DATE, 1);

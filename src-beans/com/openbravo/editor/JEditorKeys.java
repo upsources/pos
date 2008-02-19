@@ -17,9 +17,6 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.editor;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
     

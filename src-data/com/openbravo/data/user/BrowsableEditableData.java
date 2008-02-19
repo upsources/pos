@@ -206,7 +206,7 @@ public class BrowsableEditableData {
         saveData();
         if (m_bd.getSize() > 0) {
             moveTo(0);
-        };
+        }
     }
     public final void moveLast() throws BasicException {
         saveData();
@@ -271,7 +271,6 @@ public class BrowsableEditableData {
         saveData();
         
         // Y nos ponemos en estado de insert
-        int iCount = m_bd.getSize();
         m_iState = ST_INSERT;
         m_editorrecord.writeValueInsert();
         m_Dirty.setDirty(false);

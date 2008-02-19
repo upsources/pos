@@ -18,12 +18,8 @@
 
 package com.openbravo.pos.util;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import org.apache.commons.codec.binary.Base64;
-
 
 public class Base64Encoder {
     

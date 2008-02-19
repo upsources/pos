@@ -65,8 +65,7 @@ public class DeviceTicket {
         // La impresora fiscal
         StringParser sf = new StringParser(props.getProperty("machine.fiscalprinter"));
         String sFiscalType = sf.nextToken(':');
-        String sFiscalParam1 = sf.nextToken(',');
-        String sFiscalParam2 = sf.nextToken(',');        
+        String sFiscalParam1 = sf.nextToken(',');    
         try {
             if ("javapos".equals(sFiscalType)) {
                 m_deviceFiscal = new DeviceFiscalPrinterJavaPOS(sFiscalParam1);

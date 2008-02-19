@@ -102,7 +102,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         customer[1] = m_jName.getText();
         customer[2] = m_jAddress.getText();
         customer[3] = m_jNotes.getText();
-        customer[4] = new Boolean(m_jVisible.isSelected());
+        customer[4] = Boolean.valueOf(m_jVisible.isSelected());
         return customer;
     }   
     
