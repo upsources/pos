@@ -173,7 +173,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jImage.setImage(null);
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
-        m_jInCatalog.setSelected(false);
+        m_jInCatalog.setSelected(true);
         m_jCatalogOrder.setText(null);
         
         // Los habilitados

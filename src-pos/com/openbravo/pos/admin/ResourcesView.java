@@ -60,7 +60,7 @@ public class ResourcesView extends JPanel implements EditorRecord {
     public void writeValueEOF() {
         m_oId = null;
         m_jName.setText(null);
-        m_ResourceModel.setSelectedKey(null);
+        m_ResourceModel.setSelectedItem(null);
         m_jText.setText(null);
         m_jImage.setImage(null);     
         m_jName.setEnabled(false);
@@ -72,7 +72,7 @@ public class ResourcesView extends JPanel implements EditorRecord {
     public void writeValueInsert() {
         m_oId = null;
         m_jName.setText(null);
-        m_ResourceModel.setSelectedKey(null);
+        m_ResourceModel.setSelectedItem(ResourceType.TEXT);
         m_jText.setText(null);
         m_jImage.setImage(null);     
         m_jName.setEnabled(true);

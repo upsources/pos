@@ -354,6 +354,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
 
         m_jToolbarContainer.setLayout(new java.awt.BorderLayout());
 
+        m_jbtnTables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/atlantikdesignersmall.png"))); // NOI18N
         m_jbtnTables.setText(AppLocal.getIntString("button.tables")); // NOI18N
         m_jbtnTables.setFocusPainted(false);
         m_jbtnTables.setFocusable(false);
@@ -365,6 +366,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         });
         jPanel4.add(m_jbtnTables);
 
+        m_jbtnReceive.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/mime.png"))); // NOI18N
         m_jbtnReceive.setText(AppLocal.getIntString("button.receive")); // NOI18N
         m_jbtnReceive.setFocusPainted(false);
         m_jbtnReceive.setFocusable(false);
