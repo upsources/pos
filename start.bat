@@ -38,6 +38,7 @@ set CP=%CP%;lib/commons-lang-2.1.jar
 set CP=%CP%;lib/bsh-core-2.0b4.jar
 set CP=%CP%;lib/RXTXcomm.jar
 set CP=%CP%;lib/jpos111.jar
+set CP=%CP%;lib/substance.jar
 
 rem Apache Axis SOAP libraries.
 set CP=%CP%;lib/axis.jar

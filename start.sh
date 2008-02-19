@@ -38,6 +38,7 @@ CP=$CP:lib/commons-lang-2.1.jar
 CP=$CP:lib/bsh-core-2.0b4.jar
 CP=$CP:lib/RXTXcomm.jar
 CP=$CP:lib/jpos111.jar
+CP=$CP:lib/substance.jar
 
 # Apache Axis SOAP libraries.
 CP=$CP:lib/axis.jar
