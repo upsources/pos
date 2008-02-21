@@ -391,7 +391,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
 
         m_jPanelTime.setLayout(new java.awt.BorderLayout());
         jPanel1.add(m_jPanelTime);
-        m_jPanelTime.setBounds(280, 30, 240, 120);
+        m_jPanelTime.setBounds(280, 30, 240, 130);
 
         jLabel1.setText(AppLocal.getIntString("rest.label.date")); // NOI18N
         jPanel1.add(jLabel1);
@@ -399,21 +399,21 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
 
         jLabel2.setText(AppLocal.getIntString("rest.label.customer")); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(280, 160, 240, 14);
+        jLabel2.setBounds(280, 170, 240, 14);
 
         jLabel3.setText(AppLocal.getIntString("rest.label.chairs")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(280, 210, 240, 14);
+        jLabel3.setBounds(280, 220, 240, 14);
 
         jLabel4.setText(AppLocal.getIntString("rest.label.notes")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(280, 260, 240, 14);
+        jLabel4.setBounds(280, 270, 240, 14);
         jPanel1.add(m_jtxtDescription);
-        m_jtxtDescription.setBounds(280, 280, 270, 80);
+        m_jtxtDescription.setBounds(280, 290, 240, 80);
         jPanel1.add(m_jtxtChairs);
-        m_jtxtChairs.setBounds(280, 230, 140, 25);
+        m_jtxtChairs.setBounds(280, 240, 140, 20);
         jPanel1.add(txtCustomer);
-        txtCustomer.setBounds(280, 180, 270, 25);
+        txtCustomer.setBounds(280, 190, 240, 20);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
         jButton1.setFocusPainted(false);
@@ -425,7 +425,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(550, 180, 50, 30);
+        jButton1.setBounds(520, 190, 50, 26);
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 

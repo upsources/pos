@@ -22,4 +22,4 @@ set CP=openbravopos.jar
 
 set CP=%CP%;locales/
 
-start /B javaw -Dswing.defaultlaf=com.sun.java.swing.plaf.windows.WindowsLookAndFeel -cp %CP% com.openbravo.pos.config.JFrmConfig
+start /B javaw -cp %CP% com.openbravo.pos.config.JFrmConfig
