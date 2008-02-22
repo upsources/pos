@@ -198,12 +198,15 @@
     <target name="dist.bin" depends="init,jar" description="Generate the bin zip file.">
         <mkdir dir="${basedir}/build/zip" />
 
-        <copy file="${basedir}/license.txt" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/start.bat" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/configure.bat" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/start.sh" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/configure.sh" todir="${basedir}/build/zip"/>
-        <copy file="${dest.dist}/openbravopos.jar" todir="${basedir}/build/zip"/>		
+        <copy file="${dest.dist}/openbravopos.jar" todir="${basedir}/build/zip"/>
+        
+        <copy todir="${basedir}/build/zip/licensing">
+            <fileset dir="${basedir}/licensing"/>
+        </copy>        
 		
         <copy todir="${basedir}/build/zip/lib">
             <fileset dir="${basedir}/lib"/>
@@ -256,7 +259,10 @@
             <fileset dir="${basedir}/lib"/>
         </copy>
         
-        <copy file="${basedir}/license.txt" todir="${basedir}/build/zip"/>
+        <copy todir="${basedir}/build/zip/licensing">
+            <fileset dir="${basedir}/licensing"/>
+        </copy>        
+		       
         <copy file="${basedir}/start.bat" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/configure.bat" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/start.sh" todir="${basedir}/build/zip"/>
