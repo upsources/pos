@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -86,11 +86,11 @@ public class DeviceDisplayESCPOS implements DeviceDisplay {
         m_CommOutputPrinter.flush();
     }
     
-    public void writeTimeVisor(String sLine1) {
-        
-        m_CommOutputPrinter.write(ESCPOS.SELECT_DISPLAY);
-        m_CommOutputPrinter.write(ESCPOS.VISOR_PRINTTIME);
-        m_CommOutputPrinter.write(m_trans.transString(DeviceTicket.alignCenter(sLine1, 19)));   
-        m_CommOutputPrinter.flush();        
-    }    
+//    public void writeTimeVisor(String sLine1) {
+//        
+//        m_CommOutputPrinter.write(ESCPOS.SELECT_DISPLAY);
+//        m_CommOutputPrinter.write(ESCPOS.VISOR_PRINTTIME);
+//        m_CommOutputPrinter.write(m_trans.transString(DeviceTicket.alignCenter(sLine1, 19)));   
+//        m_CommOutputPrinter.flush();        
+//    }    
 }

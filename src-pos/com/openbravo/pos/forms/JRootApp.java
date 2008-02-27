@@ -335,12 +335,12 @@ public class JRootApp extends JPanel implements AppView {
         
         String sresource = m_dlSystem.getResourceAsXML("Printer.Start");
         if (sresource == null) {
-            m_TP.writeTimeVisor(AppLocal.getIntString("Visor.Title"));
+            m_TP.writeVisor(AppLocal.APP_NAME, AppLocal.APP_VERSION);
         } else {
             try {
                 m_TTP.printTicket(sresource);
             } catch (TicketPrinterException eTP) {
-                m_TP.writeTimeVisor(AppLocal.getIntString("Visor.Title"));
+                m_TP.writeVisor(AppLocal.APP_NAME, AppLocal.APP_VERSION);
             }
         }        
     }

@@ -18,36 +18,36 @@
 
 package com.openbravo.pos.printer;
 
-import com.openbravo.pos.forms.AppLocal;
-
-public class DeviceDisplayNull implements DeviceDisplay {
+/**
+ *
+ * @author adrianromero
+ */
+public class ScrollAnimator implements DisplayAnimator {
     
-    private String m_sName;
-    private String m_sDescription;
+    protected String baseLine1;
+    protected String baseLine2;
+    protected String currentLine1;
+    protected String currentLine2; 
     
-    /** Creates a new instance of DeviceDisplayNull */
-    public DeviceDisplayNull() {
-        this(null);
-    }
-    
-    /** Creates a new instance of DeviceDisplayNull */
-    public DeviceDisplayNull(String desc) {
-        m_sName = AppLocal.getIntString("Display.Null");
-        m_sDescription = desc;
+    public ScrollAnimator(String line1, String line2) {
+        baseLine1 = line1;
+        baseLine2 = line2;
     }
 
-    public String getDisplayName() {
-        return m_sName;
-    }    
-    public String getDisplayDescription() {
-        return m_sDescription;
-    }        
-    public javax.swing.JComponent getDisplayComponent() {
-        return null;
+    public void setTiming(int i) {
+        int j = i % 20;
+//        if (j < 20) {
+            currentLine1 = DeviceTicket.alignLeft(baseLine1.substring(j), 20);
+            currentLine2 = DeviceTicket.alignLeft(baseLine2.substring(j), 20);
+//        } else {
+//        }
     }
-    
-    public void clearVisor() {
-    }      
-    public void writeVisor(String sLine1, String sLine2) {
-    } 
+
+    public String getLine1() {
+        return currentLine1;
+    }
+
+    public String getLine2() {
+        return currentLine2;
+    }
 }

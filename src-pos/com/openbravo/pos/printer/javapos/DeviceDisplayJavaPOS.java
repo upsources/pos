@@ -64,11 +64,6 @@ public class DeviceDisplayJavaPOS implements DeviceDisplay, DeviceDisplayImpl {
         
         m_displaylines.writeVisor(sLine1, sLine2);
     }
-
-    public void writeTimeVisor(String sLine1) {   
-        
-        m_displaylines.writeTimeVisor(sLine1);
-    }
      
     public void clearVisor() {
         m_displaylines.clearVisor();

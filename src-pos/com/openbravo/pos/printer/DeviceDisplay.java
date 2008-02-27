@@ -30,5 +30,4 @@ public interface DeviceDisplay {
     // INTERFAZ VISOR    
     public void writeVisor(String sLine1, String sLine2);
     public void clearVisor();
-    public void writeTimeVisor(String sLine1);    
 }

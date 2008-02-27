@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,63 +18,76 @@
 
 package com.openbravo.pos.printer;
 
-import com.openbravo.format.Formats;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
+/**
+ *
+ * @author adrianromero
+ */
 public class DeviceDisplayBase {
     
-    private DeviceDisplayImpl impl;
+    public static final int ANIMATION_NULL = 0;
+    public static final int ANIMATION_TIME = 1;
+    public static final int ANIMATION_SCROLL = 2;
     
-    private String m_sLine1;
-    private String m_sLine2;    
+    private DeviceDisplayImpl impl;    
+    private DisplayAnimator anim;     
     private javax.swing.Timer m_tTimeTimer;    
+    private int counter = 0;
     
     /** Creates a new instance of DeviceDisplayBase */
     public DeviceDisplayBase(DeviceDisplayImpl impl) {
-        this.impl = impl;
-        
-        m_sLine1 = "                    "; // 20 espacios
-        m_sLine2 = "                    "; // 20 espacios      
-        m_tTimeTimer = new javax.swing.Timer(250, new PrintTimeAction());
+        this.impl = impl; 
+        anim = new NullAnimator("", "");
+        m_tTimeTimer = new javax.swing.Timer(1000, new PrintTimeAction());
     }
     
-    public void writeVisor(String sLine1, String sLine2) {
+    public void writeVisor(int animation, String sLine1, String sLine2) {
+        
         m_tTimeTimer.stop();
-        m_sLine1 = DeviceTicket.alignLeft(sLine1, 20);
-        m_sLine2 = DeviceTicket.alignLeft(sLine2, 20);
-        impl.repaintLines();
-    }
-
-    public void writeTimeVisor(String sLine1) {    
-        m_tTimeTimer.stop();        
-        m_sLine1 = DeviceTicket.alignCenter(sLine1, 20);
-        m_sLine2 = getLineTimer();
+        switch (animation) {
+//            case ANIMATION_TIME:
+//                anim = new TimeAnimator(sLine1, sLine2);
+//                break;
+            case ANIMATION_SCROLL:
+                anim = new ScrollAnimator(sLine1, sLine2);
+                break;
+            default: // ANIMATION_NULL
+                anim = new NullAnimator(sLine1, sLine2);
+                break;
+        }
+        
+        counter = 0;
+        anim.setTiming(counter);
         impl.repaintLines();
         
-        m_tTimeTimer.start();
+        if (animation != ANIMATION_NULL) {
+            counter = 0;
+            m_tTimeTimer.start();
+        }
     }
-     
+         
+    public void writeVisor(String sLine1, String sLine2) {
+        writeVisor(ANIMATION_NULL, sLine1, sLine2);
+    }
+    
     public void clearVisor() {
-        writeVisor("", "");
+        writeVisor(ANIMATION_NULL, "", "");
     }
     
     public String getLine1() {
-        return m_sLine1;
+        return anim.getLine1();
     }
     
     public String getLine2() {
-        return m_sLine2;
-    }
-    
-    private String getLineTimer() {
-        return DeviceTicket.alignRight(Formats.DATE.formatValue(new Date()), 20);
+        return anim.getLine2();
     }
     
     private class PrintTimeAction implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            m_sLine2 = getLineTimer();
+            counter ++;
+            anim.setTiming(counter);
             impl.repaintLines();
         }        
     }    

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -56,9 +56,7 @@ public class DeviceDisplayWindow extends javax.swing.JFrame implements DeviceDis
     public void writeVisor(String sLine1, String sLine2) {
         m_display.writeVisor(sLine1, sLine2);
     }
-    public void writeTimeVisor(String sLine2) {
-        m_display.writeTimeVisor(sLine2);
-    }
+
     public void clearVisor() {
         m_display.clearVisor();
     }
