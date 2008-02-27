@@ -18,9 +18,9 @@
 
 package com.openbravo.pos.printer;
 
+import com.openbravo.format.Formats;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.util.Date;
 
 public class DeviceDisplayBase {
@@ -29,7 +29,6 @@ public class DeviceDisplayBase {
     
     private String m_sLine1;
     private String m_sLine2;    
-    private DateFormat df;
     private javax.swing.Timer m_tTimeTimer;    
     
     /** Creates a new instance of DeviceDisplayBase */
@@ -38,7 +37,6 @@ public class DeviceDisplayBase {
         
         m_sLine1 = "                    "; // 20 espacios
         m_sLine2 = "                    "; // 20 espacios      
-        df = DateFormat.getTimeInstance();
         m_tTimeTimer = new javax.swing.Timer(250, new PrintTimeAction());
     }
     
@@ -71,7 +69,7 @@ public class DeviceDisplayBase {
     }
     
     private String getLineTimer() {
-        return DeviceTicket.alignRight(df.format(new Date()), 20);
+        return DeviceTicket.alignRight(Formats.DATE.formatValue(new Date()), 20);
     }
     
     private class PrintTimeAction implements ActionListener {
