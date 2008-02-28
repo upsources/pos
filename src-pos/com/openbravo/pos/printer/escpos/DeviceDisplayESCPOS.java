@@ -41,16 +41,7 @@ public class DeviceDisplayESCPOS implements DeviceDisplay {
         // Inicializamos el visor
         m_CommOutputPrinter.write(ESCPOS.SELECT_DISPLAY); // Al visor
         m_CommOutputPrinter.write(m_trans.getCodeTable());
-        m_CommOutputPrinter.write(ESCPOS.VISOR_HIDE_CURSOR);
-
-        GregorianCalendar oCalendar = new GregorianCalendar();
-        oCalendar.setTime(new Date());
-        byte[] bTime = {
-            (byte) oCalendar.get(GregorianCalendar.HOUR_OF_DAY),
-            (byte) oCalendar.get(GregorianCalendar.MINUTE)
-        };
-        m_CommOutputPrinter.write(ESCPOS.VISOR_SETTIME);
-        m_CommOutputPrinter.write(bTime);            
+        m_CommOutputPrinter.write(ESCPOS.VISOR_HIDE_CURSOR);         
         m_CommOutputPrinter.write(ESCPOS.VISOR_CLEAR);
         m_CommOutputPrinter.write(ESCPOS.VISOR_HOME);
         m_CommOutputPrinter.flush();
@@ -78,19 +69,10 @@ public class DeviceDisplayESCPOS implements DeviceDisplay {
     }
     
     public void clearVisor() {
-        
-         // writeVisor(null, null);
+
         m_CommOutputPrinter.write(ESCPOS.SELECT_DISPLAY);
         m_CommOutputPrinter.write(ESCPOS.VISOR_CLEAR);
         m_CommOutputPrinter.write(ESCPOS.VISOR_HOME);
         m_CommOutputPrinter.flush();
-    }
-    
-//    public void writeTimeVisor(String sLine1) {
-//        
-//        m_CommOutputPrinter.write(ESCPOS.SELECT_DISPLAY);
-//        m_CommOutputPrinter.write(ESCPOS.VISOR_PRINTTIME);
-//        m_CommOutputPrinter.write(m_trans.transString(DeviceTicket.alignCenter(sLine1, 19)));   
-//        m_CommOutputPrinter.flush();        
-//    }    
+    }  
 }

@@ -82,8 +82,7 @@ public abstract class Codes {
                 
                 bData[index ++] = (byte) p;
             }
-        }
-        
+        }        
         return bData;
     }    
 }
