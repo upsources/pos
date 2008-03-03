@@ -38,7 +38,6 @@ public abstract class Formats {
     private static NumberFormat m_integerformat = NumberFormat.getIntegerInstance();
     private static NumberFormat m_doubleformat = NumberFormat.getNumberInstance();
     private static NumberFormat m_currencyformat = NumberFormat.getCurrencyInstance();
-//    private static NumberFormat m_currencyformat = new DecimalFormat("€ #,##0.00");
     private static NumberFormat m_percentformat = new DecimalFormat("#,##0.##%");
     
     private static DateFormat m_dateformat = DateFormat.getDateInstance();
