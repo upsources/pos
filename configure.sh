@@ -18,8 +18,10 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  
 
-CP=openbravopos.jar
+DIRNAME=`dirname $0`
 
-CP=$CP:locales/
+CP=$DIRNAME/openbravopos.jar
+
+CP=$CP:$DIRNAME/locales/
 
 java -cp $CP -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel com.openbravo.pos.config.JFrmConfig

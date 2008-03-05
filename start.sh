@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #    Openbravo POS is a point of sales application designed for touch screens.
-#    Copyright (C) 2008 Openbravo, S.L.
+#    Copyright (C) 2007-2008 Openbravo, S.L.
 #    http://sourceforge.net/projects/openbravopos
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -18,36 +18,38 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  
 
-CP=openbravopos.jar
+DIRNAME=`dirname $0`
 
-CP=$CP:lib/l2fprod-common-tasks.jar
-CP=$CP:lib/jasperreports-2.0.1.jar
-CP=$CP:lib/jcommon-1.0.0.jar
-CP=$CP:lib/jfreechart-1.0.0.jar
-CP=$CP:lib/jdt-compiler-3.1.1.jar
-CP=$CP:lib/commons-beanutils-1.7.jar
-CP=$CP:lib/commons-digester-1.7.jar
-CP=$CP:lib/itext-1.3.1.jar
-CP=$CP:lib/poi-3.0.1-FINAL-20070705.jar
-CP=$CP:lib/barcode4j-light.jar
-CP=$CP:lib/commons-codec-1.3.jar
-CP=$CP:lib/velocity-1.5.jar
-CP=$CP:lib/oro-2.0.8.jar
-CP=$CP:lib/commons-collections-3.1.jar
-CP=$CP:lib/commons-lang-2.1.jar
-CP=$CP:lib/bsh-core-2.0b4.jar
-CP=$CP:lib/RXTXcomm.jar
-CP=$CP:lib/jpos111.jar
-CP=$CP:lib/substance.jar
+CP=$DIRNAME/openbravopos.jar
+
+CP=$CP:$DIRNAME/lib/l2fprod-common-tasks.jar
+CP=$CP:$DIRNAME/lib/jasperreports-2.0.1.jar
+CP=$CP:$DIRNAME/lib/jcommon-1.0.0.jar
+CP=$CP:$DIRNAME/lib/jfreechart-1.0.0.jar
+CP=$CP:$DIRNAME/lib/jdt-compiler-3.1.1.jar
+CP=$CP:$DIRNAME/lib/commons-beanutils-1.7.jar
+CP=$CP:$DIRNAME/lib/commons-digester-1.7.jar
+CP=$CP:$DIRNAME/lib/itext-1.3.1.jar
+CP=$CP:$DIRNAME/lib/poi-3.0.1-FINAL-20070705.jar
+CP=$CP:$DIRNAME/lib/barcode4j-light.jar
+CP=$CP:$DIRNAME/lib/commons-codec-1.3.jar
+CP=$CP:$DIRNAME/lib/velocity-1.5.jar
+CP=$CP:$DIRNAME/lib/oro-2.0.8.jar
+CP=$CP:$DIRNAME/lib/commons-collections-3.1.jar
+CP=$CP:$DIRNAME/lib/commons-lang-2.1.jar
+CP=$CP:$DIRNAME/lib/bsh-core-2.0b4.jar
+CP=$CP:$DIRNAME/lib/RXTXcomm.jar
+CP=$CP:$DIRNAME/lib/jpos111.jar
+CP=$CP:$DIRNAME/lib/substance.jar
 
 # Apache Axis SOAP libraries.
-CP=$CP:lib/axis.jar
-CP=$CP:lib/jaxrpc.jar
-CP=$CP:lib/saaj.jar
-CP=$CP:lib/wsdl4j-1.5.1.jar
-CP=$CP:lib/commons-discovery-0.2.jar
-CP=$CP:lib/commons-logging-1.0.4.jar
+CP=$CP:$DIRNAME/lib/axis.jar
+CP=$CP:$DIRNAME/lib/jaxrpc.jar
+CP=$CP:$DIRNAME/lib/saaj.jar
+CP=$CP:$DIRNAME/lib/wsdl4j-1.5.1.jar
+CP=$CP:$DIRNAME/lib/commons-discovery-0.2.jar
+CP=$CP:$DIRNAME/lib/commons-logging-1.0.4.jar
 
-CP=$CP:locales/
+CP=$CP:$DIRNAME/locales/
 
-java -cp $CP -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -Djava.library.path=lib/Linux/i686-unknown-linux-gnu com.openbravo.pos.forms.StartPOS
+java -cp $CP -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -Djava.library.path=$DIRNAME/lib/Linux/i686-unknown-linux-gnu com.openbravo.pos.forms.StartPOS
