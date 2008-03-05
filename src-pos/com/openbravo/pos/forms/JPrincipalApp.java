@@ -30,6 +30,9 @@ import java.lang.reflect.*;
 import com.openbravo.beans.RoundedBorder;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.gui.JMessageDialog;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.util.Hashcypher;
 
 /**
@@ -48,6 +51,7 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
     private JPanelView m_jLastView;    
     private Action m_actionfirst;
     
+    private Map<String, JPanelView> m_aPreparedViews; // Prepared views   
     private Map<String, JPanelView> m_aCreatedViews;
         
     /** Creates new form JPrincipalApp */
@@ -65,6 +69,7 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         
         m_actionfirst = null;
         m_jLastView = null;
+        m_aPreparedViews = new HashMap<String, JPanelView>();
         m_aCreatedViews = new HashMap<String, JPanelView>();
                 
         initComponents();
@@ -75,46 +80,124 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         
         // Anado el panel nulo
         m_jPanelContainer.add(new JPanel(), "<NULL>");
-        showView("<NULL>");      
+        showView("<NULL>");     
         
-        JTaskPane taskPane = new JTaskPane();
-        JTaskPaneGroup taskGroup;
-//        JXTaskPaneContainer taskPane = new JXTaskPaneContainer();
-//        JXTaskPane taskGroup;
+        try {
+            
+            ScriptMenu menu = new ScriptMenu();
+            
+            ScriptEngine eng = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
+            eng.put("menu", menu);
+            eng.eval(m_dlSystem.getResourceAsText("Menu.Root"));
         
-        taskGroup = new JTaskPaneGroup();
-        taskGroup.setFocusable(false);
-        taskGroup.setRequestFocusEnabled(false);
-        taskGroup.setTitle(AppLocal.getIntString("Menu.Main"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.Ticket", "com.openbravo.pos.sales.JPanelTicketSales"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.TicketEdit", "com.openbravo.pos.sales.JPanelTicketEdits"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.Payments", "com.openbravo.pos.panels.JPanelPayments"));        
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/mycomputer.png", "Menu.CloseTPV", "com.openbravo.pos.panels.JPanelCloseMoney"));        
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/appointment.png", "Menu.Closing", "com.openbravo.pos.reports.JReportClosedPos"));
-        if (taskGroup.getContentPane().getComponentCount() > 0) taskPane.add(taskGroup);
+            m_jPanelLeft.setViewportView(menu.getTaskPane());
+        } catch (ScriptException e) {
+            e.printStackTrace();
+            // Error Message 
+        }               
+    }
+    
+    public class ScriptMenu {
+        private JTaskPane taskPane = new JTaskPane();
         
-        taskGroup = new JTaskPaneGroup();
-        taskGroup.setFocusable(false);
-        taskGroup.setRequestFocusEnabled(false);
-        taskGroup.setTitle(AppLocal.getIntString("Menu.Backoffice"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.Customers", "com.openbravo.pos.forms.MenuCustomers"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.StockManagement", "com.openbravo.pos.forms.MenuStockManagement"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/contents.png", "Menu.Maintenance", "com.openbravo.pos.forms.MenuMaintenance"));
-        if (taskGroup.getContentPane().getComponentCount() > 0) taskPane.add(taskGroup);
+        private ScriptMenu() {
+        }
+        
+        public ScriptGroup addGroup(String key) {
+            
+            ScriptGroup group = new ScriptGroup(key);
+            taskPane.add(group.getTaskGroup());
+            return group;
+        }
+        
+        public JTaskPane getTaskPane() {            
+            return taskPane;
+        }
+    }
+    
+    public class ScriptGroup {
+        private JTaskPaneGroup taskGroup;
+        
+        private ScriptGroup(String key) {
+            taskGroup = new JTaskPaneGroup();
+            taskGroup.setFocusable(false);
+            taskGroup.setRequestFocusEnabled(false);
+            taskGroup.setTitle(AppLocal.getIntString(key));     
+            taskGroup.setVisible(false); // Only groups with sons are visible.
+        }
+        
+        public void addPanel(String icon, String key, String classname) {            
+            addAction(new MenuPanelAction(m_appview, icon, key, classname));
+        }        
+        public void addExecution(String icon, String key, String classname) {
+            addAction(new MenuExecAction(m_appview, icon, key, classname));
+        }        
+        public ScriptSubmenu addSubmenu(String icon, String key, String classname) {
+            ScriptSubmenu submenu = new ScriptSubmenu(key); 
+            m_aPreparedViews.put(classname, new JPanelMenu(submenu.getMenuDefinition()));
+            addAction(new MenuPanelAction(m_appview, icon, key, classname));
+            return submenu;
+        }        
+        public void addChangePasswordAction() {            
+            addAction(new ChangePasswordAction("/com/openbravo/images/yast_security.png", "Menu.ChangePassword"));
+        }       
+        public void addExitAction() {            
+            addAction(new ExitAction("/com/openbravo/images/gohome.png", "Menu.Exit"));
+        }
+        
+        private void addAction(Action act) {
+            
+            if (m_appuser.hasPermission((String) act.getValue(AppUserView.ACTION_TASKNAME))) {
+                // add the action
+                Component c = taskGroup.add(act);
+                c.setFocusable(false);
+                //c.setRequestFocusEnabled(false);   
                 
-        taskGroup = new JTaskPaneGroup();
-        taskGroup.setFocusable(false);
-        taskGroup.setRequestFocusEnabled(false);
-        taskGroup.setTitle(AppLocal.getIntString("Menu.System"));
-        addTask(taskGroup, new ChangePasswordAction("/com/openbravo/images/yast_security.png", "Menu.ChangePassword"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/package_settings.png", "Menu.Configuration", "com.openbravo.pos.config.JPanelConfiguration"));
-        addTask(taskGroup, new MenuPanelAction(m_appview, "/com/openbravo/images/fileprint.png", "Menu.Printer", "com.openbravo.pos.panels.JPanelPrinter"));
-        addTask(taskGroup, new ExitAction("/com/openbravo/images/gohome.png", "Menu.Exit"));
-        if (taskGroup.getContentPane().getComponentCount() > 0) taskPane.add(taskGroup);
+                taskGroup.setVisible(true);
+
+                if (m_actionfirst == null) {
+                    m_actionfirst = act;
+                }
+            }
+        }
         
-        m_jPanelLeft.setViewportView(taskPane);
-               
+        public JTaskPaneGroup getTaskGroup() {
+            return taskGroup;
+        }   
+    }
+    
+    public class ScriptSubmenu {
+        private MenuDefinition menudef;
+        
+        private ScriptSubmenu(String key) {
+            menudef = new MenuDefinition(key);
+        }
+        
+        public void addTitle(String key) {
+            menudef.addMenuTitle(key);
+        }
+        
+        public void addPanel(String icon, String key, String classname) {
+            menudef.addMenuItem(new MenuPanelAction(m_appview, icon, key, classname));
+        }
+        public void addExecution(String icon, String key, String classname) {
+            menudef.addMenuItem(new MenuExecAction(m_appview, icon, key, classname));
+        }                
+        public ScriptSubmenu addSubmenu(String icon, String key, String classname) {
+            ScriptSubmenu submenu = new ScriptSubmenu(key); 
+            m_aPreparedViews.put(classname, new JPanelMenu(submenu.getMenuDefinition()));
+            menudef.addMenuItem(new MenuPanelAction(m_appview, icon, key, classname));
+            return submenu;
+        } 
+        public void addChangePasswordAction() {            
+            menudef.addMenuItem(new ChangePasswordAction("/com/openbravo/images/yast_security.png", "Menu.ChangePassword"));
+        }        
+        public void addExitAction() {
+            menudef.addMenuItem(new ExitAction("/com/openbravo/images/gohome.png", "Menu.Exit"));
+        }
+        public MenuDefinition getMenuDefinition() {
+            return menudef;
+        }
     }
     
     public JComponent getNotificator() {
@@ -140,19 +223,6 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
             return false;
         }
         
-    }
-    
-    private void addTask(JTaskPaneGroup elem, Action act) {    
-        if (m_appuser.hasPermission((String) act.getValue(AppUserView.ACTION_TASKNAME))) {
-            // Si tenemos permisos la anadimos...
-            Component c = elem.add(act);
-            c.setFocusable(false);
-            //c.setRequestFocusEnabled(false);            
-            
-            if (m_actionfirst == null) {
-                m_actionfirst = act;
-            }
-        }        
     }
     
     private class ExitAction extends AbstractAction {
@@ -212,12 +282,17 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
             if (m_jLastView == null || (m_jMyView != m_jLastView && m_jLastView.deactivate())) {
 
                 // Construct the new view
-                if (m_jMyView == null) {                   
+                if (m_jMyView == null) {   
                     
-                    try {
-                        m_jMyView = (JPanelView) m_appview.getBean(sTaskClass);
-                    } catch (BeanFactoryException e) {
-                        m_jMyView = new JPanelNull(m_appview, e);
+                    // Is the view prepared
+                    m_jMyView = m_aPreparedViews.get(sTaskClass);
+                    if (m_jMyView == null) {   
+                        // The view is not prepared. Try to get as a Bean...
+                        try {
+                            m_jMyView = (JPanelView) m_appview.getBean(sTaskClass);
+                        } catch (BeanFactoryException e) {
+                            m_jMyView = new JPanelNull(m_appview, e);
+                        }
                     }
                     
                     m_jPanelContainer.add(m_jMyView.getComponent(), sTaskClass);

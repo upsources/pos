@@ -30,20 +30,15 @@ import com.openbravo.basic.BasicException;
 public class JPanelMenu extends JPanel implements JPanelView {
     
     private MenuDefinition m_menu;
+    private boolean created = false;
     
     /** Creates new form JStockMenu */
     public JPanelMenu(MenuDefinition menu) {
         
         m_menu = menu;
+        created = false;
         
-        initComponents();
-        
-        Point p = new Point(20, 10);
-      
-        for(int i = 0; i < m_menu.countMenuElements(); i++) {
-            MenuElement menuitem = m_menu.getMenuElement(i);
-            menuitem.addComponent(this, p);
-        }
+        initComponents();       
     }
 
     public JComponent getComponent() {
@@ -55,6 +50,16 @@ public class JPanelMenu extends JPanel implements JPanelView {
     }  
     
     public void activate() throws BasicException {
+        
+        if (created == false) {
+            Point p = new Point(20, 10);
+
+            for(int i = 0; i < m_menu.countMenuElements(); i++) {
+                MenuElement menuitem = m_menu.getMenuElement(i);
+                menuitem.addComponent(this, p);
+            }            
+            created = true;
+        }
     }    
     
     public boolean deactivate() {  
