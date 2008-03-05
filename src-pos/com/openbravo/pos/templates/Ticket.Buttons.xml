@@ -22,7 +22,11 @@
 <configuration>
     <button key="button.print" name="button.print" template="Printer.TicketPreview"/>
     <button key="button.opendrawer" name="button.opendrawer" template="Printer.OpenDrawer"/>
-    <taxesincluded value="false"/>
+    
+    <img-width value="64"/>
+    <img-height value="54"/>
+    
+    <taxesincluded value="false"/>    
     <!-- <taxesid value="0"/> -->
     <!-- <pricevisible value="true" /> -->
 </configuration>

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,6 @@ import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
-import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.util.LabelIcon;
@@ -98,12 +97,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     public JPanelTicket(AppView oApp) {
 
         m_App = oApp;
-        try {
-            dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-            dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-            dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
-        } catch (BeanFactoryException e) {
-        }
+        dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
+        dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         
         initComponents (); 
         
@@ -160,19 +156,20 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_ticketsbag.activate();
         
         // impuestos incluidos seleccionado ?
-        m_jaddtax.setSelected(m_jbtnconfig.isTaxesIncluded());
+        m_jaddtax.setSelected("true".equals(m_jbtnconfig.getProperty("taxesincluded")));
 
         // Inicializamos el combo de los impuestos.
         m_TaxList = m_senttax.list();
         m_TaxModel = new ComboBoxValModel(m_TaxList);
         m_jTax.setModel(m_TaxModel);
 
-        if (m_jbtnconfig.getTaxesID() == null) {
+        String taxesid = m_jbtnconfig.getProperty("taxesid");
+        if (taxesid == null) {
             if (m_jTax.getItemCount() > 0) {
                 m_jTax.setSelectedIndex(0);
             }
         } else {
-            m_TaxModel.setSelectedKey(m_jbtnconfig.getTaxesID());
+            m_TaxModel.setSelectedKey(taxesid);
         }
         
         // Authorization for buttons
@@ -798,7 +795,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         public String getResourceAsXML(String sresourcename) {
             return dlSystem.getResourceAsXML(sresourcename);
         }
-        
+            
         public BufferedImage getResourceAsImage(String sresourcename) {
             return dlSystem.getResourceAsImage(sresourcename);
         }

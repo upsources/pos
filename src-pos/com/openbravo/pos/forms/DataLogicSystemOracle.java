@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,8 +18,8 @@
 
 package com.openbravo.pos.forms;
 
-import com.openbravo.data.loader.Datas;
-import com.openbravo.data.loader.SerializerReadBasic;
+import com.openbravo.data.loader.PreparedSentence;
+import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.Session;
 import com.openbravo.data.loader.StaticSentence;
 
@@ -39,9 +39,14 @@ public class DataLogicSystemOracle extends DataLogicSystem {
         m_sInitScript = "/com/openbravo/pos/scripts/oracle";
  
         m_peoplevisible = new StaticSentence(s
-            , "SELECT ID, NAME, APPPASSWORD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = 1"
+            , "SELECT ID, NAME, APPPASSWORD, CARD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = 1"
             , null
-            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.IMAGE}));
+            , peopleread);
+        
+        m_peoplebycard = new PreparedSentence(s
+            , "SELECT ID, NAME, APPPASSWORD, CARD, ROLE, IMAGE FROM PEOPLE WHERE CARD = ? AND VISIBLE = 1"
+            , SerializerWriteString.INSTANCE
+            , peopleread);         
     }  
 }
 

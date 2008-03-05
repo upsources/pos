@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.*;
-import javax.imageio.ImageIO;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.JMessageDialog;
@@ -40,13 +39,10 @@ import com.openbravo.pos.forms.DataLogicSales;
  */
 public class JCatalog extends JPanel implements ListSelectionListener, CatalogSelector {
     
-    public static final int PRICE_NONE = 0;
-    public static final int PRICE_SELL = 1;
-    public static final int PRICE_SELLTAX = 2;
-    
     protected EventListenerList listeners = new EventListenerList();
     private DataLogicSales m_dlSales;   
-    private int m_pricemode;
+    private boolean pricevisible;
+    private boolean taxesincluded;
     
     // Set of Products panels
     private Map<String, ProductInfoExt> m_productsset = new HashMap<String, ProductInfoExt>();
@@ -61,21 +57,22 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales) {
-        this(dlSales, PRICE_NONE);
+        this(dlSales, false, false, 64, 54);
     }
     
-    public JCatalog(DataLogicSales dlSales, int pricemode) {
+    public JCatalog(DataLogicSales dlSales, boolean pricevisible, boolean taxesincluded, int width, int height) {
         
         m_dlSales = dlSales;
-        m_pricemode = pricemode;
+        this.pricevisible = pricevisible;
+        this.taxesincluded = taxesincluded;
         
         initComponents();
         
         m_jListCategories.addListSelectionListener(this);                
         m_jscrollcat.getVerticalScrollBar().setPreferredSize(new Dimension(35, 35));
         
-        tnbcat = new ThumbNailBuilder(32, 32, loadDefaultImage("com/openbravo/images/folder_yellow.png"));           
-        tnbbutton = new ThumbNailBuilder(64, 54, loadDefaultImage("com/openbravo/images/package.png"));
+        tnbcat = new ThumbNailBuilder(32, 32, "com/openbravo/images/folder_yellow.png");           
+        tnbbutton = new ThumbNailBuilder(width, height, "com/openbravo/images/package.png");
     }
     
     public Component getComponent() {
@@ -197,18 +194,14 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     
     private String getProductLabel(ProductInfoExt product) {
 
-        switch(m_pricemode) {
-            case PRICE_SELL : return "<html><center>" + product.getName() + "<br>" + product.printPriceSell();
-            case PRICE_SELLTAX : return "<html><center>" + product.getName() + "<br>" + product.printPriceSellTax();
-            default : return product.getName();
-        }
-    }
-    
-    private Image loadDefaultImage(String resource) {
-        try {
-            return ImageIO.read(getClass().getClassLoader().getResourceAsStream(resource));               
-        } catch (Exception fnfe) {
-            return null;
+        if (pricevisible) {
+            if (taxesincluded) {
+                return "<html><center>" + product.getName() + "<br>" + product.printPriceSellTax();
+            } else {
+                return "<html><center>" + product.getName() + "<br>" + product.printPriceSell();
+            }
+        } else {
+            return product.getName();
         }
     }
     

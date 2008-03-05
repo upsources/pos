@@ -39,6 +39,9 @@ public interface DevicePrinter {
     public static final String BARCODE_EAN13 = "EAN13";
     public static final String BARCODE_CODE128 = "CODE128";
     
+    public static final String POSITION_BOTTOM = "bottom";
+    public static final String POSITION_NONE = "none";
+    
     // INTERFAZ DESCRIPCION
     public String getPrinterName();
     public String getPrinterDescription();
@@ -47,7 +50,7 @@ public interface DevicePrinter {
     
     // INTERFAZ PRINTER    
     public void printImage(BufferedImage image);
-    public void printBarCode(String sType, String sCode);
+    public void printBarCode(String type, String position, String code);
     public void beginLine(int iTextSize);
     public void printText(int iStyle, String sText);
     public void endLine();

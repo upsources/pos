@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -26,6 +26,8 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.*;
+import com.openbravo.pos.util.ThumbNailBuilder;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -39,6 +41,9 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     private SentenceExec m_dummy;
     
     protected SentenceList m_peoplevisible;  
+    protected SentenceFind m_peoplebycard;  
+    protected SerializerRead peopleread;
+    
     private SentenceFind m_rolepermissions; 
     private SentenceExec m_changepassword;    
     private SentenceFind m_locationfind;
@@ -59,6 +64,19 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         m_version = new PreparedSentence(s, "SELECT VERSION FROM APPLICATIONS WHERE ID = ?", SerializerWriteString.INSTANCE, SerializerReadString.INSTANCE);
         m_libreposversion = new PreparedSentence(s, "SELECT VERSION FROM LIBREPOS", null, SerializerReadString.INSTANCE);
         m_dummy = new StaticSentence(s, "SELECT * FROM PEOPLE WHERE 1 = 0");
+         
+        final ThumbNailBuilder tnb = new ThumbNailBuilder(32, 32, "com/openbravo/images/yast_sysadmin.png");        
+        peopleread = new SerializerRead() {
+            public Object readValues(DataRead dr) throws BasicException {
+                return new AppUser(
+                        dr.getString(1),
+                        dr.getString(2),
+                        dr.getString(3),
+                        dr.getString(4),
+                        dr.getString(5),
+                        new ImageIcon(tnb.getThumbNail(ImageUtils.readImage(dr.getBytes(6)))));                
+            }
+        };
          
         m_resourcebytes = new PreparedSentence(s
             , "SELECT CONTENT FROM RESOURCES WHERE NAME = ?"
@@ -115,8 +133,10 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     }
     public final List listPeopleVisible() throws BasicException {
         return m_peoplevisible.list();
-    }        
-    
+    }      
+    public final AppUser findPeopleByCard(String card) throws BasicException {
+        return (AppUser) m_peoplebycard.find(card);
+    }   
     
     public final String findRolePermissions(String sRole) {
         
@@ -215,18 +235,16 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     }
     
     public final Properties getResourceAsProperties(String sName) {
+        
+        Properties p = new Properties();
         try {
             byte[] img = getResourceAsBinary(sName);
-            if (img == null) {
-                return null;
-            } else {
-                Properties p = new Properties();
+            if (img != null) {
                 p.loadFromXML(new ByteArrayInputStream(img));
-                return p;
             }
         } catch (IOException e) {
-            return null;
         }
+        return p;
     }    
 
     public final Object[] findActiveCash(String sActiveCashIndex) throws BasicException {

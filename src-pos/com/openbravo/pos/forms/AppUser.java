@@ -43,6 +43,7 @@ public class AppUser {
     
     private String m_sId;
     private String m_sName;
+    private String m_sCard;
     private String m_sPassword;
     private String m_sRole;
     private Icon m_Icon;
@@ -54,14 +55,14 @@ public class AppUser {
     }
     
     /** Creates a new instance of AppUser */
-    public AppUser(String id, String name, String password, String role, Icon icon) {
+    public AppUser(String id, String name, String password, String card, String role, Icon icon) {
         m_sId = id;
         m_sName = name;
         m_sPassword = password;
+        m_sCard = card;
         m_sRole = role;
         m_Icon = icon;
         m_apermissions = null;
-
     }
     
     public Icon getIcon() {

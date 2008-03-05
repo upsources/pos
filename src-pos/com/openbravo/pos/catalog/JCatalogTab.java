@@ -58,9 +58,6 @@ public class JCatalogTab extends javax.swing.JPanel {
         btn.setHorizontalTextPosition(SwingConstants.CENTER);
         btn.setVerticalTextPosition(SwingConstants.BOTTOM);
         btn.setMargin(new Insets(2, 2, 2, 2));
-        btn.setMaximumSize(new Dimension(70, 60));
-        btn.setPreferredSize(new Dimension(70, 60));
-        btn.setMinimumSize(new Dimension(70, 60));
         btn.addActionListener(al);
         flowpanel.add(btn);        
     }

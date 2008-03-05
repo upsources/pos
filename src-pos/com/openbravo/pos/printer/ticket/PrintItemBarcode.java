@@ -22,6 +22,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import com.openbravo.pos.printer.DevicePrinter;
 import org.krysalis.barcode4j.BarcodeDimension;
+import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
 import org.krysalis.barcode4j.impl.code128.Code128Bean;
 import org.krysalis.barcode4j.impl.upcean.EAN13Bean;
@@ -36,16 +37,14 @@ public class PrintItemBarcode implements PrintItem {
     private int m_iHeight;
     
     /** Creates a new instance of PrinterItemBarcode */
-    public PrintItemBarcode(String sType, String code) {
+    public PrintItemBarcode(String type, String position, String code) {
         
         m_sCode = code;
         
-        if (DevicePrinter.BARCODE_EAN13.equals(sType)) {
-            m_barcode = new EAN13Bean();
-        } else if (DevicePrinter.BARCODE_CODE128.equals(sType)) {
+        if (DevicePrinter.BARCODE_CODE128.equals(type)) {
             m_barcode = new Code128Bean();
         } else {
-            m_barcode = null;
+            m_barcode = new EAN13Bean();
         }
         
         if (m_barcode != null) {
@@ -54,7 +53,11 @@ public class PrintItemBarcode implements PrintItem {
             m_barcode.setFontSize(10.0);
             m_barcode.setQuietZone(10.0);
             m_barcode.doQuietZone(true);  
-            
+            if (DevicePrinter.POSITION_NONE.equals(position)) {                
+                m_barcode.setMsgPosition(HumanReadablePlacement.HRP_NONE);
+            } else {
+                m_barcode.setMsgPosition(HumanReadablePlacement.HRP_BOTTOM);
+            }
             BarcodeDimension dim = m_barcode.calcDimensions(m_sCode);
             m_iWidth = (int) dim.getWidth(0);
             m_iHeight = (int) dim.getHeight(0);

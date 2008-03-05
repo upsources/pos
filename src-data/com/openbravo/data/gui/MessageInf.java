@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -81,11 +81,11 @@ public class MessageInf {
         if (iSignalWord == SGN_DANGER) {
             return UIManager.getIcon("OptionPane.errorIcon");
         } else if (iSignalWord == SGN_WARNING) {
-            return UIManager.getIcon("OptionPane.errorIcon");
+            return UIManager.getIcon("OptionPane.warningIcon");
        } else if (iSignalWord == SGN_CAUTION) {
             return UIManager.getIcon("OptionPane.warningIcon");
         } else if (iSignalWord == SGN_NOTICE) {
-            return UIManager.getIcon("OptionPane.warningIcon");
+            return UIManager.getIcon("OptionPane.informationIcon");
         } else if (iSignalWord == SGN_IMPORTANT) {
             return UIManager.getIcon("OptionPane.informationIcon");
         } else if (iSignalWord == SGN_SUCCESS) {

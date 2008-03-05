@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,7 @@ package com.openbravo.pos.util;
 
 import java.awt.image.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 public class ThumbNailBuilder {
@@ -28,19 +29,34 @@ public class ThumbNailBuilder {
     private int m_width;
     private int m_height;
     
-    /** Creates a new instance of ThumbNailBuilder */
-    
+    /** Creates a new instance of ThumbNailBuilder */    
     public ThumbNailBuilder(int width, int height) {
-        this(width, height, null);
+        init(width, height, null);
     }
+    
     public ThumbNailBuilder(int width, int height, Image imgdef) {
+        init(width, height, imgdef);
+      
+    }
+    
+    public ThumbNailBuilder(int width, int height, String img) {
+        
+        Image defimg;
+        try {
+            init(width, height, ImageIO.read(getClass().getClassLoader().getResourceAsStream(img)));               
+        } catch (Exception fnfe) {
+            init(width, height, null);
+        }                 
+    }    
+    
+    private void init(int width, int height, Image imgdef) {
         m_width = width;
         m_height = height;
         if (imgdef == null) {
             m_imgdefault = null;
         } else {
             m_imgdefault = createThumbNail(imgdef);
-        }       
+        } 
     }
     
     public Image getThumbNail(Image img) {

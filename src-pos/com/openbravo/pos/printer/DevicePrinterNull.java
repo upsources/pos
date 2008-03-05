@@ -48,7 +48,7 @@ public class DevicePrinterNull implements DevicePrinter {
     public void reset() {
     }
     
-    public void printBarCode(String sType, String sCode) {
+    public void printBarCode(String type, String position, String code) {        
     }    
     public void printCutPartial() {
     }

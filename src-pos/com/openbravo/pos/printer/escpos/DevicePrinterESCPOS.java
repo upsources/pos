@@ -67,20 +67,23 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
         m_CommOutputPrinter.write(m_codes.transImage(image));
     }
     
-    public void printBarCode(String sType, String sCode) {
+    public void printBarCode(String type, String position, String code) {
         
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);        
 
-        if (DevicePrinter.BARCODE_EAN13.equals(sType)) {
+        if (DevicePrinter.BARCODE_EAN13.equals(type)) {
             m_CommOutputPrinter.write(ESCPOS.CR);
             m_CommOutputPrinter.write(ESCPOS.LF);
 
             m_CommOutputPrinter.write(ESCPOS.BAR_HEIGHT);
-            m_CommOutputPrinter.write(ESCPOS.BAR_POSITIONDOWN);
+            if (DevicePrinter.POSITION_NONE.equals(position)) {                
+                m_CommOutputPrinter.write(ESCPOS.BAR_POSITIONNONE);
+            } else {
+                m_CommOutputPrinter.write(ESCPOS.BAR_POSITIONDOWN);
+            }           
             m_CommOutputPrinter.write(ESCPOS.BAR_HRIFONT1);
             m_CommOutputPrinter.write(ESCPOS.BAR_CODE02);
-            // Le quito el codigo de control. (Habria que comprobar que este codigo es correcto)...
-            m_CommOutputPrinter.write(m_trans.transNumber(DeviceTicket.alignBarCode(sCode,13).substring(0,12)));
+            m_CommOutputPrinter.write(m_trans.transNumber(DeviceTicket.alignBarCode(code,13).substring(0,12)));
             m_CommOutputPrinter.write(new byte[] { 0x00 });
 
             m_CommOutputPrinter.write(ESCPOS.CR);

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -247,6 +247,9 @@ public class PaymentsModel {
         }
         public String printTotal() {
             return Formats.CURRENCY.formatValue(m_SalesTotal);
+        }        
+        public String printTaxtotal() {
+            return Formats.CURRENCY.formatValue(m_SalesTotal - m_SalesSubtotal);
         }
         public String getTax() {
             return m_SalesTaxes;

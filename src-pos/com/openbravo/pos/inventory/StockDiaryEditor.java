@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,6 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.catalog.JCatalog;
-import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.panels.JProductFinder;
 import com.openbravo.pos.ticket.ProductInfoExt;
 
@@ -66,10 +65,7 @@ public class StockDiaryEditor extends javax.swing.JPanel implements EditorRecord
     public StockDiaryEditor(AppView app, DirtyManager dirty) {
         
         m_App = app;
-        try {
-            m_dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-        } catch (BeanFactoryException e) {
-        }
+        m_dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         
         initComponents();      
         

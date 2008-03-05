@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import javax.swing.*;
-import javax.imageio.ImageIO;
 
 import com.openbravo.pos.printer.*;
 
@@ -62,6 +61,8 @@ public class JRootApp extends JPanel implements AppView {
     private Date m_dActiveCashDateEnd;
     
     private String m_sInventoryLocation;
+    
+    private StringBuffer inputtext;
    
     private DeviceScale m_Scale;
     private DeviceScanner m_Scanner;
@@ -94,12 +95,7 @@ public class JRootApp extends JPanel implements AppView {
             return false;
         }
 
-        try {
-            m_dlSystem = (DataLogicSystem) getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-        } catch (BeanFactoryException e) {
-            JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, e.getMessage(), e));
-            return false;
-        }
+        m_dlSystem = (DataLogicSystem) getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
         
         // Create or upgrade the database if database version is not the expected
         String sDBVersion = readDataBaseVersion();        
@@ -147,14 +143,6 @@ public class JRootApp extends JPanel implements AppView {
 
         // Cargamos las propiedades de base de datos
         m_propsdb = m_dlSystem.getResourceAsProperties(m_props.getHost() + "/properties");
-        if (m_propsdb == null) {
-            m_propsdb = new Properties();            
-            // Backward compatibility
-            String soldvalue = m_props.getProperty("machine.activecash");
-            if (soldvalue != null) {
-                m_propsdb.setProperty("activecash", soldvalue);
-            }
-        }
         
         // creamos la caja activa si esta no existe      
         try {
@@ -212,9 +200,7 @@ public class JRootApp extends JPanel implements AppView {
         }        
         m_jHost.setText(sWareHouse + " (" + m_props.getHost() + ")");
         
-        // Show Login
-        listPeople();
-        showView("login");
+        showLogin();
 
         return true;
     }
@@ -355,25 +341,12 @@ public class JRootApp extends JPanel implements AppView {
             jPeople.setOpaque(false);
            
             java.util.List people = m_dlSystem.listPeopleVisible();
-            
-            Image defimg;
-            try {
-                defimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("com/openbravo/images/yast_sysadmin.png"));               
-            } catch (Exception fnfe) {
-                defimg = null;
-            }            
-            ThumbNailBuilder tnb = new ThumbNailBuilder(32, 32, defimg);
-            
+                     
+            ThumbNailBuilder tnb = new ThumbNailBuilder(32, 32, "com/openbravo/images/yast_sysadmin.png");            
             
             for (int i = 0; i < people.size(); i++) {
-                Object[] value = (Object[]) people.get(i);
                  
-                AppUser user = new AppUser(                       
-                        (String) value[0],
-                        (String) value[1],
-                        (String) value[2],
-                        (String) value[3],
-                        new ImageIcon(tnb.getThumbNail((Image) value[4])));
+                AppUser user = (AppUser) people.get(i);
 
                 JButton btn = new JButton(new AppUserAction(user));
                 btn.setFocusPainted(false);
@@ -424,10 +397,8 @@ public class JRootApp extends JPanel implements AppView {
                     if (m_actionuser.authenticate(sPassword)) {
                         openAppView(m_actionuser);                
                     } else {
-                        JOptionPane.showMessageDialog(JRootApp.this,
-                                AppLocal.getIntString("message.BadPassword"),
-                                m_actionuser.getName(),
-                                JOptionPane.WARNING_MESSAGE);
+                        MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.BadPassword"));
+                        msg.show(JRootApp.this);                        
                     }
                 }   
             }
@@ -443,13 +414,13 @@ public class JRootApp extends JPanel implements AppView {
         
         if (closeAppView()) {
 
-            // creo el app quiza no deberia crearla si a existe 
             m_principalapp = new JPrincipalApp(this, user);
 
-            // el indicador
+            // The user status notificator
             panelTask.add(m_principalapp.getNotificator());
             panelTask.revalidate();
-            // el panel principal
+            
+            // The main panel
             m_jPanelContainer.add(m_principalapp, "_" + m_principalapp.getUser().getId());
             showView("_" + m_principalapp.getUser().getId());
 
@@ -473,13 +444,53 @@ public class JRootApp extends JPanel implements AppView {
             m_jPanelContainer.remove(m_principalapp);
             m_principalapp = null;
 
-            // Show Login
-            listPeople();
-            showView("login");     
-
-            // show welcome message
-            printerStart();        
+            showLogin();
+            
             return true;
+        }
+    }
+    
+    private void showLogin() {
+        
+        // Show Login
+        listPeople();
+        showView("login");     
+
+        // show welcome message
+        printerStart();
+ 
+        // keyboard listener activation
+        inputtext = new StringBuffer();
+        m_txtKeys.setText(null);       
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                m_txtKeys.requestFocus();
+            }
+        });  
+    }
+    
+    private void processKey(char c) {
+        
+        if (c == '\n') {
+            
+            AppUser user = null;
+            try {
+                user = m_dlSystem.findPeopleByCard(inputtext.toString());
+            } catch (BasicException e) {
+                e.printStackTrace();
+            }
+            
+            if (user == null)  {
+                // user not found
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.nocard"));
+                msg.show(this);                
+            } else {
+                openAppView(user);   
+            }
+
+            inputtext = new StringBuffer();
+        } else {
+            inputtext.append(c);
         }
     }
 
@@ -505,6 +516,8 @@ public class JRootApp extends JPanel implements AppView {
         jPanel2 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         m_jClose = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        m_txtKeys = new javax.swing.JTextField();
         m_jPanelDown = new javax.swing.JPanel();
         panelTask = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -580,6 +593,19 @@ public class JRootApp extends JPanel implements AppView {
 
         jPanel2.add(jPanel8, java.awt.BorderLayout.NORTH);
 
+        jPanel1.setLayout(null);
+
+        m_txtKeys.setPreferredSize(new java.awt.Dimension(0, 0));
+        m_txtKeys.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                m_txtKeysKeyTyped(evt);
+            }
+        });
+        jPanel1.add(m_txtKeys);
+        m_txtKeys.setBounds(0, 0, 0, 0);
+
+        jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
+
         m_jLogonName.add(jPanel2, java.awt.BorderLayout.EAST);
 
         jPanel5.add(m_jLogonName);
@@ -613,10 +639,19 @@ public class JRootApp extends JPanel implements AppView {
         
     }//GEN-LAST:event_m_jCloseActionPerformed
 
+    private void m_txtKeysKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_m_txtKeysKeyTyped
+
+        m_txtKeys.setText("0");
+        
+        processKey(evt.getKeyChar());
+
+    }//GEN-LAST:event_m_txtKeysKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel blankspace;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
@@ -630,6 +665,7 @@ public class JRootApp extends JPanel implements AppView {
     private javax.swing.JPanel m_jPanelDown;
     private javax.swing.JPanel m_jPanelLogin;
     private javax.swing.JPanel m_jPanelTitle;
+    private javax.swing.JTextField m_txtKeys;
     private javax.swing.JPanel panelTask;
     private javax.swing.JLabel poweredby;
     // End of variables declaration//GEN-END:variables

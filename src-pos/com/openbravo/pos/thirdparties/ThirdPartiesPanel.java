@@ -30,7 +30,6 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
-import com.openbravo.pos.forms.BeanFactoryException;
 
 public class ThirdPartiesPanel extends JPanelTable {
     
@@ -41,11 +40,7 @@ public class ThirdPartiesPanel extends JPanelTable {
     public ThirdPartiesPanel(AppView app) {
         super(app);
         
-        DataLogicThirdParties dlThirdParties = null;
-        try {
-            dlThirdParties = (DataLogicThirdParties) app.getBean("com.openbravo.pos.thirdparties.DataLogicThirdParties");
-        } catch (BeanFactoryException e) {
-        }
+        DataLogicThirdParties dlThirdParties = (DataLogicThirdParties) app.getBean("com.openbravo.pos.thirdparties.DataLogicThirdParties");
         
         tthirdparties = dlThirdParties.getTableThirdParties();        
         jeditor = new ThirdPartiesView(m_App, m_Dirty);    

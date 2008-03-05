@@ -56,9 +56,9 @@ public class BasicTicket implements PrintItem {
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }
-    public void printBarCode(String sType, String sCode) {
+    public void printBarCode(String type, String position, String code) {
 
-        PrintItem pi = new PrintItemBarcode(sType, sCode);
+        PrintItem pi = new PrintItemBarcode(type, position, code);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }

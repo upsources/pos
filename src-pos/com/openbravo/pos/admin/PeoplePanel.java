@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -30,7 +30,6 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
-import com.openbravo.pos.forms.BeanFactoryException;
 
 /**
  *
@@ -45,11 +44,7 @@ public class PeoplePanel extends JPanelTable {
     public PeoplePanel(AppView app) {
         super(app);
         
-        DataLogicAdmin dlAdmin = null;
-        try {
-            dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");
-        } catch (BeanFactoryException e) {
-        }
+        DataLogicAdmin dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");
         
         tpeople = dlAdmin.getTablePeople();           
         jeditor = new PeopleView(dlAdmin, m_Dirty);    

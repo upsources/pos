@@ -70,9 +70,9 @@ public class DevicePrinterPanel extends javax.swing.JPanel implements DevicePrin
         ensureTicket();
         m_ticketcurrent.printImage(image);
     }
-    public void printBarCode(String sType, String sCode) {
+    public void printBarCode(String type, String position, String code) {
         ensureTicket();
-        m_ticketcurrent.printBarCode(sType, sCode);
+        m_ticketcurrent.printBarCode(type, position, code);
     }
     public void beginLine(int iTextSize) {
         ensureTicket();

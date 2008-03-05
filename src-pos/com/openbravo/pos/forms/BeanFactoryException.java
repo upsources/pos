@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@ package com.openbravo.pos.forms;
  *
  * @author adrianromero
  */
-public class BeanFactoryException extends java.lang.Exception {
+public class BeanFactoryException extends java.lang.RuntimeException {
     
     /**
      * Creates a new instance of <code>BeanFactoryException</code> without detail message.

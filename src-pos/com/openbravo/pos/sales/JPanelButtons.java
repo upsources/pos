@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -19,13 +19,11 @@
 package com.openbravo.pos.sales;
 
 import java.awt.Component;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.StringReader;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,15 +40,18 @@ import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppUser;
 import com.openbravo.pos.util.ThumbNailBuilder;
+import java.util.Properties;
 
 
 public class JPanelButtons extends javax.swing.JPanel {
     
     private static SAXParser m_sp = null;
 
-    private Integer m_itaxesid = null;
-    private boolean m_btaxesincluded = false;
-    private boolean m_bpricevisible = false;
+//    private Integer m_itaxesid = null;
+//    private boolean m_btaxesincluded = false;
+//    private boolean m_bpricevisible = false;
+    
+    private Properties props;
     
     private ThumbNailBuilder tnbmacro;
     
@@ -61,15 +62,12 @@ public class JPanelButtons extends javax.swing.JPanel {
         initComponents();
         
         // Load categories default thumbnail
-        Image defimg;
-        try {
-            defimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("com/openbravo/images/greenled.png"));               
-        } catch (Exception fnfe) {
-            defimg = null;
-        } 
-        tnbmacro = new ThumbNailBuilder(16, 16, defimg);
+        tnbmacro = new ThumbNailBuilder(16, 16, "com/openbravo/images/greenled.png");
         
         m_TicketScript = scriptobject;
+        
+        props = new Properties();
+        
         String sConfigRes = scriptobject.getResourceAsXML(sConfigKey);
         
         if (sConfigRes != null) {
@@ -102,6 +100,14 @@ public class JPanelButtons extends javax.swing.JPanel {
         }
     }
     
+    public String getProperty(String key) {
+        return props.getProperty(key);
+    }
+    
+     public String getProperty(String key, String defaultvalue) {
+        return props.getProperty(key, defaultvalue);
+    }
+    
     private class ConfigurationHandler extends DefaultHandler {       
         public void startDocument() throws SAXException {}
         public void endDocument() throws SAXException {}    
@@ -115,33 +121,28 @@ public class JPanelButtons extends javax.swing.JPanel {
                         stemplate == null
                             ? m_TicketScript.getResourceAsXML(attributes.getValue("code"))
                             : "sales.printTicket(\"" + stemplate + "\");"));
-            } else if ("taxesincluded".equals(qName)) {
-                m_btaxesincluded = "true".equals(attributes.getValue("value"));
-            } else if ("pricevisible".equals(qName)) {
-                m_bpricevisible = "true".equals(attributes.getValue("value"));
-            } else if ("taxesid".equals(qName)) {
-                try {
-                    m_itaxesid = Integer.valueOf(attributes.getValue("value"));
-                } catch (NumberFormatException e ) {
-                    m_itaxesid = null;
+            } else {
+                String value = attributes.getValue("value");
+                if (value != null) {                  
+                    props.setProperty(qName, attributes.getValue("value"));
                 }
             }
         }      
         public void endElement(String uri, String localName, String qName) throws SAXException {}
         public void characters(char[] ch, int start, int length) throws SAXException {}
     }  
-    
-    public boolean isPriceVisible() {
-        return m_bpricevisible;
-    }
-    
-    public boolean isTaxesIncluded() {
-        return m_btaxesincluded;
-    }
-    
-    public Integer getTaxesID() {
-        return m_itaxesid;
-    }
+//    
+//    public boolean isPriceVisible() {
+//        return m_bpricevisible;
+//    }
+//    
+//    public boolean isTaxesIncluded() {
+//        return m_btaxesincluded;
+//    }
+//    
+//    public Integer getTaxesID() {
+//        return m_itaxesid;
+//    }
         
     private class JButtonFunc extends JButton {
         private String m_sCode;

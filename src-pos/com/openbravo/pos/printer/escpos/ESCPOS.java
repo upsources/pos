@@ -42,18 +42,19 @@ public class ESCPOS {
     public static final byte[] UNDERLINE_RESET = {0x1B, 0x2D, 0x00};
     
     public static final byte[] BAR_HEIGHT = {0x1D, 0x68, 0x40};
-    public static final byte[] BAR_POSITIONDOWN = {0x1D, 0x48, 0x02}; // ABAJO
-    public static final byte[] BAR_HRIFONT1 = {0x1D, 0x66, 0x01}; // FUENTE 2
+    public static final byte[] BAR_POSITIONDOWN = {0x1D, 0x48, 0x02};
+    public static final byte[] BAR_POSITIONNONE = {0x1D, 0x48, 0x00};
+    public static final byte[] BAR_HRIFONT1 = {0x1D, 0x66, 0x01}; 
     
     public static final byte[] BAR_CODE02 = {0x1D, 0x6B, 0x02}; // 12 numeros fijos
     
-    public static final byte[] VISOR_HIDE_CURSOR = {0x1F, 0x43,0x00};
-    public static final byte[] VISOR_SHOW_CURSOR = {0x1F, 0x43,0x01};
+    public static final byte[] VISOR_HIDE_CURSOR = {0x1F, 0x43, 0x00};
+    public static final byte[] VISOR_SHOW_CURSOR = {0x1F, 0x43, 0x01};
     public static final byte[] VISOR_HOME = {0x0B};
     public static final byte[] VISOR_CLEAR = {0x0C};
         
-    public static final byte[] CODE_TABLE_00 = {0x1B, 0x74, 0x00}; // La de defecto
-    public static final byte[] CODE_TABLE_13 = {0x1B, 0x74, 0x13}; // European, 19 en decimal  
+    public static final byte[] CODE_TABLE_00 = {0x1B, 0x74, 0x00};
+    public static final byte[] CODE_TABLE_13 = {0x1B, 0x74, 0x13}; 
     
     private ESCPOS() {       
     }

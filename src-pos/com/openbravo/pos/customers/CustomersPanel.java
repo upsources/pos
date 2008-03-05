@@ -29,7 +29,6 @@ import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
-import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.panels.JPanelTable;
 import javax.swing.ListCellRenderer;
 
@@ -46,11 +45,7 @@ public class CustomersPanel extends JPanelTable {
     public CustomersPanel(AppView app) {
         super(app);
         
-        DataLogicCustomers dlCustomers = null;
-        try {
-            dlCustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
-        } catch (BeanFactoryException e) {
-        }
+        DataLogicCustomers dlCustomers  = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         
         tcustomers = dlCustomers.getTableCustomers();        
         jeditor = new CustomersView(m_App, m_Dirty);    

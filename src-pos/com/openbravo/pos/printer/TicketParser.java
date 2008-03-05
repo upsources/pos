@@ -36,9 +36,10 @@ public class TicketParser extends DefaultHandler {
     private DeviceTicket m_printer;
     private DataLogicSystem m_system;
     
-    private StringBuffer m_sText;
+    private StringBuffer text;
     
-    private String m_sBCType;
+    private String bctype;
+    private String bcposition;
     private int m_iTextAlign;
     private int m_iTextLength;
     private int m_iTextStyle;
@@ -63,23 +64,6 @@ public class TicketParser extends DefaultHandler {
         m_printer = printer;
         m_system = system;
     }
-    
-//    public void printTicket(Template t, VelocityContext context) throws TicketPrinterException {
-//        StringWriter sw = new StringWriter();
-//        try {
-//            t.merge(context, sw);
-//        } catch (ResourceNotFoundException rnfe) {
-//            throw new TicketPrinterException("Resource not found", rnfe);
-//        } catch (ParseErrorException pee) {
-//            throw new TicketPrinterException("Parser error", pee);
-//        } catch (MethodInvocationException mie) {
-//            throw new TicketPrinterException("Method invocation error", mie);
-//        } catch (Exception e) {
-//            throw new TicketPrinterException("Exception found", e);
-//        }         
-//
-//        printTicket(sw.toString());
-//    }
     
     public void printTicket(String sIn) throws TicketPrinterException {
         printTicket(new StringReader(sIn));
@@ -106,8 +90,9 @@ public class TicketParser extends DefaultHandler {
     
     public void startDocument() throws SAXException {
         // inicalizo las variables pertinentes
-        m_sText = null;
-        m_sBCType = null;
+        text = null;
+        bctype = null;
+        bcposition = null;
         m_sVisorLine = null;
         m_sVisorLine1 = null;
         m_sVisorLine2 = null;
@@ -125,7 +110,7 @@ public class TicketParser extends DefaultHandler {
             if ("opendrawer".equals(qName)) {
                 m_printer.getDevicePrinter(readString(attributes.getValue("printer"), "1")).openDrawer();
             } else if ("play".equals(qName)) {
-                 m_sText = new StringBuffer();    
+                 text = new StringBuffer();    
             } else if ("ticket".equals(qName)) {
                 m_iOutputType = OUTPUT_TICKET;
                 m_oOutputPrinter = m_printer.getDevicePrinter(readString(attributes.getValue("printer"), "1"));
@@ -143,14 +128,15 @@ public class TicketParser extends DefaultHandler {
             break;
         case OUTPUT_TICKET:
             if ("image".equals(qName)){
-                m_sText = new StringBuffer();           
+                text = new StringBuffer();           
             } else if ("barcode".equals(qName)) {
-                m_sText = new StringBuffer();
-                m_sBCType = attributes.getValue("type");
+                text = new StringBuffer();
+                bctype = attributes.getValue("type");
+                bcposition = attributes.getValue("position");
             } else if ("line".equals(qName)) {
                 m_oOutputPrinter.beginLine(parseInt(attributes.getValue("size"), DevicePrinter.SIZE_0));
             } else if ("text".equals(qName)) {
-                m_sText = new StringBuffer();
+                text = new StringBuffer();
                 m_iTextStyle = ("true".equals(attributes.getValue("bold")) ? DevicePrinter.STYLE_BOLD : DevicePrinter.STYLE_PLAIN)
                              | ("true".equals(attributes.getValue("underline")) ? DevicePrinter.STYLE_UNDERLINE : DevicePrinter.STYLE_PLAIN);
                 String sAlign = attributes.getValue("align");
@@ -170,7 +156,7 @@ public class TicketParser extends DefaultHandler {
             } else if ("line2".equals(qName)) { // linea 2 del visor
                 m_sVisorLine = new StringBuffer();
             } else if ("text".equals(qName)) {
-                m_sText = new StringBuffer();
+                text = new StringBuffer();
                 String sAlign = attributes.getValue("align");
                 if ("right".equals(sAlign)) {
                     m_iTextAlign = DevicePrinter.ALIGN_RIGHT;
@@ -184,13 +170,13 @@ public class TicketParser extends DefaultHandler {
             break;
         case OUTPUT_FISCAL:
             if ("line".equals(qName)) {
-                m_sText = new StringBuffer();   
+                text = new StringBuffer();   
                 m_dValue1 = parseDouble(attributes.getValue("price"));
                 m_dValue2 = parseDouble(attributes.getValue("units"), 1.0);
             } else if ("message".equals(qName)) {
-                m_sText = new StringBuffer();               
+                text = new StringBuffer();               
             } else if ("total".equals(qName)) {
-                m_sText = new StringBuffer();    
+                text = new StringBuffer();    
                 m_dValue1 = parseDouble(attributes.getValue("paid"));
             }
             break;
@@ -202,48 +188,47 @@ public class TicketParser extends DefaultHandler {
         case OUTPUT_NONE:
             if ("play".equals(qName)) {
                 try { 
-                    AudioClip oAudio = Applet.newAudioClip(getClass().getClassLoader().getResource(m_sText.toString()));
+                    AudioClip oAudio = Applet.newAudioClip(getClass().getClassLoader().getResource(text.toString()));
                     oAudio.play();        
                 } catch (Exception fnfe) {
                     //throw new ResourceNotFoundException( fnfe.getMessage() );
                 }
-                m_sText = null;
+                text = null;
             } 
             break;
         case OUTPUT_TICKET:
             if ("image".equals(qName)){
                 try {
                     // BufferedImage image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(m_sText.toString()));
-                    BufferedImage image = m_system.getResourceAsImage(m_sText.toString());
+                    BufferedImage image = m_system.getResourceAsImage(text.toString());
                     m_oOutputPrinter.printImage(image);
                 } catch (Exception fnfe) {
                     //throw new ResourceNotFoundException( fnfe.getMessage() );
                 }
-                m_sText = null;
+                text = null;
             } else if ("barcode".equals(qName)) {
                 m_oOutputPrinter.printBarCode(
-                        m_sBCType == null || m_sBCType.equals("")  
-                            ? DevicePrinter.BARCODE_EAN13
-                            : m_sBCType,
-                        m_sText.toString());
-                m_sText = null;
+                        bctype,
+                        bcposition,    
+                        text.toString());
+                text = null;
             } else if ("text".equals(qName)) {
                 if (m_iTextLength > 0) {
                     switch(m_iTextAlign) {
                     case DevicePrinter.ALIGN_RIGHT:
-                        m_oOutputPrinter.printText(m_iTextStyle, DeviceTicket.alignRight(m_sText.toString(), m_iTextLength));
+                        m_oOutputPrinter.printText(m_iTextStyle, DeviceTicket.alignRight(text.toString(), m_iTextLength));
                         break;
                     case DevicePrinter.ALIGN_CENTER:
-                        m_oOutputPrinter.printText(m_iTextStyle, DeviceTicket.alignCenter(m_sText.toString(), m_iTextLength));
+                        m_oOutputPrinter.printText(m_iTextStyle, DeviceTicket.alignCenter(text.toString(), m_iTextLength));
                         break;
                     default: // DevicePrinter.ALIGN_LEFT
-                        m_oOutputPrinter.printText(m_iTextStyle, DeviceTicket.alignLeft(m_sText.toString(), m_iTextLength));
+                        m_oOutputPrinter.printText(m_iTextStyle, DeviceTicket.alignLeft(text.toString(), m_iTextLength));
                         break;
                     }
                 } else {
-                    m_oOutputPrinter.printText(m_iTextStyle, m_sText.toString());
+                    m_oOutputPrinter.printText(m_iTextStyle, text.toString());
                 }
-                m_sText = null;
+                text = null;
             } else if ("line".equals(qName)) {
                 m_oOutputPrinter.endLine();
             } else if ("cut".equals(qName)) {
@@ -264,19 +249,19 @@ public class TicketParser extends DefaultHandler {
                 if (m_iTextLength > 0) {
                     switch(m_iTextAlign) {
                     case DevicePrinter.ALIGN_RIGHT:
-                        m_sVisorLine.append(DeviceTicket.alignRight(m_sText.toString(), m_iTextLength));
+                        m_sVisorLine.append(DeviceTicket.alignRight(text.toString(), m_iTextLength));
                         break;
                     case DevicePrinter.ALIGN_CENTER:
-                        m_sVisorLine.append(DeviceTicket.alignCenter(m_sText.toString(), m_iTextLength));
+                        m_sVisorLine.append(DeviceTicket.alignCenter(text.toString(), m_iTextLength));
                         break;
                     default: // DevicePrinter.ALIGN_LEFT
-                        m_sVisorLine.append(DeviceTicket.alignLeft(m_sText.toString(), m_iTextLength));
+                        m_sVisorLine.append(DeviceTicket.alignLeft(text.toString(), m_iTextLength));
                         break;
                     }
                 } else {
-                    m_sVisorLine.append(m_sText);
+                    m_sVisorLine.append(text);
                 }
-                m_sText = null;
+                text = null;
             } else if ("display".equals(qName)) {
                 m_printer.writeVisor(m_sVisorLine1, m_sVisorLine2);                    
                 m_sVisorLine1 = null;
@@ -290,22 +275,22 @@ public class TicketParser extends DefaultHandler {
                 m_printer.getFiscalPrinter().endReceipt();
                 m_iOutputType = OUTPUT_NONE;
             } else if ("line".equals(qName)) {
-                m_printer.getFiscalPrinter().printLine(m_sText.toString(), m_dValue1, m_dValue2);
-                m_sText = null;               
+                m_printer.getFiscalPrinter().printLine(text.toString(), m_dValue1, m_dValue2);
+                text = null;               
             } else if ("message".equals(qName)) {
-                m_printer.getFiscalPrinter().printMessage(m_sText.toString());
-                m_sText = null;               
+                m_printer.getFiscalPrinter().printMessage(text.toString());
+                text = null;               
             } else if ("total".equals(qName)) {
-                m_printer.getFiscalPrinter().printTotal(m_sText.toString(), m_dValue1);
-                m_sText = null;               
+                m_printer.getFiscalPrinter().printTotal(text.toString(), m_dValue1);
+                text = null;               
             }
             break;
         }          
     }
     
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if (m_sText != null) {
-            m_sText.append(ch, start, length);
+        if (text != null) {
+            text.append(ch, start, length);
         }
     }
     

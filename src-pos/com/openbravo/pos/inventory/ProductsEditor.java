@@ -564,8 +564,6 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         jLabel6.setBounds(10, 20, 150, 14);
         jPanel1.add(m_jCode);
         m_jCode.setBounds(160, 20, 170, 18);
-
-        m_jImage.setMaxDimensions(new java.awt.Dimension(64, 54));
         jPanel1.add(m_jImage);
         m_jImage.setBounds(340, 20, 200, 180);
 

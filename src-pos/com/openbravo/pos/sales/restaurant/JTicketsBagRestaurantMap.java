@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,6 @@ import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.SerializerReadClass;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
-import com.openbravo.data.loader.ImageUtils;
 import com.openbravo.data.gui.NullIcon;
 import com.openbravo.data.loader.SentenceList;
 
@@ -54,10 +53,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         
         super(app, panelticket);
         
-        try {
-            dlReceipts = (DataLogicReceipts) app.getBean("com.openbravo.pos.sales.DataLogicReceipts");
-        } catch (BeanFactoryException e) {
-        }
+        dlReceipts = (DataLogicReceipts) app.getBean("com.openbravo.pos.sales.DataLogicReceipts");
         
         m_restaurantmap = new JTicketsBagRestaurant(app, this);
         m_PlaceCurrent = null;

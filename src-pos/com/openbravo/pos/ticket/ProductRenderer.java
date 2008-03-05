@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,6 @@ package com.openbravo.pos.ticket;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.imageio.ImageIO;
 
 import com.openbravo.pos.util.ThumbNailBuilder;
 import com.openbravo.format.Formats;
@@ -30,14 +29,8 @@ public class ProductRenderer extends DefaultListCellRenderer {
     ThumbNailBuilder tnbprod;
 
     /** Creates a new instance of ProductRenderer */
-    public ProductRenderer() {
-        Image defimg;
-        try {
-            defimg = ImageIO.read(getClass().getClassLoader().getResourceAsStream("com/openbravo/images/package.png"));               
-        } catch (Exception fnfe) {
-            defimg = null;
-        }   
-        tnbprod = new ThumbNailBuilder(64, 32, defimg);
+    public ProductRenderer() {   
+        tnbprod = new ThumbNailBuilder(64, 32, "com/openbravo/images/package.png");
     }
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

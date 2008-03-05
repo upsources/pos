@@ -109,11 +109,6 @@
               </Constraints>
             </Component>
             <Component class="com.openbravo.data.gui.JImageEditor" name="m_jImage">
-              <Properties>
-                <Property name="maxDimensions" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[64, 54]"/>
-                </Property>
-              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="340" y="20" width="200" height="180"/>
