@@ -54,10 +54,10 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
         this.s = s;
         tcustomers = new TableDefinition(s,
             "CUSTOMERS"
-            , new String[] {"ID", "NAME", "ADDRESS", "NOTES", "VISIBLE", "CARD"}
-            , new String[] {"ID", AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD"}
-            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING}
-            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING}
+            , new String[] {"ID", "NAME", "ADDRESS", "NOTES", "VISIBLE", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"}
+            , new String[] {"ID", AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD", AppLocal.getIntString("label.maxdebt"), AppLocal.getIntString("label.curdate"), AppLocal.getIntString("label.curdebt")}
+            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}
+            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING, Formats.CURRENCY, Formats.TIMESTAMP, Formats.CURRENCY}
             , new int[] {0}
         );   
         

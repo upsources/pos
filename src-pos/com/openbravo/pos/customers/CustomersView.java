@@ -21,6 +21,7 @@ package com.openbravo.pos.customers;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
+import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import java.awt.Component;
@@ -52,6 +53,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jName.getDocument().addDocumentListener(dirty);
         m_jAddress.getDocument().addDocumentListener(dirty);
         m_jNotes.getDocument().addDocumentListener(dirty);
+        txtMaxdebt.getDocument().addDocumentListener(dirty);
         m_jVisible.addActionListener(dirty);
         
         writeValueEOF(); 
@@ -62,11 +64,17 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jName.setText(null);
         m_jAddress.setText(null);
         m_jNotes.setText(null);
+        txtMaxdebt.setText(null);
+        txtCurdebt.setText(null);
+        txtCurdate.setText(null);
         m_jVisible.setSelected(false);
         jcard.setText(null);
         m_jName.setEnabled(false);
         m_jAddress.setEnabled(false);
         m_jNotes.setEnabled(false);
+        txtMaxdebt.setEnabled(false);
+        txtCurdebt.setEnabled(false);
+        txtCurdate.setEnabled(false);
         m_jVisible.setEnabled(false);
         jcard.setEnabled(false);
         jButton2.setEnabled(false);
@@ -78,11 +86,17 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jName.setText(null);
         m_jAddress.setText(null);
         m_jNotes.setText(null);
+        txtMaxdebt.setText(null);
+        txtCurdebt.setText(null);
+        txtCurdate.setText(null);        
         m_jVisible.setSelected(true);
         jcard.setText(null);
         m_jName.setEnabled(true);
         m_jAddress.setEnabled(true);
         m_jNotes.setEnabled(true);
+        txtMaxdebt.setEnabled(true);
+        txtCurdebt.setEnabled(true);
+        txtCurdate.setEnabled(true);
         m_jVisible.setEnabled(true);
         jcard.setEnabled(true);
         jButton2.setEnabled(true);
@@ -97,9 +111,15 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jNotes.setText((String) customer[3]);
         m_jVisible.setSelected(((Boolean) customer[4]).booleanValue());
         jcard.setText((String) customer[5]);
+        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[6]));
+        txtCurdate.setText(Formats.DATE.formatValue(customer[7]));        
+        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[8]));        
         m_jName.setEnabled(false);
         m_jAddress.setEnabled(false);
         m_jNotes.setEnabled(false);
+        txtMaxdebt.setEnabled(false);
+        txtCurdebt.setEnabled(false);
+        txtCurdate.setEnabled(false);
         m_jVisible.setEnabled(false);
         jcard.setEnabled(false);
         jButton2.setEnabled(false);
@@ -111,12 +131,18 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_oId = customer[0];
         m_jName.setText((String) customer[1]);
         m_jAddress.setText((String) customer[2]);
-        m_jNotes.setText((String) customer[3]);
+        m_jNotes.setText((String) customer[3]);     
         m_jVisible.setSelected(((Boolean) customer[4]).booleanValue());
         jcard.setText((String) customer[5]);
+        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[6]));
+        txtCurdate.setText(Formats.DATE.formatValue(customer[7]));        
+        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[8]));          
         m_jName.setEnabled(true);
         m_jAddress.setEnabled(true);
         m_jNotes.setEnabled(true);
+        txtMaxdebt.setEnabled(true);
+        txtCurdebt.setEnabled(true);
+        txtCurdate.setEnabled(true);        
         m_jVisible.setEnabled(true);
         jcard.setEnabled(true);
         jButton2.setEnabled(true);
@@ -124,13 +150,16 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     }
     
     public Object createValue() throws BasicException {
-        Object[] customer = new Object[6];
+        Object[] customer = new Object[9];
         customer[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
         customer[1] = m_jName.getText();
         customer[2] = m_jAddress.getText();
         customer[3] = m_jNotes.getText();
         customer[4] = Boolean.valueOf(m_jVisible.isSelected());
         customer[5] = jcard.getText();
+        customer[6] = Formats.CURRENCY.parseValue(txtMaxdebt.getText());
+        customer[7] = Formats.TIMESTAMP.parseValue(txtCurdate.getText()); // not saved
+        customer[8] = Formats.CURRENCY.parseValue(txtCurdebt.getText()); // not saved
         return customer;
     }   
     
@@ -159,6 +188,12 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jcard = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtMaxdebt = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtCurdebt = new javax.swing.JTextField();
+        txtCurdate = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -188,9 +223,9 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 240, 90, 14);
+        jLabel4.setBounds(20, 330, 90, 14);
         add(m_jVisible);
-        m_jVisible.setBounds(110, 240, 140, 20);
+        m_jVisible.setBounds(110, 330, 140, 20);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         add(jLabel5);
@@ -217,6 +252,30 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         });
         add(jButton3);
         jButton3.setBounds(450, 50, 50, 26);
+
+        jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
+        add(jLabel1);
+        jLabel1.setBounds(20, 240, 90, 14);
+
+        txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        add(txtMaxdebt);
+        txtMaxdebt.setBounds(110, 240, 130, 18);
+
+        jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
+        add(jLabel2);
+        jLabel2.setBounds(20, 270, 90, 14);
+
+        txtCurdebt.setEditable(false);
+        add(txtCurdebt);
+        txtCurdebt.setBounds(110, 270, 130, 18);
+
+        txtCurdate.setEditable(false);
+        add(txtCurdate);
+        txtCurdate.setBounds(110, 300, 130, 18);
+
+        jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
+        add(jLabel6);
+        jLabel6.setBounds(20, 300, 90, 14);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -242,11 +301,14 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jcard;
@@ -254,6 +316,9 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JTextField m_jName;
     private javax.swing.JTextArea m_jNotes;
     private javax.swing.JCheckBox m_jVisible;
+    private javax.swing.JTextField txtCurdate;
+    private javax.swing.JTextField txtCurdebt;
+    private javax.swing.JTextField txtMaxdebt;
     // End of variables declaration//GEN-END:variables
     
 }

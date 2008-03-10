@@ -23,89 +23,90 @@ import com.openbravo.format.Formats;
 public class TableDefinition {
     
     private Session m_s;
-    private String m_sTableName;
+    private String tablename;
    
-    private String[] m_asFields;
-    private String[] m_asFieldsLocal;
-    private Datas[] m_aDatas;
-    private Formats[] m_aFormats;
+    private String[] fieldname;
+    private String[] fieldtran;
+    private Datas[] fielddata;
+    private Formats[] fieldformat;
     
-    private int[] m_aiIDs;
+    private int[] idinx;
    
     
     /** Creates a new instance of TableDefinition */
     public TableDefinition(
             Session s,
-            String sTableName, 
-            String[] asFields, String[] asFieldsLocal, Datas[] aDatas, Formats[] aFormats,
-            int[] aiIDs) {
-        m_s = s;
-        m_sTableName = sTableName;       
+            String tablename, 
+            String[] fieldname, String[] fieldtran, Datas[] fielddata, Formats[] fieldformat,
+            int[] idinx) {
         
-        m_asFields = asFields;
-        m_asFieldsLocal = asFieldsLocal;
-        m_aDatas = aDatas;
-        m_aFormats = aFormats;
+        m_s = s;
+        this.tablename = tablename;       
+        
+        this.fieldname = fieldname;
+        this.fieldtran = fieldtran;
+        this.fielddata = fielddata;
+        this.fieldformat = fieldformat;
   
-        m_aiIDs = aiIDs;
+        this.idinx = idinx;
     }  
     public TableDefinition(
             Session s,
-            String sTableName, 
-            String[] asFields, Datas[] aDatas, Formats[] aFormats,
-            int[] aiIDs) {
-        this(s, sTableName, asFields, asFields, aDatas, aFormats, aiIDs);
+            String tablename, 
+            String[] fieldname, Datas[] fielddata, Formats[] fieldformat,
+            int[] idinx) {
+        this(s, tablename, fieldname, fieldname, fielddata, fieldformat, idinx);
     }    
     
     public String getTableName() {
-        return m_sTableName;
+        return tablename;
     }
     
     public String[] getFields() {
-        return m_asFields;
+        return fieldname;
     }
     
     public Vectorer getVectorerBasic(int[] aiFields) {
-        return new VectorerBasic(m_asFieldsLocal, m_aFormats, aiFields);
+        return new VectorerBasic(fieldtran, fieldformat, aiFields);
     }
     
     public IRenderString getRenderStringBasic(int[] aiFields) {
-        return new RenderStringBasic(m_aFormats, aiFields);
+        return new RenderStringBasic(fieldformat, aiFields);
     }
     
     public ComparatorCreator getComparatorCreator(int [] aiOrders) {
-        return new ComparatorCreatorBasic(m_asFieldsLocal, m_aDatas, aiOrders);
+        return new ComparatorCreatorBasic(fieldtran, fielddata, aiOrders);
     }
     
     public IKeyGetter getKeyGetterBasic() {
-        if (m_aiIDs.length == 1) {
-            return new KeyGetterFirst(m_aiIDs);
+        if (idinx.length == 1) {
+            return new KeyGetterFirst(idinx);
         } else {
-            return new KeyGetterBasic(m_aiIDs);     
+            return new KeyGetterBasic(idinx);     
         }
     }    
     
     public SerializerRead getSerializerReadBasic() {
-        return new SerializerReadBasic(m_aDatas);
+        return new SerializerReadBasic(fielddata);
     }
-    public SerializerWrite getSerializerInsertBasic() {
-        return new SerializerWriteBasic(m_aDatas);
+    public SerializerWrite getSerializerInsertBasic(int[] fieldindx) {
+        return new SerializerWriteBasicExt(fielddata, fieldindx);
     }
     public SerializerWrite getSerializerDeleteBasic() {     
-        return new SerializerWriteBasicExt(m_aDatas, m_aiIDs);
+        return new SerializerWriteBasicExt(fielddata, idinx);
     }
-    public SerializerWrite getSerializerUpdateBasic() {
+    public SerializerWrite getSerializerUpdateBasic(int[] fieldindx) {
         
-        int[] aindex = new int[m_asFields.length + m_aiIDs.length];
+        int[] aindex = new int[fieldindx.length + idinx.length];
 
-        for (int i = 0; i < m_asFields.length; i++) {
-            aindex[i] = i;
+        for (int i = 0; i < fieldindx.length; i++) {
+            aindex[fieldindx[i]] = i;
         } 
-        for (int i = 0; i < m_aiIDs.length; i++) {
-            aindex[i + m_asFields.length] = m_aiIDs[i];
+        for (int i = 0; i < idinx.length; i++) {
+            aindex[i + fieldindx.length] = idinx[i];
         }       
  
-        return new SerializerWriteBasicExt(m_aDatas, aindex);
+        return new SerializerWriteBasicExt(fielddata, aindex);
     }
     
     public SentenceList getListSentence() {
@@ -121,15 +122,15 @@ public class TableDefinition {
         StringBuffer sent = new StringBuffer();
         sent.append("select ");
 
-        for (int i = 0; i < m_asFields.length; i ++) {
+        for (int i = 0; i < fieldname.length; i ++) {
             if (i > 0) {
                 sent.append(", ");
             }
-            sent.append(m_asFields[i]);
+            sent.append(fieldname[i]);
         }        
         
         sent.append(" from ");        
-        sent.append(m_sTableName);
+        sent.append(tablename);
         
         return sent.toString();    
     }
@@ -146,11 +147,11 @@ public class TableDefinition {
         
         StringBuffer sent = new StringBuffer();
         sent.append("delete from ");
-        sent.append(m_sTableName);
+        sent.append(tablename);
         
-        for (int i = 0; i < m_aiIDs.length; i ++) {
+        for (int i = 0; i < idinx.length; i ++) {
             sent.append((i == 0) ? " where " : " and ");
-            sent.append(m_asFields[m_aiIDs[i]]);
+            sent.append(fieldname[idinx[i]]);
             sent.append(" = ?");
         }
         
@@ -158,28 +159,28 @@ public class TableDefinition {
     }
    
     public SentenceExec getInsertSentence() {
-        return getInsertSentence(getSerializerInsertBasic());
+        return getInsertSentence(getAllFields());
     }
     
-    public SentenceExec getInsertSentence(SerializerWrite sw) {
-        return new PreparedSentence(m_s, getInsertSQL(), sw, null);
+    public SentenceExec getInsertSentence(int[] fieldindx) {
+        return new PreparedSentence(m_s, getInsertSQL(fieldindx), getSerializerInsertBasic(fieldindx), null);
     }
     
-    public String getInsertSQL() {
+    private String getInsertSQL(int[] fieldindx) {
         
         StringBuffer sent = new StringBuffer();
         StringBuffer values = new StringBuffer();
         
         sent.append("insert into ");
-        sent.append(m_sTableName);
+        sent.append(tablename);
         sent.append(" (");        
         
-        for (int i = 0; i < m_asFields.length; i ++) {
+        for (int i = 0; i < fieldindx.length; i ++) {
             if (i > 0) {
                 sent.append(", ");
                 values.append(", ");
             }
-            sent.append(m_asFields[i]);
+            sent.append(fieldname[fieldindx[i]]);
             values.append("?");
         }
         
@@ -189,34 +190,43 @@ public class TableDefinition {
 
         return sent.toString();       
     }
+    
+    private int[] getAllFields() {
+        
+        int[] fieldindx = new int[fieldname.length];
+        for (int i = 0; i < fieldname.length; i++) {
+            fieldindx[i] = i;
+        }
+        return fieldindx;        
+    }
    
     public SentenceExec getUpdateSentence() {
-        return getUpdateSentence(getSerializerUpdateBasic());
+        return getUpdateSentence(getAllFields());
     }
     
-    public SentenceExec getUpdateSentence(SerializerWrite sw) {
-        return new PreparedSentence(m_s, getUpdateSQL(), sw, null);
+    public SentenceExec getUpdateSentence(int[] fieldindx) {
+        return new PreparedSentence(m_s, getUpdateSQL(fieldindx), getSerializerUpdateBasic(fieldindx), null);
     }
     
-    public String getUpdateSQL() {
+    private String getUpdateSQL(int[] fieldindx) {
         
         StringBuffer sent = new StringBuffer();
         
         sent.append("update ");
-        sent.append(m_sTableName);
+        sent.append(tablename);
         sent.append(" set ");
         
-        for (int i = 0; i < m_asFields.length; i ++) {
+        for (int i = 0; i < fieldindx.length; i ++) {
             if (i > 0) {
                 sent.append(", ");
             }
-            sent.append(m_asFields[i]);
+            sent.append(fieldname[fieldindx[i]]);
             sent.append(" = ?");
         }
         
-        for (int i = 0; i < m_aiIDs.length; i ++) {
+        for (int i = 0; i < idinx.length; i ++) {
             sent.append((i == 0) ? " where " : " and ");
-            sent.append(m_asFields[m_aiIDs[i]]);
+            sent.append(fieldname[idinx[i]]);
             sent.append(" = ?");
         }
         

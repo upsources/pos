@@ -38,7 +38,12 @@ public class SaveProvider {
         m_sentdelete = table.getDeleteSentence();
         m_sentinsert = table.getInsertSentence();
     }
-       
+    public SaveProvider(TableDefinition table, int[] fields) {
+        m_sentupdate = table.getUpdateSentence(fields);
+        m_sentdelete = table.getDeleteSentence();
+        m_sentinsert = table.getInsertSentence(fields);
+    }
+    
     public boolean canDelete() {
         return m_sentdelete != null;      
     }
