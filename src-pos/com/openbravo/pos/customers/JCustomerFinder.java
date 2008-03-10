@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,7 @@ import com.openbravo.data.user.EditorCreator;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.ticket.CustomerInfo;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -37,7 +38,7 @@ import javax.swing.JFrame;
  */
 public class JCustomerFinder extends javax.swing.JDialog implements EditorCreator {
 
-    private Object[] selectedCustomer;
+    private CustomerInfo selectedCustomer;
     private ListProvider lpr;
    
     /** Creates new form JCustomerFinder */
@@ -63,7 +64,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         return myMsg;
     }
     
-    public Object[] getSelectedCustomer() {
+    public CustomerInfo getSelectedCustomer() {
         return selectedCustomer;
     }
 
@@ -87,14 +88,14 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         selectedCustomer = null;
     }
     
-    public void search(String name) {
+    public void search(CustomerInfo customer) {
         
-        if (name == null || name.equals("")) {
+        if (customer == null || customer.getName() == null || customer.getName().equals("")) {
             m_jtxtName.reset();
             m_jtxtName.activate();       
             cleanSearch();
         } else {
-            m_jtxtName.setText(name);
+            m_jtxtName.setText(customer.getName());
             m_jtxtName.activate();       
             executeSearch();
         }
@@ -269,7 +270,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     }// </editor-fold>//GEN-END:initComponents
     private void jcmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmdOKActionPerformed
 
-        selectedCustomer = (Object[]) jListCustomers.getSelectedValue();
+        selectedCustomer = (CustomerInfo) jListCustomers.getSelectedValue();
         dispose();
         
     }//GEN-LAST:event_jcmdOKActionPerformed
@@ -295,7 +296,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     private void jListCustomersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListCustomersMouseClicked
         
         if (evt.getClickCount() == 2) {
-            selectedCustomer = (Object[]) jListCustomers.getSelectedValue();
+            selectedCustomer = (CustomerInfo) jListCustomers.getSelectedValue();
             dispose();
         }
         

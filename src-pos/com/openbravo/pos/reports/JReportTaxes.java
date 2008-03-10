@@ -50,10 +50,10 @@ public class JReportTaxes extends JPanelReport {
                 "TAXES.NAME AS TAXNAME, " +
                 "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) AS TOTAL, " +
                 "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (TAXES.RATE)) AS TOTALTAXES " +
-                "FROM TICKETS, TICKETLINES, TAXES " +
-                "WHERE TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
+                "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES " +
+                "WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
                 "AND ?(QBF_FILTER) " +
-                "GROUP BY TAXES.ID, TAXES.NAME",  new String[] {"TICKETS.DATENEW", "TICKETS.DATENEW"})
+                "GROUP BY TAXES.ID, TAXES.NAME",  new String[] {"RECEIPTS.DATENEW", "RECEIPTS.DATENEW"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.TIMESTAMP, Datas.OBJECT, Datas.TIMESTAMP})
             , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE}));
     }

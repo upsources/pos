@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -19,21 +19,25 @@
 package com.openbravo.pos.customers;
 
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.QBFBuilder;
 import com.openbravo.data.loader.SentenceExec;
 import com.openbravo.data.loader.SentenceExecTransaction;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerReadBasic;
 import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.SerializerWriteBasicExt;
+import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.Session;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.BeanFactoryDataSingle;
+import com.openbravo.pos.ticket.CustomerInfo;
 
 /**
  *
@@ -50,10 +54,10 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
         this.s = s;
         tcustomers = new TableDefinition(s,
             "CUSTOMERS"
-            , new String[] {"ID", "NAME", "ADDRESS", "NOTES", "VISIBLE"}
-            , new String[] {"ID", AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE"}
-            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN}
-            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN}
+            , new String[] {"ID", "NAME", "ADDRESS", "NOTES", "VISIBLE", "CARD"}
+            , new String[] {"ID", AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD"}
+            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING}
+            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING}
             , new int[] {0}
         );   
         
@@ -62,9 +66,28 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     // CustomerList list
     public final SentenceList getCustomerList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT ID, NAME, ADDRESS, NOTES FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
+            , new QBFBuilder("SELECT ID, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING})
-            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}));
+            , new SerializerRead() {
+                    public Object readValues(DataRead dr) throws BasicException {
+                        return new CustomerInfo(
+                                dr.getString(1),
+                                dr.getString(2));
+                    }                
+                });
+    }
+    
+    public CustomerInfo findCustomer(String card) throws BasicException {
+        return (CustomerInfo) new PreparedSentence(s
+                , "SELECT ID, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND CARD = ?"
+                , SerializerWriteString.INSTANCE
+                , new SerializerRead() {
+                    public Object readValues(DataRead dr) throws BasicException {
+                        return new CustomerInfo(
+                                dr.getString(1),
+                                dr.getString(2));
+                    }
+                }).find(card);
     }
     
     public final SentenceList getReservationsList() {

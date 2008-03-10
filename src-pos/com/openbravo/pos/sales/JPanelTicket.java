@@ -47,7 +47,7 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.util.LabelIcon;
+import com.openbravo.pos.ticket.CustomerInfo;
 
 public abstract class JPanelTicket extends JPanel implements JPanelView, TicketsEditor {
    
@@ -86,8 +86,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     
     protected JPanelButtons m_jbtnconfig;
     
-    protected LabelIcon labelb;
-    
     protected AppView m_App;
     protected DataLogicSystem dlSystem;
     protected DataLogicSales dlSales;
@@ -102,14 +100,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         
         initComponents (); 
-        
-        btnCustomer.setVisible(false); //TODO: Finish customer implementation
-        
-        labelb = new LabelIcon(80, 16);
-        labelb.setIcon(new ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png")));
-        labelb.setText(null);
-        btnCustomer.setIcon(labelb);
-            
+                    
         // borramos el boton de bascula si no hay bascula conectada
         if (!m_App.getDeviceScale().existsScale()) {
             m_jbtnScale.setVisible(false);
@@ -205,7 +196,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         } else {         
             
             // The ticket name
-            m_jTicketId.setText(m_oTicket.getName(oTicketExt));
+            m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
 
             // Limpiamos todas las filas y anadimos las del ticket actual
             m_ticketlines.clearTicketLines();
@@ -449,8 +440,24 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
             // Codigo de barras introducido
             if (m_sBarcode.length() > 0) {            
                 String sCode = m_sBarcode.toString();
-                if (sCode.length() == 13 && sCode.startsWith("250")) {
-                    // es un ticket de la maquina
+                if (sCode.startsWith("c")) {
+                    // barcode of a customers card
+                    try {
+                        CustomerInfo newcustomer = dlCustomers.findCustomer(sCode);
+                        if (newcustomer == null) {
+                            Toolkit.getDefaultToolkit().beep();                   
+                            new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.nocustomer")).show(this);           
+                        } else {
+                            m_oTicket.setCustomer(newcustomer);
+                            m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
+                        }
+                    } catch (BasicException e) {
+                        Toolkit.getDefaultToolkit().beep();                   
+                        new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.nocustomer"), e).show(this);           
+                    }
+                    stateToZero();
+                } else if (sCode.length() == 13 && sCode.startsWith("250")) {
+                    // barcode of the other machine
                     ProductInfoExt oProduct = new ProductInfoExt(); // Es un ticket
                     oProduct.setReference(null); // para que no se grabe
                     oProduct.setCode(sCode);
@@ -459,7 +466,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
                     // Se anade directamente una unidad con el precio y todo
                     addTicketLine(oProduct, 1.0, oProduct.getPriceSell());
                 } else if (sCode.length() == 13 && sCode.startsWith("210")) {
-                    // es un ticket al peso
+                    // barcode of a weigth product
                     incProductByCodePrice(sCode.substring(0, 7), Double.parseDouble(sCode.substring(7, 12)) / 100);
                 } else {
                     incProductByCode(sCode);
@@ -813,7 +820,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jPanContainer = new javax.swing.JPanel();
         m_jOptions = new javax.swing.JPanel();
         m_jButtons = new javax.swing.JPanel();
-        m_lblTicketId = new javax.swing.JLabel();
         m_jTicketId = new javax.swing.JLabel();
         btnCustomer = new javax.swing.JButton();
         m_jPanelBag = new javax.swing.JPanel();
@@ -855,9 +861,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
 
         m_jOptions.setLayout(new java.awt.BorderLayout());
 
-        m_lblTicketId.setText(AppLocal.getIntString("label.ticketid")); // NOI18N
-        m_jButtons.add(m_lblTicketId);
-
         m_jTicketId.setBackground(java.awt.Color.white);
         m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
@@ -866,9 +869,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
 
+        btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
         btnCustomer.setFocusPainted(false);
         btnCustomer.setFocusable(false);
-        btnCustomer.setMargin(new java.awt.Insets(8, 2, 8, 2));
+        btnCustomer.setMargin(new java.awt.Insets(8, 14, 8, 14));
         btnCustomer.setRequestFocusEnabled(false);
         btnCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1240,14 +1244,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
 
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-        finder.search(labelb.getText());
+        finder.search(m_oTicket.getCustomer());
         finder.setVisible(true);
-        Object [] selectedcustomer = finder.getSelectedCustomer();
-        
-        labelb.setText((String) selectedcustomer[1]);
-        btnCustomer.setIcon(labelb); // repaint
-//        customer = selectedcustomer[0];
-        
+        m_oTicket.setCustomer(finder.getSelectedCustomer());     
+        // The ticket name
+        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
         
 }//GEN-LAST:event_btnCustomerActionPerformed
 
@@ -1289,7 +1290,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     private javax.swing.JButton m_jUp;
     private javax.swing.JToggleButton m_jaddtax;
     private javax.swing.JButton m_jbtnScale;
-    private javax.swing.JLabel m_lblTicketId;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -37,6 +37,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private int m_iTicketId;
     private java.util.Date m_dDate;
     private UserInfo m_User;
+    private CustomerInfo m_Customer;
     private String m_sActiveCash;
     private List<PaymentInfo> m_aPayment;    
     private List<TicketLineInfo> m_aLines;
@@ -47,6 +48,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_iTicketId = 0; // incrementamos
         m_dDate = null;
         m_User = null;
+        m_Customer = null;
         m_sActiveCash = null;
         m_aPayment = new ArrayList<PaymentInfo>();        
         m_aLines = new ArrayList<TicketLineInfo>(); // vacio de lineas
@@ -54,7 +56,8 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void writeExternal(ObjectOutput out) throws IOException  {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         out.writeObject(m_sId);
-        out.writeInt(m_iTicketId);      
+        out.writeInt(m_iTicketId);    
+        out.writeObject(m_Customer);
         out.writeObject(m_dDate);
         out.writeObject(m_aLines);
     }   
@@ -63,6 +66,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         m_sId = (String) in.readObject();
         m_iTicketId = in.readInt();
+        m_Customer = (CustomerInfo) in.readObject();
         m_dDate = (Date) in.readObject();
         m_User = null;
         m_sActiveCash = null;
@@ -76,6 +80,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_dDate = dr.getTimestamp(3);
         m_sActiveCash = dr.getString(4);
         m_User = new UserInfo(dr.getString(5), dr.getString(6)); 
+        m_Customer = new CustomerInfo(dr.getString(7), dr.getString(8));
         m_aPayment = new ArrayList<PaymentInfo>(); 
         m_aLines = new ArrayList<TicketLineInfo>();
     }
@@ -86,6 +91,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         t.m_iTicketId = m_iTicketId; // incrementamos
         t.m_dDate = m_dDate;
         t.m_User = m_User;
+        t.m_Customer = m_Customer;
         t.m_sActiveCash = m_sActiveCash;
         
         t.m_aPayment = new LinkedList<PaymentInfo>(); 
@@ -114,15 +120,24 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }   
     
     public String getName(Object info) {
+        
+        StringBuffer name = new StringBuffer();
+        
+        if (getCustomerId() != null) {
+            name.append(m_Customer.toString());
+        }
+        
         if (info == null) {
             if (m_iTicketId == 0) {
-                return "(" + m_dateformat.format(m_dDate) + " " + Long.toString(m_dDate.getTime() % 1000) + ")";
+                name.append("(" + m_dateformat.format(m_dDate) + " " + Long.toString(m_dDate.getTime() % 1000) + ")");
             } else {
-                return Integer.toString(m_iTicketId);
+                name.append(Integer.toString(m_iTicketId));
             }
         } else {
-            return info.toString();
+            name.append(info.toString());
         }
+        
+        return name.toString();
     }
     
     public String getName() {
@@ -141,6 +156,21 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void setUser(UserInfo value) {        
         m_User = value;
     }   
+    
+    public CustomerInfo getCustomer() {
+        return m_Customer;
+    }
+    public void setCustomer(CustomerInfo value) {
+        m_Customer = value;
+    }
+    public String getCustomerId() {
+        if (m_Customer == null || m_Customer.getId() == null || m_Customer.getId().equals("")) {
+            return null;
+        } else {
+            return m_Customer.getId();
+        }
+    }
+    
     public void setActiveCash(String value) {     
         m_sActiveCash = value;
     }    
@@ -291,6 +321,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public String printUser() {
         return m_User == null ? "" : m_User.getName();
     }
+    public String printCustomer() {
+        return m_Customer == null ? "" : m_Customer.getName();
+    }
     public String printArticlesCount() {
         return Formats.DOUBLE.formatValue(new Double(getArticlesCount()));
     }
@@ -306,5 +339,5 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
     public String printTotalPts() {
         return Formats.INT.formatValue(new Double(CurrencyChange.changeEurosToPts(getTotal())));
-    } 
+    }
 }

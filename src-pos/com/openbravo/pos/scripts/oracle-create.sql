@@ -1,5 +1,5 @@
 --    Openbravo POS is a point of sales application designed for touch screens.
---    Copyright (C) 2008 Openbravo, S.L.
+--    Copyright (C) 2007-2008 Openbravo, S.L.
 --    http://sourceforge.net/projects/openbravopos
 --
 --    This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 --    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 -- Database initial script for ORACLE
--- v2.00
+-- v2.10
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR2(255) NOT NULL,
@@ -43,6 +43,7 @@ CREATE TABLE PEOPLE (
     ID VARCHAR2(255) NOT NULL,
     NAME VARCHAR2(255) NOT NULL,
     APPPASSWORD VARCHAR2(255),
+    CARD VARCHAR2(255),
     ROLE VARCHAR2(255) NOT NULL,
     VISIBLE NUMERIC(1) NOT NULL,
     IMAGE BLOB,
@@ -50,6 +51,8 @@ CREATE TABLE PEOPLE (
     CONSTRAINT PEOPLE_FK_1 FOREIGN KEY (ROLE) REFERENCES ROLES(ID)
 );
 CREATE UNIQUE INDEX PEOPLE_NAME_INX ON PEOPLE(NAME);
+CREATE INDEX PEOPLE_CARD_INX ON PEOPLE(CARD);
+
 INSERT INTO PEOPLE(ID, NAME, APPPASSWORD, ROLE, VISIBLE, IMAGE) VALUES ('0', 'Administrator', NULL, '0', 1, NULL);
 INSERT INTO PEOPLE(ID, NAME, APPPASSWORD, ROLE, VISIBLE, IMAGE) VALUES ('1', 'Manager', NULL, '1', 1, NULL);
 INSERT INTO PEOPLE(ID, NAME, APPPASSWORD, ROLE, VISIBLE, IMAGE) VALUES ('2', 'Employee', NULL, '2', 1, NULL);
@@ -77,16 +80,19 @@ INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('10', 'Window.Title', 0
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('11', 'Ticket.Buttons', 0, $FILE{/com/openbravo/pos/templates/Ticket.Buttons.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('12', 'Ticket.Line', 0, $FILE{/com/openbravo/pos/templates/Ticket.Line.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('13', 'Printer.Inventory', 0, $FILE{/com/openbravo/pos/templates/Printer.Inventory.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('14', 'Menu.Root', 0, $FILE{/com/openbravo/pos/templates/Menu.Root.txt});
 
 CREATE TABLE CUSTOMERS (
     ID VARCHAR2(255) NOT NULL,
     NAME VARCHAR2(255) NOT NULL,
+    CARD VARCHAR2(255),
     ADDRESS VARCHAR2(255),
     NOTES VARCHAR2(255),
     VISIBLE NUMERIC(1) NOT NULL,
     PRIMARY KEY (ID)
 );
 CREATE UNIQUE INDEX CUSTOMERS_NAME_INX ON CUSTOMERS(NAME);
+CREATE INDEX CUSTOMERS_CARD_INX ON CUSTOMERS(CARD);
 
 CREATE TABLE CATEGORIES (
     ID VARCHAR2(255) NOT NULL,

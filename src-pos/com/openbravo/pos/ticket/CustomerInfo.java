@@ -16,26 +16,35 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.openbravo.pos.customers;
+package com.openbravo.pos.ticket;
 
-import javax.swing.*;
-import java.awt.*;
+import java.io.Serializable;
 
-public class CustomerRenderer extends DefaultListCellRenderer {
-                
-    private Icon icocustomer;
-
-    /** Creates a new instance of ProductRenderer */
-    public CustomerRenderer() {
-
-        icocustomer = new ImageIcon(getClass().getClassLoader().getResource("com/openbravo/images/kdmconfig.png"));
+/**
+ *
+ * @author adrian
+ */
+public class CustomerInfo implements Serializable {
+    
+    private String m_sId;
+    private String m_sName;
+    
+    /** Creates a new instance of UserInfoBasic */
+    public CustomerInfo(String id, String name) {
+        m_sId = id;
+        m_sName = name;    
     }
-
+    
+    public String getId() {
+        return m_sId;
+    }    
+    
+    public String getName() {
+        return m_sName;
+    }   
+    
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
-        setText(value.toString());
-        setIcon(icocustomer);
-        return this;
-    }      
+    public String toString() {
+        return m_sName;
+    }
 }

@@ -20,7 +20,7 @@ package com.openbravo.data.loader;
 
 import com.openbravo.basic.BasicException;
 
-public class SerializerWriteBuilder implements SerializerWrite {
+public class SerializerWriteBuilder implements SerializerWrite<SerializableWrite> {
     
     public static final SerializerWrite INSTANCE = new SerializerWriteBuilder();
     
@@ -28,8 +28,7 @@ public class SerializerWriteBuilder implements SerializerWrite {
     private SerializerWriteBuilder() {
     }
     
-    public void writeValues(DataWrite dp, Object obj) throws BasicException {
-        SerializableWrite s = (SerializableWrite) obj;
-        s.writeValues(dp);
+    public void writeValues(DataWrite dp, SerializableWrite obj) throws BasicException {
+        obj.writeValues(dp);
     }
 }

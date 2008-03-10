@@ -49,7 +49,7 @@ public class JChartSales extends JPanelReport {
                 "SELECT CLOSEDCASH.HOST, PEOPLE.ID, PEOPLE.NAME, SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) AS TOTAL " +
                 "FROM CLOSEDCASH, RECEIPTS, TICKETS, PEOPLE, TICKETLINES " +
                 "WHERE CLOSEDCASH.MONEY = RECEIPTS.MONEY AND RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETS.PERSON = PEOPLE.ID AND ?(QBF_FILTER) " +
-                "GROUP BY CLOSEDCASH.HOST, PEOPLE.ID, PEOPLE.NAME",  new String[] {"TICKETS.DATENEW", "TICKETS.DATENEW"})          
+                "GROUP BY CLOSEDCASH.HOST, PEOPLE.ID, PEOPLE.NAME",  new String[] {"RECEIPTS.DATENEW", "RECEIPTS.DATENEW"})          
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.TIMESTAMP, Datas.OBJECT, Datas.TIMESTAMP})
             , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE}));
     }

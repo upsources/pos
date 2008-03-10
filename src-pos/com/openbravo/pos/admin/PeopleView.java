@@ -187,14 +187,14 @@ public class PeopleView extends JPanel implements EditorRecord {
 
         setLayout(null);
 
-        jButton3.setText("** Remove **");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
         add(jButton3);
-        jButton3.setBounds(420, 50, 110, 24);
+        jButton3.setBounds(360, 50, 50, 26);
 
         jLabel1.setText(AppLocal.getIntString("label.peoplename")); // NOI18N
         add(jLabel1);
@@ -235,16 +235,16 @@ public class PeopleView extends JPanel implements EditorRecord {
         add(jcard);
         jcard.setBounds(110, 50, 180, 18);
 
-        jButton2.setText("**New**");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/color_line16.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
         add(jButton2);
-        jButton2.setBounds(300, 50, 110, 24);
+        jButton2.setBounds(300, 50, 50, 26);
 
-        jLabel5.setText("** CARD **");
+        jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         add(jLabel5);
         jLabel5.setBounds(20, 50, 90, 14);
     }// </editor-fold>//GEN-END:initComponents
@@ -261,20 +261,25 @@ public class PeopleView extends JPanel implements EditorRecord {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-        StringBuffer b = new StringBuffer();
-        b.append('p');
-        b.append(cardformat.format(Math.abs(System.currentTimeMillis()) % 1000000L));
-        b.append(cardformat.format(Math.abs(cardrandom.nextLong()) % 1000000L));
         
-        jcard.setText(b.toString());
-        m_Dirty.setDirty(true);
+        if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
+            StringBuffer b = new StringBuffer();
+            b.append('p');
+            b.append(cardformat.format(Math.abs(System.currentTimeMillis()) % 1000000L));
+            b.append(cardformat.format(Math.abs(cardrandom.nextLong()) % 1000000L));
+
+            jcard.setText(b.toString());
+            m_Dirty.setDirty(true);
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        jcard.setText(null);
-        m_Dirty.setDirty(true);
+        if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardremove"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
+            jcard.setText(null);
+            m_Dirty.setDirty(true);
+        }
         
     }//GEN-LAST:event_jButton3ActionPerformed
     

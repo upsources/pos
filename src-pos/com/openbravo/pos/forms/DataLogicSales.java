@@ -51,7 +51,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public DataLogicSales() {
         productcatDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.BOOLEAN, Datas.DOUBLE, Datas.DOUBLE, Datas.STRING, Datas.STRING, Datas.IMAGE, Datas.DOUBLE, Datas.DOUBLE, Datas.BOOLEAN, Datas.INT};
         stockdiaryDatas = new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.INT, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE};
-        paymenttabledatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE};
+        paymenttabledatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.TIMESTAMP, Datas.STRING, Datas.STRING, Datas.DOUBLE};
         stockdatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.DOUBLE};
     }
     
@@ -148,7 +148,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     
     public final TicketInfo loadTicket(Integer ticketid) throws BasicException {
         TicketInfo ticket = (TicketInfo) new PreparedSentence(s
-                , "SELECT T.ID, T.TICKETID, T.DATENEW, R.MONEY, P.ID, P.NAME FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETID = ?"
+                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, P.ID, P.NAME, C.ID, C.NAME FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID LEFT OUTER JOIN CUSTOMERS C ON T.CUSTOMER = C.ID WHERE T.TICKETID = ?"
                 , SerializerWriteInteger.INSTANCE
                 , new SerializerReadClass(TicketInfo.class)).find(ticketid);
         if (ticket != null) {
@@ -172,15 +172,26 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 
                 // new receipt
                 new PreparedSentence(s
-                    , "INSERT INTO RECEIPTS (ID, MONEY) VALUES (?, ?)"
-                    , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING}))
-                    .exec(new Object[] {ticket.getId(), ticket.getActiveCash()});
+                    , "INSERT INTO RECEIPTS (ID, MONEY, DATENEW) VALUES (?, ?, ?)"
+                    , new SerializerWrite<TicketInfo>() {
+                    public void writeValues(DataWrite dp, TicketInfo value) throws BasicException {
+                        dp.setString(1, value.getId());
+                        dp.setString(2, value.getActiveCash());
+                        dp.setTimestamp(3, value.getDate());             
+                    }})
+                    .exec(ticket);
                 
                 // new ticket
                 new PreparedSentence(s
-                    , "INSERT INTO TICKETS (ID, TICKETID, DATENEW, PERSON) VALUES (?, ?, ?, ?)"
-                    , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.INT, Datas.TIMESTAMP, Datas.STRING}))
-                    .exec(new Object[] {ticket.getId(), ticket.getTicketId(), ticket.getDate(), ticket.getUser().getId()});                
+                    , "INSERT INTO TICKETS (ID, TICKETID, PERSON, CUSTOMER) VALUES (?, ?, ?, ?)"
+                    , new SerializerWrite<TicketInfo>() {
+                    public void writeValues(DataWrite dp, TicketInfo value) throws BasicException {
+                        dp.setString(1, value.getId());
+                        dp.setInt(2, value.getTicketId());
+                        dp.setString(3, value.getUser().getId());
+                        dp.setString(4, value.getCustomerId());            
+                    }})
+                    .exec(ticket);                
                 
                 SentenceExec ticketlineinsert = new PreparedSentence(s
                     , "INSERT INTO TICKETLINES (TICKET, LINE, PRODUCT, NAME, ISCOM, UNITS, PRICE, TAXID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
@@ -363,11 +374,11 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {
                 new PreparedSentence(s
-                    , "INSERT INTO RECEIPTS (ID, MONEY) VALUES (?, ?)"
-                    , new SerializerWriteBasicExt(paymenttabledatas, new int[] {0, 1})).exec(params);
+                    , "INSERT INTO RECEIPTS (ID, MONEY, DATENEW) VALUES (?, ?, ?)"
+                    , new SerializerWriteBasicExt(paymenttabledatas, new int[] {0, 1, 2})).exec(params);
                 return new PreparedSentence(s
                     , "INSERT INTO PAYMENTS (ID, RECEIPT, PAYMENT, TOTAL) VALUES (?, ?, ?, ?)"
-                    , new SerializerWriteBasicExt(paymenttabledatas, new int[] {2, 0, 3, 4})).exec(params);
+                    , new SerializerWriteBasicExt(paymenttabledatas, new int[] {3, 0, 4, 5})).exec(params);
             }
         };
     }
@@ -377,7 +388,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             public int execInTransaction(Object params) throws BasicException {
                 new PreparedSentence(s
                     , "DELETE FROM PAYMENTS WHERE ID = ?"
-                    , new SerializerWriteBasicExt(paymenttabledatas, new int[] {2})).exec(params);
+                    , new SerializerWriteBasicExt(paymenttabledatas, new int[] {3})).exec(params);
                 return new PreparedSentence(s
                     , "DELETE FROM RECEIPTS WHERE ID = ?"
                     , new SerializerWriteBasicExt(paymenttabledatas, new int[] {0})).exec(params);

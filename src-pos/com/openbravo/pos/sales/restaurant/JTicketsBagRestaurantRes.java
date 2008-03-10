@@ -34,7 +34,7 @@ import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
-import com.openbravo.pos.forms.BeanFactoryException;
+import com.openbravo.pos.ticket.CustomerInfo;
 
 public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements EditorRecord {
 
@@ -45,7 +45,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
     
     private DirtyManager m_Dirty;
     private Object m_sID;
-    private Object customer;
+    private CustomerInfo customer;
     private Date m_dCreated;
     private JTimePanel m_timereservation;
     private boolean m_bReceived;
@@ -187,8 +187,8 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = (Date) res[1];
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate((Date) res[2]);
-        txtCustomer.setText(Formats.STRING.formatValue(res[4]));
-        customer = res[3];
+        customer = new CustomerInfo((String) res[3], (String) res[4]);
+        txtCustomer.setText(customer.toString());
         m_jtxtChairs.setValueInteger(((Integer)res[5]).intValue());
         m_bReceived = ((Boolean)res[6]).booleanValue();
         m_jtxtDescription.setText(Formats.STRING.formatValue(res[7]));
@@ -206,8 +206,8 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = (Date) res[1];
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate((Date) res[2]);
-        txtCustomer.setText(Formats.STRING.formatValue(res[4]));
-        customer = res[3];
+        customer = new CustomerInfo((String) res[3], (String) res[4]);
+        txtCustomer.setText(customer.toString());
         m_jtxtChairs.setValueInteger(((Integer)res[5]).intValue());
         m_bReceived = ((Boolean)res[6]).booleanValue();
         m_jtxtDescription.setText(Formats.STRING.formatValue(res[7]));
@@ -229,8 +229,8 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         res[0] = m_sID == null ? UUID.randomUUID().toString() : m_sID; 
         res[1] = m_dCreated == null ? new Date() : m_dCreated; 
         res[2] = m_timereservation.getDate();
-        res[3] = customer;
-        res[4] = txtCustomer.getText();
+        res[3] = customer.getId();
+        res[4] = customer.getName();
         res[5] = new Integer(m_jtxtChairs.getValueInteger());
         res[6] = new Boolean(m_bReceived);
         res[7] = m_jtxtDescription.getText();
@@ -460,12 +460,10 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
-        finder.search(txtCustomer.getText());
+        finder.search(customer);
         finder.setVisible(true);
-        Object [] selectedcustomer = finder.getSelectedCustomer();
-        
-        txtCustomer.setText((String) selectedcustomer[1]);
-        customer = selectedcustomer[0];
+        customer = finder.getSelectedCustomer();        
+        txtCustomer.setText(customer.toString());
         
     }//GEN-LAST:event_jButton1ActionPerformed
     

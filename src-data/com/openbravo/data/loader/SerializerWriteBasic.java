@@ -20,7 +20,7 @@ package com.openbravo.data.loader;
 
 import com.openbravo.basic.BasicException;
 
-public class SerializerWriteBasic implements SerializerWrite {
+public class SerializerWriteBasic implements SerializerWrite<Object[]> {
     
     private Datas[] m_classes;
     
@@ -29,11 +29,10 @@ public class SerializerWriteBasic implements SerializerWrite {
         m_classes = classes;
     }
     
-    public void writeValues(DataWrite dp, Object obj) throws BasicException {
+    public void writeValues(DataWrite dp, Object[] obj) throws BasicException {
 
-        Object[] values = (Object []) obj;
         for (int i = 0; i < m_classes.length; i++) {
-            m_classes[i].setValue(dp, i + 1, values[i]);
+            m_classes[i].setValue(dp, i + 1, obj[i]);
         }
     }
     
