@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.config;
 
+import com.openbravo.data.user.DirtyManager;
 import java.awt.Component;
 import java.util.Arrays;
 import java.util.Locale;
@@ -30,11 +31,23 @@ import com.openbravo.pos.forms.AppLocal;
  */
 public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfig {
     
+    private DirtyManager dirty = new DirtyManager();
+    
     private final static String DEFAULT_VALUE = "(Default)";
     
     /** Creates new form JPanelConfigLocale */
     public JPanelConfigLocale() {
+        
         initComponents();
+        
+        jcboLocale.addActionListener(dirty);
+        jcboInteger.addActionListener(dirty);
+        jcboDouble.addActionListener(dirty);
+        jcboCurrency.addActionListener(dirty);
+        jcboPercent.addActionListener(dirty);
+        jcboDate.addActionListener(dirty);
+        jcboTime.addActionListener(dirty);
+        jcboDatetime.addActionListener(dirty);
         
         jcboLocale.setRenderer(new LocaleCellRenderer());
         Locale[] availablelocales = Locale.getAvailableLocales();
@@ -69,6 +82,10 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
                
     }
     
+    public boolean hasChanged() {
+        return dirty.isDirty();
+    }
+    
     public Component getConfigComponent() {
         return this;
     }
@@ -91,6 +108,8 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
         jcboDate.setSelectedItem(writeWithDefault(config.getProperty("format.date")));
         jcboTime.setSelectedItem(writeWithDefault(config.getProperty("format.time")));
         jcboDatetime.setSelectedItem(writeWithDefault(config.getProperty("format.datetime")));
+        
+        dirty.setDirty(false);
     }
     
     public void saveProperties(AppConfig config) {
@@ -113,6 +132,8 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
         config.setProperty("format.date", readWithDefault(jcboDate.getSelectedItem()));
         config.setProperty("format.time", readWithDefault(jcboTime.getSelectedItem()));
         config.setProperty("format.datetime", readWithDefault(jcboDatetime.getSelectedItem()));
+        
+        dirty.setDirty(false);
     }
     
     private String readWithDefault(Object value) {

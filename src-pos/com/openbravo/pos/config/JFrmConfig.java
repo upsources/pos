@@ -24,6 +24,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.pos.forms.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.UIManager;
 
 /**
  *
@@ -59,8 +60,9 @@ public class JFrmConfig extends javax.swing.JFrame {
     private class MyFrameListener extends WindowAdapter{
         
         public void windowClosing(WindowEvent evt) {
-            config.deactivate();
-            dispose();
+            if (config.deactivate()) {
+                dispose();
+            }
         }
         public void windowClosed(WindowEvent evt) {
             System.exit(0);
@@ -86,12 +88,16 @@ public class JFrmConfig extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                try {
-//                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//                    // UIManager.setLookAndFeel("com.shfarr.ui.plaf.fh.FhLookAndFeel");
-//                    // UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//                } catch(Exception ex) {
-//                }
+                
+                AppConfig config = new AppConfig();
+                config.load();    
+                
+                // Set the look and feel.
+                try {                    
+                    UIManager.setLookAndFeel(config.getProperty("swing.defaultlaf"));
+                } catch (Exception e) {
+                }
+                
                 new JFrmConfig().setVisible(true);
             }
         });

@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.config;
 
+import com.openbravo.data.user.DirtyManager;
 import java.awt.Component;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
@@ -30,11 +31,24 @@ import com.openbravo.pos.util.DirectoryEvent;
  */
 public class JPanelConfigDatabase extends javax.swing.JPanel implements PanelConfig {
     
+    private DirtyManager dirty = new DirtyManager();
+    
     /** Creates new form JPanelConfigDatabase */
     public JPanelConfigDatabase() {
         
         initComponents();
+        
+        jtxtDbDriverLib.getDocument().addDocumentListener(dirty);
+        jtxtDbDriver.getDocument().addDocumentListener(dirty);
+        jtxtDbURL.getDocument().addDocumentListener(dirty);
+        jtxtDbPassword.getDocument().addDocumentListener(dirty);
+        jtxtDbUser.getDocument().addDocumentListener(dirty);
+         
         jbtnDbDriverLib.addActionListener(new DirectoryEvent(jtxtDbDriverLib));
+    }
+    
+    public boolean hasChanged() {
+        return dirty.isDirty();
     }
     
     public Component getConfigComponent() {
@@ -55,7 +69,9 @@ public class JPanelConfigDatabase extends javax.swing.JPanel implements PanelCon
             sDBPassword = cypher.decrypt(sDBPassword.substring(6));
         }        
         jtxtDbUser.setText(sDBUser);
-        jtxtDbPassword.setText(sDBPassword);     
+        jtxtDbPassword.setText(sDBPassword);   
+        
+        dirty.setDirty(false);
     }
    
     public void saveProperties(AppConfig config) {
@@ -66,6 +82,8 @@ public class JPanelConfigDatabase extends javax.swing.JPanel implements PanelCon
         config.setProperty("db.user", jtxtDbUser.getText());
         AltEncrypter cypher = new AltEncrypter("cypherkey" + jtxtDbUser.getText());       
         config.setProperty("db.password", "crypt:" + cypher.encrypt(new String(jtxtDbPassword.getPassword())));
+
+        dirty.setDirty(false);
     }
     
     /** This method is called from within the constructor to

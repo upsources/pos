@@ -106,7 +106,26 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
     }
     
     public boolean deactivate() {
-        return true;
+        
+        boolean haschanged = false;
+        for (PanelConfig c: m_panelconfig) {
+            if (c.hasChanged()) {
+                haschanged = true;
+            }
+        }        
+        
+        
+        if (haschanged) {
+            int res = JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.wannasave"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (res == JOptionPane.YES_OPTION) {
+                saveProperties();
+                return true;
+            } else {
+                return res == JOptionPane.NO_OPTION;
+            }
+        } else {
+            return true;
+        }
     }      
 
     

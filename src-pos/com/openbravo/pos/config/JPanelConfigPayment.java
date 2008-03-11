@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.config;
 
+import com.openbravo.data.user.DirtyManager;
 import java.awt.Component;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
@@ -27,10 +28,20 @@ import com.openbravo.pos.forms.AppLocal;
  * @author adrianromero
  */
 public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConfig {
+
+    private DirtyManager dirty = new DirtyManager();
     
     /** Creates new form JPanelConfigPayment */
     public JPanelConfigPayment() {
+        
         initComponents();
+        
+        // dirty manager
+        jtxtCommerceID.getDocument().addDocumentListener(dirty);
+        jtxtCommercePwd.getDocument().addDocumentListener(dirty);
+        jcboCardReader.addActionListener(dirty);
+        jcboPaymentGateway.addActionListener(dirty);
+        jchkPaymentTest.addActionListener(dirty);
         
         // Payment Provider
         jcboPaymentGateway.addItem("Not defined");
@@ -45,6 +56,10 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
         jcboCardReader.addItem("Keyboard");
     }
     
+    public boolean hasChanged() {
+        return dirty.isDirty();
+    }
+    
     public Component getConfigComponent() {
         return this;
     }
@@ -56,6 +71,8 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
         jchkPaymentTest.setSelected(Boolean.valueOf(config.getProperty("payment.testmode")).booleanValue());
         jtxtCommerceID.setText(config.getProperty("payment.commerceid"));        
         jtxtCommercePwd.setText(config.getProperty("payment.commercepassword"));        
+        
+        dirty.setDirty(false);
     }
    
     public void saveProperties(AppConfig config) {
@@ -65,6 +82,8 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
         config.setProperty("payment.testmode", Boolean.toString(jchkPaymentTest.isSelected()));
         config.setProperty("payment.commerceid", jtxtCommerceID.getText());
         config.setProperty("payment.commercepassword", new String(jtxtCommercePwd.getPassword()));
+        
+        dirty.setDirty(false);
     }    
      
     private String comboValue(Object value) {

@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.config;
 
+import com.openbravo.data.user.DirtyManager;
 import java.awt.Component;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
@@ -28,11 +29,24 @@ import com.openbravo.pos.util.AltEncrypter;
  * @author adrianromero
  */
 public class JPanelConfigERP extends javax.swing.JPanel implements PanelConfig {
-    
+
+    private DirtyManager dirty = new DirtyManager();
+        
     /** Creates new form JPanelConfigERP */
     public JPanelConfigERP() {
         initComponents();
+        
+        jTextField1.getDocument().addDocumentListener(dirty);
+        jTextField2.getDocument().addDocumentListener(dirty);
+        jtxtId.getDocument().addDocumentListener(dirty);
+        jtxtName.getDocument().addDocumentListener(dirty);
+        jtxtPassword.getDocument().addDocumentListener(dirty);
+        jtxtUrl.getDocument().addDocumentListener(dirty);
     }
+    
+    public boolean hasChanged() {
+        return dirty.isDirty();
+    }    
     
     public Component getConfigComponent() {
         return this;
@@ -53,7 +67,9 @@ public class JPanelConfigERP extends javax.swing.JPanel implements PanelConfig {
             sERPPassword = cypher.decrypt(sERPPassword.substring(6));
         }        
         jtxtName.setText(sERPUser);
-        jtxtPassword.setText(sERPPassword);           
+        jtxtPassword.setText(sERPPassword);    
+        
+        dirty.setDirty(false);
     }
     
     public void saveProperties(AppConfig config) {
@@ -66,6 +82,8 @@ public class JPanelConfigERP extends javax.swing.JPanel implements PanelConfig {
         config.setProperty("erp.user", jtxtName.getText());
         AltEncrypter cypher = new AltEncrypter("cypherkey" + jtxtName.getText());             
         config.setProperty("erp.password", "crypt:" + cypher.encrypt(new String(jtxtPassword.getPassword())));
+
+        dirty.setDirty(false);
     }
     
     /** This method is called from within the constructor to
