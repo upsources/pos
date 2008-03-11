@@ -156,7 +156,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         customer[2] = m_jAddress.getText();
         customer[3] = m_jNotes.getText();
         customer[4] = Boolean.valueOf(m_jVisible.isSelected());
-        customer[5] = jcard.getText();
+        customer[5] = Formats.STRING.parseValue(jcard.getText()); // Format to manage NULL values
         customer[6] = Formats.CURRENCY.parseValue(txtMaxdebt.getText());
         customer[7] = Formats.TIMESTAMP.parseValue(txtCurdate.getText()); // not saved
         customer[8] = Formats.CURRENCY.parseValue(txtCurdebt.getText()); // not saved

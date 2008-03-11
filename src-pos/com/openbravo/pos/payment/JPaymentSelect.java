@@ -71,7 +71,7 @@ public class JPaymentSelect extends javax.swing.JDialog
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
         
         if (m_dTotal >= 0.0) { 
-            // Entrada de dinero
+            // Positive payment
             addTabPayment(new JPaymentCashPos(this), 
                     app.getAppUserView().getUser().hasPermission("payment.cash"),
                     "tab.cash", 
@@ -95,6 +95,10 @@ public class JPaymentSelect extends javax.swing.JDialog
             addTabPayment(new JPaymentFree(this), 
                     app.getAppUserView().getUser().hasPermission("payment.free"),
                     "tab.free", 
+                    "/com/openbravo/images/package_toys.png");
+            addTabPayment(new JPaymentDebt(this),
+                    app.getAppUserView().getUser().hasPermission("payment.debt"),
+                    "tab.debt",
                     "/com/openbravo/images/package_toys.png");
         } else { 
             // devoluciones...

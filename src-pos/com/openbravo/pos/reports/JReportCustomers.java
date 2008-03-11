@@ -22,64 +22,70 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.BaseSentence;
 import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.QBFBuilder;
-import com.openbravo.data.loader.SerializerReadClass;
+import com.openbravo.data.loader.SerializerReadBasic;
 import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.user.EditorCreator;
+import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.BeanFactoryException;
-import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.ticket.ProductFilter;
-import com.openbravo.pos.ticket.ProductInfoReport;
 
-public class JReportProducts extends JPanelReport {
+/**
+ *
+ * @author adrianromero
+ */
+public class JReportCustomers extends JPanelReport {
     
-    private ProductFilter m_productfilter;
-
-    private DataLogicSales m_dlSales = null;
+    private DataLogicCustomers m_dlCustomers = null;
+    private JParamsCustomer customerfilter;
     
-    /** Creates a new instance of JReportProducts */
-    public JReportProducts() {
-    }
+    /** Creates a new instance of JReportCustomers */
+    public JReportCustomers() {
+    }    
     
     @Override
     public void init(AppView app) throws BeanFactoryException {   
         
-        m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        m_dlCustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         super.init(app);
-    }    
+    }
     
+    @Override
     public void activate() throws BasicException {
-        m_productfilter.activate();
+        
+        customerfilter.activate();
         super.activate();
-    }              
-    public String getTitle() {
-        return AppLocal.getIntString("Menu.Products");
     }      
+    
+    public String getTitle() {
+        return AppLocal.getIntString("Menu.CustomersReport");
+    }      
+    
     protected String getReport() {
-        return "/com/openbravo/pos/reports/products";
+        return "/com/openbravo/pos/reports/customers";
     }
     protected String getResourceBundle() {
-        return "report_products_messages";
+        return "report_customers_messages";
     }
     protected BaseSentence getSentence() {
         return new StaticSentence(m_App.getSession()
-            , new QBFBuilder(
-              "SELECT PRODUCTS.ID, PRODUCTS.REFERENCE, PRODUCTS.CODE, PRODUCTS.NAME, PRODUCTS.ISCOM, PRODUCTS.ISSCALE, PRODUCTS.PRICEBUY, PRODUCTS.PRICESELL, PRODUCTS.TAX, TAXES.NAME AS TAXNAME, TAXES.RATE AS TAXRATE, PRODUCTS.CATEGORY, CATEGORIES.NAME AS CATEGORYNAME " +
-              "FROM PRODUCTS LEFT OUTER JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID LEFT OUTER JOIN TAXES ON PRODUCTS.TAX = TAXES.ID " +
-              "WHERE ?(QBF_FILTER) " +
-              "ORDER BY CATEGORIES.NAME, PRODUCTS.NAME",
-               new String[] {"PRODUCTS.NAME", "PRODUCTS.PRICEBUY", "PRODUCTS.PRICESELL", "PRODUCTS.CATEGORY", "PRODUCTS.CODE"} )
-            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
-            , new SerializerReadClass(ProductInfoReport.class));
+            ,   new QBFBuilder("SELECT ID, NAME, CARD, MAXDEBT, CURDATE, CURDEBT " +
+                "FROM CUSTOMERS " +
+                "WHERE VISIBLE = TRUE AND ?(QBF_FILTER)",
+                new String[] {"ID", "NAME"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}));
     }
     protected ReportFields getReportFields() {
-        return ReportFieldsBuilder.INSTANCE;
-    }    
+        return new ReportFieldsArray(new String[]{"ID", "NAME", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"});
+    }  
     
+    @Override
     protected EditorCreator createEditorCreator() {
-        m_productfilter =  new ProductFilter(m_dlSales) ;
-        return m_productfilter;
-    }         
+
+        customerfilter =  new JParamsCustomer(m_dlCustomers);       
+        return customerfilter;
+    }       
+
 }

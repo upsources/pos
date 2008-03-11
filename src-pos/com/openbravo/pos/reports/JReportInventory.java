@@ -43,12 +43,14 @@ public class JReportInventory extends JPanelReport {
     public JReportInventory() {
     }
     
+    @Override
     public void init(AppView app) throws BeanFactoryException {   
 
         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         super.init(app);
     }
     
+    @Override
     public void activate() throws BasicException {
         m_productfilter.activate();
         m_paramslocation.activate();
@@ -97,6 +99,8 @@ public class JReportInventory extends JPanelReport {
     protected ReportFields getReportFields() {
         return new ReportFieldsArray(new String[]{"LOCATIONID", "LOCATIONNAME", "REFERENCE", "NAME", "CATEGORY", "CATEGORYNAME", "UNITS", "PRICEBUY", "PRICESELL", "STOCKVOLUME", "STOCKCOST", "STOCKSECURITY", "STOCKMAXIMUM"});
     }
+    
+    @Override
     protected EditorCreator createEditorCreator() {
 
         m_paramslocation =  new JParamsLocationWithFirst(m_dlSales);

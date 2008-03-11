@@ -39,6 +39,8 @@
 
     <class name="com.openbravo.pos.forms.MenuCustomers"/>
     <class name="com.openbravo.pos.customers.CustomersPanel"/>
+    <class name="com.openbravo.pos.reports.JReportCustomers"/>
+    <class name="com.openbravo.pos.reports.JReportCustomersB"/>
 
     <class name="com.openbravo.pos.forms.MenuStockManagement"/>
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>
