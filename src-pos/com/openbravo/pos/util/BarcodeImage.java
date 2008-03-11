@@ -36,8 +36,11 @@ public class BarcodeImage {
         int width = (int) dim.getWidth(0);
         int height = (int) dim.getHeight(0);        
         
-        BufferedImage imgtext = new BufferedImage(width, height,  BufferedImage.TYPE_INT_ARGB);
+        BufferedImage imgtext = new BufferedImage(width, height,  BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = imgtext.createGraphics();
+        
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, width, height);
         
         g2d.setColor(Color.BLACK);
         
