@@ -83,14 +83,6 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_timereservation = new JTimePanel(null, JTimePanel.BUTTONS_MINUTE);
         m_jPanelTime.add(m_timereservation, BorderLayout.CENTER);   
             
-//        TableDefinition treservations = new TableDefinition(oApp.getSession(),
-//            "RESERVATIONS"
-//            , new String[] {"ID", "CREATED", "DATENEW", "TITLE", "CHAIRS", "ISDONE", "DESCRIPTION"}
-//            , new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.TIMESTAMP, Datas.STRING, Datas.INT, Datas.BOOLEAN, Datas.STRING}
-//            , new Formats[] {Formats.STRING, Formats.TIMESTAMP, Formats.TIMESTAMP, Formats.STRING, Formats.INT, Formats.BOOLEAN, Formats.STRING}
-//            , new int[] {0}
-//        );     
-        
         txtCustomer.addEditorKeys(m_jKeys);
         m_jtxtChairs.addEditorKeys(m_jKeys);
         m_jtxtDescription.addEditorKeys(m_jKeys);
@@ -100,7 +92,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         txtCustomer.addPropertyChangeListener("Text", m_Dirty);
         txtCustomer.addPropertyChangeListener("Text", new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent evt) {
-                customer = null;
+                customer = new CustomerInfo(null, txtCustomer.getText());
             }
         });
         m_jtxtChairs.addPropertyChangeListener("Text", m_Dirty);
@@ -148,8 +140,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_sID = null;
         m_dCreated = null;
         m_timereservation.setDate(null);
-        txtCustomer.reset();
-        customer = null;
+        assignCustomer(new CustomerInfo(null, null));
         m_jtxtChairs.reset();
         m_bReceived = false;
         m_jtxtDescription.reset();
@@ -166,8 +157,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = null;
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate(m_dcurrentday);
-        txtCustomer.reset();
-        customer = null;
+        assignCustomer(new CustomerInfo(null, null));
         m_jtxtChairs.setValueInteger(2);
         m_bReceived = false;
         m_jtxtDescription.reset();
@@ -187,8 +177,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = (Date) res[1];
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate((Date) res[2]);
-        customer = new CustomerInfo((String) res[3], (String) res[4]);
-        txtCustomer.setText(customer.toString());
+        assignCustomer(new CustomerInfo((String) res[3], (String) res[4]));
         m_jtxtChairs.setValueInteger(((Integer)res[5]).intValue());
         m_bReceived = ((Boolean)res[6]).booleanValue();
         m_jtxtDescription.setText(Formats.STRING.formatValue(res[7]));
@@ -206,8 +195,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = (Date) res[1];
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate((Date) res[2]);
-        customer = new CustomerInfo((String) res[3], (String) res[4]);
-        txtCustomer.setText(customer.toString());
+        assignCustomer(new CustomerInfo((String) res[3], (String) res[4]));
         m_jtxtChairs.setValueInteger(((Integer)res[5]).intValue());
         m_bReceived = ((Boolean)res[6]).booleanValue();
         m_jtxtDescription.setText(Formats.STRING.formatValue(res[7]));
@@ -284,6 +272,12 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_datepanel.setDate(m_dcurrentday);
         m_timepanel.setDate(m_dcurrentday);
         m_bpaintlock = false;
+    }
+       
+    private void assignCustomer(CustomerInfo c) {
+        
+        txtCustomer.setText(c.getName());
+        customer = c;
     }
     
     private class DateChangeCalendarListener implements PropertyChangeListener {
@@ -412,7 +406,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         jPanel1.add(txtCustomer);
         txtCustomer.setBounds(280, 190, 240, 20);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
         jButton1.setFocusPainted(false);
         jButton1.setFocusable(false);
         jButton1.setRequestFocusEnabled(false);
@@ -443,7 +437,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         
         try {
             m_bd.saveData();
-            m_restaurantmap.viewTables();                    
+            m_restaurantmap.viewTables(customer);                    
         } catch (BasicException eD) {
             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, LocalRes.getIntString("message.nosaveticket"), eD);
             msg.show(this);
@@ -462,8 +456,14 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
         finder.search(customer);
         finder.setVisible(true);
-        customer = finder.getSelectedCustomer();        
-        txtCustomer.setText(customer.toString());
+        
+        CustomerInfo c = finder.getSelectedCustomer(); 
+        
+        if (c == null) {       
+            assignCustomer(new CustomerInfo(null, null));
+        } else {
+            assignCustomer(c);
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
     

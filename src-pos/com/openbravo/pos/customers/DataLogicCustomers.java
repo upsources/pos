@@ -92,8 +92,8 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     
     public final SentenceList getReservationsList() {
         return new PreparedSentence(s
-            , "SELECT R.ID, R.CREATED, R.DATENEW, C.CUSTOMER, R.TITLE, R.CHAIRS, R.ISDONE, R.DESCRIPTION " +
-              "FROM RESERVATIONS R LEFT OUTER JOIN RESERVATION_CUSTOMERS C ON R.ID = C.ID " +
+            , "SELECT R.ID, R.CREATED, R.DATENEW, C.CUSTOMER, COALESCE(CUSTOMERS.NAME, R.TITLE),  R.CHAIRS, R.ISDONE, R.DESCRIPTION " +
+              "FROM RESERVATIONS R LEFT OUTER JOIN (RESERVATION_CUSTOMERS C JOIN CUSTOMERS ON C.CUSTOMER = CUSTOMERS.ID) ON R.ID = C.ID " +
               "WHERE R.DATENEW >= ? AND R.DATENEW < ?"
             , new SerializerWriteBasic(new Datas[] {Datas.TIMESTAMP, Datas.TIMESTAMP})
             , new SerializerReadBasic(customerdatas));             

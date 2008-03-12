@@ -208,6 +208,9 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/launch.png"))); // NOI18N
         jButton3.setText(AppLocal.getIntString("button.executefilter")); // NOI18N
+        jButton3.setFocusPainted(false);
+        jButton3.setFocusable(false);
+        jButton3.setRequestFocusEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -222,6 +225,8 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jListCustomers.setFocusable(false);
+        jListCustomers.setRequestFocusEnabled(false);
         jListCustomers.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListCustomersMouseClicked(evt);
@@ -243,7 +248,10 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         jcmdOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
         jcmdOK.setText(AppLocal.getIntString("Button.OK")); // NOI18N
         jcmdOK.setEnabled(false);
+        jcmdOK.setFocusPainted(false);
+        jcmdOK.setFocusable(false);
         jcmdOK.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        jcmdOK.setRequestFocusEnabled(false);
         jcmdOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcmdOKActionPerformed(evt);
@@ -253,7 +261,10 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jcmdCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_cancel.png"))); // NOI18N
         jcmdCancel.setText(AppLocal.getIntString("Button.Cancel")); // NOI18N
+        jcmdCancel.setFocusPainted(false);
+        jcmdCancel.setFocusable(false);
         jcmdCancel.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        jcmdCancel.setRequestFocusEnabled(false);
         jcmdCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcmdCancelActionPerformed(evt);

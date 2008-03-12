@@ -125,6 +125,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         
         if (getCustomerId() != null) {
             name.append(m_Customer.toString());
+            name.append(" ");
         }
         
         if (info == null) {
