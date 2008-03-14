@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -47,7 +47,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
         m_jTendered.addEditorKeys(m_jKeys);
     }
     
-    public void activate(String sTransaction, double dTotal) {
+    public void activate(double dTotal) {
         
         m_dTotal = dTotal;
         
@@ -85,8 +85,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
                 ? Formats.CURRENCY.formatValue(new Double(m_dPaid - m_dTotal))
                 : null); 
         
-        m_notifier.setAddEnabled(m_dPaid > 0.0 && iCompare < 0);
-        m_notifier.setOKEnabled(iCompare >= 0);
+        m_notifier.setStatus(m_dPaid > 0.0, iCompare >= 0);
     }
     
     private class RecalculateState implements PropertyChangeListener {

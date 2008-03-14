@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,12 +18,24 @@
 
 package com.openbravo.pos.util;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Random;
+
 public class StringUtils {
     
-     private static final char [] hexchars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char [] hexchars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
      
+    private static final NumberFormat cardformat = new DecimalFormat("000000");
+    private static final Random cardrandom = new Random();
+    
     /** Creates a new instance of StringUtils */
     private StringUtils() {
+    }
+    
+    public static String getCardNumber() {
+    return cardformat.format(Math.abs(System.currentTimeMillis()) % 1000000L)
+         + cardformat.format(Math.abs(cardrandom.nextLong()) % 1000000L);
     }
     
     public static String encodeXML(String sValue) {

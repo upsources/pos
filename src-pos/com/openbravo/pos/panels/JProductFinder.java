@@ -126,6 +126,7 @@ public class JProductFinder extends javax.swing.JDialog {
         m_jProductSelect = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListProducts = new javax.swing.JList();
         jPanel1 = new javax.swing.JPanel();
@@ -140,7 +141,6 @@ public class JProductFinder extends javax.swing.JDialog {
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.LINE_END);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         m_jProductSelect.setLayout(new java.awt.BorderLayout());
@@ -158,6 +158,9 @@ public class JProductFinder extends javax.swing.JDialog {
 
         jPanel2.add(m_jProductSelect, java.awt.BorderLayout.NORTH);
 
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         jListProducts.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -173,7 +176,9 @@ public class JProductFinder extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jListProducts);
 
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel5.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
@@ -255,6 +260,7 @@ public class JProductFinder extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jcmdCancel;
     private javax.swing.JButton jcmdOK;

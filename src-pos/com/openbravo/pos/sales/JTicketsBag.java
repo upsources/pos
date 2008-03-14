@@ -64,24 +64,23 @@ public abstract class JTicketsBag extends JPanel {
         }
     }
     
-    protected final TicketInfo createTicketModel(){
-
-        // creo el nuevo ticket
-        TicketInfo ticket = new TicketInfo();
-        ticket.setTicketId(0);
-        ticket.setDate(new Date());    
-
-        // Pinto el numero del ticket
-        return ticket;
-    }    
+//    protected final TicketInfo createTicketModel(){
+//
+//        // creo el nuevo ticket
+//        TicketInfo ticket = new TicketInfo();
+//        ticket.setTicketId(0);
+//        ticket.setDate(new Date());    
+//
+//        // Pinto el numero del ticket
+//        return ticket;
+//    }    
     
     protected final void saveTicket(TicketInfo ticket) {
 
         try {
             m_dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
         } catch (BasicException eData) {
-            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket" +
-                    ""), eData);
+            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
             msg.show(this);
         }
     }

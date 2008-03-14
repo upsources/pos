@@ -133,7 +133,7 @@ public class JTicketsBagShared extends JTicketsBag {
         
         saveCurrentTicket();
 
-        TicketInfo ticket = createTicketModel();     
+        TicketInfo ticket = new TicketInfo();    
         m_sCurrentTicket = UUID.randomUUID().toString(); // m_fmtid.format(ticket.getId());
         m_panelticket.setActiveTicket(ticket, null);      
     }

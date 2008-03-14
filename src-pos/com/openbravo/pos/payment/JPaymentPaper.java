@@ -25,6 +25,7 @@ import java.beans.PropertyChangeListener;
 import com.openbravo.basic.BasicException;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.util.RoundUtils;
 
 public class JPaymentPaper extends javax.swing.JPanel implements JPaymentInterface {
@@ -50,7 +51,7 @@ public class JPaymentPaper extends javax.swing.JPanel implements JPaymentInterfa
         m_jTendered.addEditorKeys(m_jKeys);
     }
     
-    public void activate(String sTransaction, double dTotal) {
+    public void activate(double dTotal) {
         
         m_dTotal = dTotal;
         
@@ -81,8 +82,8 @@ public class JPaymentPaper extends javax.swing.JPanel implements JPaymentInterfa
         
         int iCompare = RoundUtils.compare(m_dTicket, m_dTotal);
         
-        m_notifier.setAddEnabled(m_dTicket > 0.0);
-        m_notifier.setOKEnabled(iCompare >= 0);
+        // it is allowed to pay more
+        m_notifier.setStatus(m_dTicket > 0.0, iCompare >= 0);
     }
     
     private class RecalculateState implements PropertyChangeListener {

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 
 package com.openbravo.pos.payment;
 
-import com.openbravo.pos.ticket.TicketInfo;
+import com.openbravo.basic.BasicException;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -27,41 +27,63 @@ import javax.swing.JFrame;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.customers.DataLogicCustomers;
+import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.util.StringUtils;
+import java.util.List;
 
 /**
  *
  * @author adrianromero
  */
-public class JPaymentSelect extends javax.swing.JDialog 
+public abstract class JPaymentSelect extends javax.swing.JDialog 
                             implements JPaymentNotifier {
     
-    private TicketInfo m_ticket;    
     private PaymentInfoList m_aPaymentInfo;
     private String m_sresourcename;
     
-    private double m_dTotal; // es funcion de m_ticket
-    private String m_sTransaction; // es funcion de m_ticket
+    private AppView app;
+    private double m_dTotal; 
+    private CustomerInfoExt customerext;
     
-    /** Creates new form JPayTicket */
-    private JPaymentSelect(java.awt.Frame parent, boolean modal) {
+    /** Creates new form JPaymentSelect */
+    protected JPaymentSelect(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
     }
-    /** Creates new form JPayTicket */
-    private JPaymentSelect(java.awt.Dialog parent, boolean modal) {
+    /** Creates new form JPaymentSelect */
+    protected JPaymentSelect(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
     }    
 
-    private String init(AppView app, TicketInfo ticket) {
+    public String getSelectedTemplate() {
+        return m_sresourcename;
+    }
+
+    public List<PaymentInfo> getSelectedPayments() {
+        return m_aPaymentInfo.getPayments();        
+    }
+            
+    public boolean showDialog(AppView app, double total, CustomerInfo customer) {
         
-        // Primero inicializo las variables
-        m_ticket = ticket;
-        m_sresourcename = null;
-        m_dTotal = m_ticket.getTotal();
-        m_sTransaction = "1234"; // Integer.toString(m_ticket.getId());
-        
-        m_ticket.resetPayments(); // inicializo el pago
         m_aPaymentInfo = new PaymentInfoList();
-        // m_jButtonRemove.setEnabled(false);
+        m_sresourcename = null;
+        
+        this.app = app;
+        m_dTotal = total;
+        
+ 
+        // load customerext
+         if (customer == null) {
+            customerext = null;      
+        } else {
+            try {
+                DataLogicCustomers dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+                customerext = dlcustomers.loadCustomerExt(customer.getId());                
+            } catch (BasicException e) {
+                customerext = null;      
+            }
+        }        
         
         // Inicializo los componentes
         initComponents();
@@ -70,63 +92,107 @@ public class JPaymentSelect extends javax.swing.JDialog
 
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
         
-        if (m_dTotal >= 0.0) { 
-            // Positive payment
-            addTabPayment(new JPaymentCashPos(this), 
-                    app.getAppUserView().getUser().hasPermission("payment.cash"),
-                    "tab.cash", 
-                    "/com/openbravo/images/cash.png");
-            addTabPayment(new JPaymentCheque(this), 
-                    app.getAppUserView().getUser().hasPermission("payment.cheque"),
-                    "tab.cheque", 
-                    "/com/openbravo/images/desktop.png");
-            addTabPayment(new JPaymentPaper(this, "paperin"), 
-                    app.getAppUserView().getUser().hasPermission("payment.paper"),
-                    "tab.paper", 
-                    "/com/openbravo/images/knotes.png");            
-            addTabPayment(new JPaymentTicket(this), 
-                    app.getAppUserView().getUser().hasPermission("payment.ticket"),
-                    "tab.ticket", 
-                    "/com/openbravo/images/kontact.png");
-            addTabPayment(new JPaymentMagcard(app, this), 
-                    app.getAppUserView().getUser().hasPermission("payment.magcard"),
-                    "tab.magcard", 
-                    "/com/openbravo/images/vcard.png");
-            addTabPayment(new JPaymentFree(this), 
-                    app.getAppUserView().getUser().hasPermission("payment.free"),
-                    "tab.free", 
-                    "/com/openbravo/images/package_toys.png");
-            addTabPayment(new JPaymentDebt(this),
-                    app.getAppUserView().getUser().hasPermission("payment.debt"),
-                    "tab.debt",
-                    "/com/openbravo/images/package_toys.png");
-        } else { 
-            // devoluciones...
-            addTabPayment(new JPaymentRefund(this, "cashrefund"), 
-                    app.getAppUserView().getUser().hasPermission("refund.cash"),
-                    "tab.cashrefund", 
-                    "/com/openbravo/images/cash.png");
-            addTabPayment(new JPaymentRefund(this, "chequerefund"), 
-                    app.getAppUserView().getUser().hasPermission("refund.cheque"),
-                    "tab.chequerefund", 
-                    "/com/openbravo/images/desktop.png");
-            addTabPayment(new JPaymentRefund(this, "paperout"), 
-                    app.getAppUserView().getUser().hasPermission("refund.paper"),
-                    "tab.paper", 
-                    "/com/openbravo/images/knotes.png");            
-            addTabPayment(new JPaymentMagcard(app, this), 
-                    app.getAppUserView().getUser().hasPermission("refund.magcard"),
-                    "tab.magcard", 
-                    "/com/openbravo/images/vcard.png");
-            
-            jPanel6.setVisible(false);
-        }
+        addTabs();
         
         printState();
         setVisible(true);
         
-        return m_sresourcename;
-    }   
+        return m_sresourcename != null;
+    }  
+    
+    protected abstract void addTabs();
+    protected abstract void setStatusPanel(boolean isPositive, boolean isComplete);
+    
+    protected void setOKEnabled(boolean value) {
+        m_jButtonOK.setEnabled(value);        
+    }
+    
+    protected void setAddEnabled(boolean value) {
+        m_jButtonAdd.setEnabled(value);
+    }
+    
+    protected void addTabPaymentCash() {
+        addTabPayment(new JPaymentCashPos(this), 
+                app.getAppUserView().getUser().hasPermission("payment.cash"),
+                "tab.cash", 
+                "/com/openbravo/images/cash.png");
+    }
+    
+    protected void addTabPaymentCheque() {
+        addTabPayment(new JPaymentCheque(this), 
+                app.getAppUserView().getUser().hasPermission("payment.cheque"),
+                "tab.cheque", 
+                "/com/openbravo/images/desktop.png");
+    }
+    
+    protected void addTabPaymentPaper() {
+        addTabPayment(new JPaymentPaper(this, "paperin"), 
+                app.getAppUserView().getUser().hasPermission("payment.paper"),
+                "tab.paper", 
+                "/com/openbravo/images/knotes.png");        
+    }    
+    
+    protected void addTabPaymentTicket() {
+        addTabPayment(new JPaymentTicket(this), 
+                app.getAppUserView().getUser().hasPermission("payment.ticket"),
+                "tab.ticket", 
+                "/com/openbravo/images/kontact.png");
+    }
+    
+    protected void addTabPaymentMagcard() {
+        String transaction = StringUtils.getCardNumber(); // Integer.toString(m_ticket.getId());        
+        addTabPayment(new JPaymentMagcard(app, transaction, this), 
+                app.getAppUserView().getUser().hasPermission("payment.magcard"),
+                "tab.magcard", 
+                "/com/openbravo/images/vcard.png");    
+    }
+    
+    protected void addTabPaymentFree() {
+        addTabPayment(new JPaymentFree(this), 
+                app.getAppUserView().getUser().hasPermission("payment.free"),
+                "tab.free", 
+                "/com/openbravo/images/package_toys.png");
+    }
+    
+    protected void addTabPaymentDebt() {
+        addTabPayment(new JPaymentDebt(this, customerext),
+                app.getAppUserView().getUser().hasPermission("payment.debt"),
+                "tab.debt",
+                "/com/openbravo/images/kdmconfig32.png");
+    }
+    
+    protected void addTabPaymentCashRefund() {
+        addTabPayment(new JPaymentRefund(this, "cashrefund"), 
+                app.getAppUserView().getUser().hasPermission("refund.cash"),
+                "tab.cashrefund", 
+                "/com/openbravo/images/cash.png");
+    }    
+    
+    protected void addTabPaymentChequeRefund() {
+        addTabPayment(new JPaymentRefund(this, "chequerefund"), 
+                app.getAppUserView().getUser().hasPermission("refund.cheque"),
+                "tab.chequerefund", 
+                "/com/openbravo/images/desktop.png");        
+    }
+    
+    protected void addTabPaymentPaperRefund() {
+        addTabPayment(new JPaymentRefund(this, "paperout"), 
+                app.getAppUserView().getUser().hasPermission("refund.paper"),
+                "tab.paper", 
+                "/com/openbravo/images/knotes.png");             
+    }
+    
+    protected void addTabPaymentMagcardRefund() {
+        String transaction = StringUtils.getCardNumber(); // Integer.toString(m_ticket.getId());        
+        addTabPayment(new JPaymentMagcard(app, transaction, this), 
+                app.getAppUserView().getUser().hasPermission("refund.magcard"),
+                "tab.magcard", 
+                "/com/openbravo/images/vcard.png");        
+    }
+    
+    protected void setHeaderVisible(boolean value) {
+        jPanel6.setVisible(value);
+    }
     
     private void addTabPayment(JPaymentInterface tab, boolean haspermission, String sIntString, String sIconRes) {
         if (haspermission) {
@@ -142,10 +208,10 @@ public class JPaymentSelect extends javax.swing.JDialog
         m_jRemaininglEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal - m_aPaymentInfo.getTotal())));
         m_jButtonRemove.setEnabled(!m_aPaymentInfo.isEmpty());
         m_jTabPayment.setSelectedIndex(0); // selecciono el primero
-        ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(m_sTransaction, m_dTotal - m_aPaymentInfo.getTotal());
+        ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(m_dTotal - m_aPaymentInfo.getTotal());
     }
     
-    private static Window getWindow(Component parent) {
+    protected static Window getWindow(Component parent) {
         if (parent == null) {
             return new JFrame();
         } else if (parent instanceof Frame || parent instanceof Dialog) {
@@ -155,25 +221,9 @@ public class JPaymentSelect extends javax.swing.JDialog
         }
     }       
     
-    public static String showMessage(Component parent, AppView app, TicketInfo ticket) {
-         
-        Window window = getWindow(parent);
+    public void setStatus(boolean isPositive, boolean isComplete) {
         
-        JPaymentSelect myMsg;
-        if (window instanceof Frame) { 
-            myMsg = new JPaymentSelect((Frame) window, true);
-        } else {
-            myMsg = new JPaymentSelect((Dialog) window, true);
-        }
-        return myMsg.init(app, ticket);
-    }  
-    
-    public void setOKEnabled(boolean bValue) {
-        m_jButtonOK.setEnabled(bValue);
-    }
-    
-    public void setAddEnabled(boolean bValue) {
-        m_jButtonAdd.setEnabled(bValue);
+        setStatusPanel(isPositive, isComplete);
     }
     
     private void disposeOK(String sresourcename) {
@@ -181,7 +231,6 @@ public class JPaymentSelect extends javax.swing.JDialog
         PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
         if (returnPayment != null) {
             m_aPaymentInfo.add(returnPayment);
-            m_ticket.setPayments(m_aPaymentInfo.getPayments());
             m_sresourcename = sresourcename;
             dispose();
         }        
@@ -339,16 +388,16 @@ public class JPaymentSelect extends javax.swing.JDialog
 
     private void m_jTabPaymentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_m_jTabPaymentStateChanged
         
-        ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(m_sTransaction, m_dTotal - m_aPaymentInfo.getTotal());
+        ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(m_dTotal - m_aPaymentInfo.getTotal());
         
     }//GEN-LAST:event_m_jTabPaymentStateChanged
 
     private void m_jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonOKActionPerformed
 
-            disposeOK(m_jButtonPrint.isSelected() 
-                    ? "Printer.Ticket"
-                    : "Printer.Ticket2"
-            );
+        disposeOK(m_jButtonPrint.isSelected() 
+                ? "Printer.Ticket"
+                : "Printer.Ticket2"
+        );
             
         
     }//GEN-LAST:event_m_jButtonOKActionPerformed

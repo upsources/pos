@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.ticket;
 
+import com.openbravo.pos.customers.CustomerInfo;
 import java.util.*;
 import java.io.*;
 import java.text.DateFormat;
@@ -46,7 +47,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
         m_iTicketId = 0; // incrementamos
-        m_dDate = null;
+        m_dDate = new Date();
         m_User = null;
         m_Customer = null;
         m_sActiveCash = null;

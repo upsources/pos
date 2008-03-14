@@ -197,7 +197,16 @@
             <text align ="right" length="42">${paymentline.printTotal()}</text>
         </line>    
          #end
-        #end 
+         #if ($paymentline.name == "debt")
+        <line></line>     
+        <line>
+            <text bold="true">Debt</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #end 
 
       
         <line></line>            

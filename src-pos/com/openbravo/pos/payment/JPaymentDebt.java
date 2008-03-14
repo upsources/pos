@@ -20,7 +20,10 @@ package com.openbravo.pos.payment;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.util.RoundUtils;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
@@ -32,29 +35,52 @@ import java.beans.PropertyChangeListener;
  */
 public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterface {
     
-    private JPaymentNotifier m_notifier;
-
+    private JPaymentNotifier notifier;
+    private CustomerInfoExt customerext;
+    
     private double m_dPaid;
     private double m_dTotal;
-    
+
     /** Creates new form JPaymentDebt */
-    public JPaymentDebt(JPaymentNotifier notifier) {
+    public JPaymentDebt(JPaymentNotifier notifier, CustomerInfoExt customerext) {
         
-        m_notifier = notifier;
+        this.notifier = notifier;
+        this.customerext = customerext;
         
         initComponents();  
         
         m_jTendered.addPropertyChangeListener("Edition", new RecalculateState());
         m_jTendered.addEditorKeys(m_jKeys);
+        
+        // 
+        if (customerext == null) {
+            m_jName.setText(null);
+            m_jNotes.setText(AppLocal.getIntString("message.nocustomernodebt"));
+            txtMaxdebt.setText(null);
+            txtCurdate.setText(null);        
+            txtCurdebt.setText(null);
+        } else {            
+            m_jName.setText(customerext.getName());
+            m_jNotes.setText(customerext.getNotes());
+            txtMaxdebt.setText(Formats.CURRENCY.formatValue(customerext.getMaxdebt()));
+            txtCurdate.setText(Formats.DATE.formatValue(customerext.getCurdate()));        
+            txtCurdebt.setText(Formats.CURRENCY.formatValue(customerext.getCurdebt()));   
+        }
     }
     
-    public void activate(String sTransaction, double dTotal) {
+    public void activate(double dTotal) {
         
         m_dTotal = dTotal;
         
-        
         m_jTendered.reset();
-        m_jTendered.activate();
+        if (customerext == null) {
+            m_jKeys.setEnabled(false);
+            m_jTendered.setEnabled(false);
+        } else {
+            m_jKeys.setEnabled(true);
+            m_jTendered.setEnabled(true);
+            m_jTendered.activate();
+        }
         
         printState();
         
@@ -68,16 +94,22 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
 
     private void printState() {
         
-        try {
-            m_dPaid = m_jTendered.getValue();
-        } catch (BasicException e){
-            m_dPaid = m_dTotal;
-        }   
+        if (customerext == null) {
+            m_jMoneyEuros.setText(null);
+            notifier.setStatus(false, false);
+        } else {
+            try {
+                m_dPaid = m_jTendered.getValue();
+            } catch (BasicException e){
+                m_dPaid = 0.0;
+            }   
 
-        m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));
-        
-        m_notifier.setAddEnabled(m_dPaid > 0.0 && RoundUtils.compare(m_dPaid, m_dTotal) < 0);
-        m_notifier.setOKEnabled(m_dPaid == m_dTotal);
+            m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));
+            
+            int iCompare = RoundUtils.compare(m_dPaid, m_dTotal);
+            // if iCompare > 0 then the payment is not valid
+            notifier.setStatus(m_dPaid > 0.0 && iCompare <= 0, iCompare == 0);
+        }        
     }
     
     private class RecalculateState implements PropertyChangeListener {
@@ -102,6 +134,17 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         m_jMoneyEuros = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        m_jName = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtMaxdebt = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtCurdebt = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtCurdate = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        m_jNotes = new javax.swing.JTextArea();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -122,9 +165,9 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
 
         jPanel4.setLayout(null);
 
-        jLabel8.setText(AppLocal.getIntString("Label.InputCash")); // NOI18N
+        jLabel8.setText(AppLocal.getIntString("label.debt")); // NOI18N
         jPanel4.add(jLabel8);
-        jLabel8.setBounds(20, 20, 80, 20);
+        jLabel8.setBounds(20, 20, 80, 14);
 
         m_jMoneyEuros.setBackground(new java.awt.Color(153, 153, 255));
         m_jMoneyEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -134,19 +177,74 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         jPanel4.add(m_jMoneyEuros);
         m_jMoneyEuros.setBounds(100, 20, 150, 25);
 
+        jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
+        jPanel4.add(jLabel3);
+        jLabel3.setBounds(20, 70, 80, 14);
+
+        m_jName.setEditable(false);
+        jPanel4.add(m_jName);
+        m_jName.setBounds(100, 70, 200, 18);
+
+        jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
+        jPanel4.add(jLabel12);
+        jLabel12.setBounds(20, 100, 80, 14);
+
+        jLabel2.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
+        jPanel4.add(jLabel2);
+        jLabel2.setBounds(20, 180, 80, 14);
+
+        txtMaxdebt.setEditable(false);
+        txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel4.add(txtMaxdebt);
+        txtMaxdebt.setBounds(100, 180, 130, 18);
+
+        jLabel4.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
+        jPanel4.add(jLabel4);
+        jLabel4.setBounds(20, 210, 80, 14);
+
+        txtCurdebt.setEditable(false);
+        txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel4.add(txtCurdebt);
+        txtCurdebt.setBounds(100, 210, 130, 18);
+
+        jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
+        jPanel4.add(jLabel6);
+        jLabel6.setBounds(20, 240, 80, 14);
+
+        txtCurdate.setEditable(false);
+        jPanel4.add(txtCurdate);
+        txtCurdate.setBounds(100, 240, 130, 18);
+
+        m_jNotes.setEditable(false);
+        jScrollPane1.setViewportView(m_jNotes);
+
+        jPanel4.add(jScrollPane1);
+        jScrollPane1.setBounds(100, 100, 200, 70);
+
         add(jPanel4, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JLabel m_jMoneyEuros;
+    private javax.swing.JTextField m_jName;
+    private javax.swing.JTextArea m_jNotes;
     private com.openbravo.editor.JEditorCurrencyPositive m_jTendered;
+    private javax.swing.JTextField txtCurdate;
+    private javax.swing.JTextField txtCurdebt;
+    private javax.swing.JTextField txtMaxdebt;
     // End of variables declaration//GEN-END:variables
     
 }

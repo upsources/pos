@@ -24,10 +24,8 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
+import com.openbravo.pos.util.StringUtils;
 import java.awt.Component;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Random;
 import java.util.UUID;
 import javax.swing.JOptionPane;
 
@@ -40,9 +38,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private Object m_oId;
     
     private DirtyManager m_Dirty;
-    
-    private NumberFormat cardformat = new DecimalFormat("000000");
-    private Random cardrandom = new Random();
         
     /** Creates new form CustomersView */
     public CustomersView(AppView app, DirtyManager dirty) {
@@ -266,6 +261,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jLabel2.setBounds(20, 270, 90, 14);
 
         txtCurdebt.setEditable(false);
+        txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtCurdebt);
         txtCurdebt.setBounds(110, 270, 130, 18);
 
@@ -279,13 +275,8 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-            StringBuffer b = new StringBuffer();
-            b.append('c');
-            b.append(cardformat.format(Math.abs(System.currentTimeMillis()) % 1000000L));
-            b.append(cardformat.format(Math.abs(cardrandom.nextLong()) % 1000000L));
-            
-            jcard.setText(b.toString());
+        if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {            
+            jcard.setText("c" + StringUtils.getCardNumber());
             m_Dirty.setDirty(true);
         }
     }//GEN-LAST:event_jButton2ActionPerformed

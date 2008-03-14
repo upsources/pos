@@ -23,7 +23,7 @@ import com.openbravo.data.user.EditorCreator;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.ticket.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfo;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -122,7 +122,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         
         // Name
         if (m_jtxtName.getText() == null || m_jtxtName.getText().equals("")) {
-            afilter[0] = QBFCompareEnum.COMP_ISNULL;
+            afilter[0] = QBFCompareEnum.COMP_NONE;
             afilter[1] = null;
         } else {
             afilter[0] = QBFCompareEnum.COMP_RE;

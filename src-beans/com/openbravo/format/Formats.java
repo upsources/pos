@@ -49,6 +49,11 @@ public abstract class Formats {
     protected Formats() {
     }
     
+    public static int getCurrencyDecimals() {
+
+        return m_currencyformat.getMaximumFractionDigits();
+    }
+    
     public String formatValue(Object value) {
         if (value == null) {
             return "";

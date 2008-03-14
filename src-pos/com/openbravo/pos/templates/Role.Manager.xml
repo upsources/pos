@@ -22,6 +22,7 @@
 <permissions>
     <class name="com.openbravo.pos.sales.JPanelTicketSales"/>
     <class name="com.openbravo.pos.sales.JPanelTicketEdits"/>
+    <class name="com.openbravo.pos.customers.CustomersPayment"/>    
     <class name="com.openbravo.pos.panels.JPanelPayments"/>
     <class name="com.openbravo.pos.panels.JPanelCloseMoney"/>
     <class name="com.openbravo.pos.reports.JReportClosedPos"/>
@@ -32,6 +33,7 @@
     <class name="payment.ticket"/>
     <class name="payment.magcard"/>
     <class name="payment.free"/>
+    <class name="payment.debt"/>    
     <class name="refund.cash"/>
     <class name="refund.cheque"/>
     <class name="refund.paper"/>

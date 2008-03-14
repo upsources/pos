@@ -68,8 +68,7 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
     
     private void resetState() {
         
-        m_notifier.setAddEnabled(false);
-        m_notifier.setOKEnabled(false);
+        m_notifier.setStatus(false, false);  
               
         m_jHolderName.setText(null);
         m_jCardNumber.setText(null);
@@ -108,14 +107,12 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
             m_jHolderName.setText(m_cardreader.getHolderName());
             m_jCardNumber.setText(m_cardreader.getCardNumber());
             m_jExpirationDate.setText(m_cardreader.getExpirationDate());   
-            m_notifier.setAddEnabled(false);
-            m_notifier.setOKEnabled(true);
+            m_notifier.setStatus(true, true);  
         } else {
             m_jHolderName.setText(null);
             m_jCardNumber.setText(null);
             m_jExpirationDate.setText(null);  
-            m_notifier.setAddEnabled(false);
-            m_notifier.setOKEnabled(false);
+            m_notifier.setStatus(false, false);  
         }      
     }    
     

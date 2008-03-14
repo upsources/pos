@@ -21,6 +21,7 @@ package com.openbravo.pos.sales.simple;
 import com.openbravo.pos.forms.*; 
 import javax.swing.*;
 import com.openbravo.pos.sales.*;
+import com.openbravo.pos.ticket.TicketInfo;
 
 public class JTicketsBagSimple extends JTicketsBag {
     
@@ -34,7 +35,7 @@ public class JTicketsBagSimple extends JTicketsBag {
     
     public void activate() {
         
-        m_panelticket.setActiveTicket(createTicketModel(), null);
+        m_panelticket.setActiveTicket(new TicketInfo(), null);
         
         // Authorization
         m_jDelTicket.setEnabled(m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
@@ -49,7 +50,7 @@ public class JTicketsBagSimple extends JTicketsBag {
         saveTicket(m_panelticket.getActiveTicket());
     }
     public void cancelTicket() {           
-        m_panelticket.setActiveTicket(createTicketModel(), null);
+        m_panelticket.setActiveTicket(new TicketInfo(), null);
     }
     
     protected JComponent getBagComponent() {

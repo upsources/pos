@@ -47,7 +47,9 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.ticket.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.payment.JPaymentSelectReceipt;
+import com.openbravo.pos.payment.JPaymentSelectRefund;
 
 public abstract class JPanelTicket extends JPanel implements JPanelView, TicketsEditor {
    
@@ -692,11 +694,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
                     
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
-
-                            // Elijo el pago, se asigna al ticket y devuelve el recurso de impresora seleccionado
-                            String sresourcename = JPaymentSelect.showMessage(JPanelTicket.this, m_App, m_oTicket);
-
-                            if (sresourcename != null) { // Han pulsado aceptar.
+                            
+                            // reset the payment info
+                            m_oTicket.resetPayments();
+                            
+                            // Select the Payments information
+                            JPaymentSelect paymentdialog = m_oTicket.getTotal() >= 0.0 
+                                    ? JPaymentSelectReceipt.getDialog(JPanelTicket.this)
+                                    : JPaymentSelectRefund.getDialog(JPanelTicket.this);
+                            
+                            if (paymentdialog.showDialog(m_App, m_oTicket.getTotal(), m_oTicket.getCustomer())) {
+                                
+                                // assign the payments selected.
+                                m_oTicket.setPayments(paymentdialog.getSelectedPayments());
 
                                 // Asigno los valores definitivos del ticket...
                                 m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
@@ -707,7 +717,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
                                 m_ticketsbag.saveTicket();
                                 
                                 // Print receipt.
-                                printTicket(sresourcename);
+                                printTicket(paymentdialog.getSelectedTemplate());
                                 
                                 // Cancel edition of current receipt
                                 m_ticketsbag.cancelTicket();                        

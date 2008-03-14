@@ -298,6 +298,12 @@ public class JTicketsBagTicket extends JTicketsBag {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+
+        m_jKeys.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jKeysActionPerformed(evt);
+            }
+        });
         jPanel4.add(m_jKeys);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -360,7 +366,7 @@ public class JTicketsBagTicket extends JTicketsBag {
 
     private void m_jRefundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jRefundActionPerformed
         
-        TicketInfo ticketrefund = createTicketModel();
+        TicketInfo ticketrefund = new TicketInfo();
         java.util.List aRefundLines = new ArrayList();
         
         for(int i = 0; i < m_ticket.getLinesCount(); i++) {
@@ -381,7 +387,12 @@ public class JTicketsBagTicket extends JTicketsBag {
         readTicket();
         
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
+    private void m_jKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeysActionPerformed
+        
+        readTicket();
+        
+    }//GEN-LAST:event_m_jKeysActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

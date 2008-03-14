@@ -225,6 +225,12 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     payment[2] = p.getName();
                     payment[3] = new Double(p.getTotal());
                     paymentinsert.exec(payment);
+                    if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
+                        getDebtUpdate().exec(new Object[]{
+                            new Double(p.getTotal()),
+                            ticket.getCustomer().getId()
+                        });
+                    }
                 } 
                 return null;
             }
@@ -334,6 +340,13 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     , new SerializerWriteBasicExt(productcatDatas, new int[] {0})).exec(params);
             } 
         };
+    }
+    
+    public final SentenceExec getDebtUpdate() {
+        
+        return new PreparedSentence(s
+                , "UPDATE CUSTOMERS SET CURDEBT = (COALESCE(CURDEBT, 0) + ?) WHERE ID = ?"
+                , new SerializerWriteBasic(new Datas[] {Datas.DOUBLE, Datas.STRING}));   
     }
     
     public final SentenceExec getStockDiaryInsert() {

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,7 @@ package com.openbravo.pos.payment;
 
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
+import com.openbravo.pos.customers.CustomerInfo;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.*;
@@ -33,13 +34,15 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
     private PaymentPanel m_cardpanel;
     private PaymentGateway m_paymentgateway;
     private JPaymentNotifier m_notifier;
+    private String transaction;
     
     /** Creates new form JPaymentMagcard */
-    public JPaymentMagcard(AppView app, JPaymentNotifier notifier) {
+    public JPaymentMagcard(AppView app, String transaction, JPaymentNotifier notifier) {
         
         initComponents();   
         
         m_notifier = notifier;
+        this.transaction = transaction;
         
         m_paymentgateway = PaymentGatewayFac.getPaymentGateway(app.getProperties());
         
@@ -54,15 +57,15 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
         }
     }
     
-    public void activate(String sTransaction, double dTotal) {
+    public void activate(double dTotal) {
         
         if (m_cardpanel == null) {
             jlblMessage.setText(AppLocal.getIntString("message.nopaymentgateway"));  
-            m_notifier.setAddEnabled(false);
-            m_notifier.setOKEnabled(false);
+            m_notifier.setStatus(false, false);
         } else {
             jlblMessage.setText(null);
-            m_cardpanel.activate(sTransaction, dTotal);
+            m_cardpanel.activate(transaction, dTotal); 
+            // The cardpanel sets the status
         }
     }
     public PaymentInfo executePayment() {

@@ -24,7 +24,7 @@ import com.openbravo.data.user.EditorCreator;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.ticket.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfo;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 

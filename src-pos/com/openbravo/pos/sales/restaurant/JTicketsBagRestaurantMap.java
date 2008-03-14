@@ -31,7 +31,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.gui.NullIcon;
 import com.openbravo.data.loader.SentenceList;
-import com.openbravo.pos.ticket.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfo;
 
 public class JTicketsBagRestaurantMap extends JTicketsBag {
 
@@ -384,7 +384,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                         // Empty table and checked
 
                         // table occupied
-                        ticket = createTicketModel();
+                        ticket = new TicketInfo();
                         try {
                             dlReceipts.insertSharedTicket(m_place.getId(), ticket);
                         } catch (BasicException e) {
@@ -416,7 +416,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                     if (ticket == null) {
                         // receive the customer
                         // table occupied
-                        ticket = createTicketModel();
+                        ticket = new TicketInfo();
                         if (customer.getId() != null) {
                             ticket.setCustomer(customer);
                         }

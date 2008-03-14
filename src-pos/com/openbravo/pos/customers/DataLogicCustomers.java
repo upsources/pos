@@ -20,6 +20,7 @@ package com.openbravo.pos.customers;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataRead;
+import com.openbravo.data.loader.DataWrite;
 import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.QBFBuilder;
@@ -28,6 +29,7 @@ import com.openbravo.data.loader.SentenceExecTransaction;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerReadBasic;
+import com.openbravo.data.loader.SerializerWrite;
 import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.SerializerWriteBasicExt;
 import com.openbravo.data.loader.SerializerWriteString;
@@ -37,7 +39,6 @@ import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.BeanFactoryDataSingle;
-import com.openbravo.pos.ticket.CustomerInfo;
 
 /**
  *
@@ -88,6 +89,34 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
                                 dr.getString(2));
                     }
                 }).find(card);
+    }
+    
+    public int updateCustomerExt(CustomerInfoExt customer) throws BasicException {
+     
+        return new PreparedSentence(s
+                , "UPDATE CUSTOMERS SET ADDRESS = ?, NOTES = ? WHERE ID = ?"
+                , new SerializerWrite() {
+                    public void writeValues(DataWrite dp, Object obj) throws BasicException {
+                        CustomerInfoExt c = (CustomerInfoExt) obj;
+                        dp.setString(1, c.getAddress());
+                        dp.setString(2, c.getNotes());
+                        dp.setString(3, c.getId());
+                    }
+                }).exec(customer);        
+    }
+    
+    public CustomerInfoExt findCustomerExt(String card) throws BasicException {
+        return (CustomerInfoExt) new PreparedSentence(s
+                , "SELECT ID, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE CARD = ?"
+                , SerializerWriteString.INSTANCE
+                , new CustomerExtRead()).find(card);        
+    }    
+    
+    public CustomerInfoExt loadCustomerExt(String id) throws BasicException {
+        return (CustomerInfoExt) new PreparedSentence(s
+                , "SELECT ID, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE ID = ?"
+                , SerializerWriteString.INSTANCE
+                , new CustomerExtRead()).find(id);        
     }
     
     public final SentenceList getReservationsList() {
@@ -153,4 +182,20 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     public final TableDefinition getTableCustomers() {
         return tcustomers;
     }  
+    
+    private static class CustomerExtRead implements SerializerRead {
+        public Object readValues(DataRead dr) throws BasicException {
+            CustomerInfoExt c = new CustomerInfoExt(
+                    dr.getString(1),
+                    dr.getString(2));
+            c.setCard(dr.getString(3));
+            c.setAddress(dr.getString(4));
+            c.setNotes(dr.getString(5));
+            c.setMaxdebt(dr.getDouble(6));
+            c.setVisible(dr.getBoolean(7).booleanValue());
+            c.setCurdate(dr.getTimestamp(8));
+            c.setCurdebt(dr.getDouble(9));
+            return c;
+        }                  
+    }
 }

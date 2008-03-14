@@ -34,7 +34,7 @@ import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
-import com.openbravo.pos.ticket.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfo;
 
 public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements EditorRecord {
 

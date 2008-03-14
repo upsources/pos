@@ -18,6 +18,11 @@
 
 package com.openbravo.editor;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EventListener;
+import javax.swing.event.EventListenerList;
+
 public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
     
     private final static char[] SET_DOUBLE = {'\u007f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-'};
@@ -25,7 +30,7 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
     private final static char[] SET_INTEGER = {'\u007f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-'};
     private final static char[] SET_INTEGER_POSITIVE = {'\u007f', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     
-    // private Vector m_Listeners = new Vector();
+    protected EventListenerList listeners = new EventListenerList();
     
     private EditorComponent editorcurrent ;
     
@@ -57,6 +62,24 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
         setMode(MODE_STRING);
         doEnabled(false);
     }
+    
+    public void addActionListener(ActionListener l) {
+        listeners.add(ActionListener.class, l);
+    }
+    public void removeActionListener(ActionListener l) {
+        listeners.remove(ActionListener.class, l);
+    }
+    
+    protected void fireActionPerformed() {
+        EventListener[] l = listeners.getListeners(ActionListener.class);
+        ActionEvent e = null;
+        for (int i = 0; i < l.length; i++) {
+            if (e == null) {
+                e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null);
+            }
+            ((ActionListener) l[i]).actionPerformed(e);	       
+        }
+    }   
     
     private void doEnabled(boolean b) {
         m_jKey0.setEnabled(b);
@@ -104,13 +127,6 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
                 break;                                
         }
     }
- 
-//    public void addJNumberEventListener(JNumberEventListener listener) {
-//        m_Listeners.add(listener);
-//    }
-//    public void removeJNumberEventListener(JNumberEventListener listener) {
-//        m_Listeners.remove(listener);
-//    }
     
     private class MyKeyNumberListener implements java.awt.event.ActionListener {
         
@@ -383,14 +399,18 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
             
             // solo lo lanzamos si esta dentro del set de teclas
             char c = evt.getKeyChar();
-            if (keysavailable == null) {
-                // todo disponible
-                editorcurrent.typeChar(c);
+            if (c == '\n') {
+                fireActionPerformed();
             } else {
-                for (int i = 0; i < keysavailable.length; i++) {
-                    if (c == keysavailable[i]) {
-                        // todo disponible
-                        editorcurrent.typeChar(c);
+                if (keysavailable == null) {
+                    // todo disponible
+                    editorcurrent.typeChar(c);
+                } else {
+                    for (int i = 0; i < keysavailable.length; i++) {
+                        if (c == keysavailable[i]) {
+                            // todo disponible
+                            editorcurrent.typeChar(c);
+                        }
                     }
                 }
             }

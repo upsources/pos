@@ -18,27 +18,17 @@
 
 package com.openbravo.pos.util;
 
-import java.util.Currency;
-import java.util.Locale;
+import com.openbravo.format.Formats;
 
 public class RoundUtils {
-    
-    private static int m_iFractionDigits;
-    private static double m_dFractionMultiplier;
-    
-    static {
-        Currency c = Currency.getInstance(Locale.getDefault());
-        m_iFractionDigits = c.getDefaultFractionDigits();
-        m_dFractionMultiplier = Math.pow(10.0, m_iFractionDigits);
-    }
     
     /** Creates a new instance of DoubleUtils */
     private RoundUtils() {
     }
     
     public static double round(double dValue) {
-        
-        return Math.rint(dValue * m_dFractionMultiplier) / m_dFractionMultiplier;
+        double fractionMultiplier = Math.pow(10.0, Formats.getCurrencyDecimals());
+        return Math.rint(dValue * fractionMultiplier) / fractionMultiplier;
     }
     
     public static int compare(double d1, double d2) {

@@ -28,9 +28,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.*;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Random;
+import com.openbravo.pos.util.StringUtils;
 
 /**
  *
@@ -45,9 +43,6 @@ public class PeopleView extends JPanel implements EditorRecord {
     
     private SentenceList m_sentrole;
     private ComboBoxValModel m_RoleModel;  
-    
-    private NumberFormat cardformat = new DecimalFormat("000000");
-    private Random cardrandom = new Random();
     
     /** Creates new form PeopleEditor */
     public PeopleView(DataLogicAdmin dlAdmin, DirtyManager dirty) {
@@ -263,12 +258,7 @@ public class PeopleView extends JPanel implements EditorRecord {
         
         
         if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
-            StringBuffer b = new StringBuffer();
-            b.append('p');
-            b.append(cardformat.format(Math.abs(System.currentTimeMillis()) % 1000000L));
-            b.append(cardformat.format(Math.abs(cardrandom.nextLong()) % 1000000L));
-
-            jcard.setText(b.toString());
+            jcard.setText("c" + StringUtils.getCardNumber());
             m_Dirty.setDirty(true);
         }
         

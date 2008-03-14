@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import java.awt.Component;
  */
 public interface JPaymentInterface {
     
-    public void activate(String sTransaction, double dTotal);    
+    public void activate(double dTotal);    
     public PaymentInfo executePayment();
     public Component getComponent();
 }
