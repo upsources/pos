@@ -15,7 +15,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 package com.openbravo.pos.customers;
 
 import com.openbravo.basic.BasicException;
@@ -27,11 +26,17 @@ import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.BeanFactoryApp;
 import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.JPanelView;
 import com.openbravo.pos.payment.JPaymentSelect;
 import com.openbravo.pos.payment.JPaymentSelectCustomer;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
+import com.openbravo.pos.printer.TicketParser;
+import com.openbravo.pos.printer.TicketPrinterException;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.ticket.TicketInfo;
 import java.util.Date;
 import java.util.List;
@@ -43,49 +48,53 @@ import javax.swing.JOptionPane;
  * @author  adrianromero
  */
 public class CustomersPayment extends javax.swing.JPanel implements JPanelView, BeanFactoryApp {
-    
+
     private AppView app;
     private DataLogicCustomers dlcustomers;
     private DataLogicSales dlsales;
+    private DataLogicSystem dlsystem;
+    private TicketParser ttp;    
     
     private CustomerInfoExt customerext;
     private DirtyManager dirty;
-    
+
     /** Creates new form CustomersPayment */
     public CustomersPayment() {
-        
-        initComponents();        
-        
+
+        initComponents();
+
         editorcard.addEditorKeys(m_jKeys);
         txtAddress.addEditorKeys(m_jKeys);
         txtNotes.addEditorKeys(m_jKeys);
-        
+
         dirty = new DirtyManager();
         txtAddress.addPropertyChangeListener("Text", dirty);
         txtNotes.addPropertyChangeListener("Text", dirty);
     }
 
     public void init(AppView app) throws BeanFactoryException {
-        
-        this.app = app;        
-        dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");        
+
+        this.app = app;
+        dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         dlsales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        dlsystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
+        ttp = new TicketParser(app.getDeviceTicket(), dlsystem);
     }
 
     public Object getBean() {
         return this;
     }
-    
+
     public String getTitle() {
         return AppLocal.getIntString("Menu.CustomersPayment");
     }
 
     public void activate() throws BasicException {
-        
-        resetCustomer();  
-        
+
+        resetCustomer();
+
         editorcard.reset();
-        editorcard.activate();   
+        editorcard.activate();
     }
 
     public boolean deactivate() {
@@ -104,12 +113,12 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
     public JComponent getComponent() {
         return this;
-    } 
-    
+    }
+
     private void editCustomer(CustomerInfoExt customer) {
-        
+
         customerext = customer;
-        
+
         txtName.setText(customer.getName());
         txtCard.setText(customer.getCard());
         txtAddress.reset();
@@ -118,21 +127,21 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtNotes.setText(customer.getNotes());
         txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer.getMaxdebt()));
         txtCurdebt.setText(Formats.CURRENCY.formatValue(customer.getCurdebt()));
-        txtCurdate.setText(Formats.TIMESTAMP.formatValue(customer.getCurdate()));
-        chkVisible.setSelected(customer.isVisible());    
-        
+        txtCurdate.setText(Formats.DATE.formatValue(customer.getCurdate()));
+        chkVisible.setSelected(customer.isVisible());
+
         txtAddress.setEnabled(true);
         txtNotes.setEnabled(true);
-        
+
         dirty.setDirty(false);
-        
-        btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);         
+
+        btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);
     }
-    
+
     private void resetCustomer() {
-        
+
         customerext = null;
-        
+
         txtName.setText(null);
         txtCard.setText(null);
         txtAddress.reset();
@@ -140,19 +149,19 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtMaxdebt.setText(null);
         txtCurdebt.setText(null);
         txtCurdate.setText(null);
-        chkVisible.setSelected(false);   
-        
+        chkVisible.setSelected(false);
+
         txtAddress.setEnabled(false);
         txtNotes.setEnabled(false);
-        
+
         dirty.setDirty(false);
-        
+
         btnPay.setEnabled(false);
-       
+
     }
-    
+
     private void readCustomer() {
-        
+
         try {
             CustomerInfoExt customer = dlcustomers.findCustomerExt(editorcard.getText());
             if (customer == null) {
@@ -161,18 +170,18 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
             } else {
                 editCustomer(customer);
             }
-            
+
         } catch (BasicException ex) {
             MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
-            msg.show(this);            
-        }  
-        
+            msg.show(this);
+        }
+
         editorcard.reset();
-        editorcard.activate();         
+        editorcard.activate();
     }
-    
+
     private void save() {
-        
+
         customerext.setAddress(txtAddress.getText());
         customerext.setNotes(txtNotes.getText());
 
@@ -183,9 +192,31 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosave"), e);
             msg.show(this);
         }
-                  
+
     }
-    
+
+    private void printTicket(String resname, TicketInfo ticket, CustomerInfoExt customer) {
+
+        String resource = dlsystem.getResourceAsXML(resname);
+        if (resource == null) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"));
+            msg.show(this);
+        } else {
+            try {
+                ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
+                script.put("ticket", ticket);
+                script.put("customer", customer);
+                ttp.printTicket(script.eval(resource).toString());
+            } catch (ScriptException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
+                msg.show(this);
+            } catch (TicketPrinterException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
+                msg.show(this);
+            }
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -352,6 +383,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtCurdebt.setBounds(110, 290, 130, 18);
 
         txtCurdate.setEditable(false);
+        txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCurdate.setFocusable(false);
         txtCurdate.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdate);
@@ -387,15 +419,14 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                
+
         readCustomer();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void m_jKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeysActionPerformed
-        
+
         readCustomer();
         
     }//GEN-LAST:event_m_jKeysActionPerformed
@@ -405,7 +436,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlcustomers);
         finder.search(null);
         finder.setVisible(true);
-        CustomerInfo customer = finder.getSelectedCustomer();     
+        CustomerInfo customer = finder.getSelectedCustomer();
         if (customer != null) {
             try {
                 CustomerInfoExt c = dlcustomers.loadCustomerExt(customer.getId());
@@ -420,77 +451,82 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 msg.show(this);
             }
             editorcard.reset();
-            editorcard.activate();               
+            editorcard.activate();
         }        
                 
 }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
 
-    JPaymentSelect paymentdialog = JPaymentSelectCustomer.getDialog(this);
+        JPaymentSelect paymentdialog = JPaymentSelectCustomer.getDialog(this);
 
 
-    if (paymentdialog.showDialog(app, customerext.getCurdebt(), null)) {
-        
-        // Save the ticket
-        TicketInfo ticket = new TicketInfo();
-        
-        List<PaymentInfo> payments = paymentdialog.getSelectedPayments();
-        
-        double total = 0.0;
-        for (PaymentInfo p : payments) {
-            total += p.getTotal();           
-        }
-        
-        payments.add(new PaymentInfoTicket(-total, "debtpaid"));
-        
-        ticket.setPayments(payments);        
-        
-        ticket.setUser(app.getAppUserView().getUser().getUserInfo()); 
-        ticket.setActiveCash(app.getActiveCashIndex());
-        ticket.setDate(new Date());
-        ticket.setCustomer(customerext.getCustomerInfo());
-        
-        try {
-            dlsales.saveTicket(ticket, app.getInventoryLocation());                       
-        } catch (BasicException eData) {
-            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
-            msg.show(this);
-        }
-        
-        
-        // reload customer
-        try {
-            CustomerInfoExt c = dlcustomers.loadCustomerExt(customerext.getId());
-            if (c == null) {
-                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
-                msg.show(this);
-            } else {
-                editCustomer(c);
+        if (paymentdialog.showDialog(app, customerext.getCurdebt(), null)) {
+
+            // Save the ticket
+            TicketInfo ticket = new TicketInfo();
+
+            List<PaymentInfo> payments = paymentdialog.getSelectedPayments();
+
+            double total = 0.0;
+            for (PaymentInfo p : payments) {
+                total += p.getTotal();
             }
-        } catch (BasicException ex) {
-            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
-            msg.show(this);
+
+            payments.add(new PaymentInfoTicket(-total, "debtpaid"));
+
+            ticket.setPayments(payments);
+
+            ticket.setUser(app.getAppUserView().getUser().getUserInfo());
+            ticket.setActiveCash(app.getActiveCashIndex());
+            ticket.setDate(new Date());
+            ticket.setCustomer(customerext.getCustomerInfo());
+
+            try {
+                dlsales.saveTicket(ticket, app.getInventoryLocation());
+            } catch (BasicException eData) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                msg.show(this);
+            }
+
+
+            // reload customer
+            CustomerInfoExt c;
+            try {
+                c = dlcustomers.loadCustomerExt(customerext.getId());
+                if (c == null) {
+                    MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
+                    msg.show(this);
+                } else {
+                    editCustomer(c);
+                }
+            } catch (BasicException ex) {
+                c = null;
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
+                msg.show(this);
+            }
+
+            printTicket(paymentdialog.isPrintSelected()
+                    ? "Printer.CustomerPaid"
+                    : "Printer.CustomerPaid2",
+                    ticket, c);
+
+            editorcard.reset();
+            editorcard.activate();
         }        
-        
-        editorcard.reset();
-        editorcard.activate();           
-    }        
         
 }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnCustomer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomer1ActionPerformed
 
-        if (dirty.isDirty()) {           
+        if (dirty.isDirty()) {
             save();
-            
+
             editorcard.reset();
-            editorcard.activate();             
+            editorcard.activate();
         }
         
     }//GEN-LAST:event_btnCustomer1ActionPerformed
-  
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnCustomer1;
@@ -521,5 +557,4 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JTextField txtName;
     private com.openbravo.editor.JEditorString txtNotes;
     // End of variables declaration//GEN-END:variables
-    
 }

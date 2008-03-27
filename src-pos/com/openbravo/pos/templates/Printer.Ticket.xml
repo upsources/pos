@@ -56,6 +56,10 @@
             <text align="left" length="15">Sales person:</text>
             <text>${ticket.printUser()}</text>
         </line> 
+        <line>
+            <text align="left" length="15">Customer:</text>
+            <text>${ticket.printCustomer()}</text>
+        </line>         
         #if ($place != "")
         <line>
             <text align="left" length="15">Table:</text>

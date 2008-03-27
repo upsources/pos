@@ -23,7 +23,6 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.JPanelTable;
 
@@ -33,17 +32,16 @@ import com.openbravo.pos.panels.JPanelTable;
  */
 public class StockDiaryPanel extends JPanelTable {
     
-    private StockDiaryEditor jeditor;
-    
-    private DataLogicSales m_dlSales = null;
+    private StockDiaryEditor jeditor;    
+    private DataLogicSales m_dlSales;
     
     /** Creates a new instance of JPanelDiaryEditor */
-    public StockDiaryPanel(AppView app) {
-        super(app);
-        
+    public StockDiaryPanel() {
+    }
+    
+    protected void init() {
         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-
-        jeditor = new StockDiaryEditor(app, m_Dirty);    
+        jeditor = new StockDiaryEditor(app, dirty); 
     }
     
     public ListProvider getListProvider() {

@@ -2,12 +2,12 @@
  * ExternalSalesImplServiceLocator.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.3 Oct 05, 2005 (05:23:37 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package net.opentrends.openbravo.ws.types;
+package com.openbravo.ws.externalsales;
 
-public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Service implements net.opentrends.openbravo.ws.types.ExternalSalesImplService {
+public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Service implements com.openbravo.ws.externalsales.ExternalSalesImplService {
 
     public ExternalSalesImplServiceLocator() {
     }
@@ -22,7 +22,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
     }
 
     // Use to get a proxy class for ExternalSales
-    private java.lang.String ExternalSales_address = "http://192.168.1.130:8880/openbravo/services/ExternalSales";
+    private java.lang.String ExternalSales_address = "http://localhost:8080/openbravo/services/ExternalSales";
 
     public java.lang.String getExternalSalesAddress() {
         return ExternalSales_address;
@@ -39,7 +39,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
         ExternalSalesWSDDServiceName = name;
     }
 
-    public net.opentrends.openbravo.ws.types.ExternalSalesImpl getExternalSales() throws javax.xml.rpc.ServiceException {
+    public com.openbravo.ws.externalsales.ExternalSalesImpl getExternalSales() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(ExternalSales_address);
@@ -50,9 +50,9 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
         return getExternalSales(endpoint);
     }
 
-    public net.opentrends.openbravo.ws.types.ExternalSalesImpl getExternalSales(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public com.openbravo.ws.externalsales.ExternalSalesImpl getExternalSales(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            net.opentrends.openbravo.ws.types.ExternalSalesSoapBindingStub _stub = new net.opentrends.openbravo.ws.types.ExternalSalesSoapBindingStub(portAddress, this);
+            com.openbravo.ws.externalsales.ExternalSalesSoapBindingStub _stub = new com.openbravo.ws.externalsales.ExternalSalesSoapBindingStub(portAddress, this);
             _stub.setPortName(getExternalSalesWSDDServiceName());
             return _stub;
         }
@@ -72,8 +72,8 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (net.opentrends.openbravo.ws.types.ExternalSalesImpl.class.isAssignableFrom(serviceEndpointInterface)) {
-                net.opentrends.openbravo.ws.types.ExternalSalesSoapBindingStub _stub = new net.opentrends.openbravo.ws.types.ExternalSalesSoapBindingStub(new java.net.URL(ExternalSales_address), this);
+            if (com.openbravo.ws.externalsales.ExternalSalesImpl.class.isAssignableFrom(serviceEndpointInterface)) {
+                com.openbravo.ws.externalsales.ExternalSalesSoapBindingStub _stub = new com.openbravo.ws.externalsales.ExternalSalesSoapBindingStub(new java.net.URL(ExternalSales_address), this);
                 _stub.setPortName(getExternalSalesWSDDServiceName());
                 return _stub;
             }
@@ -105,7 +105,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ExternalSalesImplService");
+        return new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ExternalSalesImplService");
     }
 
     private java.util.HashSet ports = null;
@@ -113,7 +113,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ExternalSales"));
+            ports.add(new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ExternalSales"));
         }
         return ports.iterator();
     }

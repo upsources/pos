@@ -17,12 +17,12 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.admin;
+
 import javax.swing.ListCellRenderer;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.panels.*;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.data.loader.Vectorer;
@@ -41,13 +41,13 @@ public class PeoplePanel extends JPanelTable {
     private PeopleView jeditor;
     
     /** Creates a new instance of JPanelPeople */
-    public PeoplePanel(AppView app) {
-        super(app);
-        
-        DataLogicAdmin dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");
-        
+    public PeoplePanel() {
+    }
+    
+    protected void init() {      
+        DataLogicAdmin dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");        
         tpeople = dlAdmin.getTablePeople();           
-        jeditor = new PeopleView(dlAdmin, m_Dirty);    
+        jeditor = new PeopleView(dlAdmin, dirty);    
     }
     
     public ListProvider getListProvider() {

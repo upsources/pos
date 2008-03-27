@@ -2,19 +2,19 @@
  * Order.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.3 Oct 05, 2005 (05:23:37 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package net.opentrends.openbravo.ws.types;
+package com.openbravo.ws.externalsales;
 
 public class Order  implements java.io.Serializable {
-    private net.opentrends.openbravo.ws.types.BPartner businessPartner;
+    private com.openbravo.ws.externalsales.BPartner businessPartner;
 
-    private net.opentrends.openbravo.ws.types.OrderLine[] lines;
+    private com.openbravo.ws.externalsales.OrderLine[] lines;
 
-    private net.opentrends.openbravo.ws.types.OrderIdentifier orderId;
+    private com.openbravo.ws.externalsales.OrderIdentifier orderId;
 
-    private net.opentrends.openbravo.ws.types.Payment[] payment;
+    private com.openbravo.ws.externalsales.Payment[] payment;
 
     private int state;
 
@@ -22,10 +22,10 @@ public class Order  implements java.io.Serializable {
     }
 
     public Order(
-           net.opentrends.openbravo.ws.types.BPartner businessPartner,
-           net.opentrends.openbravo.ws.types.OrderLine[] lines,
-           net.opentrends.openbravo.ws.types.OrderIdentifier orderId,
-           net.opentrends.openbravo.ws.types.Payment[] payment,
+           com.openbravo.ws.externalsales.BPartner businessPartner,
+           com.openbravo.ws.externalsales.OrderLine[] lines,
+           com.openbravo.ws.externalsales.OrderIdentifier orderId,
+           com.openbravo.ws.externalsales.Payment[] payment,
            int state) {
            this.businessPartner = businessPartner;
            this.lines = lines;
@@ -40,7 +40,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @return businessPartner
      */
-    public net.opentrends.openbravo.ws.types.BPartner getBusinessPartner() {
+    public com.openbravo.ws.externalsales.BPartner getBusinessPartner() {
         return businessPartner;
     }
 
@@ -50,7 +50,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @param businessPartner
      */
-    public void setBusinessPartner(net.opentrends.openbravo.ws.types.BPartner businessPartner) {
+    public void setBusinessPartner(com.openbravo.ws.externalsales.BPartner businessPartner) {
         this.businessPartner = businessPartner;
     }
 
@@ -60,7 +60,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @return lines
      */
-    public net.opentrends.openbravo.ws.types.OrderLine[] getLines() {
+    public com.openbravo.ws.externalsales.OrderLine[] getLines() {
         return lines;
     }
 
@@ -70,7 +70,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @param lines
      */
-    public void setLines(net.opentrends.openbravo.ws.types.OrderLine[] lines) {
+    public void setLines(com.openbravo.ws.externalsales.OrderLine[] lines) {
         this.lines = lines;
     }
 
@@ -80,7 +80,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @return orderId
      */
-    public net.opentrends.openbravo.ws.types.OrderIdentifier getOrderId() {
+    public com.openbravo.ws.externalsales.OrderIdentifier getOrderId() {
         return orderId;
     }
 
@@ -90,7 +90,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @param orderId
      */
-    public void setOrderId(net.opentrends.openbravo.ws.types.OrderIdentifier orderId) {
+    public void setOrderId(com.openbravo.ws.externalsales.OrderIdentifier orderId) {
         this.orderId = orderId;
     }
 
@@ -100,7 +100,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @return payment
      */
-    public net.opentrends.openbravo.ws.types.Payment[] getPayment() {
+    public com.openbravo.ws.externalsales.Payment[] getPayment() {
         return payment;
     }
 
@@ -110,7 +110,7 @@ public class Order  implements java.io.Serializable {
      * 
      * @param payment
      */
-    public void setPayment(net.opentrends.openbravo.ws.types.Payment[] payment) {
+    public void setPayment(com.openbravo.ws.externalsales.Payment[] payment) {
         this.payment = payment;
     }
 
@@ -208,29 +208,29 @@ public class Order  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Order.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Order"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Order"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("businessPartner");
         elemField.setXmlName(new javax.xml.namespace.QName("", "businessPartner"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "BPartner"));
+        elemField.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "BPartner"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("lines");
         elemField.setXmlName(new javax.xml.namespace.QName("", "lines"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "OrderLine"));
+        elemField.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "OrderLine"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("orderId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "orderId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "OrderIdentifier"));
+        elemField.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "OrderIdentifier"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("payment");
         elemField.setXmlName(new javax.xml.namespace.QName("", "payment"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Payment"));
+        elemField.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Payment"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();

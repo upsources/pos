@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.customers;
 
+import com.openbravo.format.Formats;
 import java.util.Date;
 
 /**
@@ -114,5 +115,10 @@ public class CustomerInfoExt {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+    
+    public String printCurDebt() {
+        
+        return Formats.CURRENCY.formatValue(curdebt == null ? new Double(0.0) : curdebt);
     }
 }

@@ -24,7 +24,6 @@ import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.panels.*;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.data.loader.Vectorer;
 import com.openbravo.data.user.EditorRecord;
@@ -43,14 +42,14 @@ public class CategoriesPanel extends JPanelTable {
     private CategoriesEditor jeditor;
     
     /** Creates a new instance of JPanelCategories */
-    public CategoriesPanel(AppView app) {
-        super(app);
-        
-        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");   
-        
-        tcategories = dlSales.getTableCategories();
-        jeditor = new CategoriesEditor(app, m_Dirty);    
+    public CategoriesPanel() {        
     }   
+    
+    protected void init() {   
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");           
+        tcategories = dlSales.getTableCategories();
+        jeditor = new CategoriesEditor(app, dirty);    
+    }
     
     public void activate() throws BasicException { 
         

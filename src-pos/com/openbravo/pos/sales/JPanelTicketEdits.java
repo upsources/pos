@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import com.openbravo.basic.BasicException;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.ticket.ProductInfoExt;
 
 public class JPanelTicketEdits extends JPanelTicket {
@@ -31,13 +30,14 @@ public class JPanelTicketEdits extends JPanelTicket {
     private JTicketCatalogLines m_catandlines;
     
     /** Creates a new instance of JPanelTicketRefunds */
-    public JPanelTicketEdits(AppView oApp) {
-        super(oApp);
+    public JPanelTicketEdits() {
     }
+    
     public String getTitle() {
         return null;
     }
     
+    @Override
     public void activate() throws BasicException {      
         super.activate();
         m_catandlines.loadCatalog();

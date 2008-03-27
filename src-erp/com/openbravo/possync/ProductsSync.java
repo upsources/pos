@@ -30,22 +30,30 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.ImageUtils;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.ProcessAction;
+import com.openbravo.pos.inventory.MovementReason;
 import com.openbravo.pos.ticket.CategoryInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
-import net.opentrends.openbravo.ws.types.Product;
+import com.openbravo.ws.externalsales.ProductPlus;
+import java.util.Date;
+import java.util.UUID;
 
 public class ProductsSync implements ProcessAction {
         
     private DataLogicSystem dlsystem;
     private DataLogicIntegration dlintegration;
+    private DataLogicSales dlsales;
+    private String warehouse;
     
     /** Creates a new instance of ProductsSync */
-    public ProductsSync(DataLogicSystem dlsystem, DataLogicIntegration dlintegration) {
+    public ProductsSync(DataLogicSystem dlsystem, DataLogicIntegration dlintegration, DataLogicSales dlsales, String warehouse) {
         this.dlsystem = dlsystem;
         this.dlintegration = dlintegration;
+        this.dlsales = dlsales;
+        this.warehouse = warehouse;
     }
     
     public MessageInf execute() throws BasicException {
@@ -53,7 +61,7 @@ public class ProductsSync implements ProcessAction {
         try {
         
             ExternalSalesHelper externalsales = new ExternalSalesHelper(dlsystem);
-            Product[] products = externalsales.getProductsCatalog();
+            ProductPlus[] products = externalsales.getProductsPlusCatalog();
 
             if (products == null){
                 throw new BasicException(AppLocal.getIntString("message.returnnull"));
@@ -62,6 +70,8 @@ public class ProductsSync implements ProcessAction {
             } else {
 
                 dlintegration.syncProductsBefore();
+                
+                Date now = new Date();
                 
                 for (int i = 0; i < products.length; i++) {
                     // Synchonization of taxes
@@ -91,7 +101,22 @@ public class ProductsSync implements ProcessAction {
                     p.setCategoryID(c.getID());
                     p.setTaxInfo(t);
                     p.setImage(ImageUtils.readImage(products[i].getImageUrl()));
-                    dlintegration.syncProduct(p);                      
+                    dlintegration.syncProduct(p);  
+                    
+                    // Synchronization of stock                    
+                    double diff = products[i].getQtyonhand() - dlsales.findProductStock(p.getID(), warehouse);
+                    
+                    Object[] diary = new Object[7];
+                    diary[0] = UUID.randomUUID().toString();
+                    diary[1] = now;
+                    diary[2] = diff > 0.0 
+                            ? MovementReason.IN_MOVEMENT.getKey()
+                            : MovementReason.OUT_MOVEMENT.getKey();
+                    diary[3] = warehouse;
+                    diary[4] = p.getID();
+                    diary[5] = new Double(diff);
+                    diary[6] = new Double(p.getPriceBuy());                                
+                    dlsales.getStockDiaryInsert().exec(diary);                    
                 }
                 
                 // datalogic.syncProductsAfter();

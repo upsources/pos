@@ -126,7 +126,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         
         if (getCustomerId() != null) {
             name.append(m_Customer.toString());
-            name.append(" ");
+            name.append(" - ");
         }
         
         if (info == null) {
@@ -242,7 +242,8 @@ public class TicketInfo implements SerializableRead, Externalizable {
         return dSuma;
     }
     
-    public double getTotal() {        
+    public double getTotal() {  
+        
         double dSuma = 0.0;
         TicketLineInfo oLine;            
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
@@ -250,6 +251,18 @@ public class TicketInfo implements SerializableRead, Externalizable {
             dSuma += oLine.getValue();
         }        
         return dSuma;
+    }
+    
+    public double getTotalPaid() {
+        
+        double sum = 0.0;
+        for (Iterator<PaymentInfo> i = m_aPayment.iterator(); i.hasNext();) {
+            PaymentInfo p = i.next();
+            if (!"debtpaid".equals(p.getName())) {
+                sum += p.getTotal();
+            }                    
+        }
+        return sum;
     }
     
     public List<PaymentInfo> getPayments() {
@@ -338,6 +351,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }    
     public String printTotal() {
         return Formats.CURRENCY.formatValue(new Double(getTotal()));
+    }
+    public String printTotalPaid() {
+        return Formats.CURRENCY.formatValue(new Double(getTotalPaid()));
     }
     public String printTotalPts() {
         return Formats.INT.formatValue(new Double(CurrencyChange.changeEurosToPts(getTotal())));

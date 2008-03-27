@@ -2,12 +2,12 @@
  * ExternalSalesSoapBindingStub.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.3 Oct 05, 2005 (05:23:37 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package net.opentrends.openbravo.ws.types;
+package com.openbravo.ws.externalsales;
 
-public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub implements net.opentrends.openbravo.ws.types.ExternalSalesImpl {
+public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub implements com.openbravo.ws.externalsales.ExternalSalesImpl {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();
@@ -16,33 +16,13 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[5];
+        _operations = new org.apache.axis.description.OperationDesc[4];
         _initOperationDesc1();
     }
 
     private static void _initOperationDesc1(){
         org.apache.axis.description.OperationDesc oper;
         org.apache.axis.description.ParameterDesc param;
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("test2");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in0"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
-        oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        oper.setReturnClass(java.lang.String.class);
-        oper.setReturnQName(new javax.xml.namespace.QName("", "test2Return"));
-        oper.setStyle(org.apache.axis.constants.Style.RPC);
-        oper.setUse(org.apache.axis.constants.Use.ENCODED);
-        _operations[0] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("test");
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        oper.setReturnClass(java.lang.String.class);
-        oper.setReturnQName(new javax.xml.namespace.QName("", "testReturn"));
-        oper.setStyle(org.apache.axis.constants.Style.RPC);
-        oper.setUse(org.apache.axis.constants.Use.ENCODED);
-        _operations[1] = oper;
-
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("getProductsCatalog");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in0"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
@@ -51,16 +31,35 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in2"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfProduct"));
-        oper.setReturnClass(net.opentrends.openbravo.ws.types.Product[].class);
+        oper.setReturnType(new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_Product"));
+        oper.setReturnClass(com.openbravo.ws.externalsales.Product[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getProductsCatalogReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
-        _operations[2] = oper;
+        _operations[0] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("getProductsPlusCatalog");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in0"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in1"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in2"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_ProductPlus"));
+        oper.setReturnClass(com.openbravo.ws.externalsales.ProductPlus[].class);
+        oper.setReturnQName(new javax.xml.namespace.QName("", "getProductsPlusCatalogReturn"));
+        oper.setStyle(org.apache.axis.constants.Style.RPC);
+        oper.setUse(org.apache.axis.constants.Use.ENCODED);
+        _operations[1] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("uploadOrders");
@@ -70,16 +69,16 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in2"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfOrder"), net.opentrends.openbravo.ws.types.Order[].class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_Order"), com.openbravo.ws.externalsales.Order[].class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in5"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in5"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
-        _operations[3] = oper;
+        _operations[2] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("getOrders");
@@ -87,18 +86,18 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in1"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in2"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfOrderIdentifier"), net.opentrends.openbravo.ws.types.OrderIdentifier[].class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in2"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_OrderIdentifier"), com.openbravo.ws.externalsales.OrderIdentifier[].class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in3"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in4"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfOrder"));
-        oper.setReturnClass(net.opentrends.openbravo.ws.types.Order[].class);
+        oper.setReturnType(new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_Order"));
+        oper.setReturnClass(com.openbravo.ws.externalsales.Order[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "getOrdersReturn"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
-        _operations[4] = oper;
+        _operations[3] = oper;
 
     }
 
@@ -131,106 +130,122 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfOrder");
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "BPartner");
             cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Order[].class;
+            cls = com.openbravo.ws.externalsales.BPartner.class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Order");
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Category");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.Category.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Order");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.Order.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "OrderIdentifier");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.OrderIdentifier.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "OrderLine");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.OrderLine.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Payment");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.Payment.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Product");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.Product.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "ProductPlus");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.ProductPlus.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Tax");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.Tax.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_Order");
+            cachedSerQNames.add(qName);
+            cls = com.openbravo.ws.externalsales.Order[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Order");
             qName2 = null;
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfOrderIdentifier");
+            qName = new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_OrderIdentifier");
             cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.OrderIdentifier[].class;
+            cls = com.openbravo.ws.externalsales.OrderIdentifier[].class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "OrderIdentifier");
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "OrderIdentifier");
             qName2 = null;
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfOrderLine");
+            qName = new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_OrderLine");
             cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.OrderLine[].class;
+            cls = com.openbravo.ws.externalsales.OrderLine[].class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "OrderLine");
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "OrderLine");
             qName2 = null;
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfPayment");
+            qName = new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_Payment");
             cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Payment[].class;
+            cls = com.openbravo.ws.externalsales.Payment[].class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Payment");
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Payment");
             qName2 = null;
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "ArrayOfProduct");
+            qName = new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_Product");
             cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Product[].class;
+            cls = com.openbravo.ws.externalsales.Product[].class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Product");
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "Product");
             qName2 = null;
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "BPartner");
+            qName = new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ArrayOf_tns1_ProductPlus");
             cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.BPartner.class;
+            cls = com.openbravo.ws.externalsales.ProductPlus[].class;
             cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Category");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Category.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Order");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Order.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "OrderIdentifier");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.OrderIdentifier.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "OrderLine");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.OrderLine.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Payment");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Payment.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Product");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Product.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Tax");
-            cachedSerQNames.add(qName);
-            cls = net.opentrends.openbravo.ws.types.Tax.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
+            qName = new javax.xml.namespace.QName("/services/ExternalSales", "ProductPlus");
+            qName2 = null;
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
     }
 
@@ -299,74 +314,12 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
         }
     }
 
-    public java.lang.String test2(java.lang.String in0) throws java.rmi.RemoteException {
+    public com.openbravo.ws.externalsales.Product[] getProductsCatalog(int in0, int in1, int in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
         _call.setOperation(_operations[0]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("");
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("http://externalSales.ws.erpCommon.openbravo.org", "test2"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {in0});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return (java.lang.String) _resp;
-            } catch (java.lang.Exception _exception) {
-                return (java.lang.String) org.apache.axis.utils.JavaUtils.convert(_resp, java.lang.String.class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
-}
-    }
-
-    public java.lang.String test() throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[1]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("");
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("http://externalSales.ws.erpCommon.openbravo.org", "test"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return (java.lang.String) _resp;
-            } catch (java.lang.Exception _exception) {
-                return (java.lang.String) org.apache.axis.utils.JavaUtils.convert(_resp, java.lang.String.class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
-}
-    }
-
-    public net.opentrends.openbravo.ws.types.Product[] getProductsCatalog(int in0, int in1, int in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[2]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
@@ -382,9 +335,9 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
         else {
             extractAttachments(_call);
             try {
-                return (net.opentrends.openbravo.ws.types.Product[]) _resp;
+                return (com.openbravo.ws.externalsales.Product[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (net.opentrends.openbravo.ws.types.Product[]) org.apache.axis.utils.JavaUtils.convert(_resp, net.opentrends.openbravo.ws.types.Product[].class);
+                return (com.openbravo.ws.externalsales.Product[]) org.apache.axis.utils.JavaUtils.convert(_resp, com.openbravo.ws.externalsales.Product[].class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -392,12 +345,43 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
 }
     }
 
-    public void uploadOrders(int in0, int in1, int in2, net.opentrends.openbravo.ws.types.Order[] in3, java.lang.String in4, java.lang.String in5) throws java.rmi.RemoteException {
+    public com.openbravo.ws.externalsales.ProductPlus[] getProductsPlusCatalog(int in0, int in1, int in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[3]);
+        _call.setOperation(_operations[1]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://externalSales.ws.erpCommon.openbravo.org", "getProductsPlusCatalog"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(in0), new java.lang.Integer(in1), new java.lang.Integer(in2), in3, in4});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (com.openbravo.ws.externalsales.ProductPlus[]) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (com.openbravo.ws.externalsales.ProductPlus[]) org.apache.axis.utils.JavaUtils.convert(_resp, com.openbravo.ws.externalsales.ProductPlus[].class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public void uploadOrders(int in0, int in1, int in2, com.openbravo.ws.externalsales.Order[] in3, java.lang.String in4, java.lang.String in5) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[2]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
@@ -416,12 +400,12 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
 }
     }
 
-    public net.opentrends.openbravo.ws.types.Order[] getOrders(int in0, int in1, net.opentrends.openbravo.ws.types.OrderIdentifier[] in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException {
+    public com.openbravo.ws.externalsales.Order[] getOrders(int in0, int in1, com.openbravo.ws.externalsales.OrderIdentifier[] in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[4]);
+        _call.setOperation(_operations[3]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
@@ -437,9 +421,9 @@ public class ExternalSalesSoapBindingStub extends org.apache.axis.client.Stub im
         else {
             extractAttachments(_call);
             try {
-                return (net.opentrends.openbravo.ws.types.Order[]) _resp;
+                return (com.openbravo.ws.externalsales.Order[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (net.opentrends.openbravo.ws.types.Order[]) org.apache.axis.utils.JavaUtils.convert(_resp, net.opentrends.openbravo.ws.types.Order[].class);
+                return (com.openbravo.ws.externalsales.Order[]) org.apache.axis.utils.JavaUtils.convert(_resp, com.openbravo.ws.externalsales.Order[].class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

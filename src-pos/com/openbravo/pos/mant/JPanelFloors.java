@@ -21,7 +21,6 @@ package com.openbravo.pos.mant;
 import javax.swing.ListCellRenderer;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.format.Formats;
 import com.openbravo.data.loader.Datas;
@@ -42,10 +41,11 @@ public class JPanelFloors extends JPanelTable {
     private FloorsEditor jeditor;
     
     /** Creates a new instance of JPanelFloors */
-    public JPanelFloors(AppView oApp) {
-        super(oApp);
-        
-        tfloors = new TableDefinition(m_App.getSession(),
+    public JPanelFloors() {
+    }
+    
+    protected void init() {
+        tfloors = new TableDefinition(app.getSession(),
             "FLOORS"
             , new String[] {"ID", "NAME", "IMAGE"}
             , new String[] {"ID", AppLocal.getIntString("Label.Name"), "IMAGE"}
@@ -53,7 +53,7 @@ public class JPanelFloors extends JPanelTable {
             , new Formats[] {Formats.NULL, Formats.STRING}
             , new int[] {0}
         );  
-        jeditor = new FloorsEditor(m_Dirty);    
+        jeditor = new FloorsEditor(dirty); 
     }
     
     public ListProvider getListProvider() {

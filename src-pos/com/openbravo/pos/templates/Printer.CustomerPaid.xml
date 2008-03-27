@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Openbravo POS is a point of sales application designed for touch screens.
+    Copyright (C) 2008 Openbravo, S.L.
+    http://sourceforge.net/projects/openbravopos
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ -->
+
+<output>
+    
+    <display>
+        <line1>
+            <text align="left" length="10">Total paid.</text>
+            <text align="right" length="10">${ticket.printTotalPaid()}</text>
+        </line1>
+        <line2>
+            <text align="center" length="20">Thank you.</text>
+        </line2>
+    </display>
+    
+    <ticket>
+        <image>Printer.Ticket.Logo</image>
+        <line></line>
+        <line>
+            <text align="center" length="42">Receipt sample.</text>
+        </line>
+        <line>
+            <text align="center" length="42">You can change this template</text>
+        </line>
+        <line>
+            <text align="center" length="42">in the resources panel</text>
+        </line>
+        <line></line>
+        <line>
+            <text align="left" length="15">Receipt:</text>
+            <text>${ticket.printId()}</text>
+        </line>    
+        <line>
+            <text align="left" length="15">Date:</text>
+            <text>${ticket.printDate()}</text>
+        </line>  
+        <line>
+            <text align="left" length="15">Sales person:</text>
+            <text>${ticket.printUser()}</text>
+        </line> 
+        <line>
+            <text align="left" length="15">Customer:</text>
+            <text>${ticket.printCustomer()}</text>
+        </line>         
+        
+        <line></line> 
+        <line size="1">
+            <text align ="left" length="16" bold="true">Total paid.</text>
+            <text align ="right" length="20" bold="true">${ticket.printTotalPaid()}</text>
+        </line>    
+        <line>
+            <text align ="left" length="16" bold="true">Pending.</text>
+            <text align ="right" length="20" bold="true">${customer.printCurDebt()}</text>
+        </line>          
+        
+        #foreach ($paymentline in $ticket.payments)      
+        #if ($paymentline.name == "cash")
+        <line></line>     
+        <line>
+            <text bold="true">Cash</text>
+        </line>  
+        <line>
+            <text align="left" length="22">Tendered:</text>
+            <text align ="right" length="20">${paymentline.printPaid()}</text>
+        </line>  
+        <line>
+            <text align="left" length="22">Change:</text>
+            <text align ="right" length="20">${paymentline.printChange()}</text>
+        </line>   
+        #end
+        #if ($paymentline.name == "cashrefund")
+        <line></line>     
+        <line>
+            <text bold="true">Refund</text>
+        </line>
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+        #end
+        #if ($paymentline.name == "magcard")
+        <line></line>        
+        <line>
+            <text bold="true">Mag card</text>
+        </line>   
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+        <line>
+            <text align ="left" length="22">Number:</text>
+            <text>${paymentline.printCardNumber()}</text>
+        </line>
+        <line>
+            <text align ="left" length="22">Expiration date:</text>
+            <text>${paymentline.printExpirationDate()}</text>
+        </line>
+        <line>
+            <text align ="left" length="22">Operation:</text>
+            <text>${paymentline.printTransactionID()}</text>
+        </line>
+        <line>
+            <text align ="left" length="22">Authorization:</text>
+            <text>${paymentline.printAuthorization()}</text>
+        </line>
+        #end  
+        #if ($paymentline.name == "magcardrefund")
+        <line></line>     
+        <line>
+            <text bold="true">Mag card refund</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+        #end
+        #if ($paymentline.name == "cheque")
+        <line></line>     
+        <line>
+            <text bold="true">Cheque</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+        #end
+        #if ($paymentline.name == "chequerefund")
+        <line></line>     
+        <line>
+            <text bold="true">Cheque refund</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+        #end
+        #if ($paymentline.name == "debt")
+        <line></line>     
+        <line>
+            <text bold="true">Debt</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+        #end
+        #end 
+        
+        
+        <line></line>            
+        <line>
+            <text align="center" length="42">Thank you for your visit.</text>
+        </line>   
+        <cut/>  
+    </ticket>
+    
+    #foreach ($paymentline in $ticket.payments)      
+    #if ($paymentline.name == "cash")
+    <opendrawer/>
+    #end
+    #if ($paymentline.name == "cashrefund")
+    <opendrawer/>
+    #end  
+    #end
+    
+</output>
+

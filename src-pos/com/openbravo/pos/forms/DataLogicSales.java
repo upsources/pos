@@ -226,9 +226,10 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     payment[3] = new Double(p.getTotal());
                     paymentinsert.exec(payment);
                     if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
-                        getDebtUpdate().exec(new Object[]{
+                        getDebtUpdate().exec(new Object[]{                           
+                            ticket.getCustomer().getId(),
                             new Double(p.getTotal()),
-                            ticket.getCustomer().getId()
+                            ticket.getDate()
                         });
                     }
                 } 
@@ -345,8 +346,11 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public final SentenceExec getDebtUpdate() {
         
         return new PreparedSentence(s
-                , "UPDATE CUSTOMERS SET CURDEBT = (COALESCE(CURDEBT, 0) + ?) WHERE ID = ?"
-                , new SerializerWriteBasic(new Datas[] {Datas.DOUBLE, Datas.STRING}));   
+                , "UPDATE CUSTOMERS SET " +
+                " CURDEBT = CASE WHEN (COALESCE(CURDEBT, 0) + ?) <= 0 THEN NULL ELSE (COALESCE(CURDEBT, 0) + ?) END, " +
+                " CURDATE = CASE WHEN (COALESCE(CURDEBT, 0) + ?) <= 0 THEN NULL WHEN CURDATE IS NULL THEN ? ELSE CURDATE END " +
+                " WHERE ID = ?"
+                , new SerializerWriteBasicExt(new Datas[] {Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP}, new int[]{1, 1, 1, 2, 0}));   
     }
     
     public final SentenceExec getStockDiaryInsert() {
@@ -407,6 +411,14 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     , new SerializerWriteBasicExt(paymenttabledatas, new int[] {0})).exec(params);
             }
         };
+    }
+    
+    public final double findProductStock(String id, String warehouse) throws BasicException {
+        PreparedSentence p = new PreparedSentence(s, "SELECT UNITS FROM STOCKCURRENT WHERE PRODUCT=? AND LOCATION=?"
+                , new SerializerWriteBasic(new Datas[]{ Datas.STRING, Datas.STRING})
+                , SerializerReadDouble.INSTANCE);
+        Double d = (Double) p.find(new Object[]{id, warehouse});
+        return d == null ? 0.0 : d.doubleValue();
     }
     
     public final SentenceList getProductStock() {

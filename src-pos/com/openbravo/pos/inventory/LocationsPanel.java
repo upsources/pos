@@ -42,13 +42,13 @@ public class LocationsPanel extends JPanelTable {
     private LocationsView jeditor;
     
     /** Creates a new instance of LocationsPanel */
-    public LocationsPanel(AppView app) {
-        super(app);
-        
-        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-          
+    public LocationsPanel() {
+    }
+    
+    protected void init() {   
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");          
         tlocations = dlSales.getTableLocations();
-        jeditor = new LocationsView(m_Dirty);
+        jeditor = new LocationsView(dirty);
     }
     
     public ListProvider getListProvider() {

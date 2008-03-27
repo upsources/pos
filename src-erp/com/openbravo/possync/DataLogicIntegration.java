@@ -208,7 +208,7 @@ public class DataLogicIntegration extends BeanFactoryDataSingle {
     
     public List getTickets() throws BasicException {
         return new PreparedSentence(s
-                , "SELECT T.ID, T.TICKETID, T.DATENEW, R.MONEY, T.PERSON, P.NAME FROM RECEIPTS R, TICKETS T, PEOPLE P WHERE R.ID = T.ID AND T.PERSON = P.ID AND T.STATUS = 0"
+                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, P.ID, P.NAME, C.ID, C.NAME FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID LEFT OUTER JOIN CUSTOMERS C ON T.CUSTOMER = C.ID WHERE T.STATUS = 0"
                 , null
                 , new SerializerReadClass(TicketInfo.class)).list();
     }

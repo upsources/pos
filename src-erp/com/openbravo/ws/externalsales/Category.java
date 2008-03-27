@@ -1,34 +1,54 @@
 /**
- * Tax.java
+ * Category.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.3 Oct 05, 2005 (05:23:37 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package net.opentrends.openbravo.ws.types;
+package com.openbravo.ws.externalsales;
 
-public class Tax  implements java.io.Serializable {
+public class Category  implements java.io.Serializable {
+    private java.lang.String description;
+
     private int id;
 
     private java.lang.String name;
 
-    private double percentage;
-
-    public Tax() {
+    public Category() {
     }
 
-    public Tax(
+    public Category(
+           java.lang.String description,
            int id,
-           java.lang.String name,
-           double percentage) {
+           java.lang.String name) {
+           this.description = description;
            this.id = id;
            this.name = name;
-           this.percentage = percentage;
     }
 
 
     /**
-     * Gets the id value for this Tax.
+     * Gets the description value for this Category.
+     * 
+     * @return description
+     */
+    public java.lang.String getDescription() {
+        return description;
+    }
+
+
+    /**
+     * Sets the description value for this Category.
+     * 
+     * @param description
+     */
+    public void setDescription(java.lang.String description) {
+        this.description = description;
+    }
+
+
+    /**
+     * Gets the id value for this Category.
      * 
      * @return id
      */
@@ -38,7 +58,7 @@ public class Tax  implements java.io.Serializable {
 
 
     /**
-     * Sets the id value for this Tax.
+     * Sets the id value for this Category.
      * 
      * @param id
      */
@@ -48,7 +68,7 @@ public class Tax  implements java.io.Serializable {
 
 
     /**
-     * Gets the name value for this Tax.
+     * Gets the name value for this Category.
      * 
      * @return name
      */
@@ -58,7 +78,7 @@ public class Tax  implements java.io.Serializable {
 
 
     /**
-     * Sets the name value for this Tax.
+     * Sets the name value for this Category.
      * 
      * @param name
      */
@@ -66,30 +86,10 @@ public class Tax  implements java.io.Serializable {
         this.name = name;
     }
 
-
-    /**
-     * Gets the percentage value for this Tax.
-     * 
-     * @return percentage
-     */
-    public double getPercentage() {
-        return percentage;
-    }
-
-
-    /**
-     * Sets the percentage value for this Tax.
-     * 
-     * @param percentage
-     */
-    public void setPercentage(double percentage) {
-        this.percentage = percentage;
-    }
-
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Tax)) return false;
-        Tax other = (Tax) obj;
+        if (!(obj instanceof Category)) return false;
+        Category other = (Category) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -98,11 +98,13 @@ public class Tax  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
+            ((this.description==null && other.getDescription()==null) || 
+             (this.description!=null &&
+              this.description.equals(other.getDescription()))) &&
             this.id == other.getId() &&
             ((this.name==null && other.getName()==null) || 
              (this.name!=null &&
-              this.name.equals(other.getName()))) &&
-            this.percentage == other.getPercentage();
+              this.name.equals(other.getName())));
         __equalsCalc = null;
         return _equals;
     }
@@ -114,22 +116,30 @@ public class Tax  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        if (getDescription() != null) {
+            _hashCode += getDescription().hashCode();
+        }
         _hashCode += getId();
         if (getName() != null) {
             _hashCode += getName().hashCode();
         }
-        _hashCode += new Double(getPercentage()).hashCode();
         __hashCodeCalc = false;
         return _hashCode;
     }
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Tax.class, true);
+        new org.apache.axis.description.TypeDesc(Category.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Tax"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Category"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("description");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "description"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("", "id"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
@@ -140,12 +150,6 @@ public class Tax  implements java.io.Serializable {
         elemField.setXmlName(new javax.xml.namespace.QName("", "name"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(true);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("percentage");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "percentage"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "double"));
-        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
 

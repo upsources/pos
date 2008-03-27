@@ -23,15 +23,17 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<queryString><![CDATA[SELECT ID, NAME, CARD, MAXDEBT, CURDATE, CURDEBT
+	<queryString><![CDATA[SELECT ID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT
 FROM CUSTOMERS 
 WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 
 	<field name="ID" class="java.lang.String"/>
 	<field name="NAME" class="java.lang.String"/>
+	<field name="ADDRESS" class="java.lang.String"/>
+	<field name="NOTES" class="java.lang.String"/>
 	<field name="CARD" class="java.lang.String"/>
 	<field name="MAXDEBT" class="java.lang.Double"/>
-	<field name="CURDATE" class="java.sql.Timestamp"/>
+	<field name="CURDATE" class="java.util.Date"/>
 	<field name="CURDEBT" class="java.lang.Double"/>
 
 		<background>
@@ -93,9 +95,9 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"
-						y="61"
+						y="45"
 						width="195"
-						height="26"
+						height="20"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -234,6 +236,54 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 						width="238"
 						height="0"
 						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="21"
+						y="65"
+						width="195"
+						height="30"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ADDRESS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="270"
+						y="95"
+						width="103"
+						height="18"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.notes}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="270"
+						y="115"
+						width="238"
+						height="36"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOTES}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="270"
+						y="111"
+						width="238"
+						height="0"
+						key="line-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>

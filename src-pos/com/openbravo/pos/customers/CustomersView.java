@@ -152,7 +152,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         customer[3] = m_jNotes.getText();
         customer[4] = Boolean.valueOf(m_jVisible.isSelected());
         customer[5] = Formats.STRING.parseValue(jcard.getText()); // Format to manage NULL values
-        customer[6] = Formats.CURRENCY.parseValue(txtMaxdebt.getText());
+        customer[6] = Formats.CURRENCY.parseValue(txtMaxdebt.getText(), new Double(0.0));
         customer[7] = Formats.TIMESTAMP.parseValue(txtCurdate.getText()); // not saved
         customer[8] = Formats.CURRENCY.parseValue(txtCurdebt.getText()); // not saved
         return customer;
@@ -266,6 +266,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdebt.setBounds(110, 270, 130, 18);
 
         txtCurdate.setEditable(false);
+        txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         add(txtCurdate);
         txtCurdate.setBounds(110, 300, 130, 18);
 

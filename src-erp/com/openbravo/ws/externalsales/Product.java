@@ -2,13 +2,13 @@
  * Product.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.3 Oct 05, 2005 (05:23:37 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package net.opentrends.openbravo.ws.types;
+package com.openbravo.ws.externalsales;
 
 public class Product  implements java.io.Serializable {
-    private net.opentrends.openbravo.ws.types.Category category;
+    private com.openbravo.ws.externalsales.Category category;
 
     private java.lang.String description;
 
@@ -26,13 +26,13 @@ public class Product  implements java.io.Serializable {
 
     private double purchasePrice;
 
-    private net.opentrends.openbravo.ws.types.Tax tax;
+    private com.openbravo.ws.externalsales.Tax tax;
 
     public Product() {
     }
 
     public Product(
-           net.opentrends.openbravo.ws.types.Category category,
+           com.openbravo.ws.externalsales.Category category,
            java.lang.String description,
            java.lang.String ean,
            int id,
@@ -41,7 +41,7 @@ public class Product  implements java.io.Serializable {
            java.lang.String name,
            java.lang.String number,
            double purchasePrice,
-           net.opentrends.openbravo.ws.types.Tax tax) {
+           com.openbravo.ws.externalsales.Tax tax) {
            this.category = category;
            this.description = description;
            this.ean = ean;
@@ -60,7 +60,7 @@ public class Product  implements java.io.Serializable {
      * 
      * @return category
      */
-    public net.opentrends.openbravo.ws.types.Category getCategory() {
+    public com.openbravo.ws.externalsales.Category getCategory() {
         return category;
     }
 
@@ -70,7 +70,7 @@ public class Product  implements java.io.Serializable {
      * 
      * @param category
      */
-    public void setCategory(net.opentrends.openbravo.ws.types.Category category) {
+    public void setCategory(com.openbravo.ws.externalsales.Category category) {
         this.category = category;
     }
 
@@ -240,7 +240,7 @@ public class Product  implements java.io.Serializable {
      * 
      * @return tax
      */
-    public net.opentrends.openbravo.ws.types.Tax getTax() {
+    public com.openbravo.ws.externalsales.Tax getTax() {
         return tax;
     }
 
@@ -250,7 +250,7 @@ public class Product  implements java.io.Serializable {
      * 
      * @param tax
      */
-    public void setTax(net.opentrends.openbravo.ws.types.Tax tax) {
+    public void setTax(com.openbravo.ws.externalsales.Tax tax) {
         this.tax = tax;
     }
 
@@ -334,11 +334,11 @@ public class Product  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Product.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Product"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Product"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("category");
         elemField.setXmlName(new javax.xml.namespace.QName("", "category"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Category"));
+        elemField.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Category"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
@@ -392,7 +392,7 @@ public class Product  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("tax");
         elemField.setXmlName(new javax.xml.namespace.QName("", "tax"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Tax"));
+        elemField.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Tax"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }

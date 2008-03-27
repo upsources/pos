@@ -2,10 +2,10 @@
  * Payment.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis 1.3 Oct 05, 2005 (05:23:37 EDT) WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package net.opentrends.openbravo.ws.types;
+package com.openbravo.ws.externalsales;
 
 public class Payment  implements java.io.Serializable {
     private double amount;
@@ -102,7 +102,7 @@ public class Payment  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Payment.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://192.168.1.130:8880/openbravo/services/ExternalSales", "Payment"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Payment"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("amount");
         elemField.setXmlName(new javax.xml.namespace.QName("", "amount"));

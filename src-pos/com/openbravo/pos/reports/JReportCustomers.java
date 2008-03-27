@@ -70,15 +70,15 @@ public class JReportCustomers extends JPanelReport {
     }
     protected BaseSentence getSentence() {
         return new StaticSentence(m_App.getSession()
-            ,   new QBFBuilder("SELECT ID, NAME, CARD, MAXDEBT, CURDATE, CURDEBT " +
+            ,   new QBFBuilder("SELECT ID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT " +
                 "FROM CUSTOMERS " +
                 "WHERE VISIBLE = TRUE AND ?(QBF_FILTER)",
                 new String[] {"ID", "NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
-            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}));
+            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}));
     }
     protected ReportFields getReportFields() {
-        return new ReportFieldsArray(new String[]{"ID", "NAME", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"});
+        return new ReportFieldsArray(new String[]{"ID", "NAME", "ADDRESS", "NOTES", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"});
     }  
     
     @Override

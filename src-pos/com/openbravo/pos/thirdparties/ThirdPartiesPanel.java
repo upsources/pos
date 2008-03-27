@@ -22,7 +22,6 @@ import javax.swing.ListCellRenderer;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.panels.*;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.data.loader.Vectorer;
@@ -37,13 +36,13 @@ public class ThirdPartiesPanel extends JPanelTable {
     private ThirdPartiesView jeditor;
     
     /** Creates a new instance of JPanelPeople */
-    public ThirdPartiesPanel(AppView app) {
-        super(app);
-        
-        DataLogicThirdParties dlThirdParties = (DataLogicThirdParties) app.getBean("com.openbravo.pos.thirdparties.DataLogicThirdParties");
-        
+    public ThirdPartiesPanel() {
+    }
+    
+    protected void init() {
+        DataLogicThirdParties dlThirdParties = (DataLogicThirdParties) app.getBean("com.openbravo.pos.thirdparties.DataLogicThirdParties");        
         tthirdparties = dlThirdParties.getTableThirdParties();        
-        jeditor = new ThirdPartiesView(m_App, m_Dirty);    
+        jeditor = new ThirdPartiesView(app, dirty);     
     }
     
     public ListProvider getListProvider() {

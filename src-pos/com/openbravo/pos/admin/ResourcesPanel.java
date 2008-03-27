@@ -37,14 +37,14 @@ public class ResourcesPanel extends JPanelTable {
     private ResourcesView jeditor;
     
     /** Creates a new instance of JPanelResources */
-    public ResourcesPanel(AppView app) {
-        super(app);
-        
-        DataLogicAdmin dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");
- 
-        tresources = dlAdmin.getTableResources();         
-        jeditor = new ResourcesView(m_Dirty);    
+    public ResourcesPanel() {
     }
+    
+    protected void init() {
+        DataLogicAdmin dlAdmin = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin"); 
+        tresources = dlAdmin.getTableResources();         
+        jeditor = new ResourcesView(dirty);           
+    }    
     
     public ListProvider getListProvider() {
         return new ListProviderCreator(tresources);

@@ -28,7 +28,6 @@ import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.panels.JPanelTable;
 
 /**
@@ -41,13 +40,13 @@ public class RolesPanel extends JPanelTable {
     private RolesView jeditor;
     
     /** Creates a new instance of RolesPanel */
-    public RolesPanel(AppView app) {
-        super(app);
-        
-        DataLogicAdmin dlAdmin  = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");
-        
+    public RolesPanel() {
+     }
+    
+    protected void init() {
+        DataLogicAdmin dlAdmin  = (DataLogicAdmin) app.getBean("com.openbravo.pos.admin.DataLogicAdmin");        
         troles = dlAdmin.getTableRoles();                 
-        jeditor = new RolesView(m_Dirty);
+        jeditor = new RolesView(dirty);
     }
     
     public ListProvider getListProvider() {

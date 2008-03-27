@@ -46,13 +46,13 @@ public class JReportCustomersB extends JPanelReport {
     }
     protected BaseSentence getSentence() {
         return new StaticSentence(m_App.getSession()
-            ,   "SELECT ID, NAME, CARD, MAXDEBT, CURDATE, CURDEBT " +
+            ,   "SELECT ID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT " +
                 "FROM CUSTOMERS " +
                 "WHERE VISIBLE = TRUE AND CURDEBT IS NOT NULL AND CURDEBT > 0"
             , null
-            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}));
+            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}));
     }
     protected ReportFields getReportFields() {
-        return new ReportFieldsArray(new String[]{"ID", "NAME", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"});
+        return new ReportFieldsArray(new String[]{"ID", "NAME", "ADDRESS", "NOTES", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"});
     }          
 }

@@ -36,10 +36,11 @@ import com.openbravo.pos.forms.ProcessAction;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
-import net.opentrends.openbravo.ws.types.Order;
-import net.opentrends.openbravo.ws.types.OrderIdentifier;
-import net.opentrends.openbravo.ws.types.OrderLine;
-import net.opentrends.openbravo.ws.types.Payment;
+import com.openbravo.ws.externalsales.Order;
+import com.openbravo.ws.externalsales.OrderIdentifier;
+import com.openbravo.ws.externalsales.OrderLine;
+import com.openbravo.ws.externalsales.Payment;
+
 
 public class OrdersSync implements ProcessAction {
      

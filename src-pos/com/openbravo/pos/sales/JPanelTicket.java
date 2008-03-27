@@ -18,10 +18,6 @@
 
 package com.openbravo.pos.sales;
 
-import com.openbravo.pos.ticket.ProductInfoExt;
-import com.openbravo.pos.ticket.TaxInfo;
-import com.openbravo.pos.ticket.TicketInfo;
-import com.openbravo.pos.ticket.TicketLineInfo;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -48,10 +44,17 @@ import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.forms.BeanFactoryApp;
+import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.payment.JPaymentSelectReceipt;
 import com.openbravo.pos.payment.JPaymentSelectRefund;
+import com.openbravo.pos.ticket.ProductInfoExt;
+import com.openbravo.pos.ticket.TaxInfo;
+import com.openbravo.pos.ticket.TicketInfo;
+import com.openbravo.pos.ticket.TicketLineInfo;
 
-public abstract class JPanelTicket extends JPanel implements JPanelView, TicketsEditor {
+
+public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFactoryApp, TicketsEditor {
    
     // Variable numerica
     private final static int NUMBERZERO = 0;
@@ -94,14 +97,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
     protected DataLogicCustomers dlCustomers;
 
     /** Creates new form JTicketView */
-    public JPanelTicket(AppView oApp) {
-
-        m_App = oApp;
+    public JPanelTicket() {
+        
+        initComponents ();   
+    }
+   
+    public void init(AppView app) throws BeanFactoryException {
+        
+        m_App = app;
         dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
         dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
-        
-        initComponents (); 
                     
         // borramos el boton de bascula si no hay bascula conectada
         if (!m_App.getDeviceScale().existsScale()) {
@@ -133,12 +139,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         
         // inicializamos
         m_oTicket = null;
-        m_oTicketExt = null;
-        
+        m_oTicketExt = null;      
     }
     
-    protected abstract JTicketsBag getJTicketsBag();
-    protected abstract Component getSouthComponent();
+    public Object getBean() {
+        return this;
+    }
     
     public JComponent getComponent() {
         return this;
@@ -175,6 +181,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         return m_ticketsbag.deactivate();
     }
     
+    protected abstract JTicketsBag getJTicketsBag();
+    protected abstract Component getSouthComponent();
+     
     public void setActiveTicket(TicketInfo oTicket, Object oTicketExt) {
         
         m_oTicket = oTicket;
@@ -717,7 +726,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
                                 m_ticketsbag.saveTicket();
                                 
                                 // Print receipt.
-                                printTicket(paymentdialog.getSelectedTemplate());
+                                printTicket(paymentdialog.isPrintSelected()
+                                        ? "Printer.Ticket"
+                                        : "Printer.Ticket2");
                                 
                                 // Cancel edition of current receipt
                                 m_ticketsbag.cancelTicket();                        
@@ -875,7 +886,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, Tickets
         m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
-        m_jTicketId.setPreferredSize(new java.awt.Dimension(100, 25));
+        m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 25));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
 

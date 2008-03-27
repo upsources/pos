@@ -42,13 +42,13 @@ public class CustomersPanel extends JPanelTable {
     private CustomersView jeditor;
     
     /** Creates a new instance of CustomersPanel */
-    public CustomersPanel(AppView app) {
-        super(app);
-        
-        DataLogicCustomers dlCustomers  = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
-        
+    public CustomersPanel() {    
+    }
+    
+    protected void init() {        
+        DataLogicCustomers dlCustomers  = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");       
         tcustomers = dlCustomers.getTableCustomers();        
-        jeditor = new CustomersView(m_App, m_Dirty);    
+        jeditor = new CustomersView(app, dirty);    
     }
     
     public ListProvider getListProvider() {

@@ -21,6 +21,7 @@ package com.openbravo.possync;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.BeanFactoryCache;
 import com.openbravo.pos.forms.BeanFactoryException;
+import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
 
 /**
@@ -33,8 +34,9 @@ public class ProductsSyncCreate extends BeanFactoryCache {
         
         DataLogicSystem dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
         DataLogicIntegration dli = (DataLogicIntegration) app.getBean("com.openbravo.possync.DataLogicIntegration");
+        DataLogicSales dlsales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
 
-        ProductsSync bean = new ProductsSync(dlSystem, dli);
+        ProductsSync bean = new ProductsSync(dlSystem, dli, dlsales, app.getInventoryLocation());
         return bean;
     }
 }

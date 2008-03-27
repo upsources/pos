@@ -37,31 +37,44 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.SaveProvider;
+import com.openbravo.pos.forms.BeanFactoryApp;
+import com.openbravo.pos.forms.BeanFactoryException;
 
 /**
  *
  * @author adrianromero
  */
-public abstract class JPanelTable extends JPanel implements JPanelView {
+public abstract class JPanelTable extends JPanel implements JPanelView, BeanFactoryApp {
     
-    protected BrowsableEditableData m_bd;    
-    protected DirtyManager m_Dirty;    
-    protected AppView m_App;
+    protected BrowsableEditableData bd;    
+    protected DirtyManager dirty;    
+    protected AppView app;
     
     /** Creates new form JPanelTableEditor */
-    public JPanelTable(AppView oApp) {
-        m_App = oApp;
-        m_Dirty = new DirtyManager();
-        m_bd = null;
+    public JPanelTable() {
+
         initComponents();
     }
     
-    private void initNavigation() {
+    public void init(AppView app) throws BeanFactoryException {
         
-        if (m_bd == null) {
+        this.app = app;
+        dirty = new DirtyManager();
+        bd = null;
+        
+        init();
+    }
+
+    public Object getBean() {
+        return this;
+    }
+    
+    private void startNavigation() {
+        
+        if (bd == null) {
             
             // init browsable editable data
-            m_bd = new BrowsableEditableData(getListProvider(), getSaveProvider(), getEditor(), m_Dirty);
+            bd = new BrowsableEditableData(getListProvider(), getSaveProvider(), getEditor(), dirty);
 
             // Add the filter panel
             Component c = getFilter();
@@ -78,7 +91,7 @@ public abstract class JPanelTable extends JPanel implements JPanelView {
             // el panel este
             ListCellRenderer cr = getListCellRenderer();
             if (cr != null) {
-                JListNavigator nl = new JListNavigator(m_bd);
+                JListNavigator nl = new JListNavigator(bd);
                 if (cr != null) nl.setCellRenderer(cr);
                 m_jContEditor.add(nl, java.awt.BorderLayout.WEST);
             }
@@ -90,10 +103,10 @@ public abstract class JPanelTable extends JPanel implements JPanelView {
             }
 
             // La Toolbar
-            m_jToolbar.add(new JLabelDirty(m_Dirty));
-            m_jToolbar.add(new JCounter(m_bd));
-            m_jToolbar.add(new JNavigator(m_bd, getVectorer(), getComparatorCreator()));
-            m_jToolbar.add(new JSaver(m_bd));
+            m_jToolbar.add(new JLabelDirty(dirty));
+            m_jToolbar.add(new JCounter(bd));
+            m_jToolbar.add(new JNavigator(bd, getVectorer(), getComparatorCreator()));
+            m_jToolbar.add(new JSaver(bd));
         }
     }
     
@@ -104,6 +117,8 @@ public abstract class JPanelTable extends JPanel implements JPanelView {
     public Component getFilter() {    
         return null;
     }
+    
+    protected abstract void init();
     
     public abstract EditorRecord getEditor();
     
@@ -128,14 +143,14 @@ public abstract class JPanelTable extends JPanel implements JPanelView {
     }
 
     public void activate() throws BasicException {
-        initNavigation();
-        m_bd.actionLoad();
+        startNavigation();
+        bd.actionLoad();
     }    
     
     public boolean deactivate() {
 
         try {
-            return m_bd.actionClosingForm(this);
+            return bd.actionClosingForm(this);
         } catch (BasicException eD) {
             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.CannotMove"), eD);
             msg.show(this);

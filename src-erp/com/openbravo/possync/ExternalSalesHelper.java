@@ -36,10 +36,11 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.util.AltEncrypter;
 import com.openbravo.pos.util.Base64Encoder;
-import net.opentrends.openbravo.ws.types.ExternalSalesImpl;
-import net.opentrends.openbravo.ws.types.ExternalSalesImplServiceLocator;
-import net.opentrends.openbravo.ws.types.Order;
-import net.opentrends.openbravo.ws.types.Product;
+import com.openbravo.ws.externalsales.ExternalSalesImpl;
+import com.openbravo.ws.externalsales.ExternalSalesImplServiceLocator;
+import com.openbravo.ws.externalsales.Order;
+import com.openbravo.ws.externalsales.Product;
+import com.openbravo.ws.externalsales.ProductPlus;
 
 public class ExternalSalesHelper {
     
@@ -82,6 +83,10 @@ public class ExternalSalesHelper {
     
     public Product[] getProductsCatalog() throws RemoteException {
         return externalSales.getProductsCatalog(m_iERPId, m_iERPOrg, m_iERPPos, m_sERPUser, m_sERPPassword);
+    }
+    
+    public ProductPlus[] getProductsPlusCatalog() throws RemoteException {
+        return externalSales.getProductsPlusCatalog(m_iERPId, m_iERPOrg, m_iERPPos, m_sERPUser, m_sERPPassword);
     }
     
     public void uploadOrders(Order[] orderstoupload) throws RemoteException {

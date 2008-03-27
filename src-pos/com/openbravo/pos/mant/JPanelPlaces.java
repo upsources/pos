@@ -21,7 +21,6 @@ import javax.swing.ListCellRenderer;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.format.Formats;
 import com.openbravo.data.loader.Datas;
@@ -43,9 +42,10 @@ public class JPanelPlaces extends JPanelTable {
     private PlacesEditor jeditor;
     
     /** Creates a new instance of JPanelPlaces */
-    public JPanelPlaces(AppView app) {
-        super(app);    
+    public JPanelPlaces() {
+    }
     
+    protected void init() {
         DataLogicSales dlSales = null;
         dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         
@@ -57,9 +57,9 @@ public class JPanelPlaces extends JPanelTable {
             , new Formats[] {Formats.STRING, Formats.STRING, Formats.INT, Formats.INT, Formats.NULL}
             , new int[] {0}
         ); 
-        jeditor = new PlacesEditor(dlSales, m_Dirty);    
+        jeditor = new PlacesEditor(dlSales, dirty); 
     }
-    
+        
     public ListProvider getListProvider() {
         return new ListProviderCreator(tplaces);
     }

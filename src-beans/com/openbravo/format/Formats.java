@@ -61,9 +61,10 @@ public abstract class Formats {
             return formatValueInt(value);
         }
     }
-    public Object parseValue(String value) throws BasicException {
+    
+    public Object parseValue(String value, Object defvalue) throws BasicException {
         if (value == null || "".equals(value)) {
-            return null;
+            return defvalue;
         } else {
             try {
                 return parseValueInt(value);
@@ -71,6 +72,10 @@ public abstract class Formats {
                 throw new BasicException(e.getMessage(), e);
             }
         }  
+    }
+    
+    public Object parseValue(String value) throws BasicException {
+        return parseValue(value, null);
     }
 
     public static void setIntegerPattern(String pattern) {

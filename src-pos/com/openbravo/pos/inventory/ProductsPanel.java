@@ -38,7 +38,6 @@ import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.JPanelTable;
 import com.openbravo.pos.ticket.ProductFilter;
@@ -60,16 +59,17 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
     private DataLogicSales m_dlSales = null;
     
     /** Creates a new instance of ProductsPanel2 */
-    public ProductsPanel(AppView app) {
-        super(app);
-        
+    public ProductsPanel() {
+    }
+    
+    protected void init() {   
         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         
         // el panel del filtro
         jproductfilter = new ProductFilter(m_dlSales);
         
         // el panel del editor
-        jeditor = new ProductsEditor(m_dlSales, m_Dirty);       
+        jeditor = new ProductsEditor(m_dlSales, dirty);       
 
         liststock = m_dlSales.getProductStock();
 
@@ -77,7 +77,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
         m_bdstock = new BrowsableData(null, new SaveProvider(
                 m_dlSales.getStockUpdate(),
                 null,
-                null));     
+                null));    
     }
     
     public ListProvider getListProvider() {
@@ -123,7 +123,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
         
         JButton btnScanPal = new JButton();
         btnScanPal.setText("ScanPal");
-        btnScanPal.setEnabled(m_App.getDeviceScanner() != null);
+        btnScanPal.setEnabled(app.getDeviceScanner() != null);
         btnScanPal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnScanPalActionPerformed(evt);
@@ -135,7 +135,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
     
     private void btnScanPalActionPerformed(java.awt.event.ActionEvent evt) {                                           
   
-        JDlgUploadProducts.showMessage(this, m_App.getDeviceScanner(), m_bd);
+        JDlgUploadProducts.showMessage(this, app.getDeviceScanner(), bd);
     }  
     
     public String getTitle() {

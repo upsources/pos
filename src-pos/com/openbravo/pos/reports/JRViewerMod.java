@@ -105,6 +105,7 @@ import javax.swing.JViewport;
 import javax.swing.filechooser.FileFilter;
 import com.openbravo.pos.forms.AppLocal;
 
+import javax.swing.SwingUtilities;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRHyperlink;
 import net.sf.jasperreports.engine.JRPrintAnchorIndex;
@@ -999,27 +1000,17 @@ public class JRViewerMod extends javax.swing.JPanel implements JRHyperlinkListen
 	private void btnPrintActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnPrintActionPerformed
 	{//GEN-HEADEREND:event_btnPrintActionPerformed
 		// Add your handling code here:
-		
-		Thread thread = 
-			new Thread(
-				new Runnable()
-				{
-					public void run()
-					{
-						try 
-						{
-							JasperPrintManager.printReport(jasperPrint, true);
-						}
-						catch (Exception ex) 
-						{
-							ex.printStackTrace();
-							JOptionPane.showMessageDialog(null, AppLocal.getIntString("message.jrerrorprinting"));
-						}
-					}
-				}
-			);
-		
-		thread.start();
+		SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        try {
+                            JasperPrintManager.printReport(jasperPrint, true);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(null, AppLocal.getIntString("message.jrerrorprinting"));
+                        }
+                    }
+                });
+
 
 	}//GEN-LAST:event_btnPrintActionPerformed
 

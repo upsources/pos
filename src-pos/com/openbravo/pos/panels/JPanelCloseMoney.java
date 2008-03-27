@@ -34,10 +34,11 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.Datas;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.gui.TableRendererBasic;
+import com.openbravo.pos.forms.BeanFactoryApp;
+import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
-import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.printer.TicketParser;
 import com.openbravo.pos.printer.TicketPrinterException;
@@ -46,7 +47,7 @@ import com.openbravo.pos.printer.TicketPrinterException;
  *
  * @author adrianromero
  */
-public class JPanelCloseMoney extends JPanel implements JPanelView {
+public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryApp {
     
     private AppView m_App;
     private DataLogicSystem m_dlSystem;
@@ -56,14 +57,17 @@ public class JPanelCloseMoney extends JPanel implements JPanelView {
     private TicketParser m_TTP;
     
     /** Creates new form JPanelCloseMoney */
-    public JPanelCloseMoney(AppView oApp) {
+    public JPanelCloseMoney() {
         
-        m_App = oApp;        
+        initComponents();                   
+    }
+    
+    public void init(AppView app) throws BeanFactoryException {
+        
+        m_App = app;        
         m_dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
         m_TTP = new TicketParser(m_App.getDeviceTicket(), m_dlSystem);
-        
-        initComponents();    
-        
+
         m_jTicketTable.setDefaultRenderer(Object.class, new TableRendererBasic(
                 new Formats[] {new FormatsPayment(), Formats.CURRENCY}));
         m_jTicketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -78,9 +82,13 @@ public class JPanelCloseMoney extends JPanel implements JPanelView {
         m_jScrollSales.getVerticalScrollBar().setPreferredSize(new Dimension(25,25));       
         m_jsalestable.getTableHeader().setReorderingAllowed(false);         
         m_jsalestable.setRowHeight(25);
-        m_jsalestable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);         
+        m_jsalestable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
     }
-
+    
+    public Object getBean() {
+        return this;
+    }
+    
     public JComponent getComponent() {
         return this;
     }

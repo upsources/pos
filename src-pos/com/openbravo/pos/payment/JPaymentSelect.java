@@ -41,7 +41,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
                             implements JPaymentNotifier {
     
     private PaymentInfoList m_aPaymentInfo;
-    private String m_sresourcename;
+    private boolean printselected;
+    
+    private boolean accepted;
     
     private AppView app;
     private double m_dTotal; 
@@ -56,8 +58,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         super(parent, modal);
     }    
 
-    public String getSelectedTemplate() {
-        return m_sresourcename;
+    public boolean isPrintSelected() {
+        return printselected;
     }
 
     public List<PaymentInfo> getSelectedPayments() {
@@ -67,7 +69,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     public boolean showDialog(AppView app, double total, CustomerInfo customer) {
         
         m_aPaymentInfo = new PaymentInfoList();
-        m_sresourcename = null;
+        printselected = true;
+        accepted = false;
         
         this.app = app;
         m_dTotal = total;
@@ -97,7 +100,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         printState();
         setVisible(true);
         
-        return m_sresourcename != null;
+        return accepted;
     }  
     
     protected abstract void addTabs();
@@ -225,18 +228,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         
         setStatusPanel(isPositive, isComplete);
     }
-    
-    private void disposeOK(String sresourcename) {
-        
-        PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
-        if (returnPayment != null) {
-            m_aPaymentInfo.add(returnPayment);
-            m_sresourcename = sresourcename;
-            dispose();
-        }        
-    }
-    
-    
+     
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -394,11 +386,13 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
     private void m_jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonOKActionPerformed
 
-        disposeOK(m_jButtonPrint.isSelected() 
-                ? "Printer.Ticket"
-                : "Printer.Ticket2"
-        );
-            
+        PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
+        if (returnPayment != null) {
+            m_aPaymentInfo.add(returnPayment);
+            printselected = m_jButtonPrint.isSelected();
+            accepted = true;
+            dispose();
+        }           
         
     }//GEN-LAST:event_m_jButtonOKActionPerformed
 

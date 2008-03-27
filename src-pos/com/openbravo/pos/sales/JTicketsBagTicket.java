@@ -213,12 +213,11 @@ public class JTicketsBagTicket extends JTicketsBag {
 
         m_jOptions = new javax.swing.JPanel();
         m_jButtons = new javax.swing.JPanel();
-        m_lblTicketId = new javax.swing.JLabel();
         m_jTicketId = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         m_jEdit = new javax.swing.JButton();
         m_jRefund = new javax.swing.JButton();
         m_jPrint = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         m_jPanelTicket = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -233,20 +232,13 @@ public class JTicketsBagTicket extends JTicketsBag {
 
         m_jButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        m_lblTicketId.setText(AppLocal.getIntString("label.ticketid")); // NOI18N
-        m_jButtons.add(m_lblTicketId);
-
         m_jTicketId.setBackground(java.awt.Color.white);
         m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
-        m_jTicketId.setPreferredSize(new java.awt.Dimension(100, 25));
+        m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 25));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
-
-        m_jOptions.add(m_jButtons, java.awt.BorderLayout.WEST);
-
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         m_jEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/edit.png"))); // NOI18N
         m_jEdit.setText(AppLocal.getIntString("button.edit")); // NOI18N
@@ -259,7 +251,7 @@ public class JTicketsBagTicket extends JTicketsBag {
                 m_jEditActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jEdit);
+        m_jButtons.add(m_jEdit);
 
         m_jRefund.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/inbox.png"))); // NOI18N
         m_jRefund.setText(AppLocal.getIntString("button.refund")); // NOI18N
@@ -272,7 +264,7 @@ public class JTicketsBagTicket extends JTicketsBag {
                 m_jRefundActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jRefund);
+        m_jButtons.add(m_jRefund);
 
         m_jPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/yast_printer.png"))); // NOI18N
         m_jPrint.setText(AppLocal.getIntString("button.print")); // NOI18N
@@ -285,8 +277,11 @@ public class JTicketsBagTicket extends JTicketsBag {
                 m_jPrintActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jPrint);
+        m_jButtons.add(m_jPrint);
 
+        m_jOptions.add(m_jButtons, java.awt.BorderLayout.WEST);
+
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         m_jOptions.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         add(m_jOptions, java.awt.BorderLayout.NORTH);
@@ -409,7 +404,6 @@ public class JTicketsBagTicket extends JTicketsBag {
     private javax.swing.JButton m_jRefund;
     private com.openbravo.editor.JEditorIntegerPositive m_jTicketEditor;
     private javax.swing.JLabel m_jTicketId;
-    private javax.swing.JLabel m_lblTicketId;
     // End of variables declaration//GEN-END:variables
     
 }

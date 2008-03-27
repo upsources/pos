@@ -22,7 +22,6 @@ import javax.swing.ListCellRenderer;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.data.loader.Vectorer;
 import com.openbravo.data.user.EditorRecord;
@@ -41,14 +40,13 @@ public class JPanelTax extends JPanelTable {
     private TaxEditor jeditor;
     
     /** Creates a new instance of JPanelDuty */
-    public JPanelTax(AppView app) {
-        super(app);
-        
-        DataLogicSales dlSales = null;
-        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-        
+    public JPanelTax() {
+    }
+    
+    protected void init() {
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");        
         ttaxes = dlSales.getTableTaxes();
-        jeditor = new TaxEditor(m_Dirty);    
+        jeditor = new TaxEditor(dirty);
     }
     
     public ListProvider getListProvider() {

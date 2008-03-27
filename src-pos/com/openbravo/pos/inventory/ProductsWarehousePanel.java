@@ -40,7 +40,6 @@ import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.JPanelTable;
 import com.openbravo.pos.reports.JParamsLocation;
@@ -58,9 +57,10 @@ public class ProductsWarehousePanel extends JPanelTable {
     private SaveProvider spr;
     
     /** Creates a new instance of ProductsWarehousePanel */
-    public ProductsWarehousePanel(AppView app) {
-        super(app);
-        
+    public ProductsWarehousePanel() {
+    }
+    
+    protected void init() {   
         DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
                
         m_paramslocation =  new JParamsLocation(dlSales);
@@ -68,7 +68,7 @@ public class ProductsWarehousePanel extends JPanelTable {
         
         final Datas[] prodstock = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.DOUBLE};
 
-        lpr = new ListProviderCreator(new PreparedSentence(m_App.getSession(),
+        lpr = new ListProviderCreator(new PreparedSentence(app.getSession(),
                 "SELECT PRODUCTS.ID, PRODUCTS.REFERENCE, PRODUCTS.NAME, ?," +
                 "S.STOCKSECURITY, S.STOCKMAXIMUM, COALESCE(S.UNITS, 0) " +
                 "FROM PRODUCTS LEFT OUTER JOIN " +
@@ -79,12 +79,12 @@ public class ProductsWarehousePanel extends JPanelTable {
                 m_paramslocation);
         
         
-        SentenceExec updatesent =  new SentenceExecTransaction(m_App.getSession()) {
+        SentenceExec updatesent =  new SentenceExecTransaction(app.getSession()) {
             public int execInTransaction(Object params) throws BasicException {
-                if (new PreparedSentence(m_App.getSession()
+                if (new PreparedSentence(app.getSession()
                         , "UPDATE STOCKCURRENT SET STOCKSECURITY = ?, STOCKMAXIMUM = ? WHERE LOCATION = ? AND PRODUCT = ?"
                         , new SerializerWriteBasicExt(prodstock, new int[] {4, 5, 3, 0})).exec(params) == 0) {
-                    return new PreparedSentence(m_App.getSession()
+                    return new PreparedSentence(app.getSession()
                         , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, STOCKSECURITY, STOCKMAXIMUM, UNITS) VALUES (?, ?, ?, ?, 0)"
                         , new SerializerWriteBasicExt(prodstock, new int[] {3, 0, 4, 5})).exec(params);
                 } else {
@@ -95,9 +95,8 @@ public class ProductsWarehousePanel extends JPanelTable {
         
         spr = new SaveProvider(updatesent, null, null);
          
-        jeditor = new ProductsWarehouseEditor(m_Dirty);   
-        
-    }
+        jeditor = new ProductsWarehouseEditor(dirty);   
+    }    
     
     public ListProvider getListProvider() {
         return lpr;
@@ -142,7 +141,7 @@ public class ProductsWarehousePanel extends JPanelTable {
     private class ReloadActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
-                ProductsWarehousePanel.this.m_bd.actionLoad();
+                ProductsWarehousePanel.this.bd.actionLoad();
             } catch (BasicException w) {
             }
         }
