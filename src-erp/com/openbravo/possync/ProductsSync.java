@@ -29,6 +29,7 @@ import javax.xml.rpc.ServiceException;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.ImageUtils;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
@@ -37,6 +38,7 @@ import com.openbravo.pos.inventory.MovementReason;
 import com.openbravo.pos.ticket.CategoryInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
+import com.openbravo.ws.customers.Customer;
 import com.openbravo.ws.externalsales.ProductPlus;
 import java.util.Date;
 import java.util.UUID;
@@ -61,14 +63,16 @@ public class ProductsSync implements ProcessAction {
         try {
         
             ExternalSalesHelper externalsales = new ExternalSalesHelper(dlsystem);
+            
             ProductPlus[] products = externalsales.getProductsPlusCatalog();
+            Customer[] customers = externalsales.getCustomers();
 
-            if (products == null){
+            if (products == null || customers == null){
                 throw new BasicException(AppLocal.getIntString("message.returnnull"));
-            } else if(products.length == 0){
-                return new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.zeroproducts"));
-            } else {
-
+            }     
+            
+            if (products.length > 0){
+                
                 dlintegration.syncProductsBefore();
                 
                 Date now = new Date();
@@ -120,8 +124,23 @@ public class ProductsSync implements ProcessAction {
                 }
                 
                 // datalogic.syncProductsAfter();
+            }
             
-                return new MessageInf(MessageInf.SGN_SUCCESS, AppLocal.getIntString("message.syncproductsok"), AppLocal.getIntString("message.syncproductsinfo", products.length));
+            if (customers.length > 0 ) {
+                
+                dlintegration. syncCustomersBefore();
+                
+                for (int i = 0; i < customers.length; i++) {                    
+                    CustomerInfoExt cinfo = new CustomerInfoExt(Integer.toString(customers[i].getId()), customers[i].getName());
+                    cinfo.setAddress(customers[i].getDescription());
+                    dlintegration.syncCustomer(cinfo);
+                }
+            }
+            
+            if (products.length == 0 && customers.length == 0) {
+                return new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.zeroproducts"));               
+            } else {
+                return new MessageInf(MessageInf.SGN_SUCCESS, AppLocal.getIntString("message.syncproductsok"), AppLocal.getIntString("message.syncproductsinfo", products.length, customers.length));
             }
                 
         } catch (ServiceException e) {            

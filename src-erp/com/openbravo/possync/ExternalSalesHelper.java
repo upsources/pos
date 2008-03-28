@@ -36,6 +36,9 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.util.AltEncrypter;
 import com.openbravo.pos.util.Base64Encoder;
+import com.openbravo.ws.customers.Customer;
+import com.openbravo.ws.customers.WebServiceImpl;
+import com.openbravo.ws.customers.WebServiceImplServiceLocator;
 import com.openbravo.ws.externalsales.ExternalSalesImpl;
 import com.openbravo.ws.externalsales.ExternalSalesImplServiceLocator;
 import com.openbravo.ws.externalsales.Order;
@@ -45,6 +48,7 @@ import com.openbravo.ws.externalsales.ProductPlus;
 public class ExternalSalesHelper {
     
     private ExternalSalesImpl externalSales;
+    private WebServiceImpl externalCustomers;
     
     private String m_sERPUser;
     private String m_sERPPassword;
@@ -64,8 +68,15 @@ public class ExternalSalesHelper {
             if (url == null || url.equals("")) {
                 throw new BasicException(AppLocal.getIntString("message.urlnotdefined"));
             } else {
-                externalSales = new ExternalSalesImplServiceLocator().getExternalSales(new URL(url));
-
+                
+                // transform the URL for backwards compatibility
+                if (url.endsWith("/ExternalSales")) {
+                    url = url.substring(0, url.length() - 14);
+                }               
+                
+                externalSales = new ExternalSalesImplServiceLocator().getExternalSales(new URL(url + "/ExternalSales"));
+                externalCustomers = new WebServiceImplServiceLocator().getWebService(new URL(url + "/WebService"));
+                        
                 m_sERPUser = prop.getProperty("user");
                 m_sERPPassword = prop.getProperty("password");        
                 if (m_sERPUser != null && m_sERPPassword != null && m_sERPPassword.startsWith("crypt:")) {
@@ -79,6 +90,10 @@ public class ExternalSalesHelper {
                 m_iERPPos = Integer.parseInt(prop.getProperty("pos"));
             }
         }
+    }
+    
+    public Customer[] getCustomers() throws RemoteException {
+        return externalCustomers.getCustomers(m_iERPId, m_sERPUser, m_sERPPassword);
     }
     
     public Product[] getProductsCatalog() throws RemoteException {

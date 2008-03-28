@@ -36,6 +36,7 @@ import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.Session;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.Transaction;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.BeanFactoryDataSingle;
 import com.openbravo.pos.payment.PaymentInfoTicket;
 import com.openbravo.pos.ticket.CategoryInfo;
@@ -61,10 +62,52 @@ public class DataLogicIntegration extends BeanFactoryDataSingle {
     public void init(Session s) {
         this.s = s;
     }
+     
+    public void syncCustomersBefore() throws BasicException {
+        new StaticSentence(s, "UPDATE CUSTOMERS SET VISIBLE = FALSE").exec();
+    }
+    
+    public void syncCustomer(final CustomerInfoExt customer) throws BasicException {
         
+        Transaction t = new Transaction(s) {
+            public Object transact() throws BasicException {
+                // Sync the Customer in a transaction
+                
+                // Try to update                
+                if (new PreparedSentence(s, 
+                            "UPDATE CUSTOMERS SET NAME = ?, ADDRESS = ?, VISIBLE = TRUE WHERE ID = ?", 
+                            new SerializerWrite() {
+                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
+                                    CustomerInfoExt c = (CustomerInfoExt) obj;
+                                    dp.setString(1, c.getName());
+                                    dp.setString(2, c.getAddress());
+                                    dp.setString(3, c.getId());
+                                }
+                            }).exec(customer) == 0) {
+                       
+                    // If not updated, try to insert
+                    new PreparedSentence(s, 
+                            "INSERT INTO CUSTOMERS(ID, NAME, ADDRESS, VISIBLE) VALUES (?, ?, ?, TRUE)", 
+                            new SerializerWrite() {
+                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
+                                    CustomerInfoExt c = (CustomerInfoExt) obj;
+                                        dp.setString(1, c.getId());
+                                        dp.setString(2, c.getName());
+                                        dp.setString(3, c.getAddress());
+                                }
+                            }).exec(customer);
+                }
+                
+                return null;
+            }
+        };
+        t.execute(); 
+    }
+        
+    
     public void syncProductsBefore() throws BasicException {
         new StaticSentence(s, "DELETE FROM PRODUCTS_CAT").exec();
-    }   
+    }     
     
     public void syncTax(final TaxInfo tax) throws BasicException {
         
@@ -86,15 +129,15 @@ public class DataLogicIntegration extends BeanFactoryDataSingle {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                        "INSERT INTO TAXES(ID, NAME, RATE) VALUES (?, ?, ?)", 
-                        new SerializerWrite() {
-                            public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                TaxInfo t = (TaxInfo) obj;
-                                dp.setString(1, t.getID());
-                                dp.setString(2, t.getName());
-                                dp.setDouble(3, t.getRate());
-                            }
-                        }).exec(tax);
+                            "INSERT INTO TAXES(ID, NAME, RATE) VALUES (?, ?, ?)", 
+                            new SerializerWrite() {
+                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
+                                    TaxInfo t = (TaxInfo) obj;
+                                    dp.setString(1, t.getID());
+                                    dp.setString(2, t.getName());
+                                    dp.setDouble(3, t.getRate());
+                                }
+                            }).exec(tax);
                 }
                 
                 return null;
