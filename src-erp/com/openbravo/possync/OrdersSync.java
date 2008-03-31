@@ -36,6 +36,7 @@ import com.openbravo.pos.forms.ProcessAction;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.ws.externalsales.BPartner;
 import com.openbravo.ws.externalsales.Order;
 import com.openbravo.ws.externalsales.OrderIdentifier;
 import com.openbravo.ws.externalsales.OrderLine;
@@ -109,7 +110,17 @@ public class OrdersSync implements ProcessAction {
 
             orders[i].setOrderId(orderid);
             orders[i].setState(800175);
-            orders[i].setBusinessPartner(null);
+            
+            // set the business partner
+            BPartner bp;
+            if (ticket.getCustomerId() == null) {
+                bp = null;
+            } else {
+                bp = new BPartner();
+                bp.setId(ticket.getCustomer().getId());
+                bp.setName(ticket.getCustomer().getName());
+            }
+            orders[i].setBusinessPartner(bp);
 
             //Saco las lineas del pedido
             OrderLine[] orderLine = new OrderLine[ticket.getLines().size()];
@@ -143,7 +154,7 @@ public class OrdersSync implements ProcessAction {
                 } else if ("cash".equals(payment.getName())) {
                     paymentLine[j].setPaymentType("B");
                 } else {
-                    paymentLine[j].setPaymentType(null); // desconocido
+                    paymentLine[j].setPaymentType(null); // unknown
                 }        
             }     
             orders[i].setPayment(paymentLine);                    

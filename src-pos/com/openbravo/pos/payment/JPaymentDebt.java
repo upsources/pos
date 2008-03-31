@@ -20,9 +20,7 @@ package com.openbravo.pos.payment;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.format.Formats;
-import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.util.RoundUtils;
 import java.awt.Component;

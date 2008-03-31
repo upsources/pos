@@ -69,6 +69,8 @@ public class ExternalSalesHelper {
                 throw new BasicException(AppLocal.getIntString("message.urlnotdefined"));
             } else {
                 
+                url = url.trim();
+                 
                 // transform the URL for backwards compatibility
                 if (url.endsWith("/ExternalSales")) {
                     url = url.substring(0, url.length() - 14);
