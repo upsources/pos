@@ -64,4 +64,8 @@ public class JPaymentSelectCustomer extends JPaymentSelect {
         setAddEnabled(isPositive && !isComplete);
         setOKEnabled(isPositive);
     }
+    
+    protected PaymentInfo getDefaultPayment(double total) {
+        return new PaymentInfoCash(total, total);
+    }    
 }

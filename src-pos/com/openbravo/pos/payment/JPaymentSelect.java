@@ -97,14 +97,24 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         
         addTabs();
         
-        printState();
-        setVisible(true);
+        if (m_jTabPayment.getTabCount() == 0) {
+            // No payment panels available
+            
+            m_aPaymentInfo.add(getDefaultPayment(total));
+            printselected = true;
+            accepted = true;            
+        } else {
+        
+            printState();
+            setVisible(true);
+        }
         
         return accepted;
     }  
     
     protected abstract void addTabs();
     protected abstract void setStatusPanel(boolean isPositive, boolean isComplete);
+    protected abstract PaymentInfo getDefaultPayment(double total);
     
     protected void setOKEnabled(boolean value) {
         m_jButtonOK.setEnabled(value);        
