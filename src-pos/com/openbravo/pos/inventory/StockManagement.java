@@ -91,6 +91,7 @@ public class StockManagement extends JPanel implements JPanelView {
         m_jreason.setModel(m_ReasonModel);
         
         m_cat = new JCatalog(m_dlSales);
+        m_cat.getComponent().setPreferredSize(new Dimension(0, 245));
         m_cat.addActionListener(new CatalogListener());
         add(m_cat.getComponent(), BorderLayout.SOUTH);
         

@@ -25,9 +25,9 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.pos.catalog.CatalogSelector;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.catalog.JCatalog;
-import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
+import java.awt.Dimension;
 
 public class JTicketCatalogLines extends javax.swing.JPanel {
     
@@ -35,7 +35,7 @@ public class JTicketCatalogLines extends javax.swing.JPanel {
     private CatalogSelector m_catalog;
     
     /** Creates new form JTicketCatalogLines */
-    public JTicketCatalogLines(AppView app, JPanelTicketEdits jTicketEdit) {
+    public JTicketCatalogLines(AppView app, JPanelTicketEdits jTicketEdit, boolean pricevisible, boolean taxesincluded, int width, int height) {
         
         DataLogicSystem dlSystem = null;
         DataLogicSales dlSales = null;
@@ -47,7 +47,8 @@ public class JTicketCatalogLines extends javax.swing.JPanel {
         m_reflines = new JRefundLines(dlSystem, jTicketEdit);        
         add(m_reflines, "reflines");
         
-        m_catalog = new JCatalog(dlSales);
+        m_catalog = new JCatalog(dlSales, pricevisible, taxesincluded, width, height);
+        m_catalog.getComponent().setPreferredSize(new Dimension(0, 245));
         // m_catalog.addActionListener(new CatalogListener());        
         add(m_catalog.getComponent(), "catalog");
     }
