@@ -47,9 +47,9 @@ public class ImageUtils {
         return resource;       
     }
     
-    public static byte[] getBytesFromResource(String sFile) {
+    public static byte[] getBytesFromResource(String file) {
         
-        InputStream in = ImageUtils.class.getResourceAsStream(sFile);
+        InputStream in = ImageUtils.class.getResourceAsStream(file);
         
         if (in == null) {
             return null;
@@ -65,6 +65,10 @@ public class ImageUtils {
                 }
             }
         }
+    }
+    
+    public static BufferedImage readImageFromResource(String file) {
+        return readImage(getBytesFromResource(file));
     }
     
     public static BufferedImage readImage(String url) {
