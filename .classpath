@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="src-pos"/>
 	<classpathentry kind="src" path="src-erp"/>
 	<classpathentry kind="src" path="locales"/>
+	<classpathentry kind="src" path="reports"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/axis.jar"/>
 	<classpathentry kind="lib" path="lib/barcode4j-light.jar"/>

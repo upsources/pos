@@ -49,5 +49,6 @@ set CP=%CP%;%CD%/lib/commons-discovery-0.2.jar
 set CP=%CP%;%CD%/lib/commons-logging-1.0.4.jar
 
 set CP=%CP%;%CD%/locales/
+set CP=%CP%;%CD%/reports/
 
 start /B javaw -cp %CP% -Djava.library.path=%CD%/lib/Windows/i368-mingw32 com.openbravo.pos.forms.StartPOS

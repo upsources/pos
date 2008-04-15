@@ -30,7 +30,7 @@
     <property name="name" value="openbravopos"/>
 
     <!-- project version -->
-    <property name="version" value="2.00"/>
+    <property name="version" value="2.10"/>
 
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
@@ -216,6 +216,10 @@
             <fileset dir="${basedir}/locales"/>
         </copy>
         
+        <copy todir="${basedir}/build/zip/reports">
+            <fileset dir="${basedir}/reports"/>
+        </copy>
+        
 	<mkdir dir="${dest.dist}" />	
         <zip zipfile="${dest.dist}/${name}_${version}_bin.zip" basedir="${basedir}/build/zip" />
         <delete dir="${basedir}/build/zip" />
@@ -254,6 +258,9 @@
         </copy> 
         <copy todir="${basedir}/build/zip/locales">
             <fileset dir="${basedir}/locales"/>
+        </copy>
+        <copy todir="${basedir}/build/zip/reports">
+            <fileset dir="${basedir}/reports"/>
         </copy>
         <copy todir="${basedir}/build/zip/lib">
             <fileset dir="${basedir}/lib"/>
