@@ -66,7 +66,7 @@ public class PanelReportBean extends JPanelReport {
     }
     
     @Override
-    protected EditorCreator createEditorCreator() {
+    protected EditorCreator getEditorCreator() {
         
         return qbffilter;
     }    

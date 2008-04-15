@@ -31,7 +31,7 @@ import com.openbravo.data.loader.SerializerWrite;
 import com.openbravo.data.loader.SerializerWriteBasic;
 
 public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEditorCreator {
-    
+
     /** Creates new form JParamsClosedPos */
     public JParamsDatesInterval() {
         initComponents();

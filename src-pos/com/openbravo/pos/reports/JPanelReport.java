@@ -56,18 +56,17 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
         
         m_App = app;
         
-        editor = createEditorCreator();
-        if (editor instanceof JPanel) {
-            jPanelHeader.add((JPanel) editor, BorderLayout.CENTER);
+        editor = getEditorCreator();
+        if (editor instanceof ReportEditorCreator) {
+            jPanelHeader.add(((ReportEditorCreator) editor).getComponent(), BorderLayout.CENTER);
         }
         
         try {            
-            reportviewer = new JRViewerMod();            
-            // reportviewer = new JRViewer(null);          
-            
-            add(reportviewer, BorderLayout.CENTER);
+            reportviewer = new JRViewerMod();                  
         } catch (JRException e) {
         }        
+        
+        add(reportviewer, BorderLayout.CENTER);
         
         try {     
             
@@ -97,10 +96,10 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
     protected abstract String getResourceBundle();
     protected abstract BaseSentence getSentence();
     protected abstract ReportFields getReportFields();
-    protected EditorCreator createEditorCreator() {
+    protected EditorCreator getEditorCreator() {
         return null;
     }
-
+    
     public JComponent getComponent() {
         return this;
     }
