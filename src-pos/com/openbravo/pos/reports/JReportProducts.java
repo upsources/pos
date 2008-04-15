@@ -20,38 +20,36 @@ package com.openbravo.pos.reports;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.BaseSentence;
-import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.QBFBuilder;
 import com.openbravo.data.loader.SerializerReadClass;
-import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.user.EditorCreator;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.BeanFactoryException;
-import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.ticket.ProductFilter;
 import com.openbravo.pos.ticket.ProductInfoReport;
 
 public class JReportProducts extends JPanelReport {
     
-    private ProductFilter m_productfilter;
-
-    private DataLogicSales m_dlSales = null;
+    private ProductFilter m_params;
     
     /** Creates a new instance of JReportProducts */
     public JReportProducts() {
+        m_params =  new ProductFilter() ;
     }
     
     @Override
     public void init(AppView app) throws BeanFactoryException {   
         
-        m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        m_params.init(app);
         super.init(app);
     }    
     
+    @Override
     public void activate() throws BasicException {
-        m_productfilter.activate();
+        
+        m_params.activate();
         super.activate();
     }              
     public String getTitle() {
@@ -71,15 +69,17 @@ public class JReportProducts extends JPanelReport {
               "WHERE ?(QBF_FILTER) " +
               "ORDER BY CATEGORIES.NAME, PRODUCTS.NAME",
                new String[] {"PRODUCTS.NAME", "PRODUCTS.PRICEBUY", "PRODUCTS.PRICESELL", "PRODUCTS.CATEGORY", "PRODUCTS.CODE"} )
-            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , m_params.getSerializerWrite()
             , new SerializerReadClass(ProductInfoReport.class));
     }
+    
     protected ReportFields getReportFields() {
         return ReportFieldsBuilder.INSTANCE;
     }    
     
+    @Override
     protected EditorCreator createEditorCreator() {
-        m_productfilter =  new ProductFilter(m_dlSales) ;
-        return m_productfilter;
+
+        return m_params;
     }         
 }

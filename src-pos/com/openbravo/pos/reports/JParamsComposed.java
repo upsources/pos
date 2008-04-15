@@ -19,28 +19,64 @@
 package com.openbravo.pos.reports;
 
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.EditorCreator;
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteComposed;
+import com.openbravo.pos.forms.AppView;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
-public class JParamsComposed extends javax.swing.JPanel implements EditorCreator {
+public class JParamsComposed extends javax.swing.JPanel implements ReportEditorCreator {
     
-    private EditorCreator[] m_aEditors;
+    private List<ReportEditorCreator> editors = new ArrayList<ReportEditorCreator>();
     
     /** Creates new form JParamsComposed */
-    public JParamsComposed(EditorCreator... c) {
-        initComponents();
-        m_aEditors = c;    
+    public JParamsComposed() {
+        initComponents();   
     }
+
+    public void init(AppView app) {
+        for (ReportEditorCreator qbff : editors) {
+            qbff.init(app);
+        }
+    }
+
+    public void activate() throws BasicException {
+        for (ReportEditorCreator qbff : editors) {
+            qbff.activate();
+        }
+    }
+
+    public SerializerWrite getSerializerWrite() {
+        
+        SerializerWriteComposed sw = new SerializerWriteComposed();
+        
+        for (ReportEditorCreator qbff : editors) {
+            sw.add(qbff.getSerializerWrite());
+        }        
+    
+        return sw;
+    }
+
+    public Component getComponent() {
+        return this;
+    }  
     
     public Object createValue() throws BasicException {
         
-        Object[] value = new Object[m_aEditors.length];
+        Object[] value = new Object[editors.size()];
         
-        for(int i = 0; i < m_aEditors.length; i++) {
-            value[i] = m_aEditors[i].createValue();
+        for(int i = 0; i < editors.size(); i++) {
+            value[i] = editors.get(i).createValue();
         }
         
         return value;
     } 
+    
+    public void addEditor(ReportEditorCreator c) {
+        editors.add(c);
+        add(c.getComponent());
+    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -53,7 +89,7 @@ public class JParamsComposed extends javax.swing.JPanel implements EditorCreator
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
     }// </editor-fold>//GEN-END:initComponents
-    
+   
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

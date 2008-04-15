@@ -18,20 +18,20 @@
 
 package com.openbravo.pos.reports;
 
-import java.util.List;
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.user.EditorCreator;
+import com.openbravo.pos.forms.AppView;
+import java.awt.Component;
 
 /**
  *
- * @author adrian
+ * @author adrianromero
  */
-public class JParamsLocationWithFirst extends JParamsLocation {
+public interface ReportEditorCreator extends EditorCreator {
     
-    /** Creates a new instance of JParamsLocationWithFirst */
-    public JParamsLocationWithFirst() {
-        super();
-    }
-    
-    protected void addFirst(List a) {
-        a.add(0, null);
-    }    
+    public void init(AppView app);
+    public void activate() throws BasicException;
+    public SerializerWrite getSerializerWrite();
+    public Component getComponent();
 }

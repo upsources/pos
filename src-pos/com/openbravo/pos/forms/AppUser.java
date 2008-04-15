@@ -89,6 +89,10 @@ public class AppUser {
         return m_sRole;
     }
     
+    public String getCard() {
+        return m_sCard;
+    }
+    
     public boolean authenticate() {
         return m_sPassword == null || m_sPassword.equals("") || m_sPassword.startsWith("empty:");
     }
@@ -200,14 +204,19 @@ public class AppUser {
     }
     
     private class ConfigurationHandler extends DefaultHandler {       
+        @Override
         public void startDocument() throws SAXException {}
+        @Override
         public void endDocument() throws SAXException {}    
+        @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
             if ("class".equals(qName)){
                 m_apermissions.add(mapNewClass(attributes.getValue("name")));
             }
         }      
+        @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {}
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {}
     }     
     

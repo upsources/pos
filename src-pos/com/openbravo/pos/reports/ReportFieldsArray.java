@@ -24,7 +24,6 @@ import com.openbravo.pos.forms.AppLocal;
 
 public class ReportFieldsArray implements ReportFields {
     
-    // private String[] m_afields;
     private Map m_keys = null;
     
     /** Creates a new instance of ReportFieldsArray */

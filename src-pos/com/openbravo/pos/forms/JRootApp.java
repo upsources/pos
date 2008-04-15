@@ -43,6 +43,11 @@ import com.openbravo.data.loader.Session;
 import com.openbravo.pos.scale.DeviceScale;
 import com.openbravo.pos.scanpal2.DeviceScanner;
 import com.openbravo.pos.scanpal2.DeviceScannerFactory;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
+import com.openbravo.pos.util.StringUtils;
+import java.io.IOException;
 import java.util.regex.Matcher;
 
 /**
@@ -72,7 +77,13 @@ public class JRootApp extends JPanel implements AppView {
     private Map<String, BeanFactory> m_aBeanFactories;
     
     private JPrincipalApp m_principalapp = null;
-   
+    
+    private static HashMap<String, String> m_oldclasses; // This is for backwards compatibility purposes
+    
+    static {        
+        initOldClasses();
+    }
+    
     /** Creates new form JRootApp */
     public JRootApp() {    
 
@@ -276,32 +287,80 @@ public class JRootApp extends JPanel implements AppView {
     
     public Object getBean(String beanfactory) throws BeanFactoryException {
         
+        // For backwards compatibility
+        beanfactory = mapNewClass(beanfactory);
+        
+        
         BeanFactory bf = m_aBeanFactories.get(beanfactory);
         if (bf == null) {   
-            try {
-                Class bfclass = Class.forName(beanfactory);
+            
+            // testing sripts
+            if (beanfactory.startsWith("/")) {
+                // Resource
+                try {
+                    ScriptEngine eng = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
+                    eng.eval(StringUtils.readResource(beanfactory));
+                    bf = (BeanFactory) eng.get("bean");
+                } catch (ScriptException e) {
+                    throw new BeanFactoryException(e);
+                } catch (IOException e) {
+                    throw new BeanFactoryException(e);
+                }                
+            } else {
+                // Class BeanFactory
+                try {
+                    Class bfclass = Class.forName(beanfactory);
 
-                if (BeanFactoryApp.class.isAssignableFrom(bfclass)) {
-                    // the new construction of beans.
-                    BeanFactoryApp bfapp = (BeanFactoryApp) bfclass.newInstance();
-                    bfapp.init(this);
-                    bf = bfapp;
-                } else if (BeanFactory.class.isAssignableFrom(bfclass)) {
-                    bf = (BeanFactory) bfclass.newInstance();             
-                } else {
-                    // the old construction for beans...
-                    Constructor constMyView = bfclass.getConstructor(new Class[] {AppView.class});
-                    Object bean = constMyView.newInstance(new Object[] {this});
+                    if (BeanFactory.class.isAssignableFrom(bfclass)) {
+                        bf = (BeanFactory) bfclass.newInstance();             
+                    } else {
+                        // the old construction for beans...
+                        Constructor constMyView = bfclass.getConstructor(new Class[] {AppView.class});
+                        Object bean = constMyView.newInstance(new Object[] {this});
 
-                    bf = new BeanFactoryObj(bean);
+                        bf = new BeanFactoryObj(bean);
+                    }
+
+                } catch (Exception e) {
+                    // ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+                    throw new BeanFactoryException(e);
                 }
-                m_aBeanFactories.put(beanfactory, bf);
-            } catch (Exception e) {
-                // ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
-                throw new BeanFactoryException(e);
+            }
+            
+            // cache the factory
+            m_aBeanFactories.put(beanfactory, bf);         
+            
+            // Initialize if it is a BeanFactoryApp
+            if (bf instanceof BeanFactoryApp) {
+                BeanFactoryApp bfapp = (BeanFactoryApp) bf;
+                bfapp.init(this);
             }
         }
         return bf.getBean();
+    }
+    
+    private static String mapNewClass(String classname) {
+        String newclass = m_oldclasses.get(classname);
+        return newclass == null 
+                ? classname 
+                : newclass;
+    }
+    
+    private static void initOldClasses() {
+        m_oldclasses = new HashMap<String, String>();
+        
+        m_oldclasses.put("com.openbravo.pos.reports.JReportCustomers", "/com/openbravo/reports/customers.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportCustomersB", "/com/openbravo/reports/customersb.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportClosedPos", "/com/openbravo/reports/closedpos.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportClosedProducts", "/com/openbravo/reports/closedproducts.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JChartSales", "/com/openbravo/reports/chartsales.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventory", "/com/openbravo/reports/inventory.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventory2", "/com/openbravo/reports/inventoryb.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventoryBroken", "/com/openbravo/reports/inventorybroken.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventoryDiff", "/com/openbravo/reports/inventorydiff.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportPeople", "/com/openbravo/reports/people.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportTaxes", "/com/openbravo/reports/taxes.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportUserSales", "/com/openbravo/reports/usersales.bs");
     }
     
     public void waitCursorBegin() {

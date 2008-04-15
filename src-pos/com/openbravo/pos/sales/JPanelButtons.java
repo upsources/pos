@@ -109,8 +109,11 @@ public class JPanelButtons extends javax.swing.JPanel {
     }
     
     private class ConfigurationHandler extends DefaultHandler {       
+        @Override
         public void startDocument() throws SAXException {}
+        @Override
         public void endDocument() throws SAXException {}    
+        @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
             if ("button".equals(qName)){
                 String stemplate = attributes.getValue("template");
@@ -128,21 +131,11 @@ public class JPanelButtons extends javax.swing.JPanel {
                 }
             }
         }      
+        @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {}
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {}
     }  
-//    
-//    public boolean isPriceVisible() {
-//        return m_bpricevisible;
-//    }
-//    
-//    public boolean isTaxesIncluded() {
-//        return m_btaxesincluded;
-//    }
-//    
-//    public Integer getTaxesID() {
-//        return m_itaxesid;
-//    }
         
     private class JButtonFunc extends JButton {
         private String m_sCode;
@@ -160,7 +153,7 @@ public class JPanelButtons extends javax.swing.JPanel {
   
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-//                    String sresource = m_TicketScript.getResourceAsXML(m_sCode);
+
                     if (m_sCode == null) {
                         MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotexecute"));
                         msg.show(JPanelButtons.this);

@@ -31,7 +31,6 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.engine.design.*;
 import com.openbravo.basic.BasicException;
-import com.openbravo.beans.LocaleResources;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.BaseSentence;
 import com.openbravo.data.user.EditorCreator;
@@ -74,11 +73,11 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
             
             InputStream in = getClass().getResourceAsStream(getReport() + ".ser");
             if (in == null) {      
-                // Leo el diseno y lo compilo
+                // read and compile the report
                 JasperDesign jd = JRXmlLoader.load(getClass().getResourceAsStream(getReport() + ".jrxml"));            
                 jr = JasperCompileManager.compileReport(jd);    
             } else {
-                // Leo el informe ya compilado
+                // read the compiled report
                 ObjectInputStream oin = new ObjectInputStream(in);
                 jr = (JasperReport) oin.readObject();
                 oin.close();
@@ -135,16 +134,14 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
                 Map reportparams = new HashMap();
                 reportparams.put("ARG", params);
                 if (res != null) {
-                    LocaleResources lr = new LocaleResources();
-                    reportparams.put("REPORT_RESOURCE_BUNDLE", lr.getBundle(res));
+//                    LocaleResources lr = new LocaleResources();
+//                    reportparams.put("REPORT_RESOURCE_BUNDLE", lr.getBundle(res));
+                      reportparams.put("REPORT_RESOURCE_BUNDLE", ResourceBundle.getBundle(res));
                 }
                 
                 JasperPrint jp = JasperFillManager.fillReport(jr, reportparams, data);    
             
                 reportviewer.loadJasperPrint(jp);               
-//                this.remove(reportviewer);
-//                reportviewer = new JRViewer(jp);            
-//                add(reportviewer, BorderLayout.CENTER);
                 
             } catch (MissingResourceException e) {    
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotloadresourcedata"), e);

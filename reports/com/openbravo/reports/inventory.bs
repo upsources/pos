@@ -1,0 +1,66 @@
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+bean = new com.openbravo.pos.reports.PanelReportBean();
+
+bean.setTitleKey("Menu.Inventory");
+bean.setReport("/com/openbravo/reports/inventory");
+bean.setResourceBundle("com/openbravo/reports/inventory_messages");
+
+bean.setSentence("SELECT " +
+                "STOCKCURRENT.LOCATION AS LOCATIONID, " +
+                "LOCATIONS.NAME AS LOCATIONNAME, " +
+                "PRODUCTS.REFERENCE, " +
+                "PRODUCTS.NAME AS NAME, " +
+                "PRODUCTS.CATEGORY, " +
+                "CATEGORIES.NAME AS CATEGORYNAME, " +
+                "STOCKCURRENT.UNITS, " +
+                "PRODUCTS.PRICEBUY, " +
+                "PRODUCTS.PRICESELL, " +
+                "COALESCE(PRODUCTS.STOCKVOLUME, 0) AS STOCKVOLUME, " +
+                "COALESCE(PRODUCTS.STOCKCOST, 0) AS STOCKCOST, " +
+                "COALESCE(STOCKCURRENT.STOCKSECURITY, 0) AS STOCKSECURITY, " +
+                "COALESCE(STOCKCURRENT.STOCKMAXIMUM, 0) AS STOCKMAXIMUM " +
+                "FROM STOCKCURRENT " +
+                "JOIN LOCATIONS ON STOCKCURRENT.LOCATION = LOCATIONS.ID " +
+                "JOIN PRODUCTS ON STOCKCURRENT.PRODUCT = PRODUCTS.ID " +
+                "JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID " +
+                "WHERE ?(QBF_FILTER) " +
+                "ORDER BY STOCKCURRENT.LOCATION, CATEGORIES.NAME, PRODUCTS.NAME");
+bean.addParameter("PRODUCTS.NAME");
+bean.addParameter("PRODUCTS.PRICEBUY");
+bean.addParameter("PRODUCTS.PRICESELL");
+bean.addParameter("PRODUCTS.CATEGORY");
+bean.addParameter("PRODUCTS.CODE");
+bean.addParameter("STOCKCURRENT.LOCATION");
+bean.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
+bean.addQBFFilter(new com.openbravo.pos.reports.JParamsLocationWithFirst());
+
+bean.addField("LOCATIONID", com.openbravo.data.loader.Datas.STRING);
+bean.addField("LOCATIONNAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
+bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("CATEGORY", com.openbravo.data.loader.Datas.STRING);
+bean.addField("CATEGORYNAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("PRICEBUY", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("PRICESELL", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("STOCKVOLUME", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("STOCKCOST", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("STOCKSECURITY", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("STOCKMAXIMUM", com.openbravo.data.loader.Datas.DOUBLE);

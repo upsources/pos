@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -16,22 +16,16 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.openbravo.pos.reports;
+bean = new com.openbravo.pos.reports.PanelReportBean();
 
-import java.util.List;
+bean.setTitleKey("Menu.UsersReport");
+bean.setReport("/com/openbravo/reports/people");
+bean.setResourceBundle("com/openbravo/reports/people_messages");
+bean.setSentence("SELECT PEOPLE.ID, PEOPLE.NAME, PEOPLE.CARD, ROLES.NAME AS ROLE, PEOPLE.IMAGE " +
+                 "FROM PEOPLE, ROLES WHERE PEOPLE.ROLE = ROLES.ID AND PEOPLE.VISIBLE = TRUE");
 
-/**
- *
- * @author adrian
- */
-public class JParamsLocationWithFirst extends JParamsLocation {
-    
-    /** Creates a new instance of JParamsLocationWithFirst */
-    public JParamsLocationWithFirst() {
-        super();
-    }
-    
-    protected void addFirst(List a) {
-        a.add(0, null);
-    }    
-}
+bean.addField("ID", com.openbravo.data.loader.Datas.STRING);
+bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("CARD", com.openbravo.data.loader.Datas.STRING);
+bean.addField("ROLE", com.openbravo.data.loader.Datas.STRING);
+bean.addField("IMAGE", com.openbravo.data.loader.Datas.IMAGE);

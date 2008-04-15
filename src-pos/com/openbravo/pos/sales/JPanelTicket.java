@@ -816,6 +816,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             JPanelTicket.this.addTicketLine(oProduct, dmult, dpricesell);
         }
         
+        public void removeTicketLine() {
+            int i = m_ticketlines.getSelectedIndex();
+            if (i >= 0){
+                JPanelTicket.this.removeTicketLine(i);
+            }
+        }        
+        
         public void printTicket(String sresourcename) {
             JPanelTicket.this.printTicket(sresourcename);   
         }

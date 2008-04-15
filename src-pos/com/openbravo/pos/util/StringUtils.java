@@ -18,6 +18,10 @@
 
 package com.openbravo.pos.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Random;
@@ -93,5 +97,22 @@ public class StringUtils {
         }
 
         return out;
-    }        
+    }  
+    
+    public static String readResource(String resource) throws IOException {
+        
+        InputStream in = StringUtils.class.getResourceAsStream(resource);
+        if (in == null) {
+            throw new FileNotFoundException(resource);
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = in.read(buffer)) > 0) {
+            out.write(buffer, 0, len);
+        }
+        byte[] data = out.toByteArray();
+
+        return new String(data, "UTF-8");
+    }
 }

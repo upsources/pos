@@ -61,9 +61,9 @@ public class ProductsWarehousePanel extends JPanelTable {
     }
     
     protected void init() {   
-        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
                
-        m_paramslocation =  new JParamsLocation(dlSales);
+        m_paramslocation =  new JParamsLocation();
+        m_paramslocation.init(app);
         m_paramslocation.addActionListener(new ReloadActionListener());
         
         final Datas[] prodstock = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.DOUBLE};
@@ -121,7 +121,7 @@ public class ProductsWarehousePanel extends JPanelTable {
     }
     
     public Component getFilter() {
-        return m_paramslocation;
+        return m_paramslocation.getComponent();
     }  
     
     public EditorRecord getEditor() {

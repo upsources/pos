@@ -18,28 +18,38 @@
 
 package com.openbravo.pos.ticket;
 
+import com.openbravo.data.loader.SerializerWrite;
 import com.openbravo.pos.forms.AppLocal;
 
+import com.openbravo.pos.forms.AppView;
+import java.awt.Component;
 import java.util.List;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListQBFModelNumber;
 import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.SentenceList;
-import com.openbravo.data.user.EditorCreator;
+import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.reports.ReportEditorCreator;
 
-public class ProductFilter extends javax.swing.JPanel implements EditorCreator {
+public class ProductFilter extends javax.swing.JPanel implements ReportEditorCreator {
     
     private SentenceList m_sentcat;
     private ComboBoxValModel m_CategoryModel;
 
     /** Creates new form JQBFProduct */
-    public ProductFilter(DataLogicSales dlSales) {
+    public ProductFilter() {
 
         initComponents();
-
+    }
+    
+    public void init(AppView app) {
+         
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+       
         // El modelo de categorias
         m_sentcat = dlSales.getCategoriesList();
         m_CategoryModel = new ComboBoxValModel();          
@@ -55,6 +65,15 @@ public class ProductFilter extends javax.swing.JPanel implements EditorCreator {
         catlist.add(0, null);
         m_CategoryModel = new ComboBoxValModel(catlist);
         m_jCategory.setModel(m_CategoryModel);
+    }
+    
+    public SerializerWrite getSerializerWrite() {
+        return new SerializerWriteBasic(
+                new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING});
+    }
+
+    public Component getComponent() {
+        return this;
     }
    
     public Object createValue() throws BasicException {

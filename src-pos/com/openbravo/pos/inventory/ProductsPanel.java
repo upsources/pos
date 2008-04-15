@@ -66,7 +66,8 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         
         // el panel del filtro
-        jproductfilter = new ProductFilter(m_dlSales);
+        jproductfilter = new ProductFilter();
+        jproductfilter.init(app);
         
         // el panel del editor
         jeditor = new ProductsEditor(m_dlSales, dirty);       
@@ -116,7 +117,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
     }
     
     public Component getFilter() {
-        return jproductfilter;
+        return jproductfilter.getComponent();
     }  
     
     public Component getToolbarExtras() {

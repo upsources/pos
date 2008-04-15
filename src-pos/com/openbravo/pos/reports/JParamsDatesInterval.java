@@ -18,15 +18,19 @@
 
 package com.openbravo.pos.reports;
 
+import com.openbravo.pos.forms.AppView;
+import java.awt.Component;
 import java.util.Date;
 import com.openbravo.beans.JCalendarDialog;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.EditorCreator;
+import com.openbravo.data.loader.Datas;
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteBasic;
 
-public class JParamsDatesInterval extends javax.swing.JPanel implements EditorCreator {
+public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEditorCreator {
     
     /** Creates new form JParamsClosedPos */
     public JParamsDatesInterval() {
@@ -40,7 +44,21 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements EditorCr
     public void setEndDate(Date d) {
         jTxtEndDate.setText(Formats.TIMESTAMP.formatValue(d));
     }
-   
+
+    public void init(AppView app) {
+    }
+
+    public void activate() throws BasicException {
+    }
+    
+    public SerializerWrite getSerializerWrite() {
+        return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.TIMESTAMP, Datas.OBJECT, Datas.TIMESTAMP});
+    }
+
+    public Component getComponent() {
+        return this;
+    }
+    
     public Object createValue() throws BasicException {
         Object startdate = Formats.TIMESTAMP.parseValue(jTxtStartDate.getText());
         Object enddate = Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());   

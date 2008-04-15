@@ -18,30 +18,39 @@
 
 package com.openbravo.pos.reports;
 
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.pos.forms.AppView;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.List;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.data.loader.SentenceList;
-import com.openbravo.data.user.EditorCreator;
+import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSales;
 
-public class JParamsLocation extends javax.swing.JPanel implements EditorCreator {
+public class JParamsLocation extends javax.swing.JPanel implements ReportEditorCreator {
     
     private SentenceList m_sentlocations;
     private ComboBoxValModel m_LocationsModel;    
     
     /** Creates new form JParamsLocation */
-    public JParamsLocation(DataLogicSales dlSales) {
-        initComponents();
+    public JParamsLocation() {
+        initComponents();     
+    }
+
+    public void init(AppView app) {
+         
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         
         // El modelo de locales
         m_sentlocations = dlSales.getLocationsList();
-        m_LocationsModel = new ComboBoxValModel();        
+        m_LocationsModel = new ComboBoxValModel();   
     }
-    
+        
     public void activate() throws BasicException {
         List a = m_sentlocations.list();
         addFirst(a);
@@ -49,6 +58,15 @@ public class JParamsLocation extends javax.swing.JPanel implements EditorCreator
         m_LocationsModel.setSelectedFirst();
         m_jLocation.setModel(m_LocationsModel); // refresh model   
     }
+    
+    public SerializerWrite getSerializerWrite() {
+        return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING});
+    }
+
+    public Component getComponent() {
+        return this;
+    }
+
     
     protected void addFirst(List a) {
         // do nothing
@@ -65,7 +83,8 @@ public class JParamsLocation extends javax.swing.JPanel implements EditorCreator
     public Object createValue() throws BasicException {
         
         return new Object[] {
-            m_LocationsModel.getSelectedKey() == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_EQUALS, m_LocationsModel.getSelectedKey()
+            m_LocationsModel.getSelectedKey() == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_EQUALS, 
+            m_LocationsModel.getSelectedKey()
         };
     }    
     /** This method is called from within the constructor to

@@ -19,12 +19,16 @@
 package com.openbravo.pos.reports;
 
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.QBFCompareEnum;
-import com.openbravo.data.user.EditorCreator;
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.forms.AppView;
+import java.awt.Component;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -32,15 +36,13 @@ import javax.swing.event.DocumentListener;
  *
  * @author  adrianromero
  */
-public class JParamsCustomer extends javax.swing.JPanel implements EditorCreator {
+public class JParamsCustomer extends javax.swing.JPanel implements ReportEditorCreator {
     
     private DataLogicCustomers dlCustomers;
     private CustomerInfo currentcustomer;
     
     /** Creates new form JParamsCustomer */
-    public JParamsCustomer(DataLogicCustomers dlCustomers) {
-        
-        this.dlCustomers = dlCustomers;
+    public JParamsCustomer() {
 
         initComponents();
         
@@ -56,11 +58,23 @@ public class JParamsCustomer extends javax.swing.JPanel implements EditorCreator
             }
         });
     }
+
+    public void init(AppView app) {
+        dlCustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+    }
     
-    public void activate() {
+    public void activate() throws BasicException {
         
         currentcustomer = null;
         jTextField1.setText(null);        
+    }
+            
+    public SerializerWrite getSerializerWrite() {
+        return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING});
+    }
+
+    public Component getComponent() {
+        return this;
     }
     
     public Object createValue() throws BasicException {

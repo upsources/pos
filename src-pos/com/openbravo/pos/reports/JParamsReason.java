@@ -20,12 +20,16 @@ package com.openbravo.pos.reports;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.QBFCompareEnum;
-import com.openbravo.data.user.EditorCreator;
+import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.inventory.MovementReason;
+import java.awt.Component;
 
-public class JParamsReason extends javax.swing.JPanel implements EditorCreator {
+public class JParamsReason extends javax.swing.JPanel implements ReportEditorCreator {
     
     private ComboBoxValModel m_ReasonModel;
     
@@ -45,6 +49,20 @@ public class JParamsReason extends javax.swing.JPanel implements EditorCreator {
         
         m_jreason.setModel(m_ReasonModel);
         // m_jreason.setSelectedItem(null);
+    }
+    
+    public void init(AppView app) {
+    }
+
+    public void activate() throws BasicException {
+    }
+
+    public SerializerWrite getSerializerWrite() {
+        return new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.INT});
+    }
+
+    public Component getComponent() {
+        return this;
     }
     
     public Object createValue() throws BasicException {
