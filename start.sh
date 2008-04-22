@@ -22,7 +22,6 @@ DIRNAME=`dirname $0`
 
 CP=$DIRNAME/openbravopos.jar
 
-CP=$CP:$DIRNAME/lib/l2fprod-common-tasks.jar
 CP=$CP:$DIRNAME/lib/jasperreports-2.0.1.jar
 CP=$CP:$DIRNAME/lib/jcommon-1.0.0.jar
 CP=$CP:$DIRNAME/lib/jfreechart-1.0.0.jar
@@ -40,7 +39,9 @@ CP=$CP:$DIRNAME/lib/commons-lang-2.1.jar
 CP=$CP:$DIRNAME/lib/bsh-core-2.0b4.jar
 CP=$CP:$DIRNAME/lib/RXTXcomm.jar
 CP=$CP:$DIRNAME/lib/jpos111.jar
+CP=$CP:$DIRNAME/lib/swingx.jar
 CP=$CP:$DIRNAME/lib/substance.jar
+CP=$CP:$DIRNAME/lib/substance-swingx.jar
 
 # Apache Axis SOAP libraries.
 CP=$CP:$DIRNAME/lib/axis.jar

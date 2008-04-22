@@ -20,7 +20,6 @@ REM    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
 set CP=%CD%/openbravopos.jar
 
-set CP=%CP%;%CD%/lib/l2fprod-common-tasks.jar
 set CP=%CP%;%CD%/lib/jasperreports-2.0.1.jar
 set CP=%CP%;%CD%/lib/jcommon-1.0.0.jar
 set CP=%CP%;%CD%/lib/jfreechart-1.0.0.jar
@@ -38,7 +37,9 @@ set CP=%CP%;%CD%/lib/commons-lang-2.1.jar
 set CP=%CP%;%CD%/lib/bsh-core-2.0b4.jar
 set CP=%CP%;%CD%/lib/RXTXcomm.jar
 set CP=%CP%;%CD%/lib/jpos111.jar
+set CP=%CP%;%CD%/lib/swingx.jar
 set CP=%CP%;%CD%/lib/substance.jar
+set CP=%CP%;%CD%/lib/substance-swingx.jar
 
 rem Apache Axis SOAP libraries.
 set CP=%CP%;%CD%/lib/axis.jar

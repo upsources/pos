@@ -33,10 +33,10 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.util.Hashcypher;
 
-import com.l2fprod.common.swing.JTaskPane;
-import com.l2fprod.common.swing.JTaskPaneGroup;
-//import org.jdesktop.swingx.JXTaskPane;
-//import org.jdesktop.swingx.JXTaskPaneContainer;
+//import com.l2fprod.common.swing.JTaskPane;
+//import com.l2fprod.common.swing.JTaskPaneGroup;
+import org.jdesktop.swingx.JXTaskPane;
+import org.jdesktop.swingx.JXTaskPaneContainer;
 
 /**
  *
@@ -101,8 +101,8 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
     }
     
     public class ScriptMenu {
-        private JTaskPane taskPane = new JTaskPane();
-//        private JXTaskPaneContainer taskPane = new JXTaskPaneContainer();
+//        private JTaskPane taskPane = new JTaskPane();
+        private JXTaskPaneContainer taskPane = new JXTaskPaneContainer();
         
         private ScriptMenu() {
         }
@@ -114,19 +114,19 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
             return group;
         }
         
-        public JTaskPane getTaskPane() {            
-//        public JXTaskPaneContainer getTaskPane() {            
+//        public JTaskPane getTaskPane() {            
+        public JXTaskPaneContainer getTaskPane() {            
             return taskPane;
         }
     }
     
     public class ScriptGroup {
-        private JTaskPaneGroup taskGroup;
-//        private JXTaskPane taskGroup;
+//        private JTaskPaneGroup taskGroup;
+        private JXTaskPane taskGroup;
         
         private ScriptGroup(String key) {
-            taskGroup = new JTaskPaneGroup();
-//            taskGroup = new JXTaskPane();
+//            taskGroup = new JTaskPaneGroup();
+            taskGroup = new JXTaskPane();
             taskGroup.setFocusable(false);
             taskGroup.setRequestFocusEnabled(false);
             taskGroup.setTitle(AppLocal.getIntString(key));     
@@ -168,8 +168,8 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
             }
         }
         
-        public JTaskPaneGroup getTaskGroup() {
-//        public JXTaskPane getTaskGroup() {
+//        public JTaskPaneGroup getTaskGroup() {
+        public JXTaskPane getTaskGroup() {
             return taskGroup;
         }   
     }
