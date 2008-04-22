@@ -38,7 +38,6 @@ import com.openbravo.pos.customers.CustomerInfo;
 
 public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements EditorRecord {
 
-    private AppView m_App;
     private JTicketsBagRestaurantMap m_restaurantmap;
     
     private DataLogicCustomers dlCustomers = null;
@@ -62,7 +61,6 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
     /** Creates new form JPanelReservations */
     public JTicketsBagRestaurantRes(AppView oApp, JTicketsBagRestaurantMap restaurantmap) {
         
-        m_App = oApp;        
         m_restaurantmap = restaurantmap;
         
         dlCustomers = (DataLogicCustomers) oApp.getBean("com.openbravo.pos.customers.DataLogicCustomers");
@@ -92,7 +90,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         txtCustomer.addPropertyChangeListener("Text", m_Dirty);
         txtCustomer.addPropertyChangeListener("Text", new PropertyChangeListener(){
             public void propertyChange(PropertyChangeEvent evt) {
-                customer = new CustomerInfo(null, txtCustomer.getText());
+                customer = new CustomerInfo(null, null, txtCustomer.getText());
             }
         });
         m_jtxtChairs.addPropertyChangeListener("Text", m_Dirty);
@@ -140,7 +138,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_sID = null;
         m_dCreated = null;
         m_timereservation.setDate(null);
-        assignCustomer(new CustomerInfo(null, null));
+        assignCustomer(new CustomerInfo(null, null, null));
         m_jtxtChairs.reset();
         m_bReceived = false;
         m_jtxtDescription.reset();
@@ -157,7 +155,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = null;
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate(m_dcurrentday);
-        assignCustomer(new CustomerInfo(null, null));
+        assignCustomer(new CustomerInfo(null, null, null));
         m_jtxtChairs.setValueInteger(2);
         m_bReceived = false;
         m_jtxtDescription.reset();
@@ -177,10 +175,10 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = (Date) res[1];
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate((Date) res[2]);
-        assignCustomer(new CustomerInfo((String) res[3], (String) res[4]));
-        m_jtxtChairs.setValueInteger(((Integer)res[5]).intValue());
-        m_bReceived = ((Boolean)res[6]).booleanValue();
-        m_jtxtDescription.setText(Formats.STRING.formatValue(res[7]));
+        assignCustomer(new CustomerInfo((String) res[3], (String) res[4], (String) res[5]));
+        m_jtxtChairs.setValueInteger(((Integer)res[6]).intValue());
+        m_bReceived = ((Boolean)res[7]).booleanValue();
+        m_jtxtDescription.setText(Formats.STRING.formatValue(res[8]));
         m_timereservation.setEnabled(false);
         txtCustomer.setEnabled(false);
         m_jtxtChairs.setEnabled(false);
@@ -195,10 +193,10 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_dCreated = (Date) res[1];
         m_timereservation.setCheckDates(m_dcurrentday, new Date(m_dcurrentday.getTime() + 3600000L));
         m_timereservation.setDate((Date) res[2]);
-        assignCustomer(new CustomerInfo((String) res[3], (String) res[4]));
-        m_jtxtChairs.setValueInteger(((Integer)res[5]).intValue());
-        m_bReceived = ((Boolean)res[6]).booleanValue();
-        m_jtxtDescription.setText(Formats.STRING.formatValue(res[7]));
+        assignCustomer(new CustomerInfo((String) res[3], (String) res[4], (String) res[5]));
+        m_jtxtChairs.setValueInteger(((Integer)res[6]).intValue());
+        m_bReceived = ((Boolean)res[7]).booleanValue();
+        m_jtxtDescription.setText(Formats.STRING.formatValue(res[8]));
         m_timereservation.setEnabled(true);
         txtCustomer.setEnabled(true);
         m_jtxtChairs.setEnabled(true);
@@ -218,10 +216,11 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         res[1] = m_dCreated == null ? new Date() : m_dCreated; 
         res[2] = m_timereservation.getDate();
         res[3] = customer.getId();
-        res[4] = customer.getName();
-        res[5] = new Integer(m_jtxtChairs.getValueInteger());
-        res[6] = new Boolean(m_bReceived);
-        res[7] = m_jtxtDescription.getText();
+        res[4] = customer.getTaxid();
+        res[5] = customer.getName();
+        res[6] = new Integer(m_jtxtChairs.getValueInteger());
+        res[7] = new Boolean(m_bReceived);
+        res[8] = m_jtxtDescription.getText();
 
         return res;
     }    
@@ -460,7 +459,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         CustomerInfo c = finder.getSelectedCustomer(); 
         
         if (c == null) {       
-            assignCustomer(new CustomerInfo(null, null));
+            assignCustomer(new CustomerInfo(null, null, null));
         } else {
             assignCustomer(c);
         }

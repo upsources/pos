@@ -28,6 +28,7 @@ import java.util.Date;
 public class CustomerInfoExt {
     
     private String id;
+    private String taxid;
     private String name;
     
     private String card;
@@ -39,18 +40,23 @@ public class CustomerInfoExt {
     private Double curdebt;
     
     /** Creates a new instance of UserInfoBasic */
-    public CustomerInfoExt(String id, String name) {
+    public CustomerInfoExt(String id, String taxid, String name) {
         this.id = id;
+        this.taxid = taxid;
         this.name = name;    
     }
     
     public CustomerInfo getCustomerInfo() {
-        return new CustomerInfo(id, name);
+        return new CustomerInfo(id, taxid, name);
     }
     
     public String getId() {
         return id;
-    }    
+    }
+    
+    public String getTaxid() {
+        return taxid;
+    }  
     
     public String getName() {
         return name;

@@ -26,25 +26,31 @@ import java.io.Serializable;
  */
 public class CustomerInfo implements Serializable {
     
-    private String m_sId;
-    private String m_sName;
+    private String id;
+    private String taxid;
+    private String name;
     
     /** Creates a new instance of UserInfoBasic */
-    public CustomerInfo(String id, String name) {
-        m_sId = id;
-        m_sName = name;    
+    public CustomerInfo(String id, String taxid, String name) {
+        this.id = id;
+        this.taxid = taxid;
+        this.name = name;    
     }
     
     public String getId() {
-        return m_sId;
+        return id;
+    }    
+    
+    public String getTaxid() {
+        return taxid;
     }    
     
     public String getName() {
-        return m_sName;
+        return name;
     }   
     
     @Override
     public String toString() {
-        return m_sName;
+        return name;
     }
 }

@@ -52,14 +52,17 @@
             <text align="left" length="15">Date:</text>
             <text>${ticket.printDate()}</text>
         </line>  
-        <line>
-            <text align="left" length="15">Sales person:</text>
-            <text>${ticket.printUser()}</text>
-        </line> 
+ 
+         #if ($ticket.getCustomer())
         <line>
             <text align="left" length="15">Customer:</text>
-            <text>${ticket.printCustomer()}</text>
-        </line>         
+            <text>${ticket.getCustomer().getName()}</text>
+        </line>      
+        <line>
+            <text align="left" length="15"></text>
+            <text>${ticket.getCustomer().getTaxid()}</text>
+        </line>  
+        #end       
         
         <line></line> 
         <line size="1">
@@ -158,6 +161,11 @@
         #end
         #end 
         
+        <line></line>            
+        <line>
+            <text align="left" length="15">Sales person:</text>
+            <text>${ticket.printUser()}</text>
+        </line>
         
         <line></line>            
         <line>
