@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,13 @@ import com.openbravo.data.loader.DataWrite;
 import com.openbravo.format.Formats;
 import com.openbravo.data.loader.SerializableWrite;
 import com.openbravo.basic.BasicException;
+import com.openbravo.pos.forms.AppLocal;
+import java.util.Properties;
 
+/**
+ *
+ * @author adrianromero
+ */
 public class TicketLineInfo implements SerializableWrite, SerializableRead, Serializable {
     
     private String m_sTicket;
@@ -35,24 +41,25 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     private double m_dMultiply;    
     private double m_dPrice;
     
-    private String m_sProdID;
-    private String m_sProdName;
-    private boolean m_bProdCom;
-    
-    private TaxInfo m_TaxInfo;
+    private TicketProductInfo product;
 
-    /** Creates new TicketLineInfo */    
+    /** Creates new TicketLineInfo */   
+     public TicketLineInfo(TicketProductInfo product, double dMultiply, double dPrice) {
+        this.product = product; 
+        m_dMultiply = dMultiply;
+        m_dPrice = dPrice;
+        m_sTicket = null;
+        m_iLine = -1;
+    }
+     public TicketLineInfo() {
+        this(new TicketProductInfo(), 0.0, 0.0);
+    }
+     
     public TicketLineInfo(ProductInfoExt oProduct, double dMultiply, double dPrice) {
         if (oProduct == null) {
-            m_sProdID = null;
-            m_sProdName = null;
-            m_bProdCom = false;
-            m_TaxInfo = null;
+            product = new TicketProductInfo();
         } else {
-            m_sProdID = oProduct.getID();
-            m_sProdName = oProduct.getName();
-            m_bProdCom = oProduct.isCom();
-            m_TaxInfo = oProduct.getTaxInfo();
+            product = new TicketProductInfo(oProduct);
         }    
         m_dMultiply = dMultiply;
         m_dPrice = dPrice;
@@ -62,21 +69,17 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public TicketLineInfo(ProductInfoExt oProduct, double dPrice) {       
         this(oProduct, 1.0, dPrice);
     }
-     public TicketLineInfo() {
-        this(null, 0.0, 0.0);
-    }
-    public TicketLineInfo(TicketLineInfo line) {        
-        m_sProdID = line.m_sProdID;
-        m_sProdName = line.m_sProdName;
-        m_bProdCom = line.m_bProdCom;
-        m_TaxInfo = line.m_TaxInfo;
+     
+    public TicketLineInfo(TicketLineInfo line) {  
+        
+        product = line.product.cloneTicketProduct();
         m_dMultiply = line.m_dMultiply;
         m_dPrice = line.m_dPrice;
         m_sTicket = null;
         m_iLine = -1;
     }
      
-    public void setTicket(String ticket, int line) {
+    void setTicket(String ticket, int line) {
         m_sTicket = ticket;
         m_iLine = line;
     }
@@ -84,23 +87,39 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public void writeValues(DataWrite dp) throws BasicException {
         dp.setString(1, m_sTicket);
         dp.setInt(2, new Integer(m_iLine));
-        dp.setString(3, m_sProdID);
-        dp.setString(4, m_sProdName);
-        dp.setBoolean(5, new Boolean(m_bProdCom));
+        dp.setString(3, product.getId());
+        dp.setString(4, product.getName());
+        dp.setBoolean(5, new Boolean(product.isCom()));
         dp.setDouble(6, new Double(m_dMultiply));
         dp.setDouble(7, new Double(m_dPrice));
-        dp.setString(8, m_TaxInfo.getID());
+        dp.setString(8, product.getTax().getId());
+        try {
+            ByteArrayOutputStream o = new ByteArrayOutputStream();
+            product.getProperties().storeToXML(o, AppLocal.APP_NAME, "UTF-8");
+            dp.setBytes(9, o.toByteArray()); 
+        } catch (IOException e) {
+            dp.setBytes(9, null);
+        } 
     }
     
     public void readValues(DataRead dr) throws BasicException {
         m_sTicket = dr.getString(1);
         m_iLine = dr.getInt(2).intValue();
-        m_sProdID = dr.getString(3);
-        m_sProdName = dr.getString(4);
-        m_bProdCom = dr.getBoolean(5).booleanValue();
+        String prodid = dr.getString(3);
+        String prodname = dr.getString(4);
+        boolean prodcom = dr.getBoolean(5).booleanValue();
         m_dMultiply = dr.getDouble(6).doubleValue();
         m_dPrice = dr.getDouble(7).doubleValue();
-        m_TaxInfo = new TaxInfo(dr.getString(8), "", dr.getDouble(9).doubleValue());
+        TaxInfo tax = new TaxInfo(dr.getString(8), "", dr.getDouble(9).doubleValue());
+        Properties attributes = new Properties();
+        try {
+            byte[] img = dr.getBytes(10);
+            if (img != null) {
+                attributes.loadFromXML(new ByteArrayInputStream(img));
+            }
+        } catch (IOException e) {
+        }         
+        product = new TicketProductInfo(prodid, prodname, prodcom, tax, attributes);
     }
     
     public TicketLineInfo cloneTicketLine() {
@@ -109,10 +128,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         l.m_iLine = m_iLine;
         l.m_dMultiply = m_dMultiply;    
         l.m_dPrice = m_dPrice;
-        l.m_sProdID = m_sProdID;
-        l.m_sProdName = m_sProdName;
-        l.m_bProdCom = m_bProdCom;
-        l.m_TaxInfo = m_TaxInfo; 
+        l.product = product.cloneTicketProduct();
         return l;
     }
     
@@ -120,27 +136,25 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         return m_iLine;
     }
     
-    public String getProductID() {
-        return m_sProdID;
-    }    
+    public TicketProductInfo getProduct() {
+        return product;
+    }
+    
+    public void setProduct(TicketProductInfo value) {
+        product = value;
+    }
     
     public String getProductName() {
-        return m_sProdName;
-    } 
-    public void setProductName(String sValue) {
-        if (m_sProdID == null) {
-            m_sProdName = sValue;
-        }
+        return product.getName();
     }
- 
+    
     public boolean isProductCom() {
-        return m_bProdCom;
+        return product.isCom();
     }
-    public void setProductCom(boolean bValue) {
-        if (m_sProdID == null) {
-            m_bProdCom = bValue;
-        }
-    }    
+    
+    public TaxInfo getTaxInfo() {
+        return product.getTax();
+    }
     
     public double getMultiply() {
         return m_dMultiply;
@@ -158,14 +172,6 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_dPrice = dValue;
     }
     
-    public TaxInfo getTaxInfo() {
-        return m_TaxInfo;
-    }
-//    
-//    public Integer getProductTax() {
-//        return m_iProdTax;
-//    }
-    
     public double getPriceTax() {
         return m_dPrice * (1.0 + getTaxRate());
     }
@@ -175,7 +181,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
     
     public double getTaxRate() {
-        return m_TaxInfo == null ? 0.0 : m_TaxInfo.getRate();
+        return product.getTax() == null ? 0.0 : product.getTax().getRate();
     }
     
     public double getSubValue() {
@@ -201,7 +207,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
     
     public String printName() {
-         return m_sProdName == null ? "" : StringUtils.encodeXML(m_sProdName);
+         return product.getName() == null ? "" : StringUtils.encodeXML(product.getName());
     }
     public String printMultiply() {
         return Formats.DOUBLE.formatValue(new Double(m_dMultiply));

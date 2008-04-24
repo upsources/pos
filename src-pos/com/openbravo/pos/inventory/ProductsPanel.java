@@ -93,6 +93,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
             m_dlSales.getProductCatDelete());        
     }
     
+    @Override
     public Vectorer getVectorer() {
         return  new VectorerBasic(
                 new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname"), "ISCOM", "ISSCALE", AppLocal.getIntString("label.prodpricebuy"), AppLocal.getIntString("label.prodpricesell"), AppLocal.getIntString("label.prodcategory"), AppLocal.getIntString("label.prodtax"), "IMAGE", "STOCKCOST", "STOCKVOLUME"},
@@ -100,6 +101,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
                 new int[] {1, 2, 3, 6, 7});
     }
     
+    @Override
     public ComparatorCreator getComparatorCreator() {
         return new ComparatorCreatorBasic(
                 new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname"), "ISCOM", "ISSCALE", AppLocal.getIntString("label.prodpricebuy"), AppLocal.getIntString("label.prodpricesell"), AppLocal.getIntString("label.prodcategory"), AppLocal.getIntString("label.prodtax"), "IMAGE", "STOCKCOST", "STOCKVOLUME"},
@@ -108,6 +110,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
                 new int[]{1, 2, 3, 6, 7, 8, 9});
     }
     
+    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(new RenderStringBasic(new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING}, new int[]{1, 3}));
     }
@@ -116,10 +119,12 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
         return jeditor;
     }
     
+    @Override
     public Component getFilter() {
         return jproductfilter.getComponent();
     }  
     
+    @Override
     public Component getToolbarExtras() {
         
         JButton btnScanPal = new JButton();

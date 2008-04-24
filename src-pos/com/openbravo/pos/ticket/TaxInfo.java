@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -17,15 +17,19 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.ticket;
+
 import java.io.Serializable;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.data.loader.DataWrite;
-import com.openbravo.format.Formats;
 import com.openbravo.data.loader.SerializableWrite;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.IKeyed;
 
+/**
+ *
+ * @author adrianromero
+ */
 public class TaxInfo implements SerializableRead, SerializableWrite, Serializable, IKeyed {
 
     private String m_sID;
@@ -64,7 +68,7 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
         m_sID = sID;
     }
     
-    public String getID() {
+    public String getId() {
         return m_sID;
     }
 
@@ -84,10 +88,12 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
         m_dRate = dValue;
     }
 
+    @Override
     public String toString(){
         return m_sName;
     }
     
+    @Override
     public boolean equals(Object obj) {
 	if (this == obj) {
 	    return true;
@@ -117,6 +123,7 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
         }           
     }
     
+    @Override
     public int hashCode() {      
         return (m_sID == null ? 0 : m_sID.hashCode()) + (m_sName == null ? 0 : m_sName.hashCode()) + new Double(m_dRate).hashCode();
     }    

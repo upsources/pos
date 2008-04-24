@@ -35,6 +35,7 @@ import com.openbravo.pos.scale.ScaleException;
 import com.openbravo.pos.payment.JPaymentSelect;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.gui.HashMapKeyed;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
@@ -52,8 +53,12 @@ import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import java.util.Map;
 
-
+/**
+ *
+ * @author adrianromero
+ */
 public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFactoryApp, TicketsEditor {
    
     // Variable numerica
@@ -86,9 +91,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private JTicketsBag m_ticketsbag;
     
     private SentenceList m_senttax;
-    private java.util.List m_TaxList;
+    private Map<Object, TaxInfo> taxmap;
     private ComboBoxValModel m_TaxModel;
     
+    private ScriptObject scriptobjinst;
     protected JPanelButtons m_jbtnconfig;
     
     protected AppView m_App;
@@ -124,7 +130,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_TTP = new TicketParser(m_App.getDeviceTicket(), dlSystem);
                
         // Los botones configurables...
-        m_jbtnconfig = new JPanelButtons("Ticket.Buttons", new ScriptObject());
+        scriptobjinst = new ScriptObject();
+        m_jbtnconfig = new JPanelButtons("Ticket.Buttons", scriptobjinst);
         m_jButtonsExt.add(m_jbtnconfig);           
        
         // El panel de los productos o de las lineas...        
@@ -158,8 +165,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jaddtax.setSelected("true".equals(m_jbtnconfig.getProperty("taxesincluded")));
 
         // Inicializamos el combo de los impuestos.
-        m_TaxList = m_senttax.list();
-        m_TaxModel = new ComboBoxValModel(m_TaxList);
+        java.util.List<TaxInfo> taxlist = m_senttax.list();
+        taxmap = new HashMapKeyed<TaxInfo>(taxlist);
+        m_TaxModel = new ComboBoxValModel(taxlist);
         m_jTax.setModel(m_TaxModel);
 
         String taxesid = m_jbtnconfig.getProperty("taxesid");
@@ -249,13 +257,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }
     
     private void paintTicketLine(int index, TicketLineInfo oLine){
-
-        m_ticketlines.setTicketLine(index, oLine);
-        m_ticketlines.setSelectedIndex(index);
         
-        visorTicketLine(oLine); // Y al visor tambien...
-        printPartialTotals();   
-        stateToZero();  
+        if (executeEvent("ticket.setline", new ScriptArg("index", index), new ScriptArg("line", oLine)) == null) {
+
+            m_ticketlines.setTicketLine(index, oLine);
+            m_ticketlines.setSelectedIndex(index);
+
+            visorTicketLine(oLine); // Y al visor tambien...
+            printPartialTotals();   
+            stateToZero();  
+
+            // event receipt
+            executeEvent("ticket.change");
+        }
    }
 
     private void addTicketLine(ProductInfoExt oProduct, double dMul, double dPrice) {   
@@ -265,57 +279,83 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     protected void addTicketLine(TicketLineInfo oLine) {   
         
-        if (oLine.isProductCom()) {
-            // Comentario entonces donde se pueda
-            int i = m_ticketlines.getSelectedIndex();
-            
-            // me salto el primer producto normal...
-            if (i >= 0 && !m_oTicket.getLine(i).isProductCom()) {
-                i++;
+        if (executeEvent("ticket.addline", new ScriptArg("line", oLine)) == null) {
+        
+            if (oLine.getProduct().isCom()) {
+                // Comentario entonces donde se pueda
+                int i = m_ticketlines.getSelectedIndex();
+
+                // me salto el primer producto normal...
+                if (i >= 0 && !m_oTicket.getLine(i).getProduct().isCom()) {
+                    i++;
+                }
+
+                // me salto todos los productos auxiliares...
+                while (i >= 0 && i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).getProduct().isCom()) {
+                    i++;
+                }
+
+                if (i >= 0) {
+                    m_oTicket.insertLine(i, oLine);
+                    m_ticketlines.insertTicketLine(i, oLine); // Pintamos la linea en la vista...                 
+                } else {
+                    Toolkit.getDefaultToolkit().beep();                                   
+                }
+            } else {    
+                // Producto normal, entonces al final
+                m_oTicket.addLine(oLine);            
+                m_ticketlines.addTicketLine(oLine); // Pintamos la linea en la vista... 
             }
 
-            // me salto todos los productos auxiliares...
-            while (i >= 0 && i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).isProductCom()) {
-                i++;
-            }
-            
-            if (i >= 0) {
-                m_oTicket.insertLine(i, oLine);
-                m_ticketlines.insertTicketLine(i, oLine); // Pintamos la linea en la vista...                 
-            } else {
-                Toolkit.getDefaultToolkit().beep();                                   
-            }
-        } else {    
-            // Producto normal, entonces al final
-            m_oTicket.addLine(oLine);            
-            m_ticketlines.addTicketLine(oLine); // Pintamos la linea en la vista... 
+            visorTicketLine(oLine);
+            printPartialTotals();   
+            stateToZero();  
+
+            // event receipt
+            executeEvent("ticket.change");
         }
-        
-        visorTicketLine(oLine);
-        printPartialTotals();   
-        stateToZero();  
     }    
     
     private void removeTicketLine(int i){
         
-        if (m_oTicket.getLine(i).isProductCom()) {
-            // Es un producto auxiliar, lo borro y santas pascuas.
-            m_oTicket.removeLine(i);
-            m_ticketlines.removeTicketLine(i);   
-        } else {
-            // Es un producto normal, lo borro.
-            m_oTicket.removeLine(i);
-            m_ticketlines.removeTicketLine(i); 
-            // Y todos lo auxiliaries que hubiera debajo.
-            while(i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).isProductCom()) {
+        if (executeEvent("ticket.removeline", new ScriptArg("index", i)) == null) {
+        
+            if (m_oTicket.getLine(i).getProduct().isCom()) {
+                // Es un producto auxiliar, lo borro y santas pascuas.
+                m_oTicket.removeLine(i);
+                m_ticketlines.removeTicketLine(i);   
+            } else {
+                // Es un producto normal, lo borro.
                 m_oTicket.removeLine(i);
                 m_ticketlines.removeTicketLine(i); 
+                // Y todos lo auxiliaries que hubiera debajo.
+                while(i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).getProduct().isCom()) {
+                    m_oTicket.removeLine(i);
+                    m_ticketlines.removeTicketLine(i); 
+                }
             }
+
+            visorTicketLine(null); // borro el visor 
+            printPartialTotals(); // pinto los totales parciales...                           
+            stateToZero(); // Pongo a cero    
+
+            // event receipt
+            executeEvent("ticket.change");
         }
+    }
+       
+    private Object executeEvent(String eventkey, ScriptArg ... args) {
         
-        visorTicketLine(null); // borro el visor 
-        printPartialTotals(); // pinto los totales parciales...                           
-        stateToZero(); // Pongo a cero                               
+        try {
+            String code = m_jbtnconfig.getEvent(eventkey);
+            if (code != null) {
+                return scriptobjinst.evalScript(code, args);
+            }
+        } catch (ScriptException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
+            msg.show(this);
+        }
+        return null;
     }
     
     private ProductInfoExt getInputProduct() {
@@ -751,7 +791,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         } else {
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
-                script.put("taxes", m_TaxList);
+                script.put("taxes", taxmap);
                 script.put("ticket", m_oTicket);
                 script.put("place", m_oTicketExt);
                 m_TTP.printTicket(script.eval(sresource).toString());
@@ -783,7 +823,29 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         } 
     }    
     
+    public static class ScriptArg {
+        private String key;
+        private Object value;
+        
+        public ScriptArg(String key, Object value) {
+            this.key = key;
+            this.value = value;
+        }
+        public String getKey() {
+            return key;
+        }
+        public Object getValue() {
+            return value;
+        }
+    }
+    
     public class ScriptObject {
+        
+        int selectedindex;
+        
+        private ScriptObject() {
+        }
+        
         public double getInputValue() {
             if (m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO) {
                 return JPanelTicket.this.getInputValue();
@@ -791,11 +853,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 return 0.0;
             }
         }
-        
-        public TicketInfo getTicket() {
-            return m_oTicket;
-        }
-        
+               
         public TicketLineInfo getSelectedLine() {
             int i = m_ticketlines.getSelectedIndex();
             if (i < 0){
@@ -803,6 +861,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } else {
                 return m_oTicket.getLine(i);             
             }
+        }
+        
+        public int getSelectedIndex() {
+            return selectedindex;
+        }
+        
+        public void setSelectedIndex(int i) {
+            selectedindex = i;
         }
 
         public void addTicketLine(String sname, TaxInfo tax, double dmult, double dpricesell) {
@@ -814,14 +880,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             oProduct.setTaxInfo(tax);
             
             JPanelTicket.this.addTicketLine(oProduct, dmult, dpricesell);
-        }
-        
-        public void removeTicketLine() {
-            int i = m_ticketlines.getSelectedIndex();
-            if (i >= 0){
-                JPanelTicket.this.removeTicketLine(i);
-            }
-        }        
+        }      
         
         public void printTicket(String sresourcename) {
             JPanelTicket.this.printTicket(sresourcename);   
@@ -834,8 +893,39 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         public BufferedImage getResourceAsImage(String sresourcename) {
             return dlSystem.getResourceAsImage(sresourcename);
         }
+        
+        public Object evalScript(String code, ScriptArg... args) throws ScriptException {
+                 
+            try {
+                ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
+                script.put("ticket", m_oTicket);
+                script.put("taxes", taxmap);
+                script.put("place", m_oTicketExt);
+                script.put("user", m_App.getAppUserView().getUser());
+                script.put("sales", this);
+                
+                // more arguments
+                for(ScriptArg arg : args) {
+                    script.put(arg.getKey(), arg.getValue());
+                }             
+
+                selectedindex = m_ticketlines.getSelectedIndex();    
+
+                return script.eval(code);
+                
+            } finally {
+                // repaint current ticket
+                setActiveTicket(m_oTicket, m_oTicketExt);
+                // select line
+                if (selectedindex >= 0 && selectedindex < m_oTicket.getLinesCount()) {
+                    m_ticketlines.setSelectedIndex(selectedindex);
+                } else if (m_oTicket.getLinesCount() > 0) {
+                    m_ticketlines.setSelectedIndex(m_oTicket.getLinesCount() - 1);
+                }
+            }
+        }
     }
-       
+     
 /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

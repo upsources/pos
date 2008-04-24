@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author adrian
+ * @author adrianromero
  */
 public class CustomerInfo implements Serializable {
     
@@ -54,3 +54,4 @@ public class CustomerInfo implements Serializable {
         return name;
     }
 }
+

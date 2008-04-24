@@ -26,6 +26,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.*;
+import com.openbravo.format.Formats;
 import com.openbravo.pos.util.ThumbNailBuilder;
 import javax.swing.ImageIcon;
 
@@ -140,21 +141,11 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     
     public final String findRolePermissions(String sRole) {
         
-        byte[] str;
-        
-        // Primero trato de obtenerlo de la tabla de roles
         try {
-            str = (byte[]) m_rolepermissions.find(sRole);        
+            return Formats.BYTEA.formatValue(m_rolepermissions.find(sRole));        
         } catch (BasicException e) {
-            str = null;                    
+            return null;                    
         }             
-        
-        // Al final transformo
-        try {
-            return str == null ? null : new String(str, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
     }
     
     public final void execChangePassword(Object[] userdata) throws BasicException {
@@ -195,21 +186,11 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     }
     
     public final String getResourceAsText(String sName) {
-        try {
-            byte[] str = getResource(sName); // , ".txt"
-            return str == null ? null : new String(str, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
+        return Formats.BYTEA.formatValue(getResource(sName));
     }
     
     public final String getResourceAsXML(String sName) {
-        try {
-            byte[] str = getResource(sName); // , ".xml"
-            return str == null ? null : new String(str, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
+        return Formats.BYTEA.formatValue(getResource(sName));
     }    
     
     public final BufferedImage getResourceAsImage(String sName) {

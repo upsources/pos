@@ -83,13 +83,13 @@ public class JPanelTicketSales extends JPanelTicket {
                 int i = m_ticketlines.getSelectedIndex();
                 
                 // Buscamos el primer producto no Auxiliar.
-                while (i >= 0 && m_oTicket.getLine(i).isProductCom()) {
+                while (i >= 0 && m_oTicket.getLine(i).getProduct().isCom()) {
                     i--;
                 }
                 
                 // Mostramos el panel de catalogo adecuado...
                 if (i >= 0) {
-                    m_cat.showCatalogPanel(m_oTicket.getLine(i).getProductID());
+                    m_cat.showCatalogPanel(m_oTicket.getLine(i).getProduct().getId());
                 } else {
                     m_cat.showCatalogPanel(null);
                 }

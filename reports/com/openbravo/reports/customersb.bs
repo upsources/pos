@@ -21,11 +21,12 @@ bean = new com.openbravo.pos.reports.PanelReportBean();
 bean.setTitleKey("Menu.CustomersBReport");
 bean.setReport("/com/openbravo/reports/customers");
 bean.setResourceBundle("com/openbravo/reports/customers_messages");
-bean.setSentence("SELECT ID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT " +
+bean.setSentence("SELECT ID, TAXID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT " +
                  "FROM CUSTOMERS " +
                  "WHERE VISIBLE = TRUE AND CURDEBT IS NOT NULL AND CURDEBT > 0");
 
 bean.addField("ID", com.openbravo.data.loader.Datas.STRING);
+bean.addField("TAXID", com.openbravo.data.loader.Datas.STRING);
 bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
 bean.addField("ADDRESS", com.openbravo.data.loader.Datas.STRING);
 bean.addField("NOTES", com.openbravo.data.loader.Datas.STRING);

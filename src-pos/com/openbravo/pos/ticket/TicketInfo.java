@@ -30,6 +30,10 @@ import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 
+/**
+ *
+ * @author adrianromero
+ */
 public class TicketInfo implements SerializableRead, Externalizable {
  
     private static DateFormat m_dateformat = new SimpleDateFormat("hh:mm");
@@ -117,7 +121,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
     public void setTicketId(int iTicketId) {
         m_iTicketId = iTicketId;
-        refreshLines();
+        // refreshLines();
     }   
     
     public String getName(Object info) {
@@ -166,7 +170,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_Customer = value;
     }
     public String getCustomerId() {
-        if (m_Customer == null || m_Customer.getId() == null || m_Customer.getId().equals("")) {
+        if (m_Customer == null) {
             return null;
         } else {
             return m_Customer.getId();
@@ -193,6 +197,11 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void insertLine(int index, TicketLineInfo oLine) {
         m_aLines.add(index, oLine);
         refreshLines();        
+    }
+    
+    public void setLine(int index, TicketLineInfo oLine) {
+        oLine.setTicket(m_sId, index);
+        m_aLines.set(index, oLine);     
     }
     
     public void removeLine(int index) {
@@ -293,7 +302,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
             
-            if (tax.getID().equals(oLine.getTaxInfo().getID())) {
+            if (tax.getId().equals(oLine.getProduct().getTax().getId())) {
                 taxinfo.add(oLine.getSubValue());
             }
         }
@@ -309,9 +318,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
             
-            TicketTaxInfo t = m.get(oLine.getTaxInfo());
+            TicketTaxInfo t = m.get(oLine.getProduct().getTax());
             if (t == null) {
-                t = new TicketTaxInfo(oLine.getTaxInfo());
+                t = new TicketTaxInfo(oLine.getProduct().getTax());
                 m.put(t.getTaxInfo(), t);
             }            
             t.add(oLine.getSubValue());

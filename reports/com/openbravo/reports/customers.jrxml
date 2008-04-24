@@ -35,6 +35,7 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 	<field name="MAXDEBT" class="java.lang.Double"/>
 	<field name="CURDATE" class="java.util.Date"/>
 	<field name="CURDEBT" class="java.lang.Double"/>
+	<field name="TAXID" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -252,9 +253,9 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"
-						y="65"
+						y="80"
 						width="195"
-						height="30"
+						height="15"
 						key="textField-12"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -297,6 +298,19 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 						key="line-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="21"
+						y="65"
+						width="195"
+						height="15"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TAXID}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

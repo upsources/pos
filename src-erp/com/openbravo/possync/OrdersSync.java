@@ -129,14 +129,14 @@ public class OrdersSync implements ProcessAction {
 
                 orderLine[j] = new OrderLine();
                 orderLine[j].setOrderLineId(line.getTicketLine()); // o simplemente "j"
-                if (line.getProductID() == null) {
+                if (line.getProduct().getId() == null) {
                     orderLine[j].setProductId(0);
                 } else {
-                    orderLine[j].setProductId(parseInt(line.getProductID())); // capturar error
+                    orderLine[j].setProductId(parseInt(line.getProduct().getId())); // capturar error
                 }
                 orderLine[j].setUnits(line.getMultiply());
                 orderLine[j].setPrice(line.getPrice());
-                orderLine[j].setTaxId(parseInt(line.getTaxInfo().getID()));     
+                orderLine[j].setTaxId(parseInt(line.getProduct().getTax().getId()));     
             }
             orders[i].setLines(orderLine);
 

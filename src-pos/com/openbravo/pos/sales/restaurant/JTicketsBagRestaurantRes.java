@@ -210,7 +210,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
 
     public Object createValue() throws BasicException {
         
-        Object[] res = new Object[8];
+        Object[] res = new Object[9];
         
         res[0] = m_sID == null ? UUID.randomUUID().toString() : m_sID; 
         res[1] = m_dCreated == null ? new Date() : m_dCreated; 

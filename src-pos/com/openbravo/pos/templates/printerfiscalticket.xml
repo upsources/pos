@@ -23,10 +23,10 @@
 
     <fiscalreceipt>
         #foreach ($ticketline in $ticket.getLines())
-             #if ($ticketline.isProductCom()) 
-                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">*${ticketline.printName()}</line>
+             #if ($ticketline.getProduct().isCom()) 
+                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">*${ticketline.getProduct().printName()}</line>
              #else
-                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">${ticketline.printName()}</line>
+                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">${ticketline.getProduct().printName()}</line>
              #end
         #end
 

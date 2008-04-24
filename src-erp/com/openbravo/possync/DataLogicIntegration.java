@@ -123,7 +123,7 @@ public class DataLogicIntegration extends BeanFactoryDataSingle {
                                     TaxInfo t = (TaxInfo) obj;
                                     dp.setString(1, t.getName());
                                     dp.setDouble(2, t.getRate());
-                                    dp.setString(3, t.getID());
+                                    dp.setString(3, t.getId());
                                 }
                             }).exec(tax) == 0) {
                        
@@ -133,7 +133,7 @@ public class DataLogicIntegration extends BeanFactoryDataSingle {
                             new SerializerWrite() {
                                 public void writeValues(DataWrite dp, Object obj) throws BasicException {
                                     TaxInfo t = (TaxInfo) obj;
-                                    dp.setString(1, t.getID());
+                                    dp.setString(1, t.getId());
                                     dp.setString(2, t.getName());
                                     dp.setDouble(3, t.getRate());
                                 }

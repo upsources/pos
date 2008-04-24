@@ -34,6 +34,7 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.ticket.TaxInfo;
+import com.openbravo.pos.util.StringUtils;
 import java.util.UUID;
 
 /**
@@ -86,6 +87,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.getDocument().addDocumentListener(dirty);
         m_jInCatalog.addActionListener(dirty);
         m_jCatalogOrder.getDocument().addDocumentListener(dirty);
+        txtAttributes.getDocument().addDocumentListener(dirty);
 
         // el informe de stock
         ReportManager rm = new ReportManager();
@@ -131,6 +133,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setText(null);
         m_jInCatalog.setSelected(false);
         m_jCatalogOrder.setText(null);
+        txtAttributes.setText(null);
         
         // Los habilitados
         m_jRef.setEnabled(false);
@@ -149,6 +152,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setEnabled(false);
         m_jInCatalog.setEnabled(false);
         m_jCatalogOrder.setEnabled(false);
+        txtAttributes.setEnabled(false);
         
 //        m_dUnits = null;
         writeReport(null, 0.0);
@@ -175,6 +179,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setText(null);
         m_jInCatalog.setSelected(true);
         m_jCatalogOrder.setText(null);
+        txtAttributes.setText(null);
         
         // Los habilitados
         m_jRef.setEnabled(true);
@@ -193,6 +198,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setEnabled(true);
         m_jInCatalog.setEnabled(true); 
         m_jCatalogOrder.setEnabled(false);
+        txtAttributes.setEnabled(true);
 
 //        m_dUnits = null;
         writeReport(null, 0.0);
@@ -219,6 +225,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[12]));
         m_jInCatalog.setSelected(((Boolean)myprod[13]).booleanValue());
         m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[14]));
+        txtAttributes.setText(Formats.BYTEA.formatValue(myprod[15]));
+        txtAttributes.setCaretPosition(0);
         
         // Los habilitados
         m_jRef.setEnabled(false);
@@ -237,6 +245,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setEnabled(false);
         m_jInCatalog.setEnabled(false);
         m_jCatalogOrder.setEnabled(false);
+        txtAttributes.setEnabled(false);
 
         TaxInfo tax = (TaxInfo) m_TaxModel.getElementByKey(myprod[9]);
         double dTaxRate = (tax == null) ? 0.0 : tax.getRate();      
@@ -265,6 +274,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[12]));
         m_jInCatalog.setSelected(((Boolean)myprod[13]).booleanValue());
         m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[14]));
+        txtAttributes.setText(Formats.BYTEA.formatValue(myprod[15]));
+        txtAttributes.setCaretPosition(0);
         
         // Los habilitados
         m_jRef.setEnabled(true);
@@ -282,7 +293,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setEnabled(true);
         m_jstockvolume.setEnabled(true);
         m_jInCatalog.setEnabled(true);
-        m_jCatalogOrder.setEnabled(m_jInCatalog.isSelected());   
+        m_jCatalogOrder.setEnabled(m_jInCatalog.isSelected());  
+        txtAttributes.setEnabled(true);
         
         TaxInfo tax = (TaxInfo) m_TaxModel.getElementByKey(myprod[9]);
         double dTaxRate = (tax == null) ? 0.0 : tax.getRate();   
@@ -291,7 +303,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
 
     public Object createValue() throws BasicException {
         
-        Object[] myprod = new Object[15];
+        Object[] myprod = new Object[16];
         myprod[0] =  m_id == null ? UUID.randomUUID().toString() : m_id;
         myprod[1] = m_jRef.getText();
         myprod[2] = m_jCode.getText();
@@ -307,6 +319,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         myprod[12] = Formats.DOUBLE.parseValue(m_jstockvolume.getText());
         myprod[13] = Boolean.valueOf(m_jInCatalog.isSelected());       
         myprod[14] = Formats.INT.parseValue(m_jCatalogOrder.getText()); 
+        myprod[15] = Formats.BYTEA.parseValue(txtAttributes.getText());
+        
         return myprod;
     }    
     
@@ -538,6 +552,9 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jInCatalog = new javax.swing.JCheckBox();
         jLabel18 = new javax.swing.JLabel();
         m_jCatalogOrder = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAttributes = new javax.swing.JTextArea();
 
         setLayout(null);
 
@@ -660,6 +677,16 @@ public class ProductsEditor extends JPanel implements EditorRecord {
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.prodproperties"), jPanel4); // NOI18N
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        txtAttributes.setFont(new java.awt.Font("DialogInput", 0, 12));
+        jScrollPane1.setViewportView(txtAttributes);
+
+        jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab(AppLocal.getIntString("label.attributes"), jPanel3); // NOI18N
+
         add(jTabbedPane1);
         jTabbedPane1.setBounds(10, 90, 560, 250);
     }// </editor-fold>//GEN-END:initComponents
@@ -690,7 +717,9 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField m_jCatalogOrder;
     private javax.swing.JComboBox m_jCategory;
@@ -710,6 +739,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     private javax.swing.JTextField m_jmargin;
     private javax.swing.JTextField m_jstockcost;
     private javax.swing.JTextField m_jstockvolume;
+    private javax.swing.JTextArea txtAttributes;
     // End of variables declaration//GEN-END:variables
     
 }

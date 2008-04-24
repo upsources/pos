@@ -16,30 +16,23 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.openbravo.pos.ticket;
+package com.openbravo.data.gui;
 
-import java.io.Serializable;
+import com.openbravo.data.loader.IKeyed;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
  * @author adrianromero
  */
-public class UserInfo implements Serializable {
+public class HashMapKeyed<K extends IKeyed> extends HashMap<Object, K> {
     
-    private String m_sId;
-    private String m_sName;
-    
-    /** Creates a new instance of UserInfoBasic */
-    public UserInfo(String id, String name) {
-        m_sId = id;
-        m_sName = name;    
+    public HashMapKeyed(List<K> l) {
+        super(l.size());
+
+        for(K value : l) {           
+            this.put(value.getKey(), value);
+        }
     }
-    
-    public String getId() {
-        return m_sId;
-    }    
-    
-    public String getName() {
-        return m_sName;
-    }        
 }

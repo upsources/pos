@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.customers;
 
+import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.format.Formats;
 import java.util.Date;
 

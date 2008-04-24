@@ -23,15 +23,18 @@ import java.awt.image.BufferedImage;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.ImageUtils;
+import java.util.Properties;
 
 public class ProductInfoExt extends ProductInfo {
     
     protected BufferedImage m_Image;
+    protected Properties attributes;
     
     /** Creates new ProductInfo */
     public ProductInfoExt() {
         super();
         m_Image = null;
+        attributes = new Properties();
     }
     
     public void readValues(DataRead dr) throws BasicException {
@@ -46,6 +49,14 @@ public class ProductInfoExt extends ProductInfo {
         m_TaxInfo = new TaxInfo(dr.getString(9), dr.getString(10), dr.getDouble(11).doubleValue());      
         m_sCategoryID = dr.getString(12);
         m_Image = ImageUtils.readImage(dr.getBytes(13));
+        attributes = new Properties();
+        try {
+            byte[] img = dr.getBytes(14);
+            if (img != null) {
+                attributes.loadFromXML(new ByteArrayInputStream(img));
+            }
+        } catch (IOException e) {
+        }        
     }
     
     public BufferedImage getImage() {
@@ -53,5 +64,18 @@ public class ProductInfoExt extends ProductInfo {
     }
     public void setImage(BufferedImage img) {
         m_Image = img;
+    }
+    
+    public String getProperty(String key) {
+        return attributes.getProperty(key);
+    }
+    public String getProperty(String key, String defaultvalue) {
+        return attributes.getProperty(key, defaultvalue);
+    }
+    public void setProperty(String key, String value) {
+        attributes.setProperty(key, value);
+    }
+    public Properties getProperties() {
+        return attributes;
     }
 }

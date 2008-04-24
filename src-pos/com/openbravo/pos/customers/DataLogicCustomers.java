@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.customers;
 
+import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.DataWrite;

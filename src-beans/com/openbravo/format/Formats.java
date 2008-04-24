@@ -34,6 +34,7 @@ public abstract class Formats {
     public final static Formats TIMESTAMP = new FormatsTIMESTAMP();
     public final static Formats DATE = new FormatsDATE();
     public final static Formats TIME = new FormatsTIME();
+    public final static Formats BYTEA = new FormatsBYTEA();
     
     private static NumberFormat m_integerformat = NumberFormat.getIntegerInstance();
     private static NumberFormat m_doubleformat = NumberFormat.getNumberInstance();
@@ -264,5 +265,24 @@ public abstract class Formats {
         public int getAlignment() {
             return javax.swing.SwingConstants.CENTER;
         }
-    }      
+    }    
+    private static final class FormatsBYTEA extends Formats {       
+        protected String formatValueInt(Object value) {
+            try {
+                return new String((byte[]) value, "UTF-8");
+            } catch (java.io.UnsupportedEncodingException eu) {
+                return "";
+            }
+        }   
+        protected Object parseValueInt(String value) throws ParseException {
+            try {
+               return value.getBytes("UTF-8");
+            } catch (java.io.UnsupportedEncodingException eu) {
+               return new byte[0];
+            }
+        }
+        public int getAlignment() {
+            return javax.swing.SwingConstants.LEADING;
+        }
+    }     
 }

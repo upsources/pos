@@ -34,28 +34,25 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import com.openbravo.data.gui.MessageInf;
-import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
-import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppUser;
 import com.openbravo.pos.util.ThumbNailBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
 public class JPanelButtons extends javax.swing.JPanel {
     
     private static SAXParser m_sp = null;
-
-//    private Integer m_itaxesid = null;
-//    private boolean m_btaxesincluded = false;
-//    private boolean m_bpricevisible = false;
     
     private Properties props;
+    private Map<String, String> events;
     
     private ThumbNailBuilder tnbmacro;
     
-    private JPanelTicket.ScriptObject m_TicketScript;
+    private JPanelTicket.ScriptObject scriptobject;
     
     /** Creates new form JPanelButtons */
     public JPanelButtons(String sConfigKey, JPanelTicket.ScriptObject scriptobject) {
@@ -64,9 +61,10 @@ public class JPanelButtons extends javax.swing.JPanel {
         // Load categories default thumbnail
         tnbmacro = new ThumbNailBuilder(16, 16, "com/openbravo/images/greenled.png");
         
-        m_TicketScript = scriptobject;
+        this.scriptobject = scriptobject;
         
         props = new Properties();
+        events = new HashMap<String, String>();
         
         String sConfigRes = scriptobject.getResourceAsXML(sConfigKey);
         
@@ -107,6 +105,10 @@ public class JPanelButtons extends javax.swing.JPanel {
      public String getProperty(String key, String defaultvalue) {
         return props.getProperty(key, defaultvalue);
     }
+     
+    public String getEvent(String key) {
+        return events.get(key);
+    }
     
     private class ConfigurationHandler extends DefaultHandler {       
         @Override
@@ -122,8 +124,10 @@ public class JPanelButtons extends javax.swing.JPanel {
                         attributes.getValue("image"), 
                         attributes.getValue("name"),  
                         stemplate == null
-                            ? m_TicketScript.getResourceAsXML(attributes.getValue("code"))
+                            ? scriptobject.getResourceAsXML(attributes.getValue("code"))
                             : "sales.printTicket(\"" + stemplate + "\");"));
+            } else if ("event".equals(qName)) {
+                events.put(attributes.getValue("key"), scriptobject.getResourceAsXML(attributes.getValue("code")));
             } else {
                 String value = attributes.getValue("value");
                 if (value != null) {                  
@@ -145,7 +149,7 @@ public class JPanelButtons extends javax.swing.JPanel {
             m_sCode = sCode;
             setName(sKey);
             setText(AppLocal.getIntString(sKeyText));
-            setIcon(new ImageIcon(tnbmacro.getThumbNail(m_TicketScript.getResourceAsImage(sImage))));
+            setIcon(new ImageIcon(tnbmacro.getThumbNail(scriptobject.getResourceAsImage(sImage))));
             setFocusPainted(false);
             setFocusable(false);
             setRequestFocusEnabled(false);
@@ -159,9 +163,7 @@ public class JPanelButtons extends javax.swing.JPanel {
                         msg.show(JPanelButtons.this);
                     } else {
                         try {
-                            ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
-                            script.put("sales", m_TicketScript);
-                            script.eval(m_sCode);
+                            scriptobject.evalScript(m_sCode);
                         } catch (ScriptException e) {
                             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
                             msg.show(JPanelButtons.this);

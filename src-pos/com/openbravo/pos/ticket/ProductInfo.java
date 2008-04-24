@@ -115,7 +115,7 @@ public class ProductInfo implements SerializableRead /* , Externalizable, Serial
         return m_TaxInfo;
     }
     public final String getTaxID() {
-        return m_TaxInfo == null ? null : m_TaxInfo.getID();
+        return m_TaxInfo == null ? null : m_TaxInfo.getId();
     }
 //    public final void setTaxID(Integer iTaxID) {
 //        m_iTaxID = iTaxID;
