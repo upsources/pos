@@ -36,7 +36,13 @@ bean.setSentence("SELECT " +
                 "ORDER BY PRODUCTS.NAME, CLOSEDCASH.HOST, CLOSEDCASH.DATESTART");
 bean.addParameter("CLOSEDCASH.DATESTART");
 bean.addParameter("CLOSEDCASH.DATESTART");
+bean.addParameter("PRODUCTS.NAME");
+bean.addParameter("PRODUCTS.PRICEBUY");
+bean.addParameter("PRODUCTS.PRICESELL");
+bean.addParameter("PRODUCTS.CATEGORY");
+bean.addParameter("PRODUCTS.CODE");
 bean.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+bean.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
 
 bean.addField("HOST", com.openbravo.data.loader.Datas.STRING);
 bean.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
