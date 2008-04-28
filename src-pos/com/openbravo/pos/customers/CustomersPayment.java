@@ -55,6 +55,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private DataLogicSales dlsales;
     private DataLogicSystem dlsystem;
     private TicketParser ttp;    
+    private JPaymentSelect paymentdialog;
     
     private CustomerInfoExt customerext;
     private DirtyManager dirty;
@@ -63,7 +64,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     public CustomersPayment() {
 
         initComponents();
-
+        
         editorcard.addEditorKeys(m_jKeys);
         txtAddress.addEditorKeys(m_jKeys);
         txtNotes.addEditorKeys(m_jKeys);
@@ -91,6 +92,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     }
 
     public void activate() throws BasicException {
+
+        paymentdialog = JPaymentSelectCustomer.getDialog(this);        
+        paymentdialog.init(app);
 
         resetCustomer();
 
@@ -473,10 +477,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
 
-        JPaymentSelect paymentdialog = JPaymentSelectCustomer.getDialog(this);
-
-
-        if (paymentdialog.showDialog(app, customerext.getCurdebt(), null)) {
+        if (paymentdialog.showDialog(customerext.getCurdebt(), null)) {
 
             // Save the ticket
             TicketInfo ticket = new TicketInfo();

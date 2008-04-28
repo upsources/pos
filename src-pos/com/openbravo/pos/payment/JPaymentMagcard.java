@@ -18,9 +18,10 @@
 
 package com.openbravo.pos.payment;
 
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
-import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.util.StringUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.*;
@@ -37,12 +38,11 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
     private String transaction;
     
     /** Creates new form JPaymentMagcard */
-    public JPaymentMagcard(AppView app, String transaction, JPaymentNotifier notifier) {
+    public JPaymentMagcard(AppView app, JPaymentNotifier notifier) {
         
         initComponents();   
         
         m_notifier = notifier;
-        this.transaction = transaction;
         
         m_paymentgateway = PaymentGatewayFac.getPaymentGateway(app.getProperties());
         
@@ -57,8 +57,10 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
         }
     }
     
-    public void activate(double dTotal) {
+    public void activate(CustomerInfoExt customerext, double dTotal) {
         
+        transaction = StringUtils.getCardNumber(); // Integer.toString(m_ticket.getId());   
+
         if (m_cardpanel == null) {
             jlblMessage.setText(AppLocal.getIntString("message.nopaymentgateway"));  
             m_notifier.setStatus(false, false);

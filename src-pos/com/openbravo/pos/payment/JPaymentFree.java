@@ -18,9 +18,9 @@
 
 package com.openbravo.pos.payment;
 
+import com.openbravo.pos.customers.CustomerInfoExt;
 import java.awt.Component;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.customers.CustomerInfo;
 
 public class JPaymentFree extends javax.swing.JPanel implements JPaymentInterface {
     
@@ -32,7 +32,7 @@ public class JPaymentFree extends javax.swing.JPanel implements JPaymentInterfac
         m_notifier = notifier;
         initComponents();
     }
-    public void activate(double dTotal) {
+    public void activate(CustomerInfoExt customerext, double dTotal) {
         
         m_dTotal = dTotal;
         

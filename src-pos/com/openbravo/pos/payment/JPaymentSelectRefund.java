@@ -51,10 +51,10 @@ public class JPaymentSelectRefund extends JPaymentSelect {
     
     protected void addTabs() {
         
-        addTabPaymentCashRefund();
-        addTabPaymentChequeRefund();
-        addTabPaymentPaperRefund();
-        addTabPaymentMagcardRefund();
+        addTabPayment(new JPaymentSelect.JPaymentCashRefundCreator());
+        addTabPayment(new JPaymentSelect.JPaymentChequeRefundCreator());
+        addTabPayment(new JPaymentSelect.JPaymentPaperRefundCreator());
+        addTabPayment(new JPaymentSelect.JPaymentMagcardRefundCreator());
         setHeaderVisible(false);
     }
     

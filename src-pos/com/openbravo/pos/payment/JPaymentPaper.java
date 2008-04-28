@@ -24,8 +24,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import com.openbravo.basic.BasicException;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.util.RoundUtils;
 
 public class JPaymentPaper extends javax.swing.JPanel implements JPaymentInterface {
@@ -51,7 +51,7 @@ public class JPaymentPaper extends javax.swing.JPanel implements JPaymentInterfa
         m_jTendered.addEditorKeys(m_jKeys);
     }
     
-    public void activate(double dTotal) {
+    public void activate(CustomerInfoExt customerext, double dTotal) {
         
         m_dTotal = dTotal;
         

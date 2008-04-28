@@ -40,15 +40,23 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
     private double m_dTotal;
 
     /** Creates new form JPaymentDebt */
-    public JPaymentDebt(JPaymentNotifier notifier, CustomerInfoExt customerext) {
+    public JPaymentDebt(JPaymentNotifier notifier) {
         
         this.notifier = notifier;
-        this.customerext = customerext;
         
         initComponents();  
         
         m_jTendered.addPropertyChangeListener("Edition", new RecalculateState());
         m_jTendered.addEditorKeys(m_jKeys);
+        
+    }
+    
+    public void activate(CustomerInfoExt customerext, double dTotal) {
+        
+        this.customerext = customerext;
+        m_dTotal = dTotal;
+        
+        m_jTendered.reset();
         
         // 
         if (customerext == null) {
@@ -57,28 +65,20 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
             txtMaxdebt.setText(null);
             txtCurdate.setText(null);        
             txtCurdebt.setText(null);
+            
+            m_jKeys.setEnabled(false);
+            m_jTendered.setEnabled(false);
         } else {            
             m_jName.setText(customerext.getName());
             m_jNotes.setText(customerext.getNotes());
             txtMaxdebt.setText(Formats.CURRENCY.formatValue(customerext.getMaxdebt()));
             txtCurdate.setText(Formats.DATE.formatValue(customerext.getCurdate()));        
             txtCurdebt.setText(Formats.CURRENCY.formatValue(customerext.getCurdebt()));   
-        }
-    }
-    
-    public void activate(double dTotal) {
-        
-        m_dTotal = dTotal;
-        
-        m_jTendered.reset();
-        if (customerext == null) {
-            m_jKeys.setEnabled(false);
-            m_jTendered.setEnabled(false);
-        } else {
+            
             m_jKeys.setEnabled(true);
             m_jTendered.setEnabled(true);
-            m_jTendered.activate();
-        }
+            m_jTendered.activate();            
+        }        
         
         printState();
         

@@ -337,6 +337,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     
     private class SmallCategoryRenderer extends DefaultListCellRenderer {
 
+        @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
             CategoryInfo cat = (CategoryInfo) value;

@@ -21,9 +21,21 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.forms.DataLogicSystem;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.util.RoundUtils;
+import com.openbravo.pos.util.ThumbNailBuilder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -37,7 +49,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
     private double m_dTotal;    
     
     /** Creates new form JPaymentCash */
-    public JPaymentCashPos(JPaymentNotifier notifier) {
+    public JPaymentCashPos(JPaymentNotifier notifier, DataLogicSystem dlSystem) {
         
         m_notifier = notifier;
         
@@ -45,9 +57,22 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
         
         m_jTendered.addPropertyChangeListener("Edition", new RecalculateState());
         m_jTendered.addEditorKeys(m_jKeys);
+        
+        String code = dlSystem.getResourceAsXML("payment.cash");
+        if (code != null) {
+            try {
+                ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
+                script.put("payment", new ScriptPaymentCash(dlSystem));    
+                script.eval(code);
+            } catch (ScriptException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
+                msg.show(this);
+            }
+        }
+        
     }
     
-    public void activate(double dTotal) {
+    public void activate(CustomerInfoExt customerext, double dTotal) {
         
         m_dTotal = dTotal;
         
@@ -94,6 +119,47 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
         }
     }    
     
+    public class ScriptPaymentCash {
+        
+        private DataLogicSystem dlSystem;
+        private ThumbNailBuilder tnbbutton;
+        
+        public ScriptPaymentCash(DataLogicSystem dlSystem) {
+            this.dlSystem = dlSystem;
+            tnbbutton = new ThumbNailBuilder(64, 54, "com/openbravo/images/cash.png");
+        }
+        
+        public void addButton(String image, double amount) {
+            JButton btn = new JButton();
+            btn.setIcon(new ImageIcon(tnbbutton.getThumbNailText(dlSystem.getResourceAsImage(image), Formats.CURRENCY.formatValue(amount))));
+            btn.setFocusPainted(false);
+            btn.setFocusable(false);
+            btn.setRequestFocusEnabled(false);
+            btn.setHorizontalTextPosition(SwingConstants.CENTER);
+            btn.setVerticalTextPosition(SwingConstants.BOTTOM);
+            btn.setMargin(new Insets(2, 2, 2, 2));
+            btn.addActionListener(new AddAmount(amount));
+            jPanel6.add(btn);  
+        }
+    }
+    
+    private class AddAmount implements ActionListener {        
+        private double amount;
+        public AddAmount(double amount) {
+            this.amount = amount;
+        }
+        public void actionPerformed(ActionEvent e) {
+            double tendered;
+            try {
+                tendered = m_jTendered.getValue();
+            } catch (BasicException eB){
+                tendered = 0.0;
+            }   
+            m_jTendered.setValue(tendered + amount);
+            printState();
+        }
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -108,6 +174,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         m_jMoneyEuros = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
@@ -147,6 +214,9 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
 
         jPanel5.add(jPanel4, java.awt.BorderLayout.NORTH);
 
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel5.add(jPanel6, java.awt.BorderLayout.CENTER);
+
         add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -174,6 +244,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JLabel m_jChangeEuros;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JLabel m_jMoneyEuros;

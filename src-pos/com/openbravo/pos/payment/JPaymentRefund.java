@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.payment;
 
+import com.openbravo.pos.customers.CustomerInfoExt;
 import java.awt.Component;
 import com.openbravo.pos.forms.AppLocal;
 
@@ -37,7 +38,7 @@ public class JPaymentRefund extends javax.swing.JPanel implements JPaymentInterf
         initComponents();
     }
     
-    public void activate(double dTotal) {
+    public void activate(CustomerInfoExt customerext, double dTotal) {
         m_dTotal = dTotal;
         
         m_notifier.setStatus(true, true);

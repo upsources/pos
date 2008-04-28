@@ -101,6 +101,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     protected DataLogicSystem dlSystem;
     protected DataLogicSales dlSales;
     protected DataLogicCustomers dlCustomers;
+    
+    private JPaymentSelect paymentdialogreceipt;
+    private JPaymentSelect paymentdialogrefund;
 
     /** Creates new form JTicketView */
     public JPanelTicket() {
@@ -159,6 +162,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     public void activate() throws BasicException {
         
+        paymentdialogreceipt = JPaymentSelectReceipt.getDialog(this);
+        paymentdialogreceipt.init(m_App);
+        paymentdialogrefund = JPaymentSelectRefund.getDialog(this); 
+        paymentdialogrefund.init(m_App);
+        
         m_ticketsbag.activate();
         
         // impuestos incluidos seleccionado ?
@@ -177,7 +185,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         } else {
             m_TaxModel.setSelectedKey(taxesid);
-        }
+        }               
         
         // Authorization for buttons
         m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
@@ -749,10 +757,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             
                             // Select the Payments information
                             JPaymentSelect paymentdialog = m_oTicket.getTotal() >= 0.0 
-                                    ? JPaymentSelectReceipt.getDialog(JPanelTicket.this)
-                                    : JPaymentSelectRefund.getDialog(JPanelTicket.this);
+                                    ? paymentdialogreceipt
+                                    : paymentdialogrefund;
                             
-                            if (paymentdialog.showDialog(m_App, m_oTicket.getTotal(), m_oTicket.getCustomer())) {
+                            if (paymentdialog.showDialog(m_oTicket.getTotal(), m_oTicket.getCustomer())) {
                                 
                                 // assign the payments selected.
                                 m_oTicket.setPayments(paymentdialog.getSelectedPayments());
