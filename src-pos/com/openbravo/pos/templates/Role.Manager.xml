@@ -61,6 +61,7 @@
     <class name="/com/openbravo/reports/closedproducts.bs"/>
     <class name="/com/openbravo/reports/taxes.bs"/>
     <class name="/com/openbravo/reports/chartsales.bs"/> 
+    <class name="/com/openbravo/reports/productsales.bs"/> 
 
     <class name="Menu.ChangePassword"/>
     

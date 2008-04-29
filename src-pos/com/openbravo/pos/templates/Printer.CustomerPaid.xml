@@ -136,7 +136,7 @@
         
         <line></line>            
         <line>
-            <text align="left" length="15">Sales person:</text>
+            <text align="left" length="15">Cashier:</text>
             <text>${ticket.printUser()}</text>
         </line>
         
