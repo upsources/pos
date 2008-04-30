@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="inventory2"
+		 name="inventoryb"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -255,7 +255,7 @@ ORDER BY CATEGORIES.NAME, PRODUCTS.NAME, STOCKCURRENT.LOCATION]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[NumberFormat.getInstance().format($V{UNITSTOTAL})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.DOUBLE.formatValue($V{UNITSTOTAL})]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
