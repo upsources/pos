@@ -25,6 +25,7 @@ import javax.swing.ListCellRenderer;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
+import com.openbravo.data.loader.ComparatorCreatorBasic;
 import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.RenderStringBasic;
@@ -40,7 +41,6 @@ import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.JPanelTable;
 import com.openbravo.pos.reports.JParamsLocation;
 
@@ -56,6 +56,8 @@ public class ProductsWarehousePanel extends JPanelTable {
     private ListProvider lpr;
     private SaveProvider spr;
     
+    private Datas[] prodstock = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.DOUBLE};
+    
     /** Creates a new instance of ProductsWarehousePanel */
     public ProductsWarehousePanel() {
     }
@@ -66,7 +68,6 @@ public class ProductsWarehousePanel extends JPanelTable {
         m_paramslocation.init(app);
         m_paramslocation.addActionListener(new ReloadActionListener());
         
-        final Datas[] prodstock = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.DOUBLE};
 
         lpr = new ListProviderCreator(new PreparedSentence(app.getSession(),
                 "SELECT PRODUCTS.ID, PRODUCTS.REFERENCE, PRODUCTS.NAME, ?," +
@@ -105,21 +106,29 @@ public class ProductsWarehousePanel extends JPanelTable {
     public SaveProvider getSaveProvider() {
         return spr;        
     }    
+    
+    @Override
     public Vectorer getVectorer() {
-        return  new VectorerBasic(
-                new String[] {AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode")},
-                new Formats[] {Formats.STRING, Formats.STRING},
-                new int[] {1, 2});
+        return new VectorerBasic(
+                new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodname"), "MINIMUM", "MAXIMUM", "UNITS"},
+                new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.DOUBLE, Formats.DOUBLE, Formats.DOUBLE}, 
+                new int[]{1, 2});        
     }
     
+    @Override
     public ComparatorCreator getComparatorCreator() {
-        return null;
+        return new ComparatorCreatorBasic(
+                new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodname"), "MINIMUM", "MAXIMUM", "UNITS"},
+                prodstock, 
+                new int[]{1, 2});
     }
     
+    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(new RenderStringBasic(new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING}, new int[]{1, 2}));
     }
     
+    @Override
     public Component getFilter() {
         return m_paramslocation.getComponent();
     }  
@@ -128,6 +137,7 @@ public class ProductsWarehousePanel extends JPanelTable {
         return jeditor;
     }  
     
+    @Override
     public void activate() throws BasicException {
         
         m_paramslocation.activate(); 

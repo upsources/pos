@@ -147,7 +147,8 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
     public String getTitle() {
         return AppLocal.getIntString("Menu.Products");
     } 
-    
+        
+    @Override
     public void activate() throws BasicException {
         
         jeditor.activate(); 
