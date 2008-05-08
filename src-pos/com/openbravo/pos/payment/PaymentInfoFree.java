@@ -27,7 +27,7 @@ public class PaymentInfoFree extends PaymentInfo {
         m_dTotal = dTotal;
     }
     
-    public PaymentInfo clonePayment(){
+    public PaymentInfo copyPayment(){
         return new PaymentInfoFree(m_dTotal);
     }    
     public String getName() {

@@ -43,7 +43,7 @@ public class PaymentInfoMagcard extends PaymentInfo {
         m_sMessage = null;
     }
     
-    public PaymentInfo clonePayment(){
+    public PaymentInfo copyPayment(){
         PaymentInfoMagcard p = new PaymentInfoMagcard(m_sHolderName, m_sCardNumber, m_sExpirationDate, m_sTransactionID, m_dTotal);
         p.m_sAuthorization = m_sAuthorization;
         p.m_sMessage = m_sMessage;

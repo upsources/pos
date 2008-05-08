@@ -31,7 +31,7 @@ public class PaymentInfoCash extends PaymentInfo {
         m_dPaid = dPaid;
     }
     
-    public PaymentInfo clonePayment(){
+    public PaymentInfo copyPayment(){
         return new PaymentInfoCash(m_dTotal, m_dPaid);
     }
     

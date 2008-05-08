@@ -18,36 +18,28 @@
 
 package com.openbravo.pos.sales;
 
-import com.openbravo.pos.ticket.TicketInfo;
-import java.util.Date;
-import com.openbravo.basic.BasicException;
 import com.openbravo.pos.sales.simple.JTicketsBagSimple;
 import com.openbravo.pos.forms.*; 
 import javax.swing.*;
-import com.openbravo.data.gui.MessageInf;
-
-// las implementaciones
 import com.openbravo.pos.sales.restaurant.JTicketsBagRestaurantMap;
 import com.openbravo.pos.sales.shared.JTicketsBagShared;
 
 public abstract class JTicketsBag extends JPanel {
     
     protected AppView m_App;     
-    protected DataLogicSales m_dlSales = null;
+    protected DataLogicSales m_dlSales;
     protected TicketsEditor m_panelticket;    
     
     /** Creates new form JTicketsBag */
     public JTicketsBag(AppView oApp, TicketsEditor panelticket) {        
         m_App = oApp;     
-        m_panelticket = panelticket;
-        
+        m_panelticket = panelticket;        
         m_dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
     }
     
     public abstract void activate();
     public abstract boolean deactivate();
-    public abstract void cancelTicket();
-    public abstract void saveTicket();
+    public abstract void deleteTicket();
     
     protected abstract JComponent getBagComponent();
     protected abstract JComponent getNullComponent();
@@ -62,34 +54,5 @@ public abstract class JTicketsBag extends JPanel {
         } else { // "simple"
             return new JTicketsBagSimple(app, panelticket);
         }
-    }
-    
-//    protected final TicketInfo createTicketModel(){
-//
-//        // creo el nuevo ticket
-//        TicketInfo ticket = new TicketInfo();
-//        ticket.setTicketId(0);
-//        ticket.setDate(new Date());    
-//
-//        // Pinto el numero del ticket
-//        return ticket;
-//    }    
-    
-    protected final void saveTicket(TicketInfo ticket) {
-
-        try {
-            m_dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
-        } catch (BasicException eData) {
-            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
-            msg.show(this);
-        }
-    }
-    
-    protected final void deleteTicket(TicketInfo ticket) {
-        
-        try {               
-            m_dlSales.deleteTicket(ticket, m_App.getInventoryLocation());
-        } catch (BasicException be) {
-        }
-    }    
+    }   
 }

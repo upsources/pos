@@ -40,22 +40,28 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     
     private double m_dMultiply;    
     private double m_dPrice;
+    private TaxInfo tax;
+    private Properties attributes;
     
     private TicketProductInfo product;
 
     /** Creates new TicketLineInfo */   
-     public TicketLineInfo(TicketProductInfo product, double dMultiply, double dPrice) {
+     public TicketLineInfo(TicketProductInfo product, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
         this.product = product; 
         m_dMultiply = dMultiply;
         m_dPrice = dPrice;
+        this.tax = tax;
+        this.attributes = attributes;
+        
         m_sTicket = null;
         m_iLine = -1;
     }
+    
      public TicketLineInfo() {
-        this(new TicketProductInfo(), 0.0, 0.0);
+        this(new TicketProductInfo(), 0.0, 0.0, null, new Properties());
     }
      
-    public TicketLineInfo(ProductInfoExt oProduct, double dMultiply, double dPrice) {
+    public TicketLineInfo(ProductInfoExt oProduct, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
         if (oProduct == null) {
             product = new TicketProductInfo();
         } else {
@@ -63,16 +69,19 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         }    
         m_dMultiply = dMultiply;
         m_dPrice = dPrice;
+        this.tax = tax;
+        this.attributes = attributes;
+        
         m_sTicket = null;
         m_iLine = -1;
     }    
-    public TicketLineInfo(ProductInfoExt oProduct, double dPrice) {       
-        this(oProduct, 1.0, dPrice);
+    public TicketLineInfo(ProductInfoExt oProduct, double dPrice, TaxInfo tax, Properties attributes) {       
+        this(oProduct, 1.0, dPrice, tax, attributes);
     }
      
     public TicketLineInfo(TicketLineInfo line) {  
         
-        product = line.product.cloneTicketProduct();
+        product = line.product.copyTicketProduct();
         m_dMultiply = line.m_dMultiply;
         m_dPrice = line.m_dPrice;
         m_sTicket = null;
@@ -92,10 +101,10 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         dp.setBoolean(5, new Boolean(product.isCom()));
         dp.setDouble(6, new Double(m_dMultiply));
         dp.setDouble(7, new Double(m_dPrice));
-        dp.setString(8, product.getTax().getId());
+        dp.setString(8, tax.getId());
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
-            product.getProperties().storeToXML(o, AppLocal.APP_NAME, "UTF-8");
+            attributes.storeToXML(o, AppLocal.APP_NAME, "UTF-8");
             dp.setBytes(9, o.toByteArray()); 
         } catch (IOException e) {
             dp.setBytes(9, null);
@@ -110,8 +119,8 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         boolean prodcom = dr.getBoolean(5).booleanValue();
         m_dMultiply = dr.getDouble(6).doubleValue();
         m_dPrice = dr.getDouble(7).doubleValue();
-        TaxInfo tax = new TaxInfo(dr.getString(8), "", dr.getDouble(9).doubleValue());
-        Properties attributes = new Properties();
+        tax = new TaxInfo(dr.getString(8), "", dr.getDouble(9).doubleValue());
+        attributes = new Properties();
         try {
             byte[] img = dr.getBytes(10);
             if (img != null) {
@@ -119,16 +128,18 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             }
         } catch (IOException e) {
         }         
-        product = new TicketProductInfo(prodid, prodname, prodcom, tax, attributes);
+        product = new TicketProductInfo(prodid, prodname, prodcom);
     }
     
-    public TicketLineInfo cloneTicketLine() {
+    public TicketLineInfo copyTicketLine() {
         TicketLineInfo l = new TicketLineInfo();
-        l.m_sTicket = m_sTicket;
-        l.m_iLine = m_iLine;
+        m_sTicket = null;
+        m_iLine = -1;
         l.m_dMultiply = m_dMultiply;    
         l.m_dPrice = m_dPrice;
-        l.product = product.cloneTicketProduct();
+        l.tax = tax;   
+        l.attributes = attributes;        
+        l.product = product.copyTicketProduct();
         return l;
     }
     
@@ -152,10 +163,6 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         return product.isCom();
     }
     
-    public TaxInfo getTaxInfo() {
-        return product.getTax();
-    }
-    
     public double getMultiply() {
         return m_dMultiply;
     }
@@ -170,7 +177,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     
     public void setPrice(double dValue) {
         m_dPrice = dValue;
-    }
+    }    
     
     public double getPriceTax() {
         return m_dPrice * (1.0 + getTaxRate());
@@ -180,8 +187,32 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_dPrice = dValue / (1.0 + getTaxRate());
     }
     
+    public TaxInfo getTaxInfo() {
+        return tax;
+    }    
+    
+    public void setTaxInfo(TaxInfo value) {
+        tax = value;
+    }
+    
+    public String getProperty(String key) {
+        return attributes.getProperty(key);
+    }
+    
+    public String getProperty(String key, String defaultvalue) {
+        return attributes.getProperty(key, defaultvalue);
+    }
+    
+    public void setProperty(String key, String value) {
+        attributes.setProperty(key, value);
+    }
+    
+    public Properties getProperties() {
+        return attributes;
+    }    
+    
     public double getTaxRate() {
-        return product.getTax() == null ? 0.0 : product.getTax().getRate();
+        return tax == null ? 0.0 : tax.getRate();
     }
     
     public double getSubValue() {

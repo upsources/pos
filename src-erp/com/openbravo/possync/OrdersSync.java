@@ -136,7 +136,7 @@ public class OrdersSync implements ProcessAction {
                 }
                 orderLine[j].setUnits(line.getMultiply());
                 orderLine[j].setPrice(line.getPrice());
-                orderLine[j].setTaxId(parseInt(line.getProduct().getTax().getId()));     
+                orderLine[j].setTaxId(parseInt(line.getTaxInfo().getId()));     
             }
             orders[i].setLines(orderLine);
 

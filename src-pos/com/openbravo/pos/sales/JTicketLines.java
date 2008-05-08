@@ -38,7 +38,6 @@ import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -52,20 +51,20 @@ public class JTicketLines extends javax.swing.JPanel {
     private TicketTableModel m_jTableModel;
     
     /** Creates new form JLinesTicket */
-    public JTicketLines(DataLogicSystem dlSystem) {
+    public JTicketLines(String ticketline) {
         
         initComponents();
   
         ColumnTicket[] acolumns = new ColumnTicket[0];
-        String sTicketLine = dlSystem.getResourceAsXML("Ticket.Line");
-        if (sTicketLine != null) {
+        
+        if (ticketline != null) {
             try {
                 if (m_sp == null) {
                     SAXParserFactory spf = SAXParserFactory.newInstance();
                     m_sp = spf.newSAXParser();
                 }
                 ColumnsHandler columnshandler = new ColumnsHandler();
-                m_sp.parse(new InputSource(new StringReader(sTicketLine)), columnshandler);
+                m_sp.parse(new InputSource(new StringReader(ticketline)), columnshandler);
                 acolumns = columnshandler.getColumns();
 
             } catch (ParserConfigurationException ePC) {
@@ -76,15 +75,11 @@ public class JTicketLines extends javax.swing.JPanel {
                 System.out.println("Error al leer el archivo. Consulte con su administrador.");
             }
         }
-        
-        // la tabla.        
-        m_jTableModel = new TicketTableModel(acolumns);
-//        for (int i = 0; i < m_acolumns.length; i++) {
-//            m_jTableModel.addColumn(AppLocal.getIntString(m_acolumns[i].name));    
-//        }       
+               
+        m_jTableModel = new TicketTableModel(acolumns);    
         m_jTicketTable.setModel(m_jTableModel);        
         
-        m_jTicketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        //m_jTicketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableColumnModel jColumns = m_jTicketTable.getColumnModel();
         for (int i = 0; i < acolumns.length; i++) {
             jColumns.getColumn(i).setPreferredWidth(acolumns[i].width);
@@ -207,6 +202,7 @@ public class JTicketLines extends javax.swing.JPanel {
             m_acolumns = acolumns;
         }
         
+        @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
             
             JLabel aux = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -231,6 +227,7 @@ public class JTicketLines extends javax.swing.JPanel {
         public int getColumnCount() {
             return m_acolumns.length;
         }
+        @Override
         public String getColumnName(int column) {
             return AppLocal.getIntString(m_acolumns[column].name);
             // return m_acolumns[column].name;
@@ -239,6 +236,7 @@ public class JTicketLines extends javax.swing.JPanel {
             return ((String[]) m_rows.get(row))[column];
         }
   
+        @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
@@ -301,11 +299,13 @@ public class JTicketLines extends javax.swing.JPanel {
         public ColumnTicket[] getColumns() {
             return (ColumnTicket[]) m_columns.toArray(new ColumnTicket[m_columns.size()]);
         }
-        
+        @Override
         public void startDocument() throws SAXException { 
             m_columns = new ArrayList();
         }
+        @Override
         public void endDocument() throws SAXException {}    
+        @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
             if ("column".equals(qName)){
                 ColumnTicket c = new ColumnTicket();
@@ -323,7 +323,9 @@ public class JTicketLines extends javax.swing.JPanel {
                 m_columns.add(c);
             }
         }      
+        @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {}
+        @Override
         public void characters(char[] ch, int start, int length) throws SAXException {}
     }
     

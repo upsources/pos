@@ -28,7 +28,6 @@ public class ScriptFactory {
     
     public static final String VELOCITY = "velocity";
     public static final String BEANSHELL = "beanshell";
-//    public static final String FREEMARKER = "freemarker";
     
     /** Creates a new instance of ScriptFactory */
     private ScriptFactory() {
@@ -39,8 +38,6 @@ public class ScriptFactory {
             return new ScriptEngineVelocity();
         } else if (BEANSHELL.equals(name)) {
             return new ScriptEngineBeanshell();
-//        } else if (FREEMARKER.equals(name)) {
-//            return new ScriptEngineFreeMarker();
 //        } else if (name.startsWith("generic:")) {
 //            return new ScriptEngineGeneric(name.substring(8));            
         } else {

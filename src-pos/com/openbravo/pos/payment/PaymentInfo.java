@@ -24,7 +24,7 @@ public abstract class PaymentInfo {
     
     public abstract String getName();
     public abstract double getTotal();
-    public abstract PaymentInfo clonePayment();
+    public abstract PaymentInfo copyPayment();
     
     public String printTotal() {
         return Formats.CURRENCY.formatValue(new Double(getTotal()));

@@ -25,7 +25,7 @@ public class PaymentInfoMagcardRefund extends PaymentInfoMagcard {
         super(sHolderName, sCardNumber, sExpirationDate, sTransactionID, dTotal);
     }
     
-    public PaymentInfo clonePayment(){
+    public PaymentInfo copyPayment(){
         PaymentInfoMagcardRefund p = new PaymentInfoMagcardRefund(m_sHolderName, m_sCardNumber, m_sExpirationDate, m_sTransactionID, m_dTotal);
         p.m_sAuthorization = m_sAuthorization;
         p.m_sMessage = m_sMessage;

@@ -99,37 +99,23 @@ public class JTicketsBagTicket extends JTicketsBag {
         // postcondicion es que no tenemos ticket activado ni ticket en el panel
     }
     
-    public void saveTicket() {
+    public void deleteTicket() {
+        
         if (m_ticketCopy != null) {           
             // Para editar borramos el ticket anterior
-            deleteTicket(m_ticketCopy);
+            try {               
+                m_dlSales.deleteTicket(m_ticketCopy, m_App.getInventoryLocation());
+            } catch (BasicException eData) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                msg.show(this);                
+            }            
         }
-        saveTicket(m_panelticketedit.getActiveTicket()); // guardamos el ticket nuevo sea editar o devolver
-        
-        m_ticket = null;
-        m_ticketCopy = null;
-    }
-
-    
-    public void cancelTicket() {
         
         m_ticket = null;
         m_ticketCopy = null;
         resetToTicket(); 
     }    
-    
-    public void deleteeraseTicket() {
-        // Solo se nos invoca desde editar
-        if (m_ticketCopy != null) {           
-            // Para editar borramos el ticket anterior
-            deleteTicket(m_ticketCopy);
-        }
         
-        m_ticket = null;
-        m_ticketCopy = null;
-        resetToTicket();
-    }    
-    
     public void canceleditionTicket() {
         
         m_ticketCopy = null;
@@ -335,11 +321,11 @@ public class JTicketsBagTicket extends JTicketsBag {
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jEditActionPerformed
-          
-        m_ticketCopy = m_ticket.cloneTicket();
+                 
+        m_ticketCopy = m_ticket;        
         m_TicketsBagTicketBag.showEdit();
         m_panelticketedit.showCatalog();
-        m_panelticketedit.setActiveTicket(m_ticket, null);  
+        m_panelticketedit.setActiveTicket(m_ticket.copyTicket(), null);  
         
     }//GEN-LAST:event_m_jEditActionPerformed
 
@@ -361,7 +347,6 @@ public class JTicketsBagTicket extends JTicketsBag {
 
     private void m_jRefundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jRefundActionPerformed
         
-        TicketInfo ticketrefund = new TicketInfo();
         java.util.List aRefundLines = new ArrayList();
         
         for(int i = 0; i < m_ticket.getLinesCount(); i++) {
@@ -373,7 +358,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_ticketCopy = null;
         m_TicketsBagTicketBag.showRefund();
         m_panelticketedit.showRefundLines(aRefundLines);
-        m_panelticketedit.setActiveTicket(ticketrefund, null);      
+        m_panelticketedit.setActiveTicket(new TicketInfo(), null);      
         
     }//GEN-LAST:event_m_jRefundActionPerformed
 

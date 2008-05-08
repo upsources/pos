@@ -244,11 +244,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     public boolean viewTables() {
         return viewTables(null);
     }
-    
-    public void saveTicket() {
-        saveTicket(m_panelticket.getActiveTicket());
-    }
-    
+        
     public void newTicket() {
         
         // guardamos el ticket
@@ -267,9 +263,8 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         m_panelticket.setActiveTicket(null, null);     
     }
     
-    public void cancelTicket() {
+    public void deleteTicket() {
         
-        // no guardamos el ticket porque no hace falta
         if (m_PlaceCurrent != null) {
             
             String id = m_PlaceCurrent.getId();

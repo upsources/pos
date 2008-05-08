@@ -93,10 +93,10 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_aLines = new ArrayList<TicketLineInfo>();
     }
     
-    public TicketInfo cloneTicket() {
+    public TicketInfo copyTicket() {
         TicketInfo t = new TicketInfo();
-        t.m_sId = m_sId;
-        t.m_iTicketId = m_iTicketId; // incrementamos
+
+        t.m_iTicketId = m_iTicketId;
         t.m_dDate = m_dDate;
         t.m_User = m_User;
         t.m_Customer = m_Customer;
@@ -104,13 +104,14 @@ public class TicketInfo implements SerializableRead, Externalizable {
         
         t.m_aPayment = new LinkedList<PaymentInfo>(); 
         for (PaymentInfo p : m_aPayment) {
-            t.m_aPayment.add(p.clonePayment());
+            t.m_aPayment.add(p.copyPayment());
         }
         
         t.m_aLines = new ArrayList<TicketLineInfo>(); 
         for (TicketLineInfo l : m_aLines) {
-            t.m_aLines.add(l.cloneTicketLine());
+            t.m_aLines.add(l.copyTicketLine());
         }
+        t.refreshLines();
         
         return t;
     }
@@ -305,7 +306,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
             
-            if (tax.getId().equals(oLine.getProduct().getTax().getId())) {
+            if (tax.getId().equals(oLine.getTaxInfo().getId())) {
                 taxinfo.add(oLine.getSubValue());
             }
         }
@@ -321,9 +322,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
             
-            TicketTaxInfo t = m.get(oLine.getProduct().getTax());
+            TicketTaxInfo t = m.get(oLine.getTaxInfo());
             if (t == null) {
-                t = new TicketTaxInfo(oLine.getProduct().getTax());
+                t = new TicketTaxInfo(oLine.getTaxInfo());
                 m.put(t.getTaxInfo(), t);
             }            
             t.add(oLine.getSubValue());

@@ -32,7 +32,6 @@ import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.payment.JPaymentInterface;
-import com.openbravo.pos.util.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

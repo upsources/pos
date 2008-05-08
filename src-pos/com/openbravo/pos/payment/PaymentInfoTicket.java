@@ -30,7 +30,7 @@ public class PaymentInfoTicket extends PaymentInfo {
         m_dTicket = dTicket;
         m_sName = sName;
     }
-    public PaymentInfo clonePayment(){
+    public PaymentInfo copyPayment(){
         return new PaymentInfoTicket(m_dTicket, m_sName);
     }    
     public String getName() {

@@ -46,10 +46,7 @@ public class JTicketsBagSimple extends JTicketsBag {
         return true;
     }
     
-    public void saveTicket() {
-        saveTicket(m_panelticket.getActiveTicket());
-    }
-    public void cancelTicket() {           
+    public void deleteTicket() {           
         m_panelticket.setActiveTicket(new TicketInfo(), null);
     }
     
@@ -90,7 +87,7 @@ public class JTicketsBagSimple extends JTicketsBag {
         
         int res = JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.wannadelete"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (res == JOptionPane.YES_OPTION) {
-            cancelTicket();
+            deleteTicket();
         }
         
     }//GEN-LAST:event_m_jDelTicketActionPerformed
