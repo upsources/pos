@@ -30,12 +30,12 @@
     
     <img-width value="64"/>
     <img-height value="54"/>
+    <cat-height value="300" />
     
-    <taxesincluded value="false"/>    
+    <taxesincluded value="false"/>   
+    
+    <!-- <printselected value="true"/> -->    
     <!-- <taxesid value="0"/> -->
     <!-- <pricevisible value="true" /> -->
-    <!-- <img-width value="64" /> -->
-    <!-- <img-height value="54" /> -->
-    <!-- <cat-height value="245" /> -->
     
 </configuration>

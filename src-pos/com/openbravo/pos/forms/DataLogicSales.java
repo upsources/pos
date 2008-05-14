@@ -99,7 +99,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ?" +
-              "ORDER BY C.NAME, O.CATORDER, P.NAME"
+              "ORDER BY C.NAME, O.CATORDER, P.REFERENCE"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).list(category);
     }

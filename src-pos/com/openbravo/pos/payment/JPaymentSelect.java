@@ -74,8 +74,13 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         this.app = app;
         dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
         dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+        printselected = true;
     }
-
+    
+    public void setPrintSelected(boolean value) {
+        printselected = value;
+    }
+    
     public boolean isPrintSelected() {
         return printselected;
     }
@@ -87,7 +92,6 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     public boolean showDialog(double total, CustomerInfo customer) {
         
         m_aPaymentInfo = new PaymentInfoList();
-        printselected = true;
         accepted = false;
         
         m_dTotal = total;
@@ -103,21 +107,22 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             }
         }         
 
+        m_jButtonPrint.setSelected(printselected);
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
         
         addTabs();
         
         if (m_jTabPayment.getTabCount() == 0) {
-            // No payment panels available
-            
+            // No payment panels available            
             m_aPaymentInfo.add(getDefaultPayment(total));
-            printselected = true;
             accepted = true;            
-        } else {
-        
+        } else {        
             printState();
             setVisible(true);
         }
+        
+        // gets the print button state
+        printselected = m_jButtonPrint.isSelected();
         
         // remove all tabs        
         m_jTabPayment.removeAll();
@@ -187,16 +192,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         public String getLabelKey() { return "tab.paper"; }
         public String getIconKey() { return "/com/openbravo/images/knotes.png"; }
     }
-        
-//    public class JPaymentTicketCreator implements JPaymentCreator {
-//        public JPaymentInterface createJPayment() {
-//            return new JPaymentTicket(JPaymentSelect.this);
-//        }
-//        public String getKey() { return "payment.ticket"; }
-//        public String getLabelKey() { return "tab.ticket"; }
-//        public String getIconKey() { return "/com/openbravo/images/kontact.png"; }
-//    }
-//        
+   
     public class JPaymentMagcardCreator implements JPaymentCreator {
         public JPaymentInterface createJPayment() {
             return new JPaymentMagcard(app, JPaymentSelect.this);
@@ -449,7 +445,6 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
         if (returnPayment != null) {
             m_aPaymentInfo.add(returnPayment);
-            printselected = m_jButtonPrint.isSelected();
             accepted = true;
             dispose();
         }           

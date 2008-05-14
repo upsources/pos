@@ -50,6 +50,7 @@
     <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
     <class name="com.openbravo.pos.inventory.StockManagement"/>
     <class name="/com/openbravo/reports/products.bs"/>      
+    <class name="/com/openbravo/reports/productlabels.bs"/>      
     <class name="/com/openbravo/reports/productscatalog.bs"/>
     <class name="/com/openbravo/reports/inventory.bs"/>
     <class name="/com/openbravo/reports/inventoryb.bs"/>

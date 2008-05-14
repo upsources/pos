@@ -769,6 +769,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
                 ? paymentdialogreceipt
                 : paymentdialogrefund;
+        paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
 
         if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
 

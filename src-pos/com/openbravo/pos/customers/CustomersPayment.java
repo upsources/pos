@@ -477,6 +477,8 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
 
+        paymentdialog.setPrintSelected(true);
+        
         if (paymentdialog.showDialog(customerext.getCurdebt(), null)) {
 
             // Save the ticket
