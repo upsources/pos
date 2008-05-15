@@ -63,7 +63,7 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
             m_printer.setDeviceEnabled(true);
             m_printer.setMapMode(POSPrinterConst.PTR_MM_METRIC);  // unit = 1/100 mm - i.e. 1 cm = 10 mm = 10 * 100 units
            
-            m_drawer.open(sDevicePrinterName);
+            m_drawer.open(sDeviceDrawerName);
             m_drawer.claim(10000);
             m_drawer.setDeviceEnabled(true);
         } catch (JposException e) {
