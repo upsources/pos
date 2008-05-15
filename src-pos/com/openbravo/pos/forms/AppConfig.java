@@ -34,12 +34,34 @@ import java.util.Properties;
 public class AppConfig implements AppProperties {
      
     private Properties m_propsconfig;
+    private File configfile;
       
+    public AppConfig(String[] args) {
+        if (args.length == 0) {
+            init(getDefaultConfig());
+        } else {
+            init(new File(args[0]));
+        }
+    }
+    
+    public AppConfig(File configfile) {
+        init(configfile);
+    }
+    
     /** Creates a new instance of AppConfig */
     public AppConfig() {
-        m_propsconfig = new Properties();
+        init(getDefaultConfig());
     }
-   
+    
+    private void init(File configfile) {
+        this.configfile = configfile;
+        m_propsconfig = new Properties();        
+    }
+    
+    private File getDefaultConfig() {
+        return new File(new File(System.getProperty("user.home")), AppLocal.APP_ID + ".properties");
+    }
+    
     public String getProperty(String sKey) {
         return m_propsconfig.getProperty(sKey);
     }
@@ -48,12 +70,12 @@ public class AppConfig implements AppProperties {
         return getProperty("machine.hostname");
     } 
     
-    public void setProperty(String sKey, String sValue) {
-        m_propsconfig.setProperty(sKey, sValue);
+    public File getConfigFile() {
+        return configfile;
     }
     
-    private File getConfigFile() {
-        return new File(new File(System.getProperty("user.home")), AppLocal.APP_ID + ".properties");
+    public void setProperty(String sKey, String sValue) {
+        m_propsconfig.setProperty(sKey, sValue);
     }
     
     private String getLocalHostName() {
@@ -65,14 +87,14 @@ public class AppConfig implements AppProperties {
     }
    
     public boolean delete() {
-        return getConfigFile().delete();
+        return configfile.delete();
     }
     
     public void load() {
 
         // Cargo las propiedades
         try {
-            InputStream in = new FileInputStream(getConfigFile());
+            InputStream in = new FileInputStream(configfile);
             if (in != null) {
                 m_propsconfig = new Properties();
                 m_propsconfig.load(in);
@@ -86,7 +108,7 @@ public class AppConfig implements AppProperties {
     
     public void save() throws IOException {
         
-        OutputStream out = new FileOutputStream(getConfigFile());
+        OutputStream out = new FileOutputStream(configfile);
         if (out != null) {
             m_propsconfig.store(out, AppLocal.APP_NAME + ". Configuration file.");
             out.close();

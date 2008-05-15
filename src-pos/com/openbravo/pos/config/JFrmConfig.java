@@ -35,7 +35,7 @@ public class JFrmConfig extends javax.swing.JFrame {
     private JPanelConfiguration config;
     
     /** Creates new form JFrmConfig */
-    public JFrmConfig() {
+    public JFrmConfig(AppProperties props) {
         
         initComponents();
         
@@ -47,7 +47,7 @@ public class JFrmConfig extends javax.swing.JFrame {
         
         addWindowListener(new MyFrameListener()); 
         
-        config = new JPanelConfiguration(null);
+        config = new JPanelConfiguration(props);
         
         getContentPane().add(config, BorderLayout.CENTER);
        
@@ -85,11 +85,11 @@ public class JFrmConfig extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
-                AppConfig config = new AppConfig();
+                AppConfig config = new AppConfig(args);
                 config.load();    
                 
                 // Set the look and feel.
@@ -98,7 +98,7 @@ public class JFrmConfig extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
                 
-                new JFrmConfig().setVisible(true);
+                new JFrmConfig(config).setVisible(true);
             }
         });
     }

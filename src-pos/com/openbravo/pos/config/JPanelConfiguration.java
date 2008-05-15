@@ -27,6 +27,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.pos.forms.*;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.gui.JMessageDialog;
+import java.io.File;
 
 /**
  *
@@ -35,10 +36,17 @@ import com.openbravo.data.gui.JMessageDialog;
 public class JPanelConfiguration extends JPanel implements JPanelView {
         
     private List<PanelConfig> m_panelconfig;
+    private File configfile;
     
     /** Creates new form JPanelConfiguration */
     public JPanelConfiguration(AppView oApp) {
-             
+        this(oApp.getProperties());  
+    }
+    
+    public JPanelConfiguration(AppProperties props) {
+        
+        configfile = props.getConfigFile();        
+        
         initComponents();
         
         // Inicio lista de paneles
@@ -52,12 +60,12 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
         // paneles auxiliares
         for (PanelConfig c: m_panelconfig) {
             m_jConfigOptions.add(c.getConfigComponent());
-        }       
+        }
     }
-    
+        
     private void restoreProperties() {
         
-        AppConfig config = new AppConfig();
+        AppConfig config = new AppConfig(configfile);
         if (config.delete()) {
             loadProperties();
         } else {
@@ -67,7 +75,7 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
     
     private void loadProperties() {
         
-        AppConfig config = new AppConfig();
+        AppConfig config = new AppConfig(configfile);
         config.load();
         
         // paneles auxiliares
@@ -78,7 +86,7 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
     
     private void saveProperties() {
         
-        AppConfig config = new AppConfig();
+        AppConfig config = new AppConfig(configfile);
         
         // paneles auxiliares
         for (PanelConfig c: m_panelconfig) {

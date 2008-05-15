@@ -155,7 +155,7 @@ public class JFrmSQL extends javax.swing.JFrame implements AppView {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(final String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                
@@ -166,7 +166,7 @@ public class JFrmSQL extends javax.swing.JFrame implements AppView {
 //                } catch(Exception ex) {
 //                }
                 
-                AppConfig config = new AppConfig();
+                AppConfig config = new AppConfig(args);
                 config.load();
                 
                 if (!new JFrmSQL().start(config)) {

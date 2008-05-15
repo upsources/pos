@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,12 +18,15 @@
 
 package com.openbravo.pos.forms;
 
+import java.io.File;
+
 /**
  *
  * @author adrianromero
  */
 public interface AppProperties {
 
+    public File getConfigFile(); 
     public String getHost();    
     public String getProperty(String sKey); // Config property.
 }
