@@ -70,7 +70,6 @@ public JRefundLines(DataLogicSystem dlSystem, JPanelTicketEdits jTicketEdit) {
         m_jbtnAddLine = new javax.swing.JButton();
         m_jbtnAddAll = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new java.awt.Dimension(15, 200));
         setLayout(new java.awt.BorderLayout());
 

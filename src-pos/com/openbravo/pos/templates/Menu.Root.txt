@@ -29,8 +29,8 @@
         submenu.addTitle("Menu.Customers");
         submenu.addPanel("/com/openbravo/images/kdmconfig.png", "Menu.CustomersManagement", "com.openbravo.pos.customers.CustomersPanel");
         submenu.addTitle("Menu.Customers.Reports");
-        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.CustomersReport", "/com/openbravo/reports/Customers.bs");
-        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.CustomersBReport", "/com/openbravo/reports/CustomersB.bs");
+        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.CustomersReport", "/com/openbravo/reports/customers.bs");
+        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.CustomersBReport", "/com/openbravo/reports/customersb.bs");
     submenu = group.addSubmenu("/com/openbravo/images/contents.png", "Menu.StockManagement", "com.openbravo.pos.forms.MenuStockManagement");
         submenu.addTitle("Menu.StockManagement.Edit");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Products", "com.openbravo.pos.inventory.ProductsPanel");
@@ -42,7 +42,7 @@
         submenu.addTitle("Menu.StockManagement.Reports");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Products", "/com/openbravo/reports/products.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.ProductLabels", "/com/openbravo/reports/productlabels.bs");
-        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Catalog", "/com/openbravo/reports/catalog.bs");
+        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Catalog", "/com/openbravo/reports/productscatalog.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Inventory", "/com/openbravo/reports/inventory.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Inventory2", "/com/openbravo/reports/inventoryb.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.InventoryBroken", "/com/openbravo/reports/inventorybroken.bs");

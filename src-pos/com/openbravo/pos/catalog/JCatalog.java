@@ -371,7 +371,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         m_btnBack = new javax.swing.JButton();
         m_jProducts = new javax.swing.JPanel();
 
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new java.awt.BorderLayout());
 
         m_jCategories.setLayout(new java.awt.CardLayout());

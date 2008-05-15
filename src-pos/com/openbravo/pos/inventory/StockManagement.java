@@ -93,7 +93,7 @@ public class StockManagement extends JPanel implements JPanelView {
         m_cat = new JCatalog(m_dlSales);
         m_cat.getComponent().setPreferredSize(new Dimension(0, 245));
         m_cat.addActionListener(new CatalogListener());
-        add(m_cat.getComponent(), BorderLayout.SOUTH);
+        catcontainer.add(m_cat.getComponent(), BorderLayout.CENTER);
         
         // Las lineas de inventario
         m_invlines = new JInventoryLines();
@@ -353,6 +353,7 @@ public class StockManagement extends JPanel implements JPanelView {
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         m_jLocationDes = new javax.swing.JComboBox();
+        catcontainer = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -418,9 +419,9 @@ public class StockManagement extends JPanel implements JPanelView {
 
         jLabel1.setText(AppLocal.getIntString("label.stockdate")); // NOI18N
         jPanel3.add(jLabel1);
-        jLabel1.setBounds(10, 30, 150, 14);
+        jLabel1.setBounds(10, 30, 150, 15);
         jPanel3.add(m_jdate);
-        m_jdate.setBounds(160, 30, 200, 18);
+        m_jdate.setBounds(160, 30, 200, 19);
 
         m_jbtndate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
         m_jbtndate.addActionListener(new java.awt.event.ActionListener() {
@@ -433,7 +434,7 @@ public class StockManagement extends JPanel implements JPanelView {
 
         jLabel2.setText(AppLocal.getIntString("label.stockreason")); // NOI18N
         jPanel3.add(jLabel2);
-        jLabel2.setBounds(10, 60, 150, 14);
+        jLabel2.setBounds(10, 60, 150, 15);
 
         m_jreason.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -445,7 +446,7 @@ public class StockManagement extends JPanel implements JPanelView {
 
         jLabel8.setText(AppLocal.getIntString("label.warehouse")); // NOI18N
         jPanel3.add(jLabel8);
-        jLabel8.setBounds(10, 90, 150, 14);
+        jLabel8.setBounds(10, 90, 150, 15);
         jPanel3.add(m_jLocation);
         m_jLocation.setBounds(160, 90, 200, 20);
 
@@ -494,11 +495,15 @@ public class StockManagement extends JPanel implements JPanelView {
 
         jLabel9.setText(AppLocal.getIntString("label.warehouse")); // NOI18N
         jPanel3.add(jLabel9);
-        jLabel9.setBounds(10, 120, 150, 14);
+        jLabel9.setBounds(10, 120, 150, 15);
         jPanel3.add(m_jLocationDes);
         m_jLocationDes.setBounds(160, 120, 200, 20);
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        catcontainer.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        catcontainer.setLayout(new java.awt.BorderLayout());
+        add(catcontainer, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDownloadProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadProductsActionPerformed
@@ -588,6 +593,7 @@ public class StockManagement extends JPanel implements JPanelView {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDownloadProducts;
+    private javax.swing.JPanel catcontainer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;

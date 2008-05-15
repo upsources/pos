@@ -138,7 +138,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jButtonsExt.add(m_jbtnconfig);           
        
         // El panel de los productos o de las lineas...        
-        m_jPanContainer.add(getSouthComponent(), BorderLayout.SOUTH);
+        catcontainer.add(getSouthComponent(), BorderLayout.CENTER);
         
         // El modelo de impuestos
         m_senttax = dlSales.getTaxList();
@@ -989,6 +989,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jTax = new javax.swing.JComboBox();
         m_jaddtax = new javax.swing.JToggleButton();
         m_jKeyFactory = new javax.swing.JTextField();
+        catcontainer = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 204, 153));
         setLayout(new java.awt.CardLayout());
@@ -1314,6 +1315,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.EAST);
 
+        catcontainer.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        catcontainer.setLayout(new java.awt.BorderLayout());
+        m_jPanContainer.add(catcontainer, java.awt.BorderLayout.SOUTH);
+
         add(m_jPanContainer, "ticket");
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1421,6 +1426,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
+    private javax.swing.JPanel catcontainer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

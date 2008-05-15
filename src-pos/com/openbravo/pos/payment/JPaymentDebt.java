@@ -166,7 +166,7 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
 
         jLabel8.setText(AppLocal.getIntString("label.debt")); // NOI18N
         jPanel4.add(jLabel8);
-        jLabel8.setBounds(20, 20, 80, 14);
+        jLabel8.setBounds(20, 20, 100, 15);
 
         m_jMoneyEuros.setBackground(new java.awt.Color(153, 153, 255));
         m_jMoneyEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -174,51 +174,52 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         m_jMoneyEuros.setOpaque(true);
         m_jMoneyEuros.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel4.add(m_jMoneyEuros);
-        m_jMoneyEuros.setBounds(100, 20, 150, 25);
+        m_jMoneyEuros.setBounds(120, 20, 150, 25);
 
         jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
         jPanel4.add(jLabel3);
-        jLabel3.setBounds(20, 70, 80, 14);
+        jLabel3.setBounds(20, 70, 100, 15);
 
         m_jName.setEditable(false);
         jPanel4.add(m_jName);
-        m_jName.setBounds(100, 70, 200, 18);
+        m_jName.setBounds(120, 70, 200, 19);
 
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         jPanel4.add(jLabel12);
-        jLabel12.setBounds(20, 100, 80, 14);
+        jLabel12.setBounds(20, 100, 100, 15);
 
         jLabel2.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         jPanel4.add(jLabel2);
-        jLabel2.setBounds(20, 180, 80, 14);
+        jLabel2.setBounds(20, 180, 100, 15);
 
         txtMaxdebt.setEditable(false);
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel4.add(txtMaxdebt);
-        txtMaxdebt.setBounds(100, 180, 130, 18);
+        txtMaxdebt.setBounds(120, 180, 130, 19);
 
         jLabel4.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         jPanel4.add(jLabel4);
-        jLabel4.setBounds(20, 210, 80, 14);
+        jLabel4.setBounds(20, 210, 100, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel4.add(txtCurdebt);
-        txtCurdebt.setBounds(100, 210, 130, 18);
+        txtCurdebt.setBounds(120, 210, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         jPanel4.add(jLabel6);
-        jLabel6.setBounds(20, 240, 80, 14);
+        jLabel6.setBounds(20, 240, 100, 15);
 
         txtCurdate.setEditable(false);
+        txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel4.add(txtCurdate);
-        txtCurdate.setBounds(100, 240, 130, 18);
+        txtCurdate.setBounds(120, 240, 130, 19);
 
         m_jNotes.setEditable(false);
         jScrollPane1.setViewportView(m_jNotes);
 
         jPanel4.add(jScrollPane1);
-        jScrollPane1.setBounds(100, 100, 200, 70);
+        jScrollPane1.setBounds(120, 100, 200, 70);
 
         add(jPanel4, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

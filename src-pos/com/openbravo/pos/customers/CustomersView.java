@@ -206,41 +206,41 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
         jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
         add(jLabel3);
-        jLabel3.setBounds(20, 50, 90, 14);
+        jLabel3.setBounds(20, 50, 140, 15);
         add(m_jName);
-        m_jName.setBounds(110, 50, 270, 18);
+        m_jName.setBounds(160, 50, 270, 19);
 
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         add(jLabel12);
-        jLabel12.setBounds(20, 190, 90, 14);
+        jLabel12.setBounds(20, 190, 140, 15);
 
         jScrollPane1.setViewportView(m_jNotes);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(110, 190, 270, 70);
+        jScrollPane1.setBounds(160, 190, 270, 70);
 
         jLabel13.setText(AppLocal.getIntString("label.address")); // NOI18N
         add(jLabel13);
-        jLabel13.setBounds(20, 110, 90, 14);
+        jLabel13.setBounds(20, 110, 140, 15);
 
         jScrollPane2.setViewportView(m_jAddress);
 
         add(jScrollPane2);
-        jScrollPane2.setBounds(110, 110, 270, 70);
+        jScrollPane2.setBounds(160, 110, 270, 70);
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 360, 90, 14);
+        jLabel4.setBounds(20, 360, 140, 15);
         add(m_jVisible);
-        m_jVisible.setBounds(110, 360, 140, 20);
+        m_jVisible.setBounds(160, 360, 140, 20);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         add(jLabel5);
-        jLabel5.setBounds(20, 80, 90, 14);
+        jLabel5.setBounds(20, 80, 140, 15);
 
         jcard.setEditable(false);
         add(jcard);
-        jcard.setBounds(110, 80, 270, 18);
+        jcard.setBounds(160, 80, 270, 19);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/color_line16.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -249,7 +249,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             }
         });
         add(jButton2);
-        jButton2.setBounds(390, 80, 50, 26);
+        jButton2.setBounds(440, 80, 50, 26);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -258,39 +258,39 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             }
         });
         add(jButton3);
-        jButton3.setBounds(450, 80, 50, 26);
+        jButton3.setBounds(500, 80, 50, 26);
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 270, 90, 14);
+        jLabel1.setBounds(20, 270, 140, 15);
 
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtMaxdebt);
-        txtMaxdebt.setBounds(110, 270, 130, 18);
+        txtMaxdebt.setBounds(160, 270, 130, 19);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 300, 90, 14);
+        jLabel2.setBounds(20, 300, 140, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtCurdebt);
-        txtCurdebt.setBounds(110, 300, 130, 18);
+        txtCurdebt.setBounds(160, 300, 130, 19);
 
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         add(txtCurdate);
-        txtCurdate.setBounds(110, 330, 130, 18);
+        txtCurdate.setBounds(160, 330, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         add(jLabel6);
-        jLabel6.setBounds(20, 330, 90, 14);
+        jLabel6.setBounds(20, 330, 140, 15);
         add(m_jTaxID);
-        m_jTaxID.setBounds(110, 20, 270, 18);
+        m_jTaxID.setBounds(160, 20, 270, 19);
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
         add(jLabel7);
-        jLabel7.setBounds(20, 20, 90, 14);
+        jLabel7.setBounds(20, 20, 140, 15);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

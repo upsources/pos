@@ -18,7 +18,6 @@
 
 package com.openbravo.pos.customers;
 
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.DataWrite;
@@ -125,7 +124,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     public final SentenceList getReservationsList() {
         return new PreparedSentence(s
             , "SELECT R.ID, R.CREATED, R.DATENEW, C.CUSTOMER, CUSTOMERS.TAXID, COALESCE(CUSTOMERS.NAME, R.TITLE),  R.CHAIRS, R.ISDONE, R.DESCRIPTION " +
-              "FROM RESERVATIONS R LEFT OUTER JOIN (RESERVATION_CUSTOMERS C JOIN CUSTOMERS ON C.CUSTOMER = CUSTOMERS.ID) ON R.ID = C.ID " +
+              "FROM RESERVATIONS R LEFT OUTER JOIN RESERVATION_CUSTOMERS C ON R.ID = C.ID LEFT OUTER JOIN CUSTOMERS ON C.CUSTOMER = CUSTOMERS.ID " +
               "WHERE R.DATENEW >= ? AND R.DATENEW < ?"
             , new SerializerWriteBasic(new Datas[] {Datas.TIMESTAMP, Datas.TIMESTAMP})
             , new SerializerReadBasic(customerdatas));             

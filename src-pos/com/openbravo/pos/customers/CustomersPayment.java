@@ -355,89 +355,89 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(20, 50, 90, 15);
+        jLabel3.setBounds(20, 50, 140, 15);
 
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 200, 90, 15);
+        jLabel12.setBounds(20, 200, 140, 15);
 
         jLabel13.setText(AppLocal.getIntString("label.address")); // NOI18N
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(20, 110, 90, 15);
+        jLabel13.setBounds(20, 110, 140, 15);
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 380, 90, 15);
+        jLabel4.setBounds(20, 380, 140, 15);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 80, 90, 15);
+        jLabel5.setBounds(20, 80, 140, 15);
 
         txtCard.setEditable(false);
         txtCard.setFocusable(false);
         txtCard.setRequestFocusEnabled(false);
         jPanel1.add(txtCard);
-        txtCard.setBounds(110, 80, 240, 20);
+        txtCard.setBounds(160, 80, 240, 20);
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(20, 290, 90, 15);
+        jLabel1.setBounds(20, 290, 140, 15);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 320, 90, 15);
+        jLabel2.setBounds(20, 320, 140, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtCurdebt.setFocusable(false);
         txtCurdebt.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdebt);
-        txtCurdebt.setBounds(110, 320, 130, 19);
+        txtCurdebt.setBounds(160, 320, 130, 19);
 
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCurdate.setFocusable(false);
         txtCurdate.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdate);
-        txtCurdate.setBounds(110, 350, 130, 19);
+        txtCurdate.setBounds(160, 350, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 350, 90, 15);
+        jLabel6.setBounds(20, 350, 140, 15);
 
         txtName.setEditable(false);
         txtName.setFocusable(false);
         txtName.setRequestFocusEnabled(false);
         jPanel1.add(txtName);
-        txtName.setBounds(110, 50, 240, 20);
+        txtName.setBounds(160, 50, 240, 20);
 
         txtMaxdebt.setEditable(false);
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtMaxdebt.setFocusable(false);
         txtMaxdebt.setRequestFocusEnabled(false);
         jPanel1.add(txtMaxdebt);
-        txtMaxdebt.setBounds(110, 290, 130, 19);
+        txtMaxdebt.setBounds(160, 290, 130, 19);
 
         chkVisible.setEnabled(false);
         chkVisible.setFocusPainted(false);
         chkVisible.setFocusable(false);
         chkVisible.setRequestFocusEnabled(false);
         jPanel1.add(chkVisible);
-        chkVisible.setBounds(110, 380, 140, 20);
+        chkVisible.setBounds(160, 380, 140, 20);
         jPanel1.add(txtAddress);
-        txtAddress.setBounds(110, 110, 270, 80);
+        txtAddress.setBounds(160, 110, 270, 80);
         jPanel1.add(txtNotes);
-        txtNotes.setBounds(110, 200, 270, 80);
+        txtNotes.setBounds(160, 200, 270, 80);
 
         txtTaxId.setEditable(false);
         txtTaxId.setFocusable(false);
         txtTaxId.setRequestFocusEnabled(false);
         jPanel1.add(txtTaxId);
-        txtTaxId.setBounds(110, 20, 240, 20);
+        txtTaxId.setBounds(160, 20, 240, 20);
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 20, 90, 15);
+        jLabel7.setBounds(20, 20, 140, 15);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

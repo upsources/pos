@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.0" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
@@ -73,7 +76,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="50" width="100" height="20"/>
+              <AbsoluteConstraints x="20" y="50" width="100" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -85,7 +88,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="80" width="100" height="20"/>
+              <AbsoluteConstraints x="20" y="80" width="100" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -96,7 +99,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                <CompundBorder>
+                <CompoundBorder>
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder>
                       <Color PropertyName="color" blue="64" green="6f" id="Button.darkShadow" palette="3" red="71" type="palette"/>
@@ -105,7 +108,7 @@
                   <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                     <EmptyBorder bottom="1" left="4" right="4" top="1"/>
                   </Border>
-                </CompundBorder>
+                </CompoundBorder>
               </Border>
             </Property>
             <Property name="opaque" type="boolean" value="true"/>
@@ -126,7 +129,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                <CompundBorder>
+                <CompoundBorder>
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder>
                       <Color PropertyName="color" blue="64" green="6f" id="Button.darkShadow" palette="3" red="71" type="palette"/>
@@ -135,7 +138,7 @@
                   <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                     <EmptyBorder bottom="1" left="4" right="4" top="1"/>
                   </Border>
-                </CompundBorder>
+                </CompoundBorder>
               </Border>
             </Property>
             <Property name="opaque" type="boolean" value="true"/>
@@ -157,7 +160,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="20" y="20" width="100" height="20"/>
+              <AbsoluteConstraints x="20" y="20" width="100" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -168,7 +171,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                <CompundBorder>
+                <CompoundBorder>
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder>
                       <Color PropertyName="color" blue="64" green="6f" id="Button.darkShadow" palette="3" red="71" type="palette"/>
@@ -177,7 +180,7 @@
                   <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                     <EmptyBorder bottom="1" left="4" right="4" top="1"/>
                   </Border>
-                </CompundBorder>
+                </CompoundBorder>
               </Border>
             </Property>
             <Property name="opaque" type="boolean" value="true"/>
