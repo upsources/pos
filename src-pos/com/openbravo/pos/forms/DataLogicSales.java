@@ -33,6 +33,7 @@ import com.openbravo.pos.inventory.LocationInfo;
 import com.openbravo.pos.inventory.MovementReason;
 import com.openbravo.pos.mant.FloorsInfo;
 import com.openbravo.pos.payment.PaymentInfo;
+import com.openbravo.pos.payment.PaymentInfoTicket;
 
 /**
  *
@@ -156,6 +157,10 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.NAME, L.ISCOM, L.UNITS, L.PRICE, T.ID, T.RATE, L.ATTRIBUTES FROM TICKETLINES L, TAXES T WHERE L.TAXID = T.ID AND L.TICKET = ?"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(TicketLineInfo.class)).list(ticket.getId()));  
+            ticket.setPayments(new PreparedSentence(s
+                , "SELECT PAYMENT, TOTAL FROM PAYMENTS WHERE RECEIPT = ?"
+                , SerializerWriteString.INSTANCE
+                , new SerializerReadClass(PaymentInfoTicket.class)).list(ticket.getId()));  
         }
         return ticket;
     }
@@ -244,7 +249,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         Transaction t = new Transaction(s) {
             public Object transact() throws BasicException {
                 
-                // actualizamos el inventario.
+                // update the inventory
                 Date d = new Date();
                 for (int i = 0; i < ticket.getLinesCount(); i++) {
                     if (ticket.getLine(i).getProduct().getId() != null)  {
@@ -261,8 +266,20 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                         diary[6] = new Double(ticket.getLine(i).getPrice());                                
                         getStockDiaryInsert().exec(diary);
                     }
-                }   
-                // Y borramos el ticket definitivamente
+                }  
+                
+                // update customer debts
+                for (PaymentInfo p : ticket.getPayments()) {
+                    if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
+                        getDebtUpdate().exec(new Object[]{                           
+                            ticket.getCustomer().getId(),
+                            new Double(-p.getTotal()),
+                            ticket.getDate()
+                        });
+                    }
+                }
+                
+                // and delete the receipt
                 new StaticSentence(s
                     , "DELETE FROM PAYMENTS WHERE RECEIPT = ?"
                     , SerializerWriteString.INSTANCE).exec(ticket.getId());

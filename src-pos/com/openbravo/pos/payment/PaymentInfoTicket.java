@@ -18,18 +18,32 @@
 
 package com.openbravo.pos.payment;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.DataRead;
+import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 
-public class PaymentInfoTicket extends PaymentInfo {
+public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  {
     
     private double m_dTicket;
     private String m_sName;
     
     /** Creates a new instance of PaymentInfoCash */
     public PaymentInfoTicket(double dTicket, String sName) {
-        m_dTicket = dTicket;
         m_sName = sName;
+        m_dTicket = dTicket;
     }
+    
+    public PaymentInfoTicket() {
+        m_sName = null;
+        m_dTicket = 0.0;
+     }
+    
+    public void readValues(DataRead dr) throws BasicException {
+        m_sName = dr.getString(1);
+        m_dTicket = dr.getDouble(2).doubleValue();
+    }
+    
     public PaymentInfo copyPayment(){
         return new PaymentInfoTicket(m_dTicket, m_sName);
     }    

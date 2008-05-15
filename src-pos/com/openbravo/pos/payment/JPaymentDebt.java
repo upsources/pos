@@ -98,8 +98,9 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         } else {
             try {
                 m_dPaid = m_jTendered.getValue();
+                m_dPaid = m_dPaid == 0.0 ? m_dTotal : m_dPaid;
             } catch (BasicException e){
-                m_dPaid = 0.0;
+                m_dPaid = m_dTotal;
             }   
 
             m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));

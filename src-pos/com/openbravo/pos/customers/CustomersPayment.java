@@ -15,6 +15,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 package com.openbravo.pos.customers;
 
 import com.openbravo.pos.customers.CustomerInfo;
@@ -141,6 +142,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         dirty.setDirty(false);
 
+        btnSave.setEnabled(true);    
         btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);
     }
 
@@ -163,6 +165,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         dirty.setDirty(false);
 
+        btnSave.setEnabled(false);
         btnPay.setEnabled(false);
 
     }
@@ -235,7 +238,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jPanel2 = new javax.swing.JPanel();
         btnCustomer = new javax.swing.JButton();
-        btnCustomer1 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         btnPay = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -280,17 +283,17 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         });
         jPanel2.add(btnCustomer);
 
-        btnCustomer1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/filesave.png"))); // NOI18N
-        btnCustomer1.setFocusPainted(false);
-        btnCustomer1.setFocusable(false);
-        btnCustomer1.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        btnCustomer1.setRequestFocusEnabled(false);
-        btnCustomer1.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/filesave.png"))); // NOI18N
+        btnSave.setFocusPainted(false);
+        btnSave.setFocusable(false);
+        btnSave.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnSave.setRequestFocusEnabled(false);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCustomer1ActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCustomer1);
+        jPanel2.add(btnSave);
         jPanel2.add(jSeparator1);
 
         btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/greenled.png"))); // NOI18N
@@ -352,23 +355,23 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel3.setText(AppLocal.getIntString("label.name")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(20, 50, 90, 14);
+        jLabel3.setBounds(20, 50, 90, 15);
 
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 200, 90, 14);
+        jLabel12.setBounds(20, 200, 90, 15);
 
         jLabel13.setText(AppLocal.getIntString("label.address")); // NOI18N
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(20, 110, 90, 14);
+        jLabel13.setBounds(20, 110, 90, 15);
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 380, 90, 14);
+        jLabel4.setBounds(20, 380, 90, 15);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(20, 80, 90, 14);
+        jLabel5.setBounds(20, 80, 90, 15);
 
         txtCard.setEditable(false);
         txtCard.setFocusable(false);
@@ -378,29 +381,29 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(20, 290, 90, 14);
+        jLabel1.setBounds(20, 290, 90, 15);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 320, 90, 14);
+        jLabel2.setBounds(20, 320, 90, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtCurdebt.setFocusable(false);
         txtCurdebt.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdebt);
-        txtCurdebt.setBounds(110, 320, 130, 18);
+        txtCurdebt.setBounds(110, 320, 130, 19);
 
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCurdate.setFocusable(false);
         txtCurdate.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdate);
-        txtCurdate.setBounds(110, 350, 130, 18);
+        txtCurdate.setBounds(110, 350, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 350, 90, 14);
+        jLabel6.setBounds(20, 350, 90, 15);
 
         txtName.setEditable(false);
         txtName.setFocusable(false);
@@ -413,7 +416,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtMaxdebt.setFocusable(false);
         txtMaxdebt.setRequestFocusEnabled(false);
         jPanel1.add(txtMaxdebt);
-        txtMaxdebt.setBounds(110, 290, 130, 18);
+        txtMaxdebt.setBounds(110, 290, 130, 19);
 
         chkVisible.setEnabled(false);
         chkVisible.setFocusPainted(false);
@@ -434,7 +437,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(20, 20, 90, 14);
+        jLabel7.setBounds(20, 20, 90, 15);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -535,7 +538,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         
 }//GEN-LAST:event_btnPayActionPerformed
 
-    private void btnCustomer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomer1ActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
 
         if (dirty.isDirty()) {
             save();
@@ -544,11 +547,11 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
             editorcard.activate();
         }
         
-    }//GEN-LAST:event_btnCustomer1ActionPerformed
+}//GEN-LAST:event_btnSaveActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
-    private javax.swing.JButton btnCustomer1;
     private javax.swing.JButton btnPay;
+    private javax.swing.JButton btnSave;
     private javax.swing.JCheckBox chkVisible;
     private com.openbravo.editor.JEditorString editorcard;
     private javax.swing.JButton jButton1;

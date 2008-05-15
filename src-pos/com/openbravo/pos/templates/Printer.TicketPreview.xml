@@ -115,6 +115,99 @@
             <text align ="left" length="16" bold="true">Total.</text>
             <text align ="right" length="20" bold="true">${ticket.printTotal()}</text>
         </line>    
+
+        #foreach ($paymentline in $ticket.payments)      
+         #if ($paymentline.name == "cash")
+        <line></line>     
+        <line>
+            <text bold="true">Cash</text>
+        </line>  
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>     
+         #end
+         #if ($paymentline.name == "cashrefund")
+        <line></line>     
+        <line>
+            <text bold="true">Refund</text>
+         </line>
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "magcard")
+        <line></line>        
+        <line>
+            <text bold="true">Mag card</text>
+        </line>   
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>  
+         #end  
+         #if ($paymentline.name == "magcardrefund")
+        <line></line>     
+        <line>
+            <text bold="true">Mag card refund</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "cheque")
+        <line></line>     
+        <line>
+            <text bold="true">Cheque</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "chequerefund")
+        <line></line>     
+        <line>
+            <text bold="true">Cheque refund</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "paperin")
+        <line></line>     
+        <line>
+            <text bold="true">Note</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "paperout")
+        <line></line>     
+        <line>
+            <text bold="true">Note Refund</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "free")
+        <line></line>     
+        <line>
+            <text bold="true">Free</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end
+         #if ($paymentline.name == "debt")
+        <line></line>     
+        <line>
+            <text bold="true">Debt</text>
+        </line>    
+        <line>
+            <text align ="right" length="42">${paymentline.printTotal()}</text>
+        </line>    
+         #end 
+         #end 
         
         <line></line>  
         <line>
