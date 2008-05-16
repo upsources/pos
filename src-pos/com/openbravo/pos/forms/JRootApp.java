@@ -235,7 +235,7 @@ public class JRootApp extends JPanel implements AppView {
             // success. continue with the shut down
 
             // apago el visor
-            m_TP.clearVisor();
+            m_TP.getDeviceDisplay().clearVisor();
             // me desconecto de la base de datos.
             m_appcnt.disconnect();
 
@@ -382,12 +382,12 @@ public class JRootApp extends JPanel implements AppView {
         
         String sresource = m_dlSystem.getResourceAsXML("Printer.Start");
         if (sresource == null) {
-            m_TP.writeVisor(AppLocal.APP_NAME, AppLocal.APP_VERSION);
+            m_TP.getDeviceDisplay().writeVisor(AppLocal.APP_NAME, AppLocal.APP_VERSION);
         } else {
             try {
                 m_TTP.printTicket(sresource);
             } catch (TicketPrinterException eTP) {
-                m_TP.writeVisor(AppLocal.APP_NAME, AppLocal.APP_VERSION);
+                m_TP.getDeviceDisplay().writeVisor(AppLocal.APP_NAME, AppLocal.APP_VERSION);
             }
         }        
     }

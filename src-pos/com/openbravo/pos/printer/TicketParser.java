@@ -88,6 +88,7 @@ public class TicketParser extends DefaultHandler {
         }
     }    
     
+    @Override
     public void startDocument() throws SAXException {
         // inicalizo las variables pertinentes
         text = null;
@@ -100,9 +101,11 @@ public class TicketParser extends DefaultHandler {
         m_oOutputPrinter = null;
     }
 
+    @Override
     public void endDocument() throws SAXException {
     }
     
+    @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
         
         switch (m_iOutputType) {
@@ -114,8 +117,11 @@ public class TicketParser extends DefaultHandler {
             } else if ("ticket".equals(qName)) {
                 m_iOutputType = OUTPUT_TICKET;
                 m_oOutputPrinter = m_printer.getDevicePrinter(readString(attributes.getValue("printer"), "1"));
+                m_oOutputPrinter.beginReceipt();
             } else if ("display".equals(qName)) {
                 m_iOutputType = OUTPUT_DISPLAY;
+                m_sVisorLine1 = null;
+                m_sVisorLine2 = null;                
                 m_oOutputPrinter = null;
             } else if ("fiscalreceipt".equals(qName)) {
                 m_iOutputType = OUTPUT_FISCAL;
@@ -151,7 +157,9 @@ public class TicketParser extends DefaultHandler {
             }
             break;
         case OUTPUT_DISPLAY:
-            if ("line1".equals(qName)) { // linea 1 del visor
+            if ("line".equals(qName)) { // line 1 or 2 of the display
+                m_sVisorLine = new StringBuffer();
+            } else if ("line1".equals(qName)) { // linea 1 del visor
                 m_sVisorLine = new StringBuffer();
             } else if ("line2".equals(qName)) { // linea 2 del visor
                 m_sVisorLine = new StringBuffer();
@@ -181,7 +189,9 @@ public class TicketParser extends DefaultHandler {
             }
             break;
         }
-    }      
+    } 
+    
+    @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
         switch (m_iOutputType) {
@@ -231,15 +241,21 @@ public class TicketParser extends DefaultHandler {
                 text = null;
             } else if ("line".equals(qName)) {
                 m_oOutputPrinter.endLine();
-            } else if ("cut".equals(qName)) {
-                m_oOutputPrinter.printCutPartial();
             } else if ("ticket".equals(qName)) {
+                m_oOutputPrinter.endReceipt();
                 m_iOutputType = OUTPUT_NONE;
                 m_oOutputPrinter = null;
             }
             break;
         case OUTPUT_DISPLAY:
-            if ("line1".equals(qName)) { // linea 1 del visor
+            if ("line".equals(qName)) { // line 1 or 2 of the display
+                if (m_sVisorLine1 == null) {
+                    m_sVisorLine1 = m_sVisorLine.toString();
+                } else {
+                    m_sVisorLine2 = m_sVisorLine.toString();
+                }
+                m_sVisorLine = null;
+            } else if ("line1".equals(qName)) { // linea 1 del visor
                 m_sVisorLine1 = m_sVisorLine.toString();
                 m_sVisorLine = null;
             } else if ("line2".equals(qName)) { // linea 2 del visor
@@ -263,7 +279,7 @@ public class TicketParser extends DefaultHandler {
                 }
                 text = null;
             } else if ("display".equals(qName)) {
-                m_printer.writeVisor(m_sVisorLine1, m_sVisorLine2);                    
+                m_printer.getDeviceDisplay().writeVisor(m_sVisorLine1, m_sVisorLine2);                    
                 m_sVisorLine1 = null;
                 m_sVisorLine2 = null;
                 m_iOutputType = OUTPUT_NONE;
@@ -288,6 +304,7 @@ public class TicketParser extends DefaultHandler {
         }          
     }
     
+    @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (text != null) {
             text.append(ch, start, length);

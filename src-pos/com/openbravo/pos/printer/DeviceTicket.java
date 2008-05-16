@@ -186,13 +186,6 @@ public class DeviceTicket {
             }           
             return pw;
         }
-//        public void reset() {
-//            Collection<PrinterWritter> c = m_apool.values();
-//            Iterator<PrinterWritter> i = c.iterator();
-//            while (i.hasNext()) {
-//                i.next().close();
-//            }
-//        }
     }
     
     // Impresora fiscal
@@ -200,31 +193,18 @@ public class DeviceTicket {
         return m_deviceFiscal;
     }
     
-    // INTERFAZ DESCRIPCION
-    public String getDisplayName() {
-        return m_devicedisplay.getDisplayName();
-    }
-    public String getDisplayDescription() {
-        return m_devicedisplay.getDisplayDescription();
-    }
-    public JComponent getDisplayComponent() {
-        return m_devicedisplay.getDisplayComponent();
+    // Display
+    public DeviceDisplay getDeviceDisplay() {
+        return m_devicedisplay;
     }
     
-    // INTERFAZ VISOR
-    public void writeVisor(String sLine1, String sLine2) {
-        m_devicedisplay.writeVisor(sLine1, sLine2);
-    }
-    public void clearVisor() {
-        m_devicedisplay.clearVisor();
-    }
-    
-    // Impresoras
+    // Receipt printers
     public DevicePrinter getDevicePrinter(String key) {
-        DevicePrinter printer = (DevicePrinter) m_deviceprinters.get(key);
+        DevicePrinter printer = m_deviceprinters.get(key);
         return printer == null ? m_nullprinter : printer;
     }
-    public List getDevicePrinterAll() {
+    
+    public List<DevicePrinter> getDevicePrinterAll() {
         return m_deviceprinterslist;
     }
     

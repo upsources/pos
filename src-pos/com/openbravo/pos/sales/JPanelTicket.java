@@ -824,7 +824,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void visorTicketLine(TicketLineInfo oLine){
         if (oLine == null) { 
-             m_App.getDeviceTicket().clearVisor();
+             m_App.getDeviceTicket().getDeviceDisplay().clearVisor();
         } else {                 
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);

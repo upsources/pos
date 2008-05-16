@@ -43,12 +43,6 @@ public class DevicePrinterPanel extends javax.swing.JPanel implements DevicePrin
         m_jTicketContainer = new JTicketContainer();
         m_jScrollView.setViewportView(m_jTicketContainer);
     }
-     
-    private void ensureTicket() {
-        if (m_ticketcurrent == null) {
-            m_ticketcurrent = new BasicTicket();
-        }
-    }
     
     public String getPrinterName() {
         return m_sName;
@@ -66,16 +60,16 @@ public class DevicePrinterPanel extends javax.swing.JPanel implements DevicePrin
     }
     
     // INTERFAZ PRINTER 2
+    public void beginReceipt() {
+        m_ticketcurrent = new BasicTicket();
+    }
     public void printImage(BufferedImage image) {
-        ensureTicket();
         m_ticketcurrent.printImage(image);
     }
     public void printBarCode(String type, String position, String code) {
-        ensureTicket();
         m_ticketcurrent.printBarCode(type, position, code);
     }
     public void beginLine(int iTextSize) {
-        ensureTicket();
         m_ticketcurrent.beginLine(iTextSize);
     }
     public void printText(int iStyle, String sText) {
@@ -84,12 +78,11 @@ public class DevicePrinterPanel extends javax.swing.JPanel implements DevicePrin
     public void endLine() {
         m_ticketcurrent.endLine();
     } 
-    public void printCutPartial() {
-        ensureTicket();
+    public void endReceipt() {
         m_jTicketContainer.addTicket(new JTicket(m_ticketcurrent));
         m_ticketcurrent = null;
     }
- 
+    
     public void openDrawer() {
         // Una simulacion
         Toolkit.getDefaultToolkit().beep();

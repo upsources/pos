@@ -61,6 +61,9 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
     public void reset() {
     }
     
+    public void beginReceipt() {
+    }
+    
     public void printImage(BufferedImage image) {
         
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);        
@@ -132,8 +135,7 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
         m_CommOutputPrinter.write(ESCPOS.LF);
     }
     
-    public void printCutPartial() {
-
+    public void endReceipt() {
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);   
         
         m_CommOutputPrinter.write(ESCPOS.CR);
@@ -149,7 +151,7 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
         m_CommOutputPrinter.write(m_codes.getCutReceipt());
         m_CommOutputPrinter.flush();
     }
-     
+    
     public void openDrawer() {
 
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);   

@@ -48,10 +48,10 @@ public class DevicePrinterNull implements DevicePrinter {
     public void reset() {
     }
     
+    public void beginReceipt() {
+    }
     public void printBarCode(String type, String position, String code) {        
     }    
-    public void printCutPartial() {
-    }
     public void printImage(java.awt.image.BufferedImage image) {
     }
     public void beginLine(int iTextSize) {
@@ -60,6 +60,8 @@ public class DevicePrinterNull implements DevicePrinter {
     }   
     public void endLine() {
     }
+    public void endReceipt() {
+    }
     public void openDrawer() {
-    }    
+    }
 }

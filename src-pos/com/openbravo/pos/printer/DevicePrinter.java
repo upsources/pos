@@ -48,13 +48,14 @@ public interface DevicePrinter {
     public JComponent getPrinterComponent();
     public void reset();
     
-    // INTERFAZ PRINTER    
+    // INTERFAZ PRINTER   
+    public void beginReceipt();
     public void printImage(BufferedImage image);
     public void printBarCode(String type, String position, String code);
     public void beginLine(int iTextSize);
     public void printText(int iStyle, String sText);
     public void endLine();
-    public void printCutPartial();   
+    public void endReceipt();   
     
     // INTERFAZ VARIOUS
     public void openDrawer();    

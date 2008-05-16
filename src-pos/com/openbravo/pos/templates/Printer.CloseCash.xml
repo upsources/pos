@@ -102,8 +102,5 @@
             <text length="18">End date:</text>
             <text>${payments.printDateEnd()}</text>
         </line>  
-
-        <cut/>
-
     </ticket>
 </output>

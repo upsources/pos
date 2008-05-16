@@ -49,7 +49,6 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
     private CashDrawer m_drawer;
     
     private StringBuffer m_sline;
-    private boolean m_bTransaction = false;
 
     /** Creates a new instance of DevicePrinterJavaPOS */
     public DevicePrinterJavaPOS(String sDevicePrinterName, String sDeviceDrawerName) throws TicketPrinterException {
@@ -83,10 +82,16 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
     public void reset() {
     }
     
+    public void beginReceipt() {
+        try {
+            m_printer.transactionPrint(POSPrinterConst.PTR_S_RECEIPT, POSPrinterConst.PTR_TP_TRANSACTION);
+        } catch (JposException e) {
+        }
+    }
+    
     public void printImage(BufferedImage image) {
         try {
             if (m_printer.getCapRecBitmap()) { // si podemos imprimir bitmaps.
-                startTransaction();
                 
                 File f = File.createTempFile("jposimg", ".png");
                 OutputStream out = new FileOutputStream(f);
@@ -103,7 +108,6 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
     public void printBarCode(String type, String position, String code) {
         try {
             if (m_printer.getCapRecBarCode()) { // si podemos imprimir codigos de barras
-                startTransaction();
                 if (DevicePrinter.POSITION_NONE.equals(position)) {                
                     m_printer.printBarCode(POSPrinterConst.PTR_S_RECEIPT, code, POSPrinterConst.PTR_BCS_EAN13, 10 * 100, 60 * 100, POSPrinterConst.PTR_BC_CENTER, POSPrinterConst.PTR_BC_TEXT_NONE);
                 } else {
@@ -144,32 +148,23 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
         
         m_sline.append(JPOS_LF);
         try {
-            startTransaction();
             m_printer.printNormal(POSPrinterConst.PTR_S_RECEIPT, m_sline.toString());
         } catch (JposException e) {
         }
         m_sline = null;
     }
     
-    public void printCutPartial() {
+    public void endReceipt() {
         try {
-            startTransaction();
+            // cut the receipt
             m_printer.printNormal(POSPrinterConst.PTR_S_RECEIPT, JPOS_CUT);
             
-            // fin de transaccion
+            // end of the transaction
             m_printer.transactionPrint(POSPrinterConst.PTR_S_RECEIPT, POSPrinterConst.PTR_TP_NORMAL);
-            m_bTransaction = false;
         } catch (JposException e) {
         }
-    }
+    }     
     
-    private void startTransaction() throws JposException {
-        if (!m_bTransaction) {
-            m_printer.transactionPrint(POSPrinterConst.PTR_S_RECEIPT, POSPrinterConst.PTR_TP_TRANSACTION);
-            m_bTransaction = true;
-        }
-    }
-     
     public void openDrawer() {
         try {
             m_drawer.openDrawer();

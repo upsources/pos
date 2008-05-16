@@ -38,7 +38,7 @@
             <text>Pts.</text>
             <text align ="right" length="6">${product.printPricePts()}</text>
         </line>
-        <barcode type="EAN13">${product.printCode()}</barcode>
+        <barcode type="EAN13">${product.printCode()}</barcode>        
     </ticket>
     
 </output>

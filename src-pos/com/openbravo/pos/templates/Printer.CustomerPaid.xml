@@ -22,13 +22,13 @@
 <output>
     
     <display>
-        <line1>
+        <line>
             <text align="left" length="10">Total paid.</text>
             <text align="right" length="10">${ticket.printTotalPaid()}</text>
-        </line1>
-        <line2>
+        </line>
+        <line>
             <text align="center" length="20">Thank you.</text>
-        </line2>
+        </line>
     </display>
     
     <ticket>
@@ -143,8 +143,7 @@
         <line></line>            
         <line>
             <text align="center" length="42">Thank you for your visit.</text>
-        </line>   
-        <cut/>  
+        </line>    
     </ticket>
     
     #foreach ($paymentline in $ticket.payments)      
