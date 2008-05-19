@@ -1,0 +1,34 @@
+== Openbravo POS ==
+
+Openbravo POS is a point of sale application designed for touch screens, supports ESC/POS ticket printers, customer displays and barcode scanners. It is multiuser providing product entry forms, reports and charts.
+
+* Installation
+
+First you need to have Java installed on your machine. You will need the Sun Java Runtime Environment 1.5 or greater. Download and open the binary distribution of Openbravo POS with your favourite decompresser and extract all the files to an empty folder. To execute it run the file start.bat in windows or start.sh in Linux. The first time Openbravo POS will display a warning alerting that it has found an empty database or an older database that is needed to upgrade. Click OK to create the database structure necessary to run Openbravo POS. 
+
+* The latest version
+
+The latest version can be found on the Openbravo POS sourceforge web site http://sourceforge.net/project/showfiles.php?group_id=127939
+
+* Documentation
+
+See http://wiki.openbravo.com for more documentation.
+
+* Forums
+
+If you need help or want to collaborate helping others, sharing ideas, discussing about Openbravo POS, feel free to go to our forums http://sourceforge.net/forum/?group_id=127939
+
+* Helping out
+
+If you'd like to help out, great!
+The http://wiki.openbravo.com/wiki/index.php/Project_Ideas and 
+http://wiki.openbravo.com/wiki/index.php/Community_Projects pages
+contain a small list.
+
+Please share your changes so others can benefit.
+
+Please use svn diff to prepare patches.
+
+* Contact
+
+IRC: #openbravo in freenode
