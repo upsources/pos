@@ -38,10 +38,10 @@ bean.setSentence("SELECT " +
                 "ORDER BY LOCATIONS.ID, CATEGORIES.NAME, PRODUCTS.NAME");
 bean.addParameter("STOCKDIARY.DATENEW");
 bean.addParameter("STOCKDIARY.DATENEW");
-bean.addParameter("LOCATIONS.ID");
-bean.addParameter("STOCKDIARY.REASON");
 bean.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+bean.addParameter("LOCATIONS.ID");
 bean.addQBFFilter(new com.openbravo.pos.reports.JParamsLocationWithFirst());
+bean.addParameter("STOCKDIARY.REASON");
 bean.addQBFFilter(new com.openbravo.pos.reports.JParamsReason());
 
 bean.addField("LOCATIONID", com.openbravo.data.loader.Datas.STRING);

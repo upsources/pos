@@ -34,12 +34,12 @@ bean.setSentence(
             "ORDER BY PRODUCTS.NAME");
 bean.addParameter("RECEIPTS.DATENEW");
 bean.addParameter("RECEIPTS.DATENEW");
+bean.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
 bean.addParameter("PRODUCTS.NAME");
 bean.addParameter("PRODUCTS.PRICEBUY");
 bean.addParameter("PRODUCTS.PRICESELL");
 bean.addParameter("PRODUCTS.CATEGORY");
 bean.addParameter("PRODUCTS.CODE");
-bean.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
 bean.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
 
 bean.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);

@@ -47,8 +47,8 @@ bean.addParameter("PRODUCTS.PRICEBUY");
 bean.addParameter("PRODUCTS.PRICESELL");
 bean.addParameter("PRODUCTS.CATEGORY");
 bean.addParameter("PRODUCTS.CODE");
-bean.addParameter("STOCKCURRENT.LOCATION");
 bean.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
+bean.addParameter("STOCKCURRENT.LOCATION");
 bean.addQBFFilter(new com.openbravo.pos.reports.JParamsLocationWithFirst());
 
 bean.addField("LOCATIONID", com.openbravo.data.loader.Datas.STRING);
