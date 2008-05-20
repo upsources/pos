@@ -26,8 +26,8 @@ public class DeviceDisplayESCPOS extends DeviceDisplaySerial {
 
     /** Creates a new instance of DeviceDisplayESCPOS */
     public DeviceDisplayESCPOS(PrinterWritter display, UnicodeTranslator trans) {
-        super(display);       
         this.trans = trans;
+        init(display);       
     }
 
     @Override

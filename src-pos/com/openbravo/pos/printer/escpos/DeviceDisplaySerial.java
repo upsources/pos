@@ -29,11 +29,12 @@ public abstract class DeviceDisplaySerial implements DeviceDisplay {
     private String m_sName;    
     protected PrinterWritter display;     
     
-    /** Creates a new instance of DeviceDisplayESCPOS */
-    public DeviceDisplaySerial(PrinterWritter display) {        
-        
+    public DeviceDisplaySerial() {
+    }
+    
+    protected void init(PrinterWritter display) {                
         m_sName = AppLocal.getIntString("Printer.Serial");
-        this.display = display;
+        this.display = display;      
         initVisor();        
     }
    

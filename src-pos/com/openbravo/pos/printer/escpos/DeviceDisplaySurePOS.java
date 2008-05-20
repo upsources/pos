@@ -29,15 +29,16 @@ public class DeviceDisplaySurePOS extends DeviceDisplaySerial {
     private UnicodeTranslator trans;
     
     public DeviceDisplaySurePOS(PrinterWritter display) { 
-        super(display);                
         trans = new UnicodeTranslatorSurePOS();
+        init(display);                
     }
    
     @Override
     public void initVisor() {
         display.write(new byte[]{0x00, 0x01}); // IBM Mode
-        display.write(new byte[]{0x02}); // Set the code page 437
+        display.write(new byte[]{0x02}); // Set the code page
         display.write(trans.getCodeTable());
+        display.write(new byte[]{0x11}); // HIDE CURSOR
         display.write(new byte[]{0x14}); // HIDE CURSOR
         display.write(new byte[]{0x10, 0x00}); // VISOR HOME
         display.flush();
@@ -47,7 +48,7 @@ public class DeviceDisplaySurePOS extends DeviceDisplaySerial {
     public void writeVisor(String sLine1, String sLine2) {
         display.write(new byte[]{0x10, 0x00}); // VISOR HOME
         display.write(trans.transString(DeviceTicket.alignLeft(sLine1, 20)));
-        //display.write(new byte[]{0x10, 0x14});
+        display.write(new byte[]{0x10, 0x14});
         display.write(trans.transString(DeviceTicket.alignLeft(sLine2, 20)));        
         display.flush();
     }
@@ -56,7 +57,7 @@ public class DeviceDisplaySurePOS extends DeviceDisplaySerial {
     public void clearVisor() {
         display.write(new byte[]{0x10, 0x00}); // VISOR HOME   
         display.write(trans.transString(DeviceTicket.getWhiteString(20)));
-//        display.write(new byte[]{0x10, 0x14});
+        display.write(new byte[]{0x10, 014});
         display.write(trans.transString(DeviceTicket.getWhiteString(20)));          
         display.flush();
     }
