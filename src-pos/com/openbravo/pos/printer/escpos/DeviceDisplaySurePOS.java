@@ -17,48 +17,47 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.printer.escpos;
+
+import com.openbravo.pos.printer.DeviceTicket;
+
+/**
+ *
+ * @author adrianromero
+ */
+public class DeviceDisplaySurePOS extends DeviceDisplaySerial {
     
-import com.openbravo.pos.printer.*;
-
-public class DeviceDisplayESCPOS extends DeviceDisplaySerial {
-       
     private UnicodeTranslator trans;
-
-    /** Creates a new instance of DeviceDisplayESCPOS */
-    public DeviceDisplayESCPOS(PrinterWritter display, UnicodeTranslator trans) {
-        super(display);       
-        this.trans = trans;
+    
+    public DeviceDisplaySurePOS(PrinterWritter display) { 
+        super(display);                
+        trans = new UnicodeTranslatorSurePOS();
+    }
+   
+    @Override
+    public void initVisor() {
+        display.write(new byte[]{0x00, 0x01}); // IBM Mode
+        display.write(new byte[]{0x02}); // Set the code page 437
+        display.write(trans.getCodeTable());
+        display.write(new byte[]{0x14}); // HIDE CURSOR
+        display.write(new byte[]{0x10, 0x00}); // VISOR HOME
+        display.flush();
     }
 
     @Override
-    public void initVisor() {
-        display.init(ESCPOS.INIT);
-        display.write(ESCPOS.SELECT_DISPLAY); // Al visor
-        display.write(trans.getCodeTable());
-        display.write(ESCPOS.VISOR_HIDE_CURSOR);         
-        display.write(ESCPOS.VISOR_CLEAR);
-        display.write(ESCPOS.VISOR_HOME);
-        display.flush();
-    }
-    
-        
-     @Override
-     public void writeVisor(String sLine1, String sLine2) {
-               
-        display.write(ESCPOS.SELECT_DISPLAY);
-        display.write(ESCPOS.VISOR_CLEAR);
-        display.write(ESCPOS.VISOR_HOME);
+    public void writeVisor(String sLine1, String sLine2) {
+        display.write(new byte[]{0x10, 0x00}); // VISOR HOME
         display.write(trans.transString(DeviceTicket.alignLeft(sLine1, 20)));
+        //display.write(new byte[]{0x10, 0x14});
         display.write(trans.transString(DeviceTicket.alignLeft(sLine2, 20)));        
         display.flush();
     }
-    
+
     @Override
     public void clearVisor() {
-
-        display.write(ESCPOS.SELECT_DISPLAY);
-        display.write(ESCPOS.VISOR_CLEAR);
-        display.write(ESCPOS.VISOR_HOME);
+        display.write(new byte[]{0x10, 0x00}); // VISOR HOME   
+        display.write(trans.transString(DeviceTicket.getWhiteString(20)));
+//        display.write(new byte[]{0x10, 0x14});
+        display.write(trans.transString(DeviceTicket.getWhiteString(20)));          
         display.flush();
     }
 }

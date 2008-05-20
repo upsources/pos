@@ -26,6 +26,7 @@ public abstract class PrinterWritter {
     // private OutputStream m_out = null;
     private PrinterBuffer m_buff = null;    
     private MyDaemon m_daemon = null;
+    private boolean initialized = false;
     
     public PrinterWritter() {
         m_buff = new PrinterBuffer();
@@ -36,6 +37,13 @@ public abstract class PrinterWritter {
     protected abstract void daemonWrite(byte[] data);
     protected abstract void daemonFlush();
     protected abstract void daemonClose();
+    
+    public void init(byte[] data) {
+        if (!initialized) {
+            m_buff.putData(data);
+            initialized = true;
+        }
+    }
     
     public void write(byte[] data) {
         m_buff.putData(data);

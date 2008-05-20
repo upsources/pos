@@ -182,6 +182,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboMachineDisplay.addItem("javapos");
         jcboMachineDisplay.addItem("epson");
         jcboMachineDisplay.addItem("ld200");
+        jcboMachineDisplay.addItem("surepos");
         jcboMachineDisplay.addItem("Not defined");
         
         jcboConnDisplay.addItem("serial");

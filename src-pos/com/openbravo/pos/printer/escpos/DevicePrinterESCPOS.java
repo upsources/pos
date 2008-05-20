@@ -18,8 +18,6 @@
 
 package com.openbravo.pos.printer.escpos;
 
-import java.io.*;
-import java.util.*;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
@@ -44,6 +42,7 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
         m_trans = trans;
 
         // Inicializamos la impresora
+        m_CommOutputPrinter.init(ESCPOS.INIT);
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER); // A la impresora
         m_CommOutputPrinter.write(m_trans.getCodeTable());        
         m_CommOutputPrinter.flush();  

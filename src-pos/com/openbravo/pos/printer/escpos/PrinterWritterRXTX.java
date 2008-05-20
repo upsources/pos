@@ -35,10 +35,7 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
     /** Creates a new instance of PrinterWritterComm */
     public PrinterWritterRXTX(String sPortPrinter) throws TicketPrinterException {
         m_sPortPrinter = sPortPrinter;
-        m_out = null;
-        
-        write(ESCPOS.INIT); // Arrancamos la impresora
-        flush();        
+        m_out = null; 
     }
     
     protected void daemonWrite(byte[] data) {

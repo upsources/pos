@@ -19,7 +19,6 @@
 package com.openbravo.pos.printer;
 
 import java.util.*;
-import javax.swing.JComponent;
 import com.openbravo.pos.forms.AppProperties;
 
 import com.openbravo.pos.printer.escpos.*;
@@ -96,6 +95,8 @@ public class DeviceTicket {
                 m_devicedisplay = new DeviceDisplayWindow();
             } else if ("epson".equals(sDisplayType)) {
                 m_devicedisplay = new DeviceDisplayESCPOS(pws.getPrinterWritter(sDisplayParam1, sDisplayParam2), new UnicodeTranslatorInt());
+            } else if ("surepos".equals(sDisplayType)) {
+                m_devicedisplay = new DeviceDisplaySurePOS(pws.getPrinterWritter(sDisplayParam1, sDisplayParam2));
             } else if ("ld200".equals(sDisplayType)) {
                 m_devicedisplay = new DeviceDisplayESCPOS(pws.getPrinterWritter(sDisplayParam1, sDisplayParam2), new UnicodeTranslatorEur());
             } else if ("javapos".equals(sDisplayType)) {
