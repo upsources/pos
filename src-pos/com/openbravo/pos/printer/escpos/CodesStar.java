@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -25,9 +25,10 @@ public class CodesStar extends Codes {
     private static final byte[] CHAR_SIZE_2 = {0x1D, 0x21, 0x30};
     private static final byte[] CHAR_SIZE_3 = {0x1D, 0x21, 0x31};
     
-    private static final byte[] OPEN_DRAWER = {0x1C};
-    
+    private static final byte[] OPEN_DRAWER = {0x1C};    
     private static final byte[] PARTIAL_CUT = {0x1B, 0x64, 0x30};
+    private static final byte[] IMAGE_HEADER = {0x1D, 0x76, 0x30, 0x03};
+    private static final byte[] NEW_LINE = {0x0D, 0x0A}; // Print and carriage return
     
     /** Creates a new instance of CodesStar */
     public CodesStar() {
@@ -38,7 +39,8 @@ public class CodesStar extends Codes {
     public byte[] getSize2() { return CHAR_SIZE_2; }
     public byte[] getSize3() { return CHAR_SIZE_3; }
     
-    public byte[] getOpenDrawer() { return OPEN_DRAWER; }
-    
-    public byte[] getCutReceipt() { return PARTIAL_CUT; }    
+    public byte[] getOpenDrawer() { return OPEN_DRAWER; }    
+    public byte[] getCutReceipt() { return PARTIAL_CUT; }   
+    public byte[] getNewLine() { return NEW_LINE; } 
+    public byte[] getImageHeader() { return IMAGE_HEADER; }     
 }

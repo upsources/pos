@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -22,8 +22,6 @@ import java.awt.image.BufferedImage;
 
 public abstract class Codes {
     
-    public static final byte[] PRINT_IMAGE = {0x1D, 0x76, 0x30, 0x03};
-    
     /** Creates a new instance of Codes */
     public Codes() {
     }
@@ -33,9 +31,10 @@ public abstract class Codes {
     public abstract byte[] getSize2();
     public abstract byte[] getSize3();
     
-    public abstract byte[] getOpenDrawer();
-    
-    public abstract byte[] getCutReceipt();
+    public abstract byte[] getOpenDrawer();    
+    public abstract byte[] getCutReceipt();   
+    public abstract byte[] getNewLine();    
+    public abstract byte[] getImageHeader();
    
     public byte[] transImage(BufferedImage oImage) {
                         
@@ -44,12 +43,12 @@ public abstract class Codes {
         int iHeight = oImage.getHeight();
         
         // Array de datos
-        byte[] bData = new byte[PRINT_IMAGE.length + 4 + iWidth * iHeight];
+        byte[] bData = new byte[getImageHeader().length + 4 + iWidth * iHeight];
         
         // Comando de impresion de imagen
-        System.arraycopy(PRINT_IMAGE, 0, bData, 0, PRINT_IMAGE.length);
+        System.arraycopy(getImageHeader(), 0, bData, 0, getImageHeader().length);
         
-        int index = PRINT_IMAGE.length;
+        int index = getImageHeader().length;
         
         // Dimension de la imagen
         bData[index ++] = (byte) (iWidth % 256);

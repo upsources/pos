@@ -26,9 +26,9 @@ public class ESCPOS {
     public static final byte[] SELECT_DISPLAY = {0x1B, 0x3D, 0x02};    
 
     public static final byte[] HT = {0x09}; // Horizontal Tab
-    public static final byte[] LF = {0x0A}; // Print and line feed
+//    public static final byte[] LF = {0x0A}; // Print and line feed
     public static final byte[] FF = {0x0C}; // 
-    public static final byte[] CR = {0x0D}; // Print and carriage return
+//    public static final byte[] CR = {0x0D}; // Print and carriage return
         
     public static final byte[] CHAR_FONT_0 = {0x1B, 0x4D, 0x00};
     public static final byte[] CHAR_FONT_1 = {0x1B, 0x4D, 0x01};

@@ -74,8 +74,7 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);        
 
         if (DevicePrinter.BARCODE_EAN13.equals(type)) {
-            m_CommOutputPrinter.write(ESCPOS.CR);
-            m_CommOutputPrinter.write(ESCPOS.LF);
+            m_CommOutputPrinter.write(m_codes.getNewLine());
 
             m_CommOutputPrinter.write(ESCPOS.BAR_HEIGHT);
             if (DevicePrinter.POSITION_NONE.equals(position)) {                
@@ -88,8 +87,8 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
             m_CommOutputPrinter.write(m_trans.transNumber(DeviceTicket.alignBarCode(code,13).substring(0,12)));
             m_CommOutputPrinter.write(new byte[] { 0x00 });
 
-            m_CommOutputPrinter.write(ESCPOS.CR);
-            m_CommOutputPrinter.write(ESCPOS.LF);
+            m_CommOutputPrinter.write(m_codes.getNewLine());
+
         }
     }
     
@@ -130,23 +129,18 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
     }
     public void endLine() {
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);   
-        m_CommOutputPrinter.write(ESCPOS.CR);
-        m_CommOutputPrinter.write(ESCPOS.LF);
+        m_CommOutputPrinter.write(m_codes.getNewLine());
     }
     
     public void endReceipt() {
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);   
         
-        m_CommOutputPrinter.write(ESCPOS.CR);
-        m_CommOutputPrinter.write(ESCPOS.LF);
-        m_CommOutputPrinter.write(ESCPOS.CR);
-        m_CommOutputPrinter.write(ESCPOS.LF);
-        m_CommOutputPrinter.write(ESCPOS.CR);
-        m_CommOutputPrinter.write(ESCPOS.LF);
-        m_CommOutputPrinter.write(ESCPOS.CR);
-        m_CommOutputPrinter.write(ESCPOS.LF);
-        m_CommOutputPrinter.write(ESCPOS.CR);
-        m_CommOutputPrinter.write(ESCPOS.LF);
+        m_CommOutputPrinter.write(m_codes.getNewLine());
+        m_CommOutputPrinter.write(m_codes.getNewLine());
+        m_CommOutputPrinter.write(m_codes.getNewLine());
+        m_CommOutputPrinter.write(m_codes.getNewLine());
+        m_CommOutputPrinter.write(m_codes.getNewLine());
+
         m_CommOutputPrinter.write(m_codes.getCutReceipt());
         m_CommOutputPrinter.flush();
     }
