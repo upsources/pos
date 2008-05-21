@@ -45,6 +45,7 @@
 
     <class name="com.openbravo.pos.forms.MenuStockManagement"/>
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>
+    <class name="com.openbravo.pos.inventory.ProductsWarehousePanel"/>    
     <class name="com.openbravo.pos.inventory.CategoriesPanel"/>
     <class name="com.openbravo.pos.panels.JPanelTax"/>
     <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
