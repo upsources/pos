@@ -203,6 +203,7 @@
         <copy file="${basedir}/start.sh" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/configure.sh" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/openbravo-logo-128.png" todir="${basedir}/build/zip"/>
+        <copy file="${basedir}/README" todir="${basedir}/build/zip"/>
         <copy file="${dest.dist}/openbravopos.jar" todir="${basedir}/build/zip"/>
         
         <copy todir="${basedir}/build/zip/licensing">
@@ -276,6 +277,7 @@
         <copy file="${basedir}/start.sh" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/configure.sh" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/openbravo-logo-128.png" todir="${basedir}/build/zip"/>
+        <copy file="${basedir}/README" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/build.xml" todir="${basedir}/build/zip" />
         <copy file="${basedir}/.project" todir="${basedir}/build/zip" />
         <copy file="${basedir}/.classpath" todir="${basedir}/build/zip" />
