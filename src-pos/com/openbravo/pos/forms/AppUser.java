@@ -148,11 +148,12 @@ public class AppUser {
     private static void initOldClasses() {
         m_oldclasses = new HashMap<String, String>();
         
+        // update permissions from 0.0.24 to 2.10    
         m_oldclasses.put("net.adrianromero.tpv.panelsales.JPanelTicketSales", "com.openbravo.pos.sales.JPanelTicketSales");
         m_oldclasses.put("net.adrianromero.tpv.panelsales.JPanelTicketEdits", "com.openbravo.pos.sales.JPanelTicketEdits");
         m_oldclasses.put("net.adrianromero.tpv.panels.JPanelPayments", "com.openbravo.pos.panels.JPanelPayments");
         m_oldclasses.put("net.adrianromero.tpv.panels.JPanelCloseMoney", "com.openbravo.pos.panels.JPanelCloseMoney");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportClosedPos", "com.openbravo.pos.reports.JReportClosedPos");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportClosedPos", "/com/openbravo/reports/closedpos.bs");
 
 //        m_oldclasses.put("payment.cash", "");
 //        m_oldclasses.put("payment.cheque", "");
@@ -172,18 +173,18 @@ public class AppUser {
         m_oldclasses.put("net.adrianromero.tpv.panels.JPanelTax", "com.openbravo.pos.panels.JPanelTax");
         m_oldclasses.put("net.adrianromero.tpv.inventory.StockDiaryPanel", "com.openbravo.pos.inventory.StockDiaryPanel");
         m_oldclasses.put("net.adrianromero.tpv.inventory.StockManagement", "com.openbravo.pos.inventory.StockManagement");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportProducts", "com.openbravo.pos.reports.JReportProducts");      
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportCatalog", "com.openbravo.pos.reports.JReportCatalog");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventory", "com.openbravo.pos.reports.JReportInventory");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventory2", "com.openbravo.pos.reports.JReportInventory2");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventoryBroken", "com.openbravo.pos.reports.JReportInventoryBroken");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventoryDiff", "com.openbravo.pos.reports.JReportInventoryDiff");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportProducts", "/com/openbravo/reports/products.bs");      
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportCatalog", "/com/openbravo/reports/productscatalog.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventory", "/com/openbravo/reports/inventory.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventory2", "/com/openbravo/reports/inventoryb.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventoryBroken", "/com/openbravo/reports/inventorybroken.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportInventoryDiff", "/com/openbravo/reports/inventorydiff.bs");
 
         m_oldclasses.put("Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportUserSales", "com.openbravo.pos.reports.JReportUserSales");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportClosedProducts", "com.openbravo.pos.reports.JReportClosedProducts");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JReportTaxes", "com.openbravo.pos.reports.JReportTaxes");
-        m_oldclasses.put("net.adrianromero.tpv.reports.JChartSales", "com.openbravo.pos.reports.JChartSales");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportUserSales", "/com/openbravo/reports/usersales.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportClosedProducts", "/com/openbravo/reports/closedproducts.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JReportTaxes", "/com/openbravo/reports/taxes.bs");
+        m_oldclasses.put("net.adrianromero.tpv.reports.JChartSales", "/com/openbravo/reports/chartsales.bs");
 
         m_oldclasses.put("Menu.Maintenance", "com.openbravo.pos.forms.MenuMaintenance");
         m_oldclasses.put("net.adrianromero.tpv.admin.PeoplePanel", "com.openbravo.pos.admin.PeoplePanel");
@@ -198,9 +199,26 @@ public class AppUser {
         m_oldclasses.put("Menu.ChangePassword", "Menu.ChangePassword");
         m_oldclasses.put("net.adrianromero.tpv.panels.JPanelPrinter", "com.openbravo.pos.panels.JPanelPrinter");
         m_oldclasses.put("net.adrianromero.tpv.config.JPanelConfiguration", "com.openbravo.pos.config.JPanelConfiguration");
-
+        
 //        m_oldclasses.put("button.print", "");
 //        m_oldclasses.put("button.opendrawer", "");
+        
+        // update permissions from 2.00 to 2.10       
+        m_oldclasses.put("com.openbravo.pos.reports.JReportCustomers", "/com/openbravo/reports/customers.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportCustomersB", "/com/openbravo/reports/customersb.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportClosedPos", "/com/openbravo/reports/closedpos.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportClosedProducts", "/com/openbravo/reports/closedproducts.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JChartSales", "/com/openbravo/reports/chartsales.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventory", "/com/openbravo/reports/inventory.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventory2", "/com/openbravo/reports/inventoryb.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventoryBroken", "/com/openbravo/reports/inventorybroken.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportInventoryDiff", "/com/openbravo/reports/inventorydiff.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportPeople", "/com/openbravo/reports/people.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportTaxes", "/com/openbravo/reports/taxes.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportUserSales", "/com/openbravo/reports/usersales.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportProducts", "/com/openbravo/reports/products.bs");
+        m_oldclasses.put("com.openbravo.pos.reports.JReportCatalog", "/com/openbravo/reports/productscatalog.bs");
+        
     }
     
     private class ConfigurationHandler extends DefaultHandler {       
