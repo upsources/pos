@@ -358,7 +358,10 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_ticketCopy = null;
         m_TicketsBagTicketBag.showRefund();
         m_panelticketedit.showRefundLines(aRefundLines);
-        m_panelticketedit.setActiveTicket(new TicketInfo(), null);      
+        
+        TicketInfo refundticket = new TicketInfo();
+        refundticket.setCustomer(m_ticket.getCustomer());
+        m_panelticketedit.setActiveTicket(refundticket, null);      
         
     }//GEN-LAST:event_m_jRefundActionPerformed
 
