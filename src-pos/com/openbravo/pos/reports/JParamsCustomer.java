@@ -60,7 +60,7 @@ public class JParamsCustomer extends javax.swing.JPanel implements ReportEditorC
     }
 
     public void init(AppView app) {
-        dlCustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+        dlCustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");
     }
     
     public void activate() throws BasicException {

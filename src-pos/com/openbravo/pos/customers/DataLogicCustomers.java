@@ -46,7 +46,7 @@ import com.openbravo.pos.forms.BeanFactoryDataSingle;
  */
 public class DataLogicCustomers extends BeanFactoryDataSingle {
     
-    private Session s;
+    protected Session s;
     private TableDefinition tcustomers;
     private static Datas[] customerdatas = new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.TIMESTAMP, Datas.STRING, Datas.STRING, Datas.STRING, Datas.INT, Datas.BOOLEAN, Datas.STRING};
     
@@ -65,7 +65,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     }
     
     // CustomerList list
-    public final SentenceList getCustomerList() {
+    public SentenceList getCustomerList() {
         return new StaticSentence(s
             , new QBFBuilder("SELECT ID, TAXID, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING})
