@@ -18,8 +18,6 @@
 
 package com.openbravo.pos.payment;
 
-import com.openbravo.pos.forms.*;
-
 public interface PaymentGateway {
 
     public void execute(PaymentInfoMagcard payinfo);

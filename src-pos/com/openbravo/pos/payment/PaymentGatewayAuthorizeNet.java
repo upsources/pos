@@ -17,7 +17,6 @@
 
 package com.openbravo.pos.payment;
 
-import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.text.NumberFormat;
