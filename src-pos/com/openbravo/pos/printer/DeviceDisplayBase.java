@@ -40,7 +40,7 @@ public class DeviceDisplayBase {
     public DeviceDisplayBase(DeviceDisplayImpl impl) {
         this.impl = impl; 
         anim = new NullAnimator("", "");
-        m_tTimeTimer = new javax.swing.Timer(1000, new PrintTimeAction());
+        m_tTimeTimer = new javax.swing.Timer(150, new PrintTimeAction());
     }
     
     public void writeVisor(int animation, String sLine1, String sLine2) {
