@@ -30,7 +30,7 @@
     <property name="name" value="openbravopos"/>
 
     <!-- project version -->
-    <property name="version" value="2.10"/>
+    <property name="version" value="2.10-MP1"/>
 
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
