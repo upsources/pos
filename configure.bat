@@ -18,8 +18,8 @@ REM    You should have received a copy of the GNU General Public License
 REM    along with this program; if not, write to the Free Software
 REM    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-set CP=%CD%/openbravopos.jar
+set CP="%CD%/openbravopos.jar"
 
-set CP=%CP%;%CD%/locales/
+set CP=%CP%;"%CD%/locales/"
 
 start /B javaw -cp %CP% com.openbravo.pos.config.JFrmConfig
