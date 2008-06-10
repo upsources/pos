@@ -104,7 +104,12 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         // Select the first category
         m_jListCategories.setCellRenderer(new SmallCategoryRenderer());
         m_jListCategories.setModel(new CategoriesListModel(categories)); // aCatList
-        if (m_jListCategories.getModel().getSize() > 0) {
+        if (m_jListCategories.getModel().getSize() == 0) {
+            m_jscrollcat.setVisible(false);
+            jPanel2.setVisible(false);
+        } else {
+            m_jscrollcat.setVisible(true);
+            jPanel2.setVisible(true);
             m_jListCategories.setSelectedIndex(0);
         }
             
