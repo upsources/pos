@@ -155,7 +155,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
             } catch (BasicException eB){
                 tendered = 0.0;
             }   
-            m_jTendered.setValue(tendered + amount);
+            m_jTendered.setValue(RoundUtils.round(tendered + amount));
             printState();
         }
     }
