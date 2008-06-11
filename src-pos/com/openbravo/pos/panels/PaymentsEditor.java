@@ -20,7 +20,6 @@ package com.openbravo.pos.panels;
 import java.awt.Component;
 import java.util.UUID;
 import com.openbravo.basic.BasicException;
-import com.openbravo.beans.JCalendarDialog;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.loader.IKeyed;
 import com.openbravo.format.Formats;
@@ -108,7 +107,7 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         payment[3] = m_sPaymentId == null ? UUID.randomUUID().toString() : m_sPaymentId;
         payment[4] = m_ReasonModel.getSelectedKey();
         PaymentReason reason = (PaymentReason) m_ReasonModel.getSelectedItem();
-        Double dtotal = (Double) Formats.DOUBLE.parseValue(m_jtotal.getText());
+        Double dtotal = (Double) Formats.CURRENCY.parseValue(m_jtotal.getText());
         payment[5] = reason == null ? dtotal : reason.addSignum(dtotal);
         return payment;
     }
@@ -147,6 +146,7 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         public abstract Double positivize(Double d);
         public abstract Double addSignum(Double d);
         
+        @Override
         public String toString() {
             return m_sText;
         }
