@@ -522,8 +522,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     oProduct.setCode(sCode);
                     oProduct.setName("Ticket " + sCode.substring(3, 7));
                     oProduct.setPriceSell(Double.parseDouble(sCode.substring(7, 12)) / 100);   
+                    oProduct.setTaxInfo((TaxInfo) m_TaxModel.getSelectedItem());
                     // Se anade directamente una unidad con el precio y todo
-                    addTicketLine(oProduct, 1.0, oProduct.getPriceSell());
+                    addTicketLine(oProduct, 1.0, includeTaxes(oProduct.getPriceSell()));
                 } else if (sCode.length() == 13 && sCode.startsWith("210")) {
                     // barcode of a weigth product
                     incProductByCodePrice(sCode.substring(0, 7), Double.parseDouble(sCode.substring(7, 12)) / 100);
