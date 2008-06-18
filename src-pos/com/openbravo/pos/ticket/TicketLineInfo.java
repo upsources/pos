@@ -56,7 +56,11 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_sTicket = null;
         m_iLine = -1;
     }
-    
+     
+    public TicketLineInfo(TicketProductInfo product, double dMultiply, double dPrice, TaxInfo tax) {
+        this(product, dMultiply, dPrice, tax, new Properties());
+    }
+     
      public TicketLineInfo() {
         this(new TicketProductInfo(), 0.0, 0.0, null, new Properties());
     }

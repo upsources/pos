@@ -35,12 +35,11 @@ public class TicketProductInfo implements Serializable {
         this.id = id;
         this.name = name;
         this.com = com;
+    } 
+    
+    public TicketProductInfo(String name) {
+        this(null, name, false);
     }
-//    
-//    public TicketProductInfo(String name, TaxInfo tax) {
-//        this(null, name, false, tax, new Properties());
-//    }
-//    
     
     public TicketProductInfo() {
         this(null, null, false);
