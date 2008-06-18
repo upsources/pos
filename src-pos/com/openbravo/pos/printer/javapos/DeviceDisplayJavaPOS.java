@@ -77,12 +77,12 @@ public class DeviceDisplayJavaPOS implements DeviceDisplay, DeviceDisplayImpl {
         }
     }
     
-    public void finalize() {
-        try {       
-            m_ld.setDeviceEnabled(false);
-            m_ld.release();
-            m_ld.close();
-        } catch (JposException e) {
-        }
+    public void finalize() throws Throwable {
+   
+        m_ld.setDeviceEnabled(false);
+        m_ld.release();
+        m_ld.close();
+        
+        super.finalize();
     }
 }

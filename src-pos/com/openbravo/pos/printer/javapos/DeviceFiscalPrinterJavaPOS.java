@@ -111,17 +111,14 @@ public class DeviceFiscalPrinterJavaPOS extends javax.swing.JPanel implements De
     }
     
     public void finalize() throws Throwable {
+    
+        m_fiscal.setDeviceEnabled(false);
+        m_fiscal.release();
+        m_fiscal.close();
         
-//        try {       
-            m_fiscal.setDeviceEnabled(false);
-            m_fiscal.release();
-            m_fiscal.close();
-//        } catch (JposException e) {
-//        }
-        
-        super.finalize();
-        
-    }       
+        super.finalize();       
+    } 
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

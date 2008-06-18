@@ -172,16 +172,16 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
         }
     }
     
-    public void finalize() {
+    public void finalize() throws Throwable {
+       
+        m_printer.setDeviceEnabled(false);
+        m_printer.release();
+        m_printer.close();
         
-        try {       
-            m_printer.setDeviceEnabled(false);
-            m_printer.release();
-            m_printer.close();
-            m_drawer.setDeviceEnabled(false);
-            m_drawer.release();
-            m_drawer.close();
-        } catch (JposException e) {
-        }
+        m_drawer.setDeviceEnabled(false);
+        m_drawer.release();
+        m_drawer.close();
+        
+        super.finalize();
     }    
 }
