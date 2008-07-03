@@ -18,23 +18,14 @@
 
 package com.openbravo.possync;
 
-import com.openbravo.pos.forms.AppView;
-import com.openbravo.pos.forms.BeanFactoryCache;
-import com.openbravo.pos.forms.BeanFactoryException;
-import com.openbravo.pos.forms.DataLogicSystem;
-
+import com.openbravo.pos.forms.BeanFactoryData;
 /**
  *
- * @author adrian
+ * @author adrianromero
  */
-public class OrdersSyncCreate extends BeanFactoryCache {
+public class DataLogicIntegrationCreate extends BeanFactoryData {
     
-    public Object constructBean(AppView app) throws BeanFactoryException {
-
-        DataLogicSystem dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-        DataLogicIntegration dli = (DataLogicIntegration) app.getBean("com.openbravo.possync.DataLogicIntegrationCreate");
-
-        OrdersSync bean = new OrdersSync(dlSystem, dli);
-        return bean;
+    /** Creates a new instance of DataLogicIntegrationCreate */
+    public DataLogicIntegrationCreate() {
     }
 }

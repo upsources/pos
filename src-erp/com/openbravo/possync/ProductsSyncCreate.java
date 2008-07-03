@@ -33,7 +33,7 @@ public class ProductsSyncCreate extends BeanFactoryCache {
     public Object constructBean(AppView app) throws BeanFactoryException {
         
         DataLogicSystem dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-        DataLogicIntegration dli = (DataLogicIntegration) app.getBean("com.openbravo.possync.DataLogicIntegration");
+        DataLogicIntegration dli = (DataLogicIntegration) app.getBean("com.openbravo.possync.DataLogicIntegrationCreate");
         DataLogicSales dlsales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
 
         ProductsSync bean = new ProductsSync(dlSystem, dli, dlsales, app.getInventoryLocation());

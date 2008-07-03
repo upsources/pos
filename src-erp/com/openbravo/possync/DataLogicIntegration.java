@@ -51,7 +51,7 @@ import com.openbravo.pos.ticket.TicketLineInfo;
  * Created on 5 de marzo de 2007, 19:56
  *
  */
-public class DataLogicIntegration extends BeanFactoryDataSingle {
+public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
     
     protected Session s;
 
@@ -63,46 +63,9 @@ public class DataLogicIntegration extends BeanFactoryDataSingle {
         this.s = s;
     }
      
-    public void syncCustomersBefore() throws BasicException {
-        new StaticSentence(s, "UPDATE CUSTOMERS SET VISIBLE = FALSE").exec();
-    }
+    public abstract void syncCustomersBefore() throws BasicException;
     
-    public void syncCustomer(final CustomerInfoExt customer) throws BasicException {
-        
-        Transaction t = new Transaction(s) {
-            public Object transact() throws BasicException {
-                // Sync the Customer in a transaction
-                
-                // Try to update                
-                if (new PreparedSentence(s, 
-                            "UPDATE CUSTOMERS SET NAME = ?, ADDRESS = ?, VISIBLE = TRUE WHERE ID = ?", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    CustomerInfoExt c = (CustomerInfoExt) obj;
-                                    dp.setString(1, c.getName());
-                                    dp.setString(2, c.getAddress());
-                                    dp.setString(3, c.getId());
-                                }
-                            }).exec(customer) == 0) {
-                       
-                    // If not updated, try to insert
-                    new PreparedSentence(s, 
-                            "INSERT INTO CUSTOMERS(ID, NAME, ADDRESS, VISIBLE) VALUES (?, ?, ?, TRUE)", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    CustomerInfoExt c = (CustomerInfoExt) obj;
-                                        dp.setString(1, c.getId());
-                                        dp.setString(2, c.getName());
-                                        dp.setString(3, c.getAddress());
-                                }
-                            }).exec(customer);
-                }
-                
-                return null;
-            }
-        };
-        t.execute(); 
-    }
+    public abstract void syncCustomer(final CustomerInfoExt customer) throws BasicException;
         
     
     public void syncProductsBefore() throws BasicException {
