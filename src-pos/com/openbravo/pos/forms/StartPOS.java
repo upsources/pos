@@ -22,6 +22,9 @@ import java.util.Locale;
 import javax.swing.UIManager;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.instance.InstanceQuery;
+import javax.swing.LookAndFeel;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.api.SubstanceSkin;
 
 /**
  *
@@ -77,8 +80,15 @@ public class StartPOS {
                 Formats.setDateTimePattern(config.getProperty("format.datetime"));               
                 
                 // Set the look and feel.
-                try {                    
-                    UIManager.setLookAndFeel(config.getProperty("swing.defaultlaf"));
+                try {             
+                    
+                    Object laf = Class.forName(config.getProperty("swing.defaultlaf")).newInstance();
+                    
+                    if (laf instanceof SubstanceSkin) {
+                        SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);
+                    } else if (laf instanceof LookAndFeel){
+                        UIManager.setLookAndFeel((LookAndFeel) laf);
+                    }
                 } catch (Exception e) {
                 }
                 

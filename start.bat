@@ -22,7 +22,7 @@ set DIRNAME=%~dp0
 
 set CP="%DIRNAME%openbravopos.jar"
 
-set CP=%CP%;"%DIRNAME%lib/jasperreports-2.0.1.jar"
+set CP=%CP%;"%DIRNAME%lib/jasperreports-3.0.0.jar"
 set CP=%CP%;"%DIRNAME%lib/jcommon-1.0.0.jar"
 set CP=%CP%;"%DIRNAME%lib/jfreechart-1.0.0.jar"
 set CP=%CP%;"%DIRNAME%lib/jdt-compiler-3.1.1.jar"
@@ -39,7 +39,7 @@ set CP=%CP%;"%DIRNAME%lib/commons-lang-2.1.jar"
 set CP=%CP%;"%DIRNAME%lib/bsh-core-2.0b4.jar"
 set CP=%CP%;"%DIRNAME%lib/RXTXcomm.jar"
 set CP=%CP%;"%DIRNAME%lib/jpos111.jar"
-set CP=%CP%;"%DIRNAME%lib/swingx.jar"
+set CP=%CP%;"%DIRNAME%lib/swingx-0.9.3.jar"
 set CP=%CP%;"%DIRNAME%lib/substance.jar"
 set CP=%CP%;"%DIRNAME%lib/substance-swingx.jar"
 

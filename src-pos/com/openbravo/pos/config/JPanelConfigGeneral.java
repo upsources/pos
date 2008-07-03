@@ -26,7 +26,12 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.util.StringParser;
+import java.util.Map;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.api.SubstanceSkin;
+import org.jvnet.substance.skin.SkinInfo;
 
 /**
  *
@@ -88,11 +93,17 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         }
         
         // Substance skins
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Emerald Dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel"));
-        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Mango", "org.jvnet.substance.skin.SubstanceMangoLookAndFeel"));
+        Map<String, SkinInfo> skins = SubstanceLookAndFeel.getAllSkins();
+        for (SkinInfo skin : skins.values()) {
+            jcboLAF.addItem(new UIManager.LookAndFeelInfo(skin.getDisplayName(), skin.getClassName()));
+        }
+//        
+//        // Substance skins
+//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel"));
+//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Emerald Dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel"));
+//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel"));
+//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel"));
+//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Mango", "org.jvnet.substance.skin.SubstanceMangoLookAndFeel"));
         
         jcboLAF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -424,7 +435,15 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
            SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     try {
-                        UIManager.setLookAndFeel(laf.getClassName());
+                        String lafname = laf.getClassName();                       
+                        Object laf = Class.forName(lafname).newInstance();
+
+                        if (laf instanceof SubstanceSkin) {
+                            SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);
+                        } else if (laf instanceof LookAndFeel){
+                            UIManager.setLookAndFeel((LookAndFeel) laf);
+                        }
+                    
                         SwingUtilities.updateComponentTreeUI(JPanelConfigGeneral.this.getTopLevelAncestor());
                     } catch (Exception e) {
                     }

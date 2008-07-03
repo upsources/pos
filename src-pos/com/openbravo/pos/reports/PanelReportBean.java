@@ -63,6 +63,11 @@ public class PanelReportBean extends JPanelReport {
         
         qbffilter.activate();
         super.activate();
+        
+        if (qbffilter.isEmpty()) {
+            setVisibleFilter(false);
+            setVisibleButtonFilter(false);
+        }
     }
     
     @Override
