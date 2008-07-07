@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@ import com.openbravo.format.Formats;
 import com.openbravo.pos.instance.InstanceQuery;
 import javax.swing.LookAndFeel;
 import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.SubstanceSkin;
+import org.jvnet.substance.skin.SubstanceSkin;
 
 /**
  *
@@ -84,10 +84,10 @@ public class StartPOS {
                     
                     Object laf = Class.forName(config.getProperty("swing.defaultlaf")).newInstance();
                     
-                    if (laf instanceof SubstanceSkin) {
-                        SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);
-                    } else if (laf instanceof LookAndFeel){
+                    if (laf instanceof LookAndFeel){
                         UIManager.setLookAndFeel((LookAndFeel) laf);
+                    } else if (laf instanceof SubstanceSkin) {                      
+                        SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);                   
                     }
                 } catch (Exception e) {
                 }

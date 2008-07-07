@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -30,8 +30,8 @@ import java.util.Map;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.api.SubstanceSkin;
 import org.jvnet.substance.skin.SkinInfo;
+import org.jvnet.substance.skin.SubstanceSkin;
 
 /**
  *
@@ -93,17 +93,11 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         }
         
         // Substance skins
+        new SubstanceLookAndFeel(); // TODO: Remove in Substance 5.0. Workaround for Substance 4.3 to initialize static variables
         Map<String, SkinInfo> skins = SubstanceLookAndFeel.getAllSkins();
         for (SkinInfo skin : skins.values()) {
             jcboLAF.addItem(new UIManager.LookAndFeelInfo(skin.getDisplayName(), skin.getClassName()));
         }
-//        
-//        // Substance skins
-//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Autumn", "org.jvnet.substance.skin.SubstanceAutumnLookAndFeel"));
-//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Emerald Dusk", "org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel"));
-//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Business Black Steel", "org.jvnet.substance.skin.SubstanceBusinessBlackSteelLookAndFeel"));
-//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Nebula", "org.jvnet.substance.skin.SubstanceNebulaLookAndFeel"));
-//        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Substance Mango", "org.jvnet.substance.skin.SubstanceMangoLookAndFeel"));
         
         jcboLAF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -434,14 +428,14 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
             // The selected look and feel is different from the current look and feel.
            SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    try {
+                    try {                       
                         String lafname = laf.getClassName();                       
                         Object laf = Class.forName(lafname).newInstance();
 
-                        if (laf instanceof SubstanceSkin) {
-                            SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);
-                        } else if (laf instanceof LookAndFeel){
+                        if (laf instanceof LookAndFeel){
                             UIManager.setLookAndFeel((LookAndFeel) laf);
+                        } else if (laf instanceof SubstanceSkin) {                         
+                            SubstanceLookAndFeel.setSkin((SubstanceSkin) laf); 
                         }
                     
                         SwingUtilities.updateComponentTreeUI(JPanelConfigGeneral.this.getTopLevelAncestor());
