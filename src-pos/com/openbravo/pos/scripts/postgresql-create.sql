@@ -17,7 +17,7 @@
 --    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 -- Database initial script for POSTGRESQL
--- v2.10
+-- v2.20
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR NOT NULL,
