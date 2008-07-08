@@ -47,19 +47,23 @@ public class OrdersSync implements ProcessAction {
      
     private DataLogicSystem dlsystem;
     private DataLogicIntegration dlintegration;
-
+    private ExternalSalesHelper externalsales;
+    
     /** Creates a new instance of OrdersSync */
     public OrdersSync(DataLogicSystem dlsystem, DataLogicIntegration dlintegration) {
         this.dlsystem = dlsystem;
         this.dlintegration = dlintegration;
+        externalsales = null;
     }
     
     public MessageInf execute() throws BasicException {        
         
         try {
         
-            ExternalSalesHelper externalsales = new ExternalSalesHelper(dlsystem);                    
-
+            if (externalsales == null) {
+                externalsales = new ExternalSalesHelper(dlsystem);
+            }
+            
             // Obtenemos los tickets
             List<TicketInfo> ticketlist = dlintegration.getTickets();
             for (TicketInfo ticket : ticketlist) {

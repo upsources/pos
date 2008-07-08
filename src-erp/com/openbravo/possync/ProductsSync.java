@@ -39,6 +39,7 @@ import com.openbravo.pos.ticket.CategoryInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.ws.customers.Customer;
+import com.openbravo.ws.externalsales.Product;
 import com.openbravo.ws.externalsales.ProductPlus;
 import java.util.Date;
 import java.util.UUID;
@@ -49,6 +50,7 @@ public class ProductsSync implements ProcessAction {
     private DataLogicIntegration dlintegration;
     private DataLogicSales dlsales;
     private String warehouse;
+    private ExternalSalesHelper externalsales;
     
     /** Creates a new instance of ProductsSync */
     public ProductsSync(DataLogicSystem dlsystem, DataLogicIntegration dlintegration, DataLogicSales dlsales, String warehouse) {
@@ -56,15 +58,18 @@ public class ProductsSync implements ProcessAction {
         this.dlintegration = dlintegration;
         this.dlsales = dlsales;
         this.warehouse = warehouse;
+        externalsales = null;
     }
     
     public MessageInf execute() throws BasicException {
         
         try {
         
-            ExternalSalesHelper externalsales = new ExternalSalesHelper(dlsystem);
+            if (externalsales == null) {
+                externalsales = new ExternalSalesHelper(dlsystem);
+            }
             
-            ProductPlus[] products = externalsales.getProductsPlusCatalog();
+            Product[] products = externalsales.getProductsCatalog();
             Customer[] customers = externalsales.getCustomers();
 
             if (products == null || customers == null){
@@ -77,50 +82,55 @@ public class ProductsSync implements ProcessAction {
                 
                 Date now = new Date();
                 
-                for (int i = 0; i < products.length; i++) {
+                for (Product product : products) {
                     // Synchonization of taxes
                     TaxInfo t = new TaxInfo();
-                    t.setID(Integer.toString(products[i].getTax().getId()));
-                    t.setName(products[i].getTax().getName());
-                    t.setRate(products[i].getTax().getPercentage() / 100);                        
+                    t.setID(Integer.toString(product.getTax().getId()));
+                    t.setName(product.getTax().getName());
+                    t.setRate(product.getTax().getPercentage() / 100);                        
                     dlintegration.syncTax(t);
 
                     // Synchonization of categories
                     CategoryInfo c = new CategoryInfo();
-                    c.setID(Integer.toString(products[i].getCategory().getId()));
-                    c.setName(products[i].getCategory().getName());
+                    c.setID(Integer.toString(product.getCategory().getId()));
+                    c.setName(product.getCategory().getName());
                     c.setImage(null);                        
                     dlintegration.syncCategory(c);
 
                     // Synchonization of products
                     ProductInfoExt p = new ProductInfoExt();
-                    p.setID(Integer.toString(products[i].getId()));
-                    p.setReference(Integer.toString(products[i].getId()));
-                    p.setCode(products[i].getEan() == null || products[i].getEan().equals("") ? Integer.toString(products[i].getId()) : products[i].getEan());
-                    p.setName(products[i].getName());
+                    p.setID(Integer.toString(product.getId()));
+                    p.setReference(Integer.toString(product.getId()));
+                    p.setCode(product.getEan() == null || product.getEan().equals("") ? Integer.toString(product.getId()) : product.getEan());
+                    p.setName(product.getName());
                     p.setCom(false);
                     p.setScale(false);
-                    p.setPriceBuy(products[i].getPurchasePrice());
-                    p.setPriceSell(products[i].getListPrice());
+                    p.setPriceBuy(product.getPurchasePrice());
+                    p.setPriceSell(product.getListPrice());
                     p.setCategoryID(c.getID());
                     p.setTaxInfo(t);
-                    p.setImage(ImageUtils.readImage(products[i].getImageUrl()));
+                    p.setImage(ImageUtils.readImage(product.getImageUrl()));
                     dlintegration.syncProduct(p);  
                     
-                    // Synchronization of stock                    
-                    double diff = products[i].getQtyonhand() - dlsales.findProductStock(p.getID(), warehouse);
-                    
-                    Object[] diary = new Object[7];
-                    diary[0] = UUID.randomUUID().toString();
-                    diary[1] = now;
-                    diary[2] = diff > 0.0 
-                            ? MovementReason.IN_MOVEMENT.getKey()
-                            : MovementReason.OUT_MOVEMENT.getKey();
-                    diary[3] = warehouse;
-                    diary[4] = p.getID();
-                    diary[5] = new Double(diff);
-                    diary[6] = new Double(p.getPriceBuy());                                
-                    dlsales.getStockDiaryInsert().exec(diary);                    
+                    // Synchronization of stock          
+                    if (product instanceof ProductPlus) {
+                        
+                        ProductPlus productplus = (ProductPlus) product;
+                        
+                        double diff = productplus.getQtyonhand() - dlsales.findProductStock(p.getID(), warehouse);
+                        
+                        Object[] diary = new Object[7];
+                        diary[0] = UUID.randomUUID().toString();
+                        diary[1] = now;
+                        diary[2] = diff > 0.0 
+                                ? MovementReason.IN_MOVEMENT.getKey()
+                                : MovementReason.OUT_MOVEMENT.getKey();
+                        diary[3] = warehouse;
+                        diary[4] = p.getID();
+                        diary[5] = new Double(diff);
+                        diary[6] = new Double(p.getPriceBuy());                                
+                        dlsales.getStockDiaryInsert().exec(diary);   
+                    }
                 }
                 
                 // datalogic.syncProductsAfter();
@@ -130,9 +140,9 @@ public class ProductsSync implements ProcessAction {
                 
                 dlintegration. syncCustomersBefore();
                 
-                for (int i = 0; i < customers.length; i++) {                    
-                    CustomerInfoExt cinfo = new CustomerInfoExt(Integer.toString(customers[i].getId()), customers[i].getSearchKey(), customers[i].getName());
-                    cinfo.setAddress(customers[i].getDescription());
+                for (Customer customer : customers) {                    
+                    CustomerInfoExt cinfo = new CustomerInfoExt(customer.getSearchKey(), null, customer.getName());
+                    cinfo.setAddress(customer.getDescription());
                     dlintegration.syncCustomer(cinfo);
                 }
             }

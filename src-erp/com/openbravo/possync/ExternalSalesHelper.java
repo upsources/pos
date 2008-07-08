@@ -95,15 +95,23 @@ public class ExternalSalesHelper {
     }
     
     public Customer[] getCustomers() throws RemoteException {
-        return externalCustomers.getCustomers(m_iERPId, m_sERPUser, m_sERPPassword);
+        try {
+            // 2.40 service
+            return externalCustomers.getCustomers(m_iERPId, m_sERPUser, m_sERPPassword);
+        } catch (RemoteException e) {
+            // 2.35 service not exists
+            return new Customer[0];
+        }             
     }
     
     public Product[] getProductsCatalog() throws RemoteException {
-        return externalSales.getProductsCatalog(m_iERPId, m_iERPOrg, m_iERPPos, m_sERPUser, m_sERPPassword);
-    }
-    
-    public ProductPlus[] getProductsPlusCatalog() throws RemoteException {
-        return externalSales.getProductsPlusCatalog(m_iERPId, m_iERPOrg, m_iERPPos, m_sERPUser, m_sERPPassword);
+        try {
+            // 2.40 service
+            return externalSales.getProductsPlusCatalog(m_iERPId, m_iERPOrg, m_iERPPos, m_sERPUser, m_sERPPassword);
+        } catch (RemoteException e) {
+            // 2.35 service
+            return externalSales.getProductsCatalog(m_iERPId, m_iERPOrg, m_iERPPos, m_sERPUser, m_sERPPassword);
+        }        
     }
     
     public void uploadOrders(Order[] orderstoupload) throws RemoteException {
