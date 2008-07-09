@@ -18,7 +18,6 @@
 
 package com.openbravo.pos.customers;
 
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.format.Formats;
 import java.util.Date;
 
@@ -26,12 +25,8 @@ import java.util.Date;
  *
  * @author adrianromero
  */
-public class CustomerInfoExt {
-    
-    private String id;
-    private String taxid;
-    private String name;
-    
+public class CustomerInfoExt extends CustomerInfo {
+        
     private String card;
     private String address;
     private String notes;
@@ -41,27 +36,9 @@ public class CustomerInfoExt {
     private Double curdebt;
     
     /** Creates a new instance of UserInfoBasic */
-    public CustomerInfoExt(String id, String taxid, String name) {
-        this.id = id;
-        this.taxid = taxid;
-        this.name = name;    
-    }
-    
-    public CustomerInfo getCustomerInfo() {
-        return new CustomerInfo(id, taxid, name);
-    }
-    
-    public String getId() {
-        return id;
-    }
-    
-    public String getTaxid() {
-        return taxid;
-    }  
-    
-    public String getName() {
-        return name;
-    }   
+    public CustomerInfoExt(String id, String taxid, String searchkey, String name) {
+        super(id, taxid, searchkey, name);
+    } 
     
     @Override
     public String toString() {

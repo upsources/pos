@@ -79,10 +79,10 @@ public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCel
         } else {
             Object[] avalue = (Object []) value;
             m_jTime.setText(Formats.TIME.formatValue(avalue[2]));
-            m_jTitle.setText(Formats.STRING.formatValue(avalue[5]));
-            m_jChairs.setText(Formats.INT.formatValue(avalue[6]));
-            m_bDone = ((Boolean) avalue[7]).booleanValue();
-            m_jDescription.setText(Formats.STRING.formatValue(avalue[8]));
+            m_jTitle.setText(Formats.STRING.formatValue(avalue[6]));
+            m_jChairs.setText(Formats.INT.formatValue(avalue[7]));
+            m_bDone = ((Boolean) avalue[8]).booleanValue();
+            m_jDescription.setText(Formats.STRING.formatValue(avalue[9]));
         }
 
         setEnabled(list.isEnabled());

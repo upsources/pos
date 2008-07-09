@@ -50,25 +50,27 @@ public class DataLogicIntegrationOracle extends DataLogicIntegration {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE CUSTOMERS SET NAME = ?, ADDRESS = ?, VISIBLE = 1 WHERE ID = ?", 
+                            "UPDATE CUSTOMERS SET SEARCHKEY = ?, NAME = ?, ADDRESS = ?, VISIBLE = 1 WHERE ID = ?", 
                             new SerializerWrite() {
                                 public void writeValues(DataWrite dp, Object obj) throws BasicException {
                                     CustomerInfoExt c = (CustomerInfoExt) obj;
-                                    dp.setString(1, c.getName());
-                                    dp.setString(2, c.getAddress());
-                                    dp.setString(3, c.getId());
+                                    dp.setString(1, c.getSearchkey());
+                                    dp.setString(2, c.getName());
+                                    dp.setString(3, c.getAddress());
+                                    dp.setString(4, c.getId());
                                 }
                             }).exec(customer) == 0) {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                            "INSERT INTO CUSTOMERS(ID, NAME, ADDRESS, VISIBLE) VALUES (?, ?, ?, 1)", 
+                            "INSERT INTO CUSTOMERS(ID, SEARCHKEY, NAME, ADDRESS, VISIBLE) VALUES (?, ?, ?, ?, 1)", 
                             new SerializerWrite() {
                                 public void writeValues(DataWrite dp, Object obj) throws BasicException {
                                     CustomerInfoExt c = (CustomerInfoExt) obj;
-                                        dp.setString(1, c.getId());
-                                        dp.setString(2, c.getName());
-                                        dp.setString(3, c.getAddress());
+                                    dp.setString(1, c.getId());
+                                    dp.setString(2, c.getSearchkey());
+                                    dp.setString(3, c.getName());
+                                    dp.setString(4, c.getAddress());
                                 }
                             }).exec(customer);
                 }

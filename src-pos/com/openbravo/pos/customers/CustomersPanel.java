@@ -56,22 +56,22 @@ public class CustomersPanel extends JPanelTable {
     }
     
     public SaveProvider getSaveProvider() {
-        return new SaveProvider(tcustomers, new int[] {0, 1, 2, 3, 4, 5, 6, 7});      
+        return new SaveProvider(tcustomers, new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8});      
     }
     
     @Override
     public Vectorer getVectorer() {
-        return tcustomers.getVectorerBasic(new int[]{1, 2, 3, 4});
+        return tcustomers.getVectorerBasic(new int[]{1, 2, 3, 4, 5});
     }
     
     @Override
     public ComparatorCreator getComparatorCreator() {
-        return tcustomers.getComparatorCreator(new int[] {1, 2, 3, 4});
+        return tcustomers.getComparatorCreator(new int[] {1, 2, 3, 4, 5});
     }
     
     @Override
     public ListCellRenderer getListCellRenderer() {
-        return new ListCellRendererBasic(tcustomers.getRenderStringBasic(new int[]{2}));
+        return new ListCellRendererBasic(tcustomers.getRenderStringBasic(new int[]{2, 3}));
     }
     
     public EditorRecord getEditor() {

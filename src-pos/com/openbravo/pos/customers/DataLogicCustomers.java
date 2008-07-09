@@ -48,17 +48,17 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     
     protected Session s;
     private TableDefinition tcustomers;
-    private static Datas[] customerdatas = new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.TIMESTAMP, Datas.STRING, Datas.STRING, Datas.STRING, Datas.INT, Datas.BOOLEAN, Datas.STRING};
+    private static Datas[] customerdatas = new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.TIMESTAMP, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.INT, Datas.BOOLEAN, Datas.STRING};
     
     public void init(Session s){
         
         this.s = s;
         tcustomers = new TableDefinition(s,
             "CUSTOMERS"
-            , new String[] {"ID", "TAXID", "NAME", "ADDRESS", "NOTES", "VISIBLE", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"}
-            , new String[] {"ID", AppLocal.getIntString("label.taxid"), AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD", AppLocal.getIntString("label.maxdebt"), AppLocal.getIntString("label.curdate"), AppLocal.getIntString("label.curdebt")}
-            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}
-            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING, Formats.CURRENCY, Formats.TIMESTAMP, Formats.CURRENCY}
+            , new String[] {"ID", "TAXID", "SEARCHKEY", "NAME", "ADDRESS", "NOTES", "VISIBLE", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"}
+            , new String[] {"ID", AppLocal.getIntString("label.taxid"), AppLocal.getIntString("label.searchkey"), AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD", AppLocal.getIntString("label.maxdebt"), AppLocal.getIntString("label.curdate"), AppLocal.getIntString("label.curdebt")}
+            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}
+            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING, Formats.CURRENCY, Formats.TIMESTAMP, Formats.CURRENCY}
             , new int[] {0}
         );   
         
@@ -67,14 +67,15 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     // CustomerList list
     public SentenceList getCustomerList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT ID, TAXID, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
+            , new QBFBuilder("SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING})
             , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
                         return new CustomerInfo(
                                 dr.getString(1),
                                 dr.getString(2),
-                                dr.getString(3));
+                                dr.getString(3),
+                                dr.getString(4));
                     }                
                 });
     }
@@ -88,7 +89,8 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
                         return new CustomerInfo(
                                 dr.getString(1),
                                 dr.getString(2),
-                                dr.getString(3));
+                                dr.getString(3),
+                                dr.getString(4));
                     }
                 }).find(card);
     }
@@ -109,21 +111,21 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     
     public CustomerInfoExt findCustomerExt(String card) throws BasicException {
         return (CustomerInfoExt) new PreparedSentence(s
-                , "SELECT ID, TAXID, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE CARD = ?"
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE CARD = ?"
                 , SerializerWriteString.INSTANCE
                 , new CustomerExtRead()).find(card);        
     }    
     
     public CustomerInfoExt loadCustomerExt(String id) throws BasicException {
         return (CustomerInfoExt) new PreparedSentence(s
-                , "SELECT ID, TAXID, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE ID = ?"
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE ID = ?"
                 , SerializerWriteString.INSTANCE
                 , new CustomerExtRead()).find(id);        
     }
     
     public final SentenceList getReservationsList() {
         return new PreparedSentence(s
-            , "SELECT R.ID, R.CREATED, R.DATENEW, C.CUSTOMER, CUSTOMERS.TAXID, COALESCE(CUSTOMERS.NAME, R.TITLE),  R.CHAIRS, R.ISDONE, R.DESCRIPTION " +
+            , "SELECT R.ID, R.CREATED, R.DATENEW, C.CUSTOMER, CUSTOMERS.TAXID, CUSTOMERS.SEARCHKEY, COALESCE(CUSTOMERS.NAME, R.TITLE),  R.CHAIRS, R.ISDONE, R.DESCRIPTION " +
               "FROM RESERVATIONS R LEFT OUTER JOIN RESERVATION_CUSTOMERS C ON R.ID = C.ID LEFT OUTER JOIN CUSTOMERS ON C.CUSTOMER = CUSTOMERS.ID " +
               "WHERE R.DATENEW >= ? AND R.DATENEW < ?"
             , new SerializerWriteBasic(new Datas[] {Datas.TIMESTAMP, Datas.TIMESTAMP})
@@ -144,7 +146,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
                 }
                 return new PreparedSentence(s
                     , "UPDATE RESERVATIONS SET ID = ?, CREATED = ?, DATENEW = ?, TITLE = ?, CHAIRS = ?, ISDONE = ?, DESCRIPTION = ? WHERE ID = ?"
-                    , new SerializerWriteBasicExt(customerdatas, new int[]{0, 1, 2, 5, 6, 7, 8, 0})).exec(params);
+                    , new SerializerWriteBasicExt(customerdatas, new int[]{0, 1, 2, 6, 7, 8, 9, 0})).exec(params);
             }
         };
     }
@@ -169,7 +171,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     
                 int i = new PreparedSentence(s
                     , "INSERT INTO RESERVATIONS (ID, CREATED, DATENEW, TITLE, CHAIRS, ISDONE, DESCRIPTION) VALUES (?, ?, ?, ?, ?, ?, ?)"
-                    , new SerializerWriteBasicExt(customerdatas, new int[]{0, 1, 2, 5, 6, 7, 8})).exec(params);
+                    , new SerializerWriteBasicExt(customerdatas, new int[]{0, 1, 2, 6, 7, 8, 9})).exec(params);
 
                 if (((Object[]) params)[3] != null) {
                     new PreparedSentence(s
@@ -190,14 +192,15 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
             CustomerInfoExt c = new CustomerInfoExt(
                     dr.getString(1),
                     dr.getString(2),
-                    dr.getString(3));
-            c.setCard(dr.getString(4));
-            c.setAddress(dr.getString(5));
-            c.setNotes(dr.getString(6));
-            c.setMaxdebt(dr.getDouble(7));
-            c.setVisible(dr.getBoolean(8).booleanValue());
-            c.setCurdate(dr.getTimestamp(9));
-            c.setCurdebt(dr.getDouble(10));
+                    dr.getString(3),
+                    dr.getString(4));
+            c.setCard(dr.getString(5));
+            c.setAddress(dr.getString(6));
+            c.setNotes(dr.getString(7));
+            c.setMaxdebt(dr.getDouble(8));
+            c.setVisible(dr.getBoolean(9).booleanValue());
+            c.setCurdate(dr.getTimestamp(10));
+            c.setCurdebt(dr.getDouble(11));
             return c;
         }                  
     }

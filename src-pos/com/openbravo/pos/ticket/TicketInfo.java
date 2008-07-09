@@ -88,7 +88,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         String customerid = dr.getString(7);
         m_Customer = customerid == null 
                 ? null
-                : new CustomerInfo(dr.getString(7), dr.getString(8), dr.getString(9));
+                : new CustomerInfo(dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10));
         m_aPayment = new ArrayList<PaymentInfo>(); 
         m_aLines = new ArrayList<TicketLineInfo>();
     }

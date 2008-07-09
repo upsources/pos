@@ -501,7 +501,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
             ticket.setUser(app.getAppUserView().getUser().getUserInfo());
             ticket.setActiveCash(app.getActiveCashIndex());
             ticket.setDate(new Date());
-            ticket.setCustomer(customerext.getCustomerInfo());
+            ticket.setCustomer(customerext);
 
             try {
                 dlsales.saveTicket(ticket, app.getInventoryLocation());

@@ -121,7 +121,7 @@ public class OrdersSync implements ProcessAction {
                 bp = null;
             } else {
                 bp = new BPartner();
-                bp.setId(ticket.getCustomer().getId());
+                bp.setId(ticket.getCustomer().getSearchkey());
                 bp.setName(ticket.getCustomer().getName());
             }
             orders[i].setBusinessPartner(bp);

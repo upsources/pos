@@ -39,14 +39,15 @@ public class DataLogicCustomersOracle extends DataLogicCustomers {
     @Override
     public SentenceList getCustomerList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT ID, TAXID, NAME FROM CUSTOMERS WHERE VISIBLE = 1 AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
+            , new QBFBuilder("SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = 1 AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING})
             , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
                         return new CustomerInfo(
                                 dr.getString(1),
                                 dr.getString(2),
-                                dr.getString(3));
+                                dr.getString(3),
+                                dr.getString(4));
                     }                
                 });
     }
@@ -54,14 +55,15 @@ public class DataLogicCustomersOracle extends DataLogicCustomers {
     @Override
     public CustomerInfo findCustomer(String card) throws BasicException {
         return (CustomerInfo) new PreparedSentence(s
-                , "SELECT ID, TAXID, NAME FROM CUSTOMERS WHERE VISIBLE = 1 AND CARD = ?"
+                , "SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = 1 AND CARD = ?"
                 , SerializerWriteString.INSTANCE
                 , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
                         return new CustomerInfo(
                                 dr.getString(1),
                                 dr.getString(2),
-                                dr.getString(3));
+                                dr.getString(3),
+                                dr.getString(4));
                     }
                 }).find(card);
     }

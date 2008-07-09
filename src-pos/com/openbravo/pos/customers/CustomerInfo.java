@@ -26,14 +26,16 @@ import java.io.Serializable;
  */
 public class CustomerInfo implements Serializable {
     
-    private String id;
-    private String taxid;
-    private String name;
+    protected String id;
+    protected String searchkey;
+    protected String taxid;
+    protected String name;
     
     /** Creates a new instance of UserInfoBasic */
-    public CustomerInfo(String id, String taxid, String name) {
+    public CustomerInfo(String id, String taxid, String searchkey, String name) {
         this.id = id;
         this.taxid = taxid;
+        this.searchkey = searchkey;
         this.name = name;    
     }
     
@@ -44,6 +46,10 @@ public class CustomerInfo implements Serializable {
     public String getTaxid() {
         return taxid;
     }    
+    
+    public String getSearchkey() {
+        return searchkey;
+    }
     
     public String getName() {
         return name;
