@@ -43,11 +43,6 @@ import com.openbravo.data.loader.Session;
 import com.openbravo.pos.scale.DeviceScale;
 import com.openbravo.pos.scanpal2.DeviceScanner;
 import com.openbravo.pos.scanpal2.DeviceScannerFactory;
-import com.openbravo.pos.scripting.ScriptEngine;
-import com.openbravo.pos.scripting.ScriptException;
-import com.openbravo.pos.scripting.ScriptFactory;
-import com.openbravo.pos.util.StringUtils;
-import java.io.IOException;
 import java.util.regex.Matcher;
 
 /**
@@ -296,16 +291,7 @@ public class JRootApp extends JPanel implements AppView {
             
             // testing sripts
             if (beanfactory.startsWith("/")) {
-                // Resource
-                try {
-                    ScriptEngine eng = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
-                    eng.eval(StringUtils.readResource(beanfactory));
-                    bf = (BeanFactory) eng.get("bean");
-                } catch (ScriptException e) {
-                    throw new BeanFactoryException(e);
-                } catch (IOException e) {
-                    throw new BeanFactoryException(e);
-                }                
+                bf = new BeanFactoryScript(beanfactory);               
             } else {
                 // Class BeanFactory
                 try {
@@ -332,8 +318,7 @@ public class JRootApp extends JPanel implements AppView {
             
             // Initialize if it is a BeanFactoryApp
             if (bf instanceof BeanFactoryApp) {
-                BeanFactoryApp bfapp = (BeanFactoryApp) bf;
-                bfapp.init(this);
+                ((BeanFactoryApp) bf).init(this);
             }
         }
         return bf.getBean();

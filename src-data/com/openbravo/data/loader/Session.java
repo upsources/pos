@@ -18,6 +18,7 @@
 
 package com.openbravo.data.loader;
 
+import com.openbravo.pos.forms.AppLocal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,6 +31,11 @@ import java.sql.SQLException;
  */
 public class Session {
 
+    public static final String DB_HSQLDB = "HSQLDB";
+    public static final String DB_MYSQL = "MySQL";
+    public static final String DB_ORACLE = "Oracle";
+    public static final String DB_POSTGRESQL = "PostgreSQL";
+    
     private String m_surl;
     private String m_suser;
     private String m_spassword;
@@ -135,4 +141,21 @@ public class Session {
             connect();
         }
     }  
+    
+    public String getDatabaseName() throws SQLException {
+        
+        String sdbmanager = getConnection().getMetaData().getDatabaseProductName();            
+
+        if ("HSQL Database Engine".equals(sdbmanager)) {
+            return DB_HSQLDB;
+        } else if ("MySQL".equals(sdbmanager)) {
+            return DB_MYSQL;
+        } else if ("PostgreSQL".equals(sdbmanager)) {
+            return DB_POSTGRESQL;
+        } else if ("Oracle".equals(sdbmanager)) {
+            return DB_ORACLE;
+        } else {
+            throw new SQLException(AppLocal.getIntString("message.databasenotsupported", sdbmanager));
+        }         
+    }
 }

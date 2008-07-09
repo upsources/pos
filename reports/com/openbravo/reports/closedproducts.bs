@@ -16,13 +16,13 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-bean = new com.openbravo.pos.reports.PanelReportBean();
+report = new com.openbravo.pos.reports.PanelReportBean();
 
-bean.setTitleKey("Menu.ClosedProducts");
-bean.setReport("/com/openbravo/reports/closedproducts");
-bean.setResourceBundle("com/openbravo/reports/closedproducts_messages");
+report.setTitleKey("Menu.ClosedProducts");
+report.setReport("/com/openbravo/reports/closedproducts");
+report.setResourceBundle("com/openbravo/reports/closedproducts_messages");
 
-bean.setSentence("SELECT " +
+report.setSentence("SELECT " +
                 "CLOSEDCASH.HOST, " +
                 "CLOSEDCASH.MONEY, " +
                 "CLOSEDCASH.DATESTART, " +
@@ -34,20 +34,23 @@ bean.setSentence("SELECT " +
                 "WHERE CLOSEDCASH.MONEY = RECEIPTS.MONEY AND RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND ?(QBF_FILTER) " +
                 "GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATESTART, PRODUCTS.REFERENCE, PRODUCTS.NAME " +
                 "ORDER BY PRODUCTS.NAME, CLOSEDCASH.HOST, CLOSEDCASH.DATESTART");
-bean.addParameter("CLOSEDCASH.DATESTART");
-bean.addParameter("CLOSEDCASH.DATESTART");
-bean.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
-bean.addParameter("PRODUCTS.NAME");
-bean.addParameter("PRODUCTS.PRICEBUY");
-bean.addParameter("PRODUCTS.PRICESELL");
-bean.addParameter("PRODUCTS.CATEGORY");
-bean.addParameter("PRODUCTS.CODE");
-bean.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
+report.addParameter("CLOSEDCASH.DATESTART");
+report.addParameter("CLOSEDCASH.DATESTART");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+report.addParameter("PRODUCTS.NAME");
+report.addParameter("PRODUCTS.PRICEBUY");
+report.addParameter("PRODUCTS.PRICESELL");
+report.addParameter("PRODUCTS.CATEGORY");
+report.addParameter("PRODUCTS.CODE");
+report.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
 
-bean.addField("HOST", com.openbravo.data.loader.Datas.STRING);
-bean.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
-bean.addField("DATESTART", com.openbravo.data.loader.Datas.TIMESTAMP);
-bean.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
-bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
-bean.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
-bean.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("HOST", com.openbravo.data.loader.Datas.STRING);
+report.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
+report.addField("DATESTART", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
+report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+
+return report;
+

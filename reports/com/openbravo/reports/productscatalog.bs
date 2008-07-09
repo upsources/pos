@@ -16,25 +16,27 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-bean = new com.openbravo.pos.reports.PanelReportBean();
+report = new com.openbravo.pos.reports.PanelReportBean();
 
-bean.setTitleKey("Menu.Catalog");
-bean.setReport("/com/openbravo/reports/products");
-bean.setResourceBundle("com/openbravo/reports/productscatalog_messages");
+report.setTitleKey("Menu.Catalog");
+report.setReport("/com/openbravo/reports/products");
+report.setResourceBundle("com/openbravo/reports/productscatalog_messages");
 
-bean.setSentence("SELECT PRODUCTS.ID, PRODUCTS.REFERENCE, PRODUCTS.CODE, PRODUCTS.NAME, PRODUCTS.PRICEBUY, PRODUCTS.PRICESELL, (PRODUCTS.PRICESELL * (1 + TAXES.RATE)) AS PRICESELLTAX, TAXES.NAME AS TAXNAME, TAXES.RATE AS TAXRATE, PRODUCTS.CATEGORY, CATEGORIES.NAME AS CATEGORYNAME " +
+report.setSentence("SELECT PRODUCTS.ID, PRODUCTS.REFERENCE, PRODUCTS.CODE, PRODUCTS.NAME, PRODUCTS.PRICEBUY, PRODUCTS.PRICESELL, (PRODUCTS.PRICESELL * (1 + TAXES.RATE)) AS PRICESELLTAX, TAXES.NAME AS TAXNAME, TAXES.RATE AS TAXRATE, PRODUCTS.CATEGORY, CATEGORIES.NAME AS CATEGORYNAME " +
                  "FROM PRODUCTS_CAT, PRODUCTS LEFT OUTER JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID LEFT OUTER JOIN TAXES ON PRODUCTS.TAX = TAXES.ID " +
                  "WHERE PRODUCTS_CAT.PRODUCT = PRODUCTS.ID " +
                  "ORDER BY CATEGORIES.NAME, PRODUCTS_CAT.CATORDER, PRODUCTS.NAME");
 
-bean.addField("ID", com.openbravo.data.loader.Datas.STRING);
-bean.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
-bean.addField("CODE", com.openbravo.data.loader.Datas.STRING);
-bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
-bean.addField("PRICEBUY", com.openbravo.data.loader.Datas.DOUBLE);
-bean.addField("PRICESELL", com.openbravo.data.loader.Datas.DOUBLE);
-bean.addField("PRICESELLTAX", com.openbravo.data.loader.Datas.DOUBLE);
-bean.addField("TAXNAME", com.openbravo.data.loader.Datas.STRING);
-bean.addField("TAXRATE", com.openbravo.data.loader.Datas.DOUBLE);
-bean.addField("CATEGORY", com.openbravo.data.loader.Datas.STRING);
-bean.addField("CATEGORYNAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("ID", com.openbravo.data.loader.Datas.STRING);
+report.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
+report.addField("CODE", com.openbravo.data.loader.Datas.STRING);
+report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("PRICEBUY", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("PRICESELL", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("PRICESELLTAX", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("TAXNAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("TAXRATE", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("CATEGORY", com.openbravo.data.loader.Datas.STRING);
+report.addField("CATEGORYNAME", com.openbravo.data.loader.Datas.STRING);
+
+return report;

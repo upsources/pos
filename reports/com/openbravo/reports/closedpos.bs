@@ -16,13 +16,13 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-bean = new com.openbravo.pos.reports.PanelReportBean();
+report = new com.openbravo.pos.reports.PanelReportBean();
 
-bean.setTitleKey("Menu.Closing");
-bean.setReport("/com/openbravo/reports/closedpos");
-bean.setResourceBundle("com/openbravo/reports/closedpos_messages");
+report.setTitleKey("Menu.Closing");
+report.setReport("/com/openbravo/reports/closedpos");
+report.setResourceBundle("com/openbravo/reports/closedpos_messages");
 
-bean.setSentence("SELECT " + 
+report.setSentence("SELECT " + 
                     "CLOSEDCASH.HOST, " +
                     "CLOSEDCASH.MONEY, " +
                     "CLOSEDCASH.DATESTART, " +
@@ -33,15 +33,18 @@ bean.setSentence("SELECT " +
                     "WHERE CLOSEDCASH.MONEY = RECEIPTS.MONEY AND PAYMENTS.RECEIPT = RECEIPTS.ID AND ?(QBF_FILTER) " +
                     "GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATESTART, CLOSEDCASH.DATEEND, PAYMENTS.PAYMENT " +
                     "ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART");
-bean.addParameter("CLOSEDCASH.DATEEND");
-bean.addParameter("CLOSEDCASH.DATEEND");
+report.addParameter("CLOSEDCASH.DATEEND");
+report.addParameter("CLOSEDCASH.DATEEND");
 paramdates = new com.openbravo.pos.reports.JParamsDatesInterval();
 paramdates.setStartDate(com.openbravo.beans.DateUtils.getToday());
-bean.addQBFFilter(paramdates);
+report.addQBFFilter(paramdates);
 
-bean.addField("HOST", com.openbravo.data.loader.Datas.STRING);
-bean.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
-bean.addField("DATESTART", com.openbravo.data.loader.Datas.TIMESTAMP);
-bean.addField("DATEEND", com.openbravo.data.loader.Datas.TIMESTAMP);
-bean.addField("PAYMENT", com.openbravo.data.loader.Datas.STRING);
-bean.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("HOST", com.openbravo.data.loader.Datas.STRING);
+report.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
+report.addField("DATESTART", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("DATEEND", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("PAYMENT", com.openbravo.data.loader.Datas.STRING);
+report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+
+return report;
+

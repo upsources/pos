@@ -16,13 +16,13 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-bean = new com.openbravo.pos.reports.PanelReportBean();
+report = new com.openbravo.pos.reports.PanelReportBean();
 
-bean.setTitleKey("Menu.ProductSales");
-bean.setReport("/com/openbravo/reports/productsales");
-bean.setResourceBundle("com/openbravo/reports/productsales_messages");
+report.setTitleKey("Menu.ProductSales");
+report.setReport("/com/openbravo/reports/productsales");
+report.setResourceBundle("com/openbravo/reports/productsales_messages");
 
-bean.setSentence(
+report.setSentence(
             "SELECT " +
             "PRODUCTS.REFERENCE, " +
             "PRODUCTS.NAME, " +
@@ -32,17 +32,20 @@ bean.setSentence(
             "WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.PRODUCT = PRODUCTS.ID AND ?(QBF_FILTER) " +
             "GROUP BY PRODUCTS.REFERENCE, PRODUCTS.NAME " +
             "ORDER BY PRODUCTS.NAME");
-bean.addParameter("RECEIPTS.DATENEW");
-bean.addParameter("RECEIPTS.DATENEW");
-bean.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
-bean.addParameter("PRODUCTS.NAME");
-bean.addParameter("PRODUCTS.PRICEBUY");
-bean.addParameter("PRODUCTS.PRICESELL");
-bean.addParameter("PRODUCTS.CATEGORY");
-bean.addParameter("PRODUCTS.CODE");
-bean.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
+report.addParameter("RECEIPTS.DATENEW");
+report.addParameter("RECEIPTS.DATENEW");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+report.addParameter("PRODUCTS.NAME");
+report.addParameter("PRODUCTS.PRICEBUY");
+report.addParameter("PRODUCTS.PRICESELL");
+report.addParameter("PRODUCTS.CATEGORY");
+report.addParameter("PRODUCTS.CODE");
+report.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
 
-bean.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
-bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
-bean.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
-bean.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
+report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+
+return report;
+

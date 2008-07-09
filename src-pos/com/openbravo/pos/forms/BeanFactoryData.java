@@ -40,19 +40,7 @@ public class BeanFactoryData implements BeanFactoryApp {
             if (sfactoryname.endsWith("Create")) {
                 sfactoryname = sfactoryname.substring(0, sfactoryname.length() - 6);
             }
-            String sdbmanager = app.getSession().getConnection().getMetaData().getDatabaseProductName();            
-            
-            if ("HSQL Database Engine".equals(sdbmanager)) {
-                bf = (BeanFactoryApp) Class.forName(sfactoryname + "HSQLDB").newInstance();
-            } else if ("MySQL".equals(sdbmanager)) {
-                bf = (BeanFactoryApp) Class.forName(sfactoryname + "MySQL").newInstance();
-            } else if ("PostgreSQL".equals(sdbmanager)) {
-                bf = (BeanFactoryApp) Class.forName(sfactoryname + "PostgreSQL").newInstance();
-            } else if ("Oracle".equals(sdbmanager)) {
-                bf = (BeanFactoryApp) Class.forName(sfactoryname + "Oracle").newInstance();
-            } else {
-                throw new BeanFactoryException(AppLocal.getIntString("message.databasenotsupported", sdbmanager));
-            }                     
+            bf = (BeanFactoryApp) Class.forName(sfactoryname + app.getSession().getDatabaseName()).newInstance();                    
             bf.init(app);                     
         } catch (SQLException ex) {
             throw new BeanFactoryException(ex);
