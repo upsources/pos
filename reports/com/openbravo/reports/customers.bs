@@ -22,13 +22,13 @@ report.setTitleKey("Menu.CustomersReport");
 report.setReport("/com/openbravo/reports/customers");
 report.setResourceBundle("com/openbravo/reports/customers_messages");
 
-if (app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_HSQLDB) ||
-    app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_MYSQL) ||
-    app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_POSTGRESQL)) {
+if (app.getSession().getDatabaseName().equals("HSQL Database Engine") ||
+    app.getSession().getDatabaseName().equals("MySQL") ||
+    app.getSession().getDatabaseName().equals("PostgreSQL")) {
     report.setSentence("SELECT ID, TAXID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT " +
                      "FROM CUSTOMERS " +
                      "WHERE VISIBLE = TRUE AND ?(QBF_FILTER)");
-} else if (app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_ORACLE)) {
+} else if (app.getSession().getDatabaseName().equals("Oracle")) {
     report.setSentence("SELECT ID, TAXID, NAME, ADDRESS, NOTES, CARD, MAXDEBT, CURDATE, CURDEBT " +
                      "FROM CUSTOMERS " +
                      "WHERE VISIBLE = 1 AND ?(QBF_FILTER)");

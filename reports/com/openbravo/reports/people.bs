@@ -22,12 +22,12 @@ report.setTitleKey("Menu.UsersReport");
 report.setReport("/com/openbravo/reports/people");
 report.setResourceBundle("com/openbravo/reports/people_messages");
 
-if (app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_HSQLDB) ||
-    app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_MYSQL) ||
-    app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_POSTGRESQL)) {
+if (app.getSession().getDatabaseName().equals("HSQL Database Engine") ||
+    app.getSession().getDatabaseName().equals("MySQL") ||
+    app.getSession().getDatabaseName().equals("PostgreSQL")) {
     report.setSentence("SELECT PEOPLE.ID, PEOPLE.NAME, PEOPLE.CARD, ROLES.NAME AS ROLE, PEOPLE.IMAGE " +
                      "FROM PEOPLE, ROLES WHERE PEOPLE.ROLE = ROLES.ID AND PEOPLE.VISIBLE = TRUE");
-} else if (app.getSession().getDatabaseName().equals(com.openbravo.data.loader.Session.DB_ORACLE)) {
+} else if (app.getSession().getDatabaseName().equals("Oracle")) {
     report  .setSentence("SELECT PEOPLE.ID, PEOPLE.NAME, PEOPLE.CARD, ROLES.NAME AS ROLE, PEOPLE.IMAGE " +
                      "FROM PEOPLE, ROLES WHERE PEOPLE.ROLE = ROLES.ID AND PEOPLE.VISIBLE = 1");
 }
