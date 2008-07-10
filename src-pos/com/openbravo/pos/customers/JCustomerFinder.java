@@ -74,10 +74,15 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jScrollPane1.getVerticalScrollBar().setPreferredSize(new Dimension(35, 35));
 
+        m_jtxtTaxID.addEditorKeys(m_jKeys);
+        m_jtxtSearchKey.addEditorKeys(m_jKeys);
         m_jtxtName.addEditorKeys(m_jKeys);
 
+        m_jtxtTaxID.reset();
+        m_jtxtSearchKey.reset();
         m_jtxtName.reset();
-        m_jtxtName.activate();
+        
+        m_jtxtTaxID.activate();
 
         lpr = new ListProviderCreator(dlCustomers.getCustomerList(), this);
 
@@ -91,12 +96,22 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     public void search(CustomerInfo customer) {
         
         if (customer == null || customer.getName() == null || customer.getName().equals("")) {
+            
+            m_jtxtTaxID.reset();
+            m_jtxtSearchKey.reset();
             m_jtxtName.reset();
-            m_jtxtName.activate();       
+
+            m_jtxtTaxID.activate();    
+            
             cleanSearch();
         } else {
+            
+            m_jtxtTaxID.setText(customer.getTaxid());
+            m_jtxtSearchKey.setText(customer.getSearchkey());
             m_jtxtName.setText(customer.getName());
-            m_jtxtName.activate();       
+
+            m_jtxtTaxID.activate();
+            
             executeSearch();
         }
     }
@@ -118,15 +133,33 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     
     public Object createValue() throws BasicException {
         
-        Object[] afilter = new Object[2];
+        Object[] afilter = new Object[6];
         
-        // Name
-        if (m_jtxtName.getText() == null || m_jtxtName.getText().equals("")) {
+        // TaxID
+        if (m_jtxtTaxID.getText() == null || m_jtxtTaxID.getText().equals("")) {
             afilter[0] = QBFCompareEnum.COMP_NONE;
             afilter[1] = null;
         } else {
             afilter[0] = QBFCompareEnum.COMP_RE;
-            afilter[1] = "%" + m_jtxtName.getText() + "%";
+            afilter[1] = "%" + m_jtxtTaxID.getText() + "%";
+        }
+        
+        // SearchKey
+        if (m_jtxtSearchKey.getText() == null || m_jtxtSearchKey.getText().equals("")) {
+            afilter[2] = QBFCompareEnum.COMP_NONE;
+            afilter[3] = null;
+        } else {
+            afilter[2] = QBFCompareEnum.COMP_RE;
+            afilter[3] = "%" + m_jtxtSearchKey.getText() + "%";
+        }
+        
+        // Name
+        if (m_jtxtName.getText() == null || m_jtxtName.getText().equals("")) {
+            afilter[4] = QBFCompareEnum.COMP_NONE;
+            afilter[5] = null;
+        } else {
+            afilter[4] = QBFCompareEnum.COMP_RE;
+            afilter[5] = "%" + m_jtxtName.getText() + "%";
         }
         
         return afilter;
@@ -174,6 +207,10 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         m_jtxtName = new com.openbravo.editor.JEditorString();
+        jLabel6 = new javax.swing.JLabel();
+        m_jtxtSearchKey = new com.openbravo.editor.JEditorString();
+        jLabel7 = new javax.swing.JLabel();
+        m_jtxtTaxID = new com.openbravo.editor.JEditorString();
         jPanel6 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -195,14 +232,26 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(100, 80));
+        jPanel7.setPreferredSize(new java.awt.Dimension(100, 140));
         jPanel7.setLayout(null);
 
         jLabel5.setText(AppLocal.getIntString("label.prodname")); // NOI18N
         jPanel7.add(jLabel5);
-        jLabel5.setBounds(20, 20, 80, 14);
+        jLabel5.setBounds(20, 100, 90, 15);
         jPanel7.add(m_jtxtName);
-        m_jtxtName.setBounds(90, 20, 210, 25);
+        m_jtxtName.setBounds(160, 100, 220, 25);
+
+        jLabel6.setText(AppLocal.getIntString("label.searchkey")); // NOI18N
+        jPanel7.add(jLabel6);
+        jLabel6.setBounds(20, 60, 140, 15);
+        jPanel7.add(m_jtxtSearchKey);
+        m_jtxtSearchKey.setBounds(160, 60, 220, 25);
+
+        jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
+        jPanel7.add(jLabel7);
+        jLabel7.setBounds(20, 20, 90, 15);
+        jPanel7.add(m_jtxtTaxID);
+        m_jtxtTaxID.setBounds(160, 20, 220, 25);
 
         jPanel5.add(jPanel7, java.awt.BorderLayout.CENTER);
 
@@ -277,7 +326,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-532)/2, (screenSize.height-515)/2, 532, 515);
+        setBounds((screenSize.width-613)/2, (screenSize.height-610)/2, 613, 610);
     }// </editor-fold>//GEN-END:initComponents
     private void jcmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmdOKActionPerformed
 
@@ -316,6 +365,8 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JList jListCustomers;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -329,5 +380,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     private javax.swing.JButton jcmdOK;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private com.openbravo.editor.JEditorString m_jtxtName;
+    private com.openbravo.editor.JEditorString m_jtxtSearchKey;
+    private com.openbravo.editor.JEditorString m_jtxtTaxID;
     // End of variables declaration//GEN-END:variables
 }

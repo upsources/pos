@@ -67,8 +67,8 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     // CustomerList list
     public SentenceList getCustomerList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"NAME"})
-            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING})
+            , new QBFBuilder("SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"TAXID", "SEARCHKEY", "NAME"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
                         return new CustomerInfo(

@@ -71,7 +71,7 @@ public class CustomersPanel extends JPanelTable {
     
     @Override
     public ListCellRenderer getListCellRenderer() {
-        return new ListCellRendererBasic(tcustomers.getRenderStringBasic(new int[]{2, 3}));
+        return new ListCellRendererBasic(tcustomers.getRenderStringBasic(new int[]{3}));
     }
     
     public EditorRecord getEditor() {
