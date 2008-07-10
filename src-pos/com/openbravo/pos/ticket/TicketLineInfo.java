@@ -139,8 +139,8 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     
     public TicketLineInfo copyTicketLine() {
         TicketLineInfo l = new TicketLineInfo();
-        m_sTicket = null;
-        m_iLine = -1;
+        // l.m_sTicket = null;
+        // l.m_iLine = -1;
         l.m_dMultiply = m_dMultiply;    
         l.m_dPrice = m_dPrice;
         l.tax = tax;   
