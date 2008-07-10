@@ -157,7 +157,7 @@ public class MagCardReaderGeneric implements MagCardReader {
     
     private boolean checkCardNumber(String sNumber) {
         
-        if (sNumber == null || sNumber.length() != 16) {
+        if (sNumber == null || (sNumber.length() != 16 && sNumber.length() != 15)) {
             return false;
         }
         
