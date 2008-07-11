@@ -49,13 +49,12 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
         jcboTime.addActionListener(dirty);
         jcboDatetime.addActionListener(dirty);
         
-        jcboLocale.setRenderer(new LocaleCellRenderer());
         Locale[] availablelocales = Locale.getAvailableLocales();
         Arrays.sort(availablelocales, new LocaleComparator());
         
-        jcboLocale.addItem(null);
+        jcboLocale.addItem(new LocaleInfo (null));
         for (int i = 0 ; i < availablelocales.length; i++) {
-            jcboLocale.addItem(availablelocales[i]);
+            jcboLocale.addItem(new LocaleInfo(availablelocales[i]));
         }
         
         jcboInteger.addItem(DEFAULT_VALUE);
@@ -95,10 +94,18 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
         String slang = config.getProperty("user.language");
         String scountry = config.getProperty("user.country");
         String svariant = config.getProperty("user.variant");
+        
         if (slang != null && !slang.equals("") && scountry != null && svariant != null) {                    
-            jcboLocale.setSelectedItem(new Locale(slang, scountry, svariant));
+            Locale currentlocale = new Locale(slang, scountry, svariant);
+            for (int i = 0 ; i < jcboLocale.getItemCount(); i++)  {
+                LocaleInfo l = (LocaleInfo) jcboLocale.getItemAt(i);
+                if (currentlocale.equals(l.getLocale())) {
+                    jcboLocale.setSelectedIndex(i);
+                    break;
+                }
+            }        
         } else {
-            jcboLocale.setSelectedItem(null);
+            jcboLocale.setSelectedIndex(0);
         }
         
         jcboInteger.setSelectedItem(writeWithDefault(config.getProperty("format.integer")));
@@ -114,7 +121,7 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
     
     public void saveProperties(AppConfig config) {
         
-        Locale l = (Locale) jcboLocale.getSelectedItem();
+        Locale l = ((LocaleInfo) jcboLocale.getSelectedItem()).getLocale();
         if (l == null) {
             config.setProperty("user.language", "");
             config.setProperty("user.country", "");
@@ -149,6 +156,23 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
             return DEFAULT_VALUE;
         } else {
             return value.toString();
+        }
+    }
+    
+    private static class LocaleInfo {
+        private Locale locale;
+        
+        public LocaleInfo(Locale locale) {
+            this.locale = locale;
+        }
+        public Locale getLocale() {
+            return locale;
+        }
+        @Override
+        public String toString() {
+            return locale == null 
+                    ? "(System default)" 
+                    : locale.getDisplayName();
         }
     }
     
