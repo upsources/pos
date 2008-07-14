@@ -24,6 +24,8 @@ public class JNumberKeys extends javax.swing.JPanel {
 
     private Vector m_Listeners = new Vector();
     
+    private boolean minusenabled = true;
+    
     /** Creates new form JNumberKeys */
     public JNumberKeys() {
         initComponents ();
@@ -53,6 +55,7 @@ public class JNumberKeys extends javax.swing.JPanel {
         m_jMultiply.setVisible(value);
     }
     
+    @Override
     public void setEnabled(boolean b) {
         super.setEnabled(b);
         
@@ -70,8 +73,17 @@ public class JNumberKeys extends javax.swing.JPanel {
         m_jMultiply.setEnabled(b);
         m_jCE.setEnabled(b);
         m_jPlus.setEnabled(b);       
-        m_jMinus.setEnabled(b);   
+        m_jMinus.setEnabled(minusenabled && isEnabled());
         m_jEquals.setEnabled(b);   
+    }
+    
+    public void setMinusEnabled(boolean b) {
+        minusenabled = b;
+        m_jMinus.setEnabled(minusenabled && isEnabled());
+    }
+    
+    public boolean isMinusEnabled() {
+        return minusenabled;
     }
     
     public boolean isNumbersOnly() {

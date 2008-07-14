@@ -28,6 +28,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.*;
+import com.openbravo.format.Formats;
 import com.openbravo.pos.util.StringUtils;
 
 /**
@@ -101,11 +102,11 @@ public class PeopleView extends JPanel implements EditorRecord {
     public void writeValueDelete(Object value) {
         Object[] people = (Object[]) value;
         m_oId = people[0];
-        m_jName.setText((String) people[1]);
-        m_sPassword = (String) people[2];
+        m_jName.setText(Formats.STRING.formatValue(people[1]));
+        m_sPassword = Formats.STRING.formatValue(people[2]);
         m_RoleModel.setSelectedKey(people[3]);
         m_jVisible.setSelected(((Boolean) people[4]).booleanValue());
-        jcard.setText((String) people[5]);
+        jcard.setText(Formats.STRING.formatValue(people[5]));
         m_jImage.setImage((BufferedImage) people[6]);
         m_jName.setEnabled(false);
         m_jRole.setEnabled(false);
@@ -120,11 +121,11 @@ public class PeopleView extends JPanel implements EditorRecord {
     public void writeValueEdit(Object value) {
         Object[] people = (Object[]) value;
         m_oId = people[0];
-        m_jName.setText((String) people[1]);
-        m_sPassword = (String) people[2];
+        m_jName.setText(Formats.STRING.formatValue(people[1]));
+        m_sPassword = Formats.STRING.formatValue(people[2]);
         m_RoleModel.setSelectedKey(people[3]);
         m_jVisible.setSelected(((Boolean) people[4]).booleanValue());
-        jcard.setText((String) people[5]);
+        jcard.setText(Formats.STRING.formatValue(people[5]));
         m_jImage.setImage((BufferedImage) people[6]);
         m_jName.setEnabled(true);
         m_jRole.setEnabled(true);
@@ -139,11 +140,11 @@ public class PeopleView extends JPanel implements EditorRecord {
     public Object createValue() throws BasicException {
         Object[] people = new Object[7];
         people[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
-        people[1] = m_jName.getText();
-        people[2] = m_sPassword;
+        people[1] = Formats.STRING.parseValue(m_jName.getText());
+        people[2] = Formats.STRING.parseValue(m_sPassword);
         people[3] = m_RoleModel.getSelectedKey();
         people[4] = Boolean.valueOf(m_jVisible.isSelected());
-        people[5] = jcard.getText();
+        people[5] = Formats.STRING.parseValue(jcard.getText());
         people[6] = m_jImage.getImage();
         return people;
     }    

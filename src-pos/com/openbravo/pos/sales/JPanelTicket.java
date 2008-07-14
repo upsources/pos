@@ -189,6 +189,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         // Authorization for buttons
         m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
+        m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());          
     }
     
@@ -676,7 +677,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
             // Eliminamos un producto mas a la linea seleccionada
             } else if (cTrans == '-' 
-                    && m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERZERO) {
+                    && m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERZERO
+                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                
                 int i = m_ticketlines.getSelectedIndex();
                 if (i < 0){
                     Toolkit.getDefaultToolkit().beep();
@@ -707,7 +710,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
             // Ponemos n productos negativos a la linea seleccionada
             } else if (cTrans == '-' 
-                    && m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERVALID) {
+                    && m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERVALID
+                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                
                 int i = m_ticketlines.getSelectedIndex();
                 if (i < 0){
                     Toolkit.getDefaultToolkit().beep();
