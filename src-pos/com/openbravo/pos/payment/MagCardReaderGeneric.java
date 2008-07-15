@@ -25,7 +25,9 @@ public class MagCardReaderGeneric implements MagCardReader {
     private String m_sHolderName;
     private String m_sCardNumber;
     private String m_sExpirationDate;
-    private StringBuffer m_sRawData;
+    private StringBuffer track1;
+    private StringBuffer track2;
+    private StringBuffer track3;
     
     private static final int READING_STARTSENTINEL1 = 0;
     private static final int READING_STARTSENTINEL2 = 1;
@@ -57,7 +59,6 @@ public class MagCardReaderGeneric implements MagCardReader {
         m_aTrack2 = null;        
         m_aTrack3 = null;        
         m_sField = null;
-        m_sRawData = null;
         m_cCardType = ' ';
         
         m_sHolderName = null;
@@ -75,11 +76,13 @@ public class MagCardReaderGeneric implements MagCardReader {
         //  *---------------- ----------- ----                                       ***
         
         if (c == '%') { // && READING_STARTSENTINEL1;
+            track1 = new StringBuffer();
+            track2 = new StringBuffer();
+            track3 = new StringBuffer();
             m_aTrack1 = new ArrayList();
-            m_aTrack2 = null;        
+            m_aTrack2 = null;     
             m_aTrack3 = null;        
             m_sField = new StringBuffer();
-            m_sRawData = new StringBuffer();
             m_cCardType = ' ';
             m_sHolderName = null;
             m_sCardNumber = null;
@@ -125,9 +128,13 @@ public class MagCardReaderGeneric implements MagCardReader {
             m_sField.append(c);
         }       
         
-        // Magcard raw data
-        if (m_sRawData != null) {
-            m_sRawData.append(c);
+        
+        if (m_iAutomState == READING_CARDTYPE || m_iAutomState == READING_TRACK1 || m_iAutomState == READING_STARTSENTINEL2) {
+            track1.append(c);
+        } else if (m_iAutomState == READING_TRACK2 || m_iAutomState == READING_STARTSENTINEL3) {
+            track2.append(c);
+        } else if (m_iAutomState == READING_TRACK3 || m_iAutomState == READING_END) {
+            track3.append(c);
         }
     }
     
@@ -208,10 +215,14 @@ public class MagCardReaderGeneric implements MagCardReader {
     }
     public String getExpirationDate() {
         return m_sExpirationDate;
-    }    
-    public String getRawData() {
-        return m_sRawData == null 
-                ? null 
-                : m_sRawData.toString();
+    }   
+    public String getTrack1() {
+        return track1 == null ? null : track1.toString();
     }
+    public String getTrack2() {
+        return track2 == null ? null : track2.toString();
+    }    
+    public String getTrack3() {
+        return track3 == null ? null : track3.toString();
+    }      
 }

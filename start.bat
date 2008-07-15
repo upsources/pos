@@ -54,4 +54,4 @@ set CP=%CP%;"%DIRNAME%lib/commons-logging-1.0.4.jar"
 set CP=%CP%;"%DIRNAME%locales/"
 set CP=%CP%;"%DIRNAME%reports/"
 
-start /B javaw -cp %CP% -Djava.library.path="%DIRNAME%lib/Windows/i368-mingw32" com.openbravo.pos.forms.StartPOS
+start /B javaw -cp %CP% -Djava.library.path="%DIRNAME%lib/Windows/i368-mingw32" com.openbravo.pos.forms.StartPOS %1

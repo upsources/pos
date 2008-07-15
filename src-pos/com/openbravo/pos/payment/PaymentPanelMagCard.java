@@ -25,6 +25,9 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
     
     private JPaymentNotifier m_notifier;
     private MagCardReader m_cardreader;
+    private String track1 = null;
+    private String track2 = null;
+    private String track3 = null;
     private String m_sTransactionID;
     private double m_dTotal;
     
@@ -73,6 +76,9 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
         m_jHolderName.setText(null);
         m_jCardNumber.setText(null);
         m_jExpirationDate.setText(null);
+        track1 = null;
+        track2 = null;
+        track3 = null;
         
         if (m_cardreader != null) {
             // Se van a poder efectuar pagos con tarjeta
@@ -87,6 +93,9 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
                     m_jHolderName.getText(),
                     m_jCardNumber.getText(), 
                     m_jExpirationDate.getText(),
+                    track1,
+                    track2,
+                    track3,
                     m_sTransactionID,
                     m_dTotal);
         } else {
@@ -94,6 +103,9 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
                     m_jHolderName.getText(),
                     m_jCardNumber.getText(), 
                     m_jExpirationDate.getText(),
+                    track1,
+                    track2,
+                    track3,
                     m_sTransactionID,
                     m_dTotal);
         }
@@ -106,12 +118,18 @@ public class PaymentPanelMagCard extends javax.swing.JPanel implements PaymentPa
         if (m_cardreader.isComplete()) {
             m_jHolderName.setText(m_cardreader.getHolderName());
             m_jCardNumber.setText(m_cardreader.getCardNumber());
-            m_jExpirationDate.setText(m_cardreader.getExpirationDate());   
+            m_jExpirationDate.setText(m_cardreader.getExpirationDate()); 
+            track1 = m_cardreader.getTrack1();
+            track2 = m_cardreader.getTrack2();
+            track3 = m_cardreader.getTrack3();
             m_notifier.setStatus(true, true);  
         } else {
             m_jHolderName.setText(null);
             m_jCardNumber.setText(null);
-            m_jExpirationDate.setText(null);  
+            m_jExpirationDate.setText(null); 
+            track1 = null;
+            track3 = null;
+            track3 = null;
             m_notifier.setStatus(false, false);  
         }      
     }    

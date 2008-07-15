@@ -25,6 +25,9 @@ public class PaymentInfoMagcard extends PaymentInfo {
     protected String m_sHolderName;
     protected String m_sCardNumber;
     protected String m_sExpirationDate;
+    protected String track1;
+    protected String track2;
+    protected String track3;
     
     protected String m_sTransactionID;
     
@@ -32,10 +35,14 @@ public class PaymentInfoMagcard extends PaymentInfo {
     protected String m_sMessage;
     
     /** Creates a new instance of PaymentInfoMagcard */
-    public PaymentInfoMagcard(String sHolderName, String sCardNumber, String sExpirationDate, String sTransactionID, double dTotal) {
+    public PaymentInfoMagcard(String sHolderName, String sCardNumber, String sExpirationDate, String track1, String track2, String track3, String sTransactionID, double dTotal) {
         m_sHolderName = sHolderName;
         m_sCardNumber = sCardNumber;
         m_sExpirationDate = sExpirationDate;
+        this.track1 = track1;
+        this.track2 = track2;
+        this.track3 = track3;
+        
         m_sTransactionID = sTransactionID;
         m_dTotal = dTotal;
         
@@ -43,12 +50,18 @@ public class PaymentInfoMagcard extends PaymentInfo {
         m_sMessage = null;
     }
     
+    /** Creates a new instance of PaymentInfoMagcard */
+    public PaymentInfoMagcard(String sHolderName, String sCardNumber, String sExpirationDate, String sTransactionID, double dTotal) {
+        this(sHolderName, sCardNumber, sExpirationDate, null, null, null, sTransactionID, dTotal);
+    }
+    
     public PaymentInfo copyPayment(){
-        PaymentInfoMagcard p = new PaymentInfoMagcard(m_sHolderName, m_sCardNumber, m_sExpirationDate, m_sTransactionID, m_dTotal);
+        PaymentInfoMagcard p = new PaymentInfoMagcard(m_sHolderName, m_sCardNumber, m_sExpirationDate, track1, track2, track3, m_sTransactionID, m_dTotal);
         p.m_sAuthorization = m_sAuthorization;
         p.m_sMessage = m_sMessage;
         return p;
     }    
+    
     public String getName() {
         return "magcard";
     }
@@ -70,6 +83,15 @@ public class PaymentInfoMagcard extends PaymentInfo {
     }    
     public String getTransactionID() {
         return m_sTransactionID;
+    }
+    public String getTrack1() {
+        return track1;
+    }
+    public String getTrack2() {
+        return track1;
+    }
+    public String getTrack3() {
+        return track1;
     }
     
     public String getAuthorization() {

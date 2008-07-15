@@ -114,7 +114,13 @@ public class MagCardReaderIntelligent implements MagCardReader {
     public String getExpirationDate() {
         return m_sExpirationDate;
     }
-    public String getRawData() {
+    public String getTrack1() {
         return null;
     }
+    public String getTrack2() {
+        return null;
+    }    
+    public String getTrack3() {
+        return null;
+    }       
 }

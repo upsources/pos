@@ -29,5 +29,8 @@ public interface MagCardReader {
     public String getHolderName();
     public String getCardNumber();
     public String getExpirationDate();
-    public String getRawData();
+    
+    public String getTrack1();
+    public String getTrack2();
+    public String getTrack3();
 }

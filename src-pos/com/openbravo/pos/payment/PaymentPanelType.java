@@ -81,6 +81,9 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
                     m_jHolderName.getText(),
                     m_jCardNumber.getText(), 
                     m_jExpirationDate.getText(),
+                    null,
+                    null,                    
+                    null,                    
                     m_sTransactionID,
                     m_dTotal);
         } else {
@@ -88,6 +91,9 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
                     m_jHolderName.getText(),
                     m_jCardNumber.getText(), 
                     m_jExpirationDate.getText(),
+                    null,
+                    null,                    
+                    null,                    
                     m_sTransactionID,
                     m_dTotal);
         }

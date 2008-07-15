@@ -24,7 +24,6 @@ import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.util.StringUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import javax.swing.*;
 
 /**
  *

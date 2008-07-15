@@ -58,6 +58,9 @@ public class PaymentPanelBasic extends javax.swing.JPanel implements PaymentPane
                     "",
                     "", 
                     "",
+                    null,
+                    null,
+                    null,
                     m_sTransactionID,
                     m_dTotal);
         } else {
@@ -65,6 +68,9 @@ public class PaymentPanelBasic extends javax.swing.JPanel implements PaymentPane
                     "",
                     "", 
                     "",
+                    null,
+                    null,
+                    null,
                     m_sTransactionID,
                     m_dTotal);
         }
