@@ -100,7 +100,7 @@ public class TableDefinition {
         int[] aindex = new int[fieldindx.length + idinx.length];
 
         for (int i = 0; i < fieldindx.length; i++) {
-            aindex[fieldindx[i]] = i;
+            aindex[i] = fieldindx[i];
         } 
         for (int i = 0; i < idinx.length; i++) {
             aindex[i + fieldindx.length] = idinx[i];

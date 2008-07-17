@@ -52,7 +52,6 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private double m_dTotal; 
     private CustomerInfoExt customerext;
     private DataLogicSystem dlSystem;
-    private DataLogicCustomers dlcustomers;    
     
     private Map<String, JPaymentInterface> payments = new HashMap<String, JPaymentInterface>();
 
@@ -73,7 +72,6 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     public void init(AppView app) {
         this.app = app;
         dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-        dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");
         printselected = true;
     }
     
@@ -89,23 +87,14 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         return m_aPaymentInfo.getPayments();        
     }
             
-    public boolean showDialog(double total, CustomerInfo customer) {
+    public boolean showDialog(double total, CustomerInfoExt customerext) {
         
         m_aPaymentInfo = new PaymentInfoList();
         accepted = false;
         
         m_dTotal = total;
-                
-        // load customerext
-         if (customer == null) {
-            customerext = null;      
-        } else {
-            try {
-                customerext = dlcustomers.loadCustomerExt(customer.getId());                
-            } catch (BasicException e) {
-                customerext = null;      
-            }
-        }         
+        
+        this.customerext = customerext;        
 
         m_jButtonPrint.setSelected(printselected);
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));

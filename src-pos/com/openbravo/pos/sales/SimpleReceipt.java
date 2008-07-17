@@ -18,10 +18,13 @@
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import java.awt.BorderLayout;
@@ -33,19 +36,21 @@ import java.awt.BorderLayout;
 public class SimpleReceipt extends javax.swing.JPanel {
     
     protected DataLogicCustomers dlCustomers;
+    protected DataLogicSales dlSales;
         
     private JTicketLines ticketlines;
     private TicketInfo ticket;
     private Object ticketext;
     
     /** Creates new form SimpleReceipt */
-    public SimpleReceipt(String ticketline, DataLogicCustomers dlCustomers) {        
+    public SimpleReceipt(String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {        
         
         initComponents();
         
         // dlSystem.getResourceAsXML("Ticket.Line")
         ticketlines = new JTicketLines(ticketline);
         this.dlCustomers = dlCustomers;
+        this.dlSales = dlSales;
         
         jPanel2.add(ticketlines, BorderLayout.CENTER);
     }
@@ -287,7 +292,15 @@ public class SimpleReceipt extends javax.swing.JPanel {
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
         finder.search(ticket.getCustomer());
         finder.setVisible(true);
-        ticket.setCustomer(finder.getSelectedCustomer());
+        
+        try {
+            ticket.setCustomer(finder.getSelectedCustomer() == null
+                    ? null
+                    : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()));
+        } catch (BasicException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
+            msg.show(this);            
+        }
         
         // The ticket name
         m_jTicketId.setText(ticket.getName(ticketext));

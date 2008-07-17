@@ -18,7 +18,6 @@
 
 package com.openbravo.pos.ticket;
 
-import com.openbravo.pos.customers.CustomerInfo;
 import java.util.*;
 import java.io.*;
 import java.text.DateFormat;
@@ -29,6 +28,7 @@ import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
+import com.openbravo.pos.customers.CustomerInfoExt;
 
 /**
  *
@@ -42,7 +42,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private int m_iTicketId;
     private java.util.Date m_dDate;
     private UserInfo m_User;
-    private CustomerInfo m_Customer;
+    private CustomerInfoExt m_Customer;
     private String m_sActiveCash;
     private List<PaymentInfo> m_aPayment;    
     private List<TicketLineInfo> m_aLines;
@@ -71,7 +71,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         m_sId = (String) in.readObject();
         m_iTicketId = in.readInt();
-        m_Customer = (CustomerInfo) in.readObject();
+        m_Customer = (CustomerInfoExt) in.readObject();
         m_dDate = (Date) in.readObject();
         m_User = null;
         m_sActiveCash = null;
@@ -85,10 +85,12 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_dDate = dr.getTimestamp(3);
         m_sActiveCash = dr.getString(4);
         m_User = new UserInfo(dr.getString(5), dr.getString(6)); 
-        String customerid = dr.getString(7);
-        m_Customer = customerid == null 
-                ? null
-                : new CustomerInfo(dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10));
+        String customerid = dr.getString(7);        
+        if (customerid == null ) {
+            m_Customer =  null;
+        } else {
+            m_Customer = new CustomerInfoExt(dr.getString(7));        
+        }
         m_aPayment = new ArrayList<PaymentInfo>(); 
         m_aLines = new ArrayList<TicketLineInfo>();
     }
@@ -167,10 +169,10 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_User = value;
     }   
     
-    public CustomerInfo getCustomer() {
+    public CustomerInfoExt getCustomer() {
         return m_Customer;
     }
-    public void setCustomer(CustomerInfo value) {
+    public void setCustomer(CustomerInfoExt value) {
         m_Customer = value;
     }
     public String getCustomerId() {

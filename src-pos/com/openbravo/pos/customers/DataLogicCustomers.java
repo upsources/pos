@@ -19,8 +19,8 @@
 package com.openbravo.pos.customers;
 
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.DataParams;
 import com.openbravo.data.loader.DataRead;
-import com.openbravo.data.loader.DataWrite;
 import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.QBFBuilder;
@@ -29,10 +29,9 @@ import com.openbravo.data.loader.SentenceExecTransaction;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerReadBasic;
-import com.openbravo.data.loader.SerializerWrite;
 import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.SerializerWriteBasicExt;
-import com.openbravo.data.loader.SerializerWriteString;
+import com.openbravo.data.loader.SerializerWriteParams;
 import com.openbravo.data.loader.Session;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.TableDefinition;
@@ -53,12 +52,20 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     public void init(Session s){
         
         this.s = s;
-        tcustomers = new TableDefinition(s,
-            "CUSTOMERS"
-            , new String[] {"ID", "TAXID", "SEARCHKEY", "NAME", "ADDRESS", "NOTES", "VISIBLE", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"}
-            , new String[] {"ID", AppLocal.getIntString("label.taxid"), AppLocal.getIntString("label.searchkey"), AppLocal.getIntString("label.name"), AppLocal.getIntString("label.address"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD", AppLocal.getIntString("label.maxdebt"), AppLocal.getIntString("label.curdate"), AppLocal.getIntString("label.curdebt")}
-            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE}
-            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING, Formats.CURRENCY, Formats.TIMESTAMP, Formats.CURRENCY}
+        tcustomers = new TableDefinition(s
+            , "CUSTOMERS"
+            , new String[] { "ID", "TAXID", "SEARCHKEY", "NAME", "NOTES", "VISIBLE", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"
+                           , "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE", "PHONE2", "FAX"
+                           , "ADDRESS", "ADDRESS2", "POSTAL", "CITY", "REGION", "COUNTRY" }
+            , new String[] { "ID", AppLocal.getIntString("label.taxid"), AppLocal.getIntString("label.searchkey"), AppLocal.getIntString("label.name"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD", AppLocal.getIntString("label.maxdebt"), AppLocal.getIntString("label.curdate"), AppLocal.getIntString("label.curdebt")
+                           , AppLocal.getIntString("label.firstname"), AppLocal.getIntString("label.lastname"), AppLocal.getIntString("label.email"), AppLocal.getIntString("label.phone"), AppLocal.getIntString("label.phone2"), AppLocal.getIntString("label.fax")
+                           , AppLocal.getIntString("label.address"), AppLocal.getIntString("label.address2"), AppLocal.getIntString("label.postal"), AppLocal.getIntString("label.city"), AppLocal.getIntString("label.region"), AppLocal.getIntString("label.country")}
+            , new Datas[] { Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE
+                          , Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
+                          , Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}
+            , new Formats[] { Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING, Formats.CURRENCY, Formats.TIMESTAMP, Formats.CURRENCY
+                            , Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING
+                            , Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING}
             , new int[] {0}
         );   
         
@@ -71,56 +78,24 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
-                        return new CustomerInfo(
-                                dr.getString(1),
-                                dr.getString(2),
-                                dr.getString(3),
-                                dr.getString(4));
+                        CustomerInfo c = new CustomerInfo(dr.getString(1));
+                        c.setTaxid(dr.getString(2));
+                        c.setSearchkey(dr.getString(3));
+                        c.setName(dr.getString(4));
+                        return c;
                     }                
                 });
     }
-    
-    public CustomerInfo findCustomer(String card) throws BasicException {
-        return (CustomerInfo) new PreparedSentence(s
-                , "SELECT ID, TAXID, NAME FROM CUSTOMERS WHERE VISIBLE = TRUE AND CARD = ?"
-                , SerializerWriteString.INSTANCE
-                , new SerializerRead() {
-                    public Object readValues(DataRead dr) throws BasicException {
-                        return new CustomerInfo(
-                                dr.getString(1),
-                                dr.getString(2),
-                                dr.getString(3),
-                                dr.getString(4));
-                    }
-                }).find(card);
-    }
-    
-    public int updateCustomerExt(CustomerInfoExt customer) throws BasicException {
+       
+    public int updateCustomerExt(final CustomerInfoExt customer) throws BasicException {
      
         return new PreparedSentence(s
-                , "UPDATE CUSTOMERS SET ADDRESS = ?, NOTES = ? WHERE ID = ?"
-                , new SerializerWrite() {
-                    public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                        CustomerInfoExt c = (CustomerInfoExt) obj;
-                        dp.setString(1, c.getAddress());
-                        dp.setString(2, c.getNotes());
-                        dp.setString(3, c.getId());
-                    }
-                }).exec(customer);        
-    }
-    
-    public CustomerInfoExt findCustomerExt(String card) throws BasicException {
-        return (CustomerInfoExt) new PreparedSentence(s
-                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE CARD = ?"
-                , SerializerWriteString.INSTANCE
-                , new CustomerExtRead()).find(card);        
-    }    
-    
-    public CustomerInfoExt loadCustomerExt(String id) throws BasicException {
-        return (CustomerInfoExt) new PreparedSentence(s
-                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, ADDRESS, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT FROM CUSTOMERS WHERE ID = ?"
-                , SerializerWriteString.INSTANCE
-                , new CustomerExtRead()).find(id);        
+                , "UPDATE CUSTOMERS SET NOTES = ? WHERE ID = ?"
+                , SerializerWriteParams.INSTANCE      
+                ).exec(new DataParams() { public void writeValues() throws BasicException {
+                        setString(1, customer.getNotes());
+                        setString(2, customer.getId());
+                }});        
     }
     
     public final SentenceList getReservationsList() {
@@ -186,22 +161,4 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     public final TableDefinition getTableCustomers() {
         return tcustomers;
     }  
-    
-    private static class CustomerExtRead implements SerializerRead {
-        public Object readValues(DataRead dr) throws BasicException {
-            CustomerInfoExt c = new CustomerInfoExt(
-                    dr.getString(1),
-                    dr.getString(2),
-                    dr.getString(3),
-                    dr.getString(4));
-            c.setCard(dr.getString(5));
-            c.setAddress(dr.getString(6));
-            c.setNotes(dr.getString(7));
-            c.setMaxdebt(dr.getDouble(8));
-            c.setVisible(dr.getBoolean(9).booleanValue());
-            c.setCurdate(dr.getTimestamp(10));
-            c.setCurdebt(dr.getDouble(11));
-            return c;
-        }                  
-    }
 }

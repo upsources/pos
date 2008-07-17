@@ -141,8 +141,11 @@ public class ProductsSync implements ProcessAction {
                 dlintegration. syncCustomersBefore();
                 
                 for (Customer customer : customers) {                    
-                    CustomerInfoExt cinfo = new CustomerInfoExt(Integer.toString(customer.getId()), null, customer.getSearchKey(), customer.getName());
-                    cinfo.setAddress(customer.getDescription());
+                    CustomerInfoExt cinfo = new CustomerInfoExt(Integer.toString(customer.getId()));
+                    cinfo.setSearchkey(customer.getSearchKey());
+                    cinfo.setName(customer.getName());          
+                    cinfo.setNotes(customer.getDescription());
+                    // TODO: Finish the integration of all fields.
                     dlintegration.syncCustomer(cinfo);
                 }
             }

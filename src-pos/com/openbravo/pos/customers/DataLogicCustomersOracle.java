@@ -21,12 +21,10 @@ package com.openbravo.pos.customers;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.Datas;
-import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.QBFBuilder;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerWriteBasic;
-import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.StaticSentence;
 
 /**
@@ -43,28 +41,12 @@ public class DataLogicCustomersOracle extends DataLogicCustomers {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
-                        return new CustomerInfo(
-                                dr.getString(1),
-                                dr.getString(2),
-                                dr.getString(3),
-                                dr.getString(4));
+                        CustomerInfo c = new CustomerInfo(dr.getString(1));
+                        c.setTaxid(dr.getString(2));
+                        c.setSearchkey(dr.getString(3));
+                        c.setName(dr.getString(4));
+                        return c;
                     }                
                 });
-    }
-    
-    @Override
-    public CustomerInfo findCustomer(String card) throws BasicException {
-        return (CustomerInfo) new PreparedSentence(s
-                , "SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = 1 AND CARD = ?"
-                , SerializerWriteString.INSTANCE
-                , new SerializerRead() {
-                    public Object readValues(DataRead dr) throws BasicException {
-                        return new CustomerInfo(
-                                dr.getString(1),
-                                dr.getString(2),
-                                dr.getString(3),
-                                dr.getString(4));
-                    }
-                }).find(card);
-    }
+    }    
 }

@@ -29,6 +29,7 @@ import java.util.UUID;
 import com.openbravo.data.loader.*;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.inventory.LocationInfo;
 import com.openbravo.pos.inventory.MovementReason;
 import com.openbravo.pos.mant.FloorsInfo;
@@ -147,12 +148,35 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerReadClass(FloorsInfo.class));
     }
     
+    public CustomerInfoExt findCustomerExt(String card) throws BasicException {
+        return (CustomerInfoExt) new PreparedSentence(s
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
+                  ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX" +
+                  ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY" +
+                  " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = TRUE"
+                , SerializerWriteString.INSTANCE
+                , new CustomerExtRead()).find(card);        
+    }    
+    
+    public CustomerInfoExt loadCustomerExt(String id) throws BasicException {
+        return (CustomerInfoExt) new PreparedSentence(s
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
+                  ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX" +
+                  ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY" +
+                " FROM CUSTOMERS WHERE ID = ?"
+                , SerializerWriteString.INSTANCE
+                , new CustomerExtRead()).find(id);        
+    }
+    
     public final TicketInfo loadTicket(Integer ticketid) throws BasicException {
         TicketInfo ticket = (TicketInfo) new PreparedSentence(s
-                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, P.ID, P.NAME, C.ID, C.TAXID, C.SEARCHKEY, C.NAME FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID LEFT OUTER JOIN CUSTOMERS C ON T.CUSTOMER = C.ID WHERE T.TICKETID = ?"
+                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, P.ID, P.NAME, T.CUSTOMER FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETID = ?"
                 , SerializerWriteInteger.INSTANCE
                 , new SerializerReadClass(TicketInfo.class)).find(ticketid);
         if (ticket != null) {
+            
+            ticket.setCustomer(loadCustomerExt(ticket.getCustomerId()));
+            
             ticket.setLines(new PreparedSentence(s
                 , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.NAME, L.ISCOM, L.UNITS, L.PRICE, T.ID, T.RATE, L.ATTRIBUTES FROM TICKETLINES L, TAXES T WHERE L.TAXID = T.ID AND L.TICKET = ? ORDER BY L.LINE"
                 , SerializerWriteString.INSTANCE
@@ -507,4 +531,33 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new int[] {0}
         );
     }
+    
+    protected static class CustomerExtRead implements SerializerRead {
+        public Object readValues(DataRead dr) throws BasicException {
+            CustomerInfoExt c = new CustomerInfoExt(dr.getString(1));
+            c.setTaxid(dr.getString(2));
+            c.setSearchkey(dr.getString(3));
+            c.setName(dr.getString(4));
+            c.setCard(dr.getString(5));
+            c.setNotes(dr.getString(6));
+            c.setMaxdebt(dr.getDouble(7));
+            c.setVisible(dr.getBoolean(8).booleanValue());
+            c.setCurdate(dr.getTimestamp(9));
+            c.setCurdebt(dr.getDouble(10));
+            c.setFirstname(dr.getString(11));
+            c.setLastname(dr.getString(12));
+            c.setEmail(dr.getString(13));
+            c.setPhone(dr.getString(14));
+            c.setPhone2(dr.getString(15));
+            c.setFax(dr.getString(16));
+            c.setAddress(dr.getString(17));
+            c.setAddress2(dr.getString(18));
+            c.setPostal(dr.getString(19));
+            c.setCity(dr.getString(20));
+            c.setRegion(dr.getString(21));
+            c.setCountry(dr.getString(22));
+            
+            return c;
+        }                  
+    }    
 }

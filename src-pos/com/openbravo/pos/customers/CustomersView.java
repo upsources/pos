@@ -48,10 +48,23 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jTaxID.getDocument().addDocumentListener(dirty);
         m_jSearchkey.getDocument().addDocumentListener(dirty);
         m_jName.getDocument().addDocumentListener(dirty);
-        m_jAddress.getDocument().addDocumentListener(dirty);
         m_jNotes.getDocument().addDocumentListener(dirty);
         txtMaxdebt.getDocument().addDocumentListener(dirty);
         m_jVisible.addActionListener(dirty);
+        
+        txtFirstName.getDocument().addDocumentListener(dirty);
+        txtLastName.getDocument().addDocumentListener(dirty);
+        txtEmail.getDocument().addDocumentListener(dirty);
+        txtPhone.getDocument().addDocumentListener(dirty);
+        txtPhone2.getDocument().addDocumentListener(dirty);
+        txtFax.getDocument().addDocumentListener(dirty);
+        
+        txtAddress.getDocument().addDocumentListener(dirty);
+        txtAddress2.getDocument().addDocumentListener(dirty);
+        txtPostal.getDocument().addDocumentListener(dirty);
+        txtCity.getDocument().addDocumentListener(dirty);
+        txtRegion.getDocument().addDocumentListener(dirty);
+        txtCountry.getDocument().addDocumentListener(dirty);
         
         writeValueEOF(); 
     }
@@ -61,23 +74,51 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jTaxID.setText(null);
         m_jSearchkey.setText(null);
         m_jName.setText(null);
-        m_jAddress.setText(null);
         m_jNotes.setText(null);
         txtMaxdebt.setText(null);
         txtCurdebt.setText(null);
         txtCurdate.setText(null);
         m_jVisible.setSelected(false);
         jcard.setText(null);
+        
+        txtFirstName.setText(null);
+        txtLastName.setText(null);
+        txtEmail.setText(null);
+        txtPhone.setText(null);
+        txtPhone2.setText(null);
+        txtFax.setText(null);
+       
+        txtAddress.setText(null);
+        txtAddress2.setText(null);
+        txtPostal.setText(null);
+        txtCity.setText(null);
+        txtRegion.setText(null);
+        txtCountry.setText(null);
+        
         m_jTaxID.setEnabled(false);
         m_jSearchkey.setEnabled(false);
         m_jName.setEnabled(false);
-        m_jAddress.setEnabled(false);
         m_jNotes.setEnabled(false);
         txtMaxdebt.setEnabled(false);
         txtCurdebt.setEnabled(false);
         txtCurdate.setEnabled(false);
         m_jVisible.setEnabled(false);
         jcard.setEnabled(false);
+        
+        txtFirstName.setEnabled(false);
+        txtLastName.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtPhone.setEnabled(false);
+        txtPhone2.setEnabled(false);
+        txtFax.setEnabled(false);
+       
+        txtAddress.setEnabled(false);
+        txtAddress2.setEnabled(false);
+        txtPostal.setEnabled(false);
+        txtCity.setEnabled(false);
+        txtRegion.setEnabled(false);
+        txtCountry.setEnabled(false);
+        
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
     } 
@@ -87,23 +128,51 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jTaxID.setText(null);
         m_jSearchkey.setText(null);
         m_jName.setText(null);
-        m_jAddress.setText(null);
         m_jNotes.setText(null);
         txtMaxdebt.setText(null);
         txtCurdebt.setText(null);
         txtCurdate.setText(null);        
         m_jVisible.setSelected(true);
         jcard.setText(null);
+        
+        txtFirstName.setText(null);
+        txtLastName.setText(null);
+        txtEmail.setText(null);
+        txtPhone.setText(null);
+        txtPhone2.setText(null);
+        txtFax.setText(null);
+       
+        txtAddress.setText(null);
+        txtAddress2.setText(null);
+        txtPostal.setText(null);
+        txtCity.setText(null);
+        txtRegion.setText(null);
+        txtCountry.setText(null);
+        
         m_jTaxID.setEnabled(true);
         m_jSearchkey.setEnabled(true);
         m_jName.setEnabled(true);
-        m_jAddress.setEnabled(true);
         m_jNotes.setEnabled(true);
         txtMaxdebt.setEnabled(true);
         txtCurdebt.setEnabled(true);
         txtCurdate.setEnabled(true);
         m_jVisible.setEnabled(true);
         jcard.setEnabled(true);
+               
+        txtFirstName.setEnabled(true);
+        txtLastName.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtPhone.setEnabled(true);
+        txtPhone2.setEnabled(true);
+        txtFax.setEnabled(true);
+       
+        txtAddress.setEnabled(true);
+        txtAddress2.setEnabled(true);
+        txtPostal.setEnabled(true);
+        txtCity.setEnabled(true);
+        txtRegion.setEnabled(true);
+        txtCountry.setEnabled(true);
+        
         jButton2.setEnabled(true);
         jButton3.setEnabled(true);
     }
@@ -114,23 +183,51 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jTaxID.setText((String) customer[1]);
         m_jSearchkey.setText((String) customer[2]);
         m_jName.setText((String) customer[3]);
-        m_jAddress.setText((String) customer[4]);
-        m_jNotes.setText((String) customer[5]);
-        m_jVisible.setSelected(((Boolean) customer[6]).booleanValue());
-        jcard.setText((String) customer[7]);
-        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[8]));
-        txtCurdate.setText(Formats.DATE.formatValue(customer[9]));        
-        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[10]));        
+        m_jNotes.setText((String) customer[4]);
+        m_jVisible.setSelected(((Boolean) customer[5]).booleanValue());
+        jcard.setText((String) customer[6]);
+        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[7]));
+        txtCurdate.setText(Formats.DATE.formatValue(customer[8]));        
+        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[9]));    
+        
+        txtFirstName.setText(Formats.STRING.formatValue(customer[10]));
+        txtLastName.setText(Formats.STRING.formatValue(customer[11]));
+        txtEmail.setText(Formats.STRING.formatValue(customer[12]));
+        txtPhone.setText(Formats.STRING.formatValue(customer[13]));
+        txtPhone2.setText(Formats.STRING.formatValue(customer[14]));
+        txtFax.setText(Formats.STRING.formatValue(customer[15]));
+       
+        txtAddress.setText(Formats.STRING.formatValue(customer[16]));
+        txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
+        txtPostal.setText(Formats.STRING.formatValue(customer[18]));
+        txtCity.setText(Formats.STRING.formatValue(customer[19]));
+        txtRegion.setText(Formats.STRING.formatValue(customer[20]));
+        txtCountry.setText(Formats.STRING.formatValue(customer[21]));       
+        
         m_jTaxID.setEnabled(false);
         m_jSearchkey.setEnabled(false);
         m_jName.setEnabled(false);
-        m_jAddress.setEnabled(false);
         m_jNotes.setEnabled(false);
         txtMaxdebt.setEnabled(false);
         txtCurdebt.setEnabled(false);
         txtCurdate.setEnabled(false);
         m_jVisible.setEnabled(false);
-        jcard.setEnabled(false);
+        jcard.setEnabled(false);       
+        
+        txtFirstName.setEnabled(false);
+        txtLastName.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtPhone.setEnabled(false);
+        txtPhone2.setEnabled(false);
+        txtFax.setEnabled(false);
+       
+        txtAddress.setEnabled(false);
+        txtAddress2.setEnabled(false);
+        txtPostal.setEnabled(false);
+        txtCity.setEnabled(false);
+        txtRegion.setEnabled(false);
+        txtCountry.setEnabled(false);
+        
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
     }
@@ -141,40 +238,82 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jTaxID.setText((String) customer[1]);
         m_jSearchkey.setText((String) customer[2]);
         m_jName.setText((String) customer[3]);
-        m_jAddress.setText((String) customer[4]);
-        m_jNotes.setText((String) customer[5]);
-        m_jVisible.setSelected(((Boolean) customer[6]).booleanValue());
-        jcard.setText((String) customer[7]);
-        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[8]));
-        txtCurdate.setText(Formats.DATE.formatValue(customer[9]));        
-        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[10]));           
+        m_jNotes.setText((String) customer[4]);
+        m_jVisible.setSelected(((Boolean) customer[5]).booleanValue());
+        jcard.setText((String) customer[6]);
+        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[7]));
+        txtCurdate.setText(Formats.DATE.formatValue(customer[8]));        
+        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[9]));    
+        
+        txtFirstName.setText(Formats.STRING.formatValue(customer[10]));
+        txtLastName.setText(Formats.STRING.formatValue(customer[11]));
+        txtEmail.setText(Formats.STRING.formatValue(customer[12]));
+        txtPhone.setText(Formats.STRING.formatValue(customer[13]));
+        txtPhone2.setText(Formats.STRING.formatValue(customer[14]));
+        txtFax.setText(Formats.STRING.formatValue(customer[15]));
+       
+        txtAddress.setText(Formats.STRING.formatValue(customer[16]));
+        txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
+        txtPostal.setText(Formats.STRING.formatValue(customer[18]));
+        txtCity.setText(Formats.STRING.formatValue(customer[19]));
+        txtRegion.setText(Formats.STRING.formatValue(customer[20]));
+        txtCountry.setText(Formats.STRING.formatValue(customer[21]));   
+              
         m_jTaxID.setEnabled(true);
         m_jSearchkey.setEnabled(true);
         m_jName.setEnabled(true);
-        m_jAddress.setEnabled(true);
         m_jNotes.setEnabled(true);
         txtMaxdebt.setEnabled(true);
         txtCurdebt.setEnabled(true);
-        txtCurdate.setEnabled(true);        
+        txtCurdate.setEnabled(true);
         m_jVisible.setEnabled(true);
         jcard.setEnabled(true);
+               
+        txtFirstName.setEnabled(true);
+        txtLastName.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtPhone.setEnabled(true);
+        txtPhone2.setEnabled(true);
+        txtFax.setEnabled(true);
+       
+        txtAddress.setEnabled(true);
+        txtAddress2.setEnabled(true);
+        txtPostal.setEnabled(true);
+        txtCity.setEnabled(true);
+        txtRegion.setEnabled(true);
+        txtCountry.setEnabled(true);
+        
         jButton2.setEnabled(true);
         jButton3.setEnabled(true);
     }
     
     public Object createValue() throws BasicException {
-        Object[] customer = new Object[11];
+        Object[] customer = new Object[22];
         customer[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
         customer[1] = m_jTaxID.getText();
         customer[2] = m_jSearchkey.getText();
         customer[3] = m_jName.getText();
-        customer[4] = m_jAddress.getText();
-        customer[5] = m_jNotes.getText();
-        customer[6] = Boolean.valueOf(m_jVisible.isSelected());
-        customer[7] = Formats.STRING.parseValue(jcard.getText()); // Format to manage NULL values
-        customer[8] = Formats.CURRENCY.parseValue(txtMaxdebt.getText(), new Double(0.0));
-        customer[9] = Formats.TIMESTAMP.parseValue(txtCurdate.getText()); // not saved
-        customer[10] = Formats.CURRENCY.parseValue(txtCurdebt.getText()); // not saved
+        customer[4] = m_jNotes.getText();
+        customer[5] = Boolean.valueOf(m_jVisible.isSelected());
+        customer[6] = Formats.STRING.parseValue(jcard.getText()); // Format to manage NULL values
+        customer[7] = Formats.CURRENCY.parseValue(txtMaxdebt.getText(), new Double(0.0));
+        customer[8] = Formats.TIMESTAMP.parseValue(txtCurdate.getText()); // not saved
+        customer[9] = Formats.CURRENCY.parseValue(txtCurdebt.getText()); // not saved
+        
+        customer[10] = Formats.STRING.parseValue(txtFirstName.getText());
+        customer[11] = Formats.STRING.parseValue(txtLastName.getText());
+        customer[12] = Formats.STRING.parseValue(txtEmail.getText());
+        customer[13] = Formats.STRING.parseValue(txtPhone.getText());
+        customer[14] = Formats.STRING.parseValue(txtPhone2.getText());
+        customer[15] = Formats.STRING.parseValue(txtFax.getText());
+       
+        customer[16] = Formats.STRING.parseValue(txtAddress.getText());
+        customer[17] = Formats.STRING.parseValue(txtAddress2.getText());
+        customer[18] = Formats.STRING.parseValue(txtPostal.getText());
+        customer[19] = Formats.STRING.parseValue(txtCity.getText());
+        customer[20] = Formats.STRING.parseValue(txtRegion.getText());
+        customer[21] = Formats.STRING.parseValue(txtCountry.getText()); 
+        
         return customer;
     }   
     
@@ -194,9 +333,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         m_jNotes = new javax.swing.JTextArea();
-        jLabel13 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        m_jAddress = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         m_jVisible = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
@@ -213,6 +349,33 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         m_jSearchkey = new javax.swing.JTextField();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        txtFax = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        txtLastName = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtPhone = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        txtPhone2 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        txtFirstName = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        txtAddress = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        txtCountry = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        txtAddress2 = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        txtPostal = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        txtCity = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        txtRegion = new javax.swing.JTextField();
 
         setLayout(null);
 
@@ -224,27 +387,18 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         add(jLabel12);
-        jLabel12.setBounds(20, 220, 140, 15);
+        jLabel12.setBounds(20, 140, 140, 15);
 
         jScrollPane1.setViewportView(m_jNotes);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(160, 220, 270, 70);
-
-        jLabel13.setText(AppLocal.getIntString("label.address")); // NOI18N
-        add(jLabel13);
-        jLabel13.setBounds(20, 140, 140, 15);
-
-        jScrollPane2.setViewportView(m_jAddress);
-
-        add(jScrollPane2);
-        jScrollPane2.setBounds(160, 140, 270, 70);
+        jScrollPane1.setBounds(160, 140, 270, 70);
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 390, 140, 15);
+        jLabel4.setBounds(20, 250, 140, 15);
         add(m_jVisible);
-        m_jVisible.setBounds(160, 390, 140, 20);
+        m_jVisible.setBounds(160, 250, 140, 20);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         add(jLabel5);
@@ -274,29 +428,29 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 300, 140, 15);
+        jLabel1.setBounds(20, 220, 140, 15);
 
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtMaxdebt);
-        txtMaxdebt.setBounds(160, 300, 130, 19);
+        txtMaxdebt.setBounds(160, 220, 130, 19);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 330, 140, 15);
+        jLabel2.setBounds(20, 280, 140, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtCurdebt);
-        txtCurdebt.setBounds(160, 330, 130, 19);
+        txtCurdebt.setBounds(160, 280, 130, 19);
 
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         add(txtCurdate);
-        txtCurdate.setBounds(160, 360, 130, 19);
+        txtCurdate.setBounds(160, 310, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         add(jLabel6);
-        jLabel6.setBounds(20, 360, 140, 15);
+        jLabel6.setBounds(20, 310, 140, 15);
         add(m_jTaxID);
         m_jTaxID.setBounds(160, 20, 270, 19);
 
@@ -309,6 +463,89 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jLabel8.setBounds(20, 50, 140, 15);
         add(m_jSearchkey);
         m_jSearchkey.setBounds(160, 50, 270, 19);
+
+        jPanel1.setLayout(null);
+
+        jLabel14.setText(AppLocal.getIntString("label.fax")); // NOI18N
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(10, 160, 140, 15);
+        jPanel1.add(txtFax);
+        txtFax.setBounds(150, 160, 270, 19);
+
+        jLabel15.setText(AppLocal.getIntString("label.lastname")); // NOI18N
+        jPanel1.add(jLabel15);
+        jLabel15.setBounds(10, 40, 140, 15);
+        jPanel1.add(txtLastName);
+        txtLastName.setBounds(150, 40, 270, 19);
+
+        jLabel16.setText(AppLocal.getIntString("label.email")); // NOI18N
+        jPanel1.add(jLabel16);
+        jLabel16.setBounds(10, 70, 140, 15);
+        jPanel1.add(txtEmail);
+        txtEmail.setBounds(150, 70, 270, 19);
+
+        jLabel17.setText(AppLocal.getIntString("label.phone")); // NOI18N
+        jPanel1.add(jLabel17);
+        jLabel17.setBounds(10, 100, 140, 15);
+        jPanel1.add(txtPhone);
+        txtPhone.setBounds(150, 100, 270, 19);
+
+        jLabel18.setText(AppLocal.getIntString("label.phone2")); // NOI18N
+        jPanel1.add(jLabel18);
+        jLabel18.setBounds(10, 130, 140, 15);
+        jPanel1.add(txtPhone2);
+        txtPhone2.setBounds(150, 130, 270, 19);
+
+        jLabel19.setText(AppLocal.getIntString("label.firstname")); // NOI18N
+        jPanel1.add(jLabel19);
+        jLabel19.setBounds(10, 10, 140, 15);
+        jPanel1.add(txtFirstName);
+        txtFirstName.setBounds(150, 10, 270, 19);
+
+        jTabbedPane1.addTab(AppLocal.getIntString("label.contact"), jPanel1); // NOI18N
+
+        jPanel2.setLayout(null);
+
+        jLabel13.setText(AppLocal.getIntString("label.address")); // NOI18N
+        jPanel2.add(jLabel13);
+        jLabel13.setBounds(10, 10, 140, 15);
+        jPanel2.add(txtAddress);
+        txtAddress.setBounds(150, 10, 270, 19);
+
+        jLabel20.setText(AppLocal.getIntString("label.country")); // NOI18N
+        jPanel2.add(jLabel20);
+        jLabel20.setBounds(10, 160, 140, 15);
+        jPanel2.add(txtCountry);
+        txtCountry.setBounds(150, 160, 270, 19);
+
+        jLabel21.setText(AppLocal.getIntString("label.address2")); // NOI18N
+        jPanel2.add(jLabel21);
+        jLabel21.setBounds(10, 40, 140, 15);
+        jPanel2.add(txtAddress2);
+        txtAddress2.setBounds(150, 40, 270, 19);
+
+        jLabel22.setText(AppLocal.getIntString("label.postal")); // NOI18N
+        jPanel2.add(jLabel22);
+        jLabel22.setBounds(10, 70, 140, 15);
+        jPanel2.add(txtPostal);
+        txtPostal.setBounds(150, 70, 270, 19);
+
+        jLabel23.setText(AppLocal.getIntString("label.city")); // NOI18N
+        jPanel2.add(jLabel23);
+        jLabel23.setBounds(10, 100, 140, 15);
+        jPanel2.add(txtCity);
+        txtCity.setBounds(150, 100, 270, 19);
+
+        jLabel24.setText(AppLocal.getIntString("label.region")); // NOI18N
+        jPanel2.add(jLabel24);
+        jLabel24.setBounds(10, 130, 140, 15);
+        jPanel2.add(txtRegion);
+        txtRegion.setBounds(150, 130, 270, 19);
+
+        jTabbedPane1.addTab(AppLocal.getIntString("label.location"), jPanel2); // NOI18N
+
+        add(jTabbedPane1);
+        jTabbedPane1.setBounds(10, 350, 560, 230);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -332,25 +569,49 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jcard;
-    private javax.swing.JTextArea m_jAddress;
     private javax.swing.JTextField m_jName;
     private javax.swing.JTextArea m_jNotes;
     private javax.swing.JTextField m_jSearchkey;
     private javax.swing.JTextField m_jTaxID;
     private javax.swing.JCheckBox m_jVisible;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtAddress2;
+    private javax.swing.JTextField txtCity;
+    private javax.swing.JTextField txtCountry;
     private javax.swing.JTextField txtCurdate;
     private javax.swing.JTextField txtCurdebt;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFax;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMaxdebt;
+    private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtPhone2;
+    private javax.swing.JTextField txtPostal;
+    private javax.swing.JTextField txtRegion;
     // End of variables declaration//GEN-END:variables
     
 }

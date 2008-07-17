@@ -20,12 +20,15 @@ package com.openbravo.pos.forms;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.Datas;
+import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.QBFBuilder;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SerializerReadBasic;
 import com.openbravo.data.loader.SerializerReadInteger;
 import com.openbravo.data.loader.SerializerWriteBasic;
+import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.StaticSentence;
+import com.openbravo.pos.customers.CustomerInfoExt;
 
 /**
  *
@@ -47,4 +50,15 @@ public class DataLogicSalesOracle extends DataLogicSales {
     public final Integer getNextTicketIndex() throws BasicException {
         return (Integer) new StaticSentence(s, "SELECT TICKETSNUM.NEXTVAL FROM DUAL", null, SerializerReadInteger.INSTANCE).find();
     }   
+    
+    @Override
+    public CustomerInfoExt findCustomerExt(String card) throws BasicException {
+        return (CustomerInfoExt) new PreparedSentence(s
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
+                  ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX" +
+                  ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY" +
+                  " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = 1"
+                , SerializerWriteString.INSTANCE
+                , new CustomerExtRead()).find(card);        
+    }    
 }

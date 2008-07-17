@@ -67,11 +67,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         initComponents();
         
         editorcard.addEditorKeys(m_jKeys);
-        txtAddress.addEditorKeys(m_jKeys);
         txtNotes.addEditorKeys(m_jKeys);
 
         dirty = new DirtyManager();
-        txtAddress.addPropertyChangeListener("Text", dirty);
         txtNotes.addPropertyChangeListener("Text", dirty);
     }
 
@@ -128,16 +126,12 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtTaxId.setText(customer.getTaxid());
         txtName.setText(customer.getName());
         txtCard.setText(customer.getCard());
-        txtAddress.reset();
-        txtAddress.setText(customer.getAddress());
         txtNotes.reset();
         txtNotes.setText(customer.getNotes());
         txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer.getMaxdebt()));
         txtCurdebt.setText(Formats.CURRENCY.formatValue(customer.getCurdebt()));
         txtCurdate.setText(Formats.DATE.formatValue(customer.getCurdate()));
-        chkVisible.setSelected(customer.isVisible());
 
-        txtAddress.setEnabled(true);
         txtNotes.setEnabled(true);
 
         dirty.setDirty(false);
@@ -153,14 +147,11 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtTaxId.setText(null);
         txtName.setText(null);
         txtCard.setText(null);
-        txtAddress.reset();
         txtNotes.reset();
         txtMaxdebt.setText(null);
         txtCurdebt.setText(null);
         txtCurdate.setText(null);
-        chkVisible.setSelected(false);
 
-        txtAddress.setEnabled(false);
         txtNotes.setEnabled(false);
 
         dirty.setDirty(false);
@@ -173,7 +164,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private void readCustomer() {
 
         try {
-            CustomerInfoExt customer = dlcustomers.findCustomerExt(editorcard.getText());
+            CustomerInfoExt customer = dlsales.findCustomerExt(editorcard.getText());
             if (customer == null) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
                 msg.show(this);
@@ -192,7 +183,6 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
     private void save() {
 
-        customerext.setAddress(txtAddress.getText());
         customerext.setNotes(txtNotes.getText());
 
         try {
@@ -250,8 +240,6 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtCard = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -261,8 +249,6 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         jLabel6 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         txtMaxdebt = new javax.swing.JTextField();
-        chkVisible = new javax.swing.JCheckBox();
-        txtAddress = new com.openbravo.editor.JEditorString();
         txtNotes = new com.openbravo.editor.JEditorString();
         txtTaxId = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -359,15 +345,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel12.setText(AppLocal.getIntString("label.notes")); // NOI18N
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 200, 140, 15);
-
-        jLabel13.setText(AppLocal.getIntString("label.address")); // NOI18N
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(20, 110, 140, 15);
-
-        jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(20, 380, 140, 15);
+        jLabel12.setBounds(20, 110, 140, 15);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         jPanel1.add(jLabel5);
@@ -381,29 +359,29 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(20, 290, 140, 15);
+        jLabel1.setBounds(20, 200, 140, 15);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 320, 140, 15);
+        jLabel2.setBounds(20, 230, 140, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtCurdebt.setFocusable(false);
         txtCurdebt.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdebt);
-        txtCurdebt.setBounds(160, 320, 130, 19);
+        txtCurdebt.setBounds(160, 230, 130, 19);
 
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCurdate.setFocusable(false);
         txtCurdate.setRequestFocusEnabled(false);
         jPanel1.add(txtCurdate);
-        txtCurdate.setBounds(160, 350, 130, 19);
+        txtCurdate.setBounds(160, 260, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(20, 350, 140, 15);
+        jLabel6.setBounds(20, 260, 140, 15);
 
         txtName.setEditable(false);
         txtName.setFocusable(false);
@@ -416,18 +394,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtMaxdebt.setFocusable(false);
         txtMaxdebt.setRequestFocusEnabled(false);
         jPanel1.add(txtMaxdebt);
-        txtMaxdebt.setBounds(160, 290, 130, 19);
-
-        chkVisible.setEnabled(false);
-        chkVisible.setFocusPainted(false);
-        chkVisible.setFocusable(false);
-        chkVisible.setRequestFocusEnabled(false);
-        jPanel1.add(chkVisible);
-        chkVisible.setBounds(160, 380, 140, 20);
-        jPanel1.add(txtAddress);
-        txtAddress.setBounds(160, 110, 270, 80);
+        txtMaxdebt.setBounds(160, 200, 130, 19);
         jPanel1.add(txtNotes);
-        txtNotes.setBounds(160, 200, 270, 80);
+        txtNotes.setBounds(160, 110, 270, 80);
 
         txtTaxId.setEditable(false);
         txtTaxId.setFocusable(false);
@@ -461,7 +430,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         CustomerInfo customer = finder.getSelectedCustomer();
         if (customer != null) {
             try {
-                CustomerInfoExt c = dlcustomers.loadCustomerExt(customer.getId());
+                CustomerInfoExt c = dlsales.loadCustomerExt(customer.getId());
                 if (c == null) {
                     MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
                     msg.show(this);
@@ -514,7 +483,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
             // reload customer
             CustomerInfoExt c;
             try {
-                c = dlcustomers.loadCustomerExt(customerext.getId());
+                c = dlsales.loadCustomerExt(customerext.getId());
                 if (c == null) {
                     MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
                     msg.show(this);
@@ -552,15 +521,12 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnSave;
-    private javax.swing.JCheckBox chkVisible;
     private com.openbravo.editor.JEditorString editorcard;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -571,7 +537,6 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private com.openbravo.editor.JEditorKeys m_jKeys;
-    private com.openbravo.editor.JEditorString txtAddress;
     private javax.swing.JTextField txtCard;
     private javax.swing.JTextField txtCurdate;
     private javax.swing.JTextField txtCurdebt;

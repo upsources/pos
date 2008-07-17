@@ -19,9 +19,11 @@
 package com.openbravo.possync;
 
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.DataParams;
 import com.openbravo.data.loader.DataWrite;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteParams;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.Transaction;
 import com.openbravo.pos.customers.CustomerInfoExt;
@@ -50,29 +52,25 @@ public class DataLogicIntegrationPostgreSQL extends DataLogicIntegration {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE CUSTOMERS SET SEARCHKEY = ?, NAME = ?, ADDRESS = ?, VISIBLE = TRUE WHERE ID = ?", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    CustomerInfoExt c = (CustomerInfoExt) obj;
-                                    dp.setString(1, c.getSearchkey());
-                                    dp.setString(2, c.getName());
-                                    dp.setString(3, c.getAddress());
-                                    dp.setString(4, c.getId());
-                                }
-                            }).exec(customer) == 0) {
+                            "UPDATE CUSTOMERS SET SEARCHKEY = ?, NAME = ?, NOTES = ?, VISIBLE = TRUE WHERE ID = ?", 
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, customer.getSearchkey());
+                                setString(2, customer.getName());
+                                setString(3, customer.getAddress());
+                                setString(4, customer.getId());                                   
+                            }}) == 0) {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                            "INSERT INTO CUSTOMERS(ID, SEARCHKEY, NAME, ADDRESS, VISIBLE) VALUES (?, ?, ?, ?, TRUE)", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    CustomerInfoExt c = (CustomerInfoExt) obj;
-                                    dp.setString(1, c.getId());
-                                    dp.setString(2, c.getSearchkey());
-                                    dp.setString(3, c.getName());
-                                    dp.setString(4, c.getAddress());
-                                }
-                            }).exec(customer);
+                            "INSERT INTO CUSTOMERS(ID, SEARCHKEY, NAME, NOTES, VISIBLE) VALUES (?, ?, ?, ?, TRUE)", 
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, customer.getId());
+                                setString(2, customer.getSearchkey());
+                                setString(3, customer.getName());
+                                setString(4, customer.getAddress());                                    
+                            }});
                 }
                 
                 return null;

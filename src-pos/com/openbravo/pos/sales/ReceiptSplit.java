@@ -20,6 +20,7 @@ package com.openbravo.pos.sales;
 
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import java.awt.BorderLayout;
@@ -41,37 +42,37 @@ public class ReceiptSplit extends javax.swing.JDialog {
     SimpleReceipt receipttwo;
     
     /** Creates new form ReceiptSplit */
-    protected ReceiptSplit(java.awt.Frame parent, String ticketline, DataLogicCustomers dlCustomers) {
+    protected ReceiptSplit(java.awt.Frame parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
         super(parent, true);
-        init(ticketline, dlCustomers);
+        init(ticketline, dlSales, dlCustomers);
     }
     /** Creates new form ReceiptSplit */
-    protected ReceiptSplit(java.awt.Dialog parent, String ticketline, DataLogicCustomers dlCustomers) {
+    protected ReceiptSplit(java.awt.Dialog parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
         super(parent, true);
-        init(ticketline, dlCustomers);
+        init(ticketline, dlSales, dlCustomers);
     } 
     
-    private void init(String ticketline, DataLogicCustomers dlCustomers) {
+    private void init(String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
         
         initComponents();        
         getRootPane().setDefaultButton(m_jButtonOK); 
         
-        receiptone = new SimpleReceipt(ticketline, dlCustomers);
+        receiptone = new SimpleReceipt(ticketline, dlSales, dlCustomers);
         receiptone.setCustomerEnabled(false);
         jPanel5.add(receiptone, BorderLayout.CENTER);
         
-        receipttwo = new SimpleReceipt(ticketline, dlCustomers);
+        receipttwo = new SimpleReceipt(ticketline, dlSales, dlCustomers);
         jPanel3.add(receipttwo, BorderLayout.CENTER);  
     }
     
-    public static ReceiptSplit getDialog(Component parent, String ticketline, DataLogicCustomers dlCustomers) {
+    public static ReceiptSplit getDialog(Component parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
          
         Window window = getWindow(parent);
         
         if (window instanceof Frame) { 
-            return new ReceiptSplit((Frame) window, ticketline, dlCustomers);
+            return new ReceiptSplit((Frame) window, ticketline, dlSales, dlCustomers);
         } else {
-            return new ReceiptSplit((Dialog) window, ticketline, dlCustomers);
+            return new ReceiptSplit((Dialog) window, ticketline, dlSales, dlCustomers);
         }
     } 
     

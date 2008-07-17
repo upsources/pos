@@ -25,6 +25,7 @@ package com.openbravo.possync;
 
 import java.util.List;
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.DataParams;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.DataWrite;
 import com.openbravo.data.loader.ImageUtils;
@@ -32,6 +33,7 @@ import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerReadClass;
 import com.openbravo.data.loader.SerializerWrite;
+import com.openbravo.data.loader.SerializerWriteParams;
 import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.Session;
 import com.openbravo.data.loader.StaticSentence;
@@ -80,27 +82,23 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE TAXES SET NAME = ?, RATE = ? WHERE ID = ?", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    TaxInfo t = (TaxInfo) obj;
-                                    dp.setString(1, t.getName());
-                                    dp.setDouble(2, t.getRate());
-                                    dp.setString(3, t.getId());
-                                }
-                            }).exec(tax) == 0) {
+                            "UPDATE TAXES SET NAME = ?, RATE = ? WHERE ID = ?",
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, tax.getName());
+                                setDouble(2, tax.getRate());
+                                setString(3, tax.getId());                                    
+                            }}) == 0) {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
                             "INSERT INTO TAXES(ID, NAME, RATE) VALUES (?, ?, ?)", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    TaxInfo t = (TaxInfo) obj;
-                                    dp.setString(1, t.getId());
-                                    dp.setString(2, t.getName());
-                                    dp.setDouble(3, t.getRate());
-                                }
-                            }).exec(tax);
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, tax.getId());
+                                setString(2, tax.getName());
+                                setDouble(3, tax.getRate());
+                            }});
                 }
                 
                 return null;
@@ -118,26 +116,22 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 // Try to update
                 if (new PreparedSentence(s, 
                             "UPDATE CATEGORIES SET NAME = ?, IMAGE = ? WHERE ID = ?", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    CategoryInfo c = (CategoryInfo) obj;
-                                    dp.setString(1, c.getName());
-                                    dp.setBytes(2, ImageUtils.writeImage(c.getImage()));
-                                    dp.setString(3, c.getID());
-                                }
-                            }).exec(cat) == 0) {
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                 setString(1, cat.getName());
+                                 setBytes(2, ImageUtils.writeImage(cat.getImage()));
+                                 setString(3, cat.getID());                                   
+                            }}) == 0) {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                        "INSERT INTO CATEGORIES(ID, NAME, IMAGE) VALUES (?, ?, ?)", 
-                        new SerializerWrite() {
-                            public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                CategoryInfo c = (CategoryInfo) obj;
-                                dp.setString(1, c.getID());
-                                dp.setString(2, c.getName());
-                                dp.setBytes(3, ImageUtils.writeImage(c.getImage()));
-                            }
-                        }).exec(cat);
+                        "INSERT INTO CATEGORIES(ID, NAME, IMAGE) VALUES (?, ?, ?)",
+                        SerializerWriteParams.INSTANCE
+                        ).exec(new DataParams() { public void writeValues() throws BasicException {
+                            setString(1, cat.getID());
+                            setString(2, cat.getName());
+                            setBytes(3, ImageUtils.writeImage(cat.getImage()));
+                        }});
                 }
                 return null;        
             }
@@ -154,57 +148,49 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 // Try to update
                 if (new PreparedSentence(s, 
                             "UPDATE PRODUCTS SET REFERENCE = ?, CODE = ?, NAME = ?, PRICEBUY = ?, PRICESELL = ?, CATEGORY = ?, TAX = ?, IMAGE = ? WHERE ID = ?", 
-                            new SerializerWrite() {
-                                public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                    ProductInfoExt p = (ProductInfoExt) obj;
-                                    dp.setString(1, p.getReference());
-                                    dp.setString(2, p.getCode());
-                                    dp.setString(3, p.getName());
-                                    // dp.setBoolean(x, p.isCom());
-                                    // dp.setBoolean(x, p.isScale());
-                                    dp.setDouble(4, p.getPriceBuy());
-                                    dp.setDouble(5, p.getPriceSell());
-                                    dp.setString(6, p.getCategoryID());
-                                    dp.setString(7, p.getTaxID());
-                                    dp.setBytes(8, ImageUtils.writeImage(p.getImage()));
-                                    // dp.setDouble(x, 0.0);
-                                    // dp.setDouble(x, 0.0);
-                                    dp.setString(9, p.getID());                    
-                                }
-                            }).exec(prod) == 0) {
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, prod.getReference());
+                                setString(2, prod.getCode());
+                                setString(3, prod.getName());
+                                // setBoolean(x, p.isCom());
+                                // setBoolean(x, p.isScale());
+                                setDouble(4, prod.getPriceBuy());
+                                setDouble(5, prod.getPriceSell());
+                                setString(6, prod.getCategoryID());
+                                setString(7, prod.getTaxID());
+                                setBytes(8, ImageUtils.writeImage(prod.getImage()));
+                                // setDouble(x, 0.0);
+                                // setDouble(x, 0.0);
+                                setString(9, prod.getID());  
+                            }}) == 0) {
                             
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                        "INSERT INTO PRODUCTS (ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, CATEGORY, TAX, IMAGE, STOCKCOST, STOCKVOLUME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                         new SerializerWrite() {
-                            public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                                ProductInfoExt p = (ProductInfoExt) obj;
-                                dp.setString(1, p.getID());
-                                dp.setString(2, p.getReference());
-                                dp.setString(3, p.getCode());
-                                dp.setString(4, p.getName());
-                                dp.setBoolean(5, p.isCom());
-                                dp.setBoolean(6, p.isScale());
-                                dp.setDouble(7, p.getPriceBuy());
-                                dp.setDouble(8, p.getPriceSell());
-                                dp.setString(9, p.getCategoryID());
-                                dp.setString(10, p.getTaxID());
-                                dp.setBytes(11, ImageUtils.writeImage(p.getImage()));
-                                dp.setDouble(12, 0.0);
-                                dp.setDouble(13, 0.0);
-                            }
-                        }).exec(prod);
+                            "INSERT INTO PRODUCTS (ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, CATEGORY, TAX, IMAGE, STOCKCOST, STOCKVOLUME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, prod.getID());
+                                setString(2, prod.getReference());
+                                setString(3, prod.getCode());
+                                setString(4, prod.getName());
+                                setBoolean(5, prod.isCom());
+                                setBoolean(6, prod.isScale());
+                                setDouble(7, prod.getPriceBuy());
+                                setDouble(8, prod.getPriceSell());
+                                setString(9, prod.getCategoryID());
+                                setString(10, prod.getTaxID());
+                                setBytes(11, ImageUtils.writeImage(prod.getImage()));
+                                setDouble(12, 0.0);
+                                setDouble(13, 0.0);                               
+                            }});
                 }
                         
                 // Insert in catalog
                 new StaticSentence(s, 
-                    "INSERT INTO PRODUCTS_CAT(PRODUCT, CATORDER) VALUES (?, NULL)",
-                    new SerializerWrite() {
-                        public void writeValues(DataWrite dp, Object obj) throws BasicException {
-                            ProductInfoExt p = (ProductInfoExt) obj;
-                            dp.setString(1, p.getID());                    
-                        }
-                    }).exec(prod);   
+                        "INSERT INTO PRODUCTS_CAT(PRODUCT, CATORDER) VALUES (?, NULL)",
+                        SerializerWriteString.INSTANCE
+                        ).exec(prod.getID());   
                 
                 return null;        
             }

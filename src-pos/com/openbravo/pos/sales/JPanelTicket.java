@@ -37,6 +37,7 @@ import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.HashMapKeyed;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.scripting.ScriptEngine;
@@ -44,7 +45,6 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.forms.BeanFactoryApp;
 import com.openbravo.pos.forms.BeanFactoryException;
 import com.openbravo.pos.payment.JPaymentSelectReceipt;
@@ -503,7 +503,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 if (sCode.startsWith("c")) {
                     // barcode of a customers card
                     try {
-                        CustomerInfo newcustomer = dlCustomers.findCustomer(sCode);
+                        CustomerInfoExt newcustomer = dlSales.findCustomerExt(sCode);
                         if (newcustomer == null) {
                             Toolkit.getDefaultToolkit().beep();                   
                             new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.nocustomer")).show(this);           
@@ -1405,7 +1405,16 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
         finder.search(m_oTicket.getCustomer());
         finder.setVisible(true);
-        m_oTicket.setCustomer(finder.getSelectedCustomer());     
+        
+        try {
+            m_oTicket.setCustomer(finder.getSelectedCustomer() == null
+                    ? null
+                    : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()));
+        } catch (BasicException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
+            msg.show(this);            
+        }
+        
         // The ticket name
         m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
         
@@ -1414,7 +1423,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private void m_jEditLine1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jEditLine1ActionPerformed
 
         if (m_oTicket.getLinesCount() > 0) {
-            ReceiptSplit splitdialog = ReceiptSplit.getDialog(this, dlSystem.getResourceAsXML("Ticket.Line"), dlCustomers);
+            ReceiptSplit splitdialog = ReceiptSplit.getDialog(this, dlSystem.getResourceAsXML("Ticket.Line"), dlSales, dlCustomers);
             
             TicketInfo ticket1 = m_oTicket.copyTicket();
             TicketInfo ticket2 = new TicketInfo();

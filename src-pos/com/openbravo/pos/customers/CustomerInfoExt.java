@@ -26,31 +26,33 @@ import java.util.Date;
  * @author adrianromero
  */
 public class CustomerInfoExt extends CustomerInfo {
-        
-    private String card;
-    private String address;
-    private String notes;
-    private Double maxdebt;
-    private boolean visible;
-    private Date curdate;
-    private Double curdebt;
+    protected String notes;
+    protected boolean visible;
+    protected String card;
+    protected Double maxdebt;
+    protected Date curdate;
+    protected Double curdebt;
+    protected String firstname;
+    protected String lastname;
+    protected String email;
+    protected String phone;
+    protected String phone2;
+    protected String fax;
+    protected String address;
+    protected String address2;
+    protected String postal;
+    protected String city;
+    protected String region;
+    protected String country;
     
     /** Creates a new instance of UserInfoBasic */
-    public CustomerInfoExt(String id, String taxid, String searchkey, String name) {
-        super(id, taxid, searchkey, name);
+    public CustomerInfoExt(String id) {
+        super(id);
     } 
-    
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+  
+    public String printCurDebt() {
+        
+        return Formats.CURRENCY.formatValue(getCurdebt() == null ? new Double(0.0) : getCurdebt());
     }
 
     public String getNotes() {
@@ -59,6 +61,22 @@ public class CustomerInfoExt extends CustomerInfo {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
     }
 
     public Double getMaxdebt() {
@@ -85,24 +103,99 @@ public class CustomerInfoExt extends CustomerInfo {
         this.curdebt = curdebt;
     }
 
-    public String getCard() {
-        return card;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setCard(String card) {
-        this.card = card;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public boolean isVisible() {
-        return visible;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
-    
-    public String printCurDebt() {
-        
-        return Formats.CURRENCY.formatValue(curdebt == null ? new Double(0.0) : curdebt);
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhone2() {
+        return phone2;
+    }
+
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    public String getPostal() {
+        return postal;
+    }
+
+    public void setPostal(String postal) {
+        this.postal = postal;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

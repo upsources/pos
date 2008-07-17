@@ -29,15 +29,14 @@ import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.SerializerReadClass;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
-import com.openbravo.data.gui.NullIcon;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 
 public class JTicketsBagRestaurantMap extends JTicketsBag {
 
-    private static final Icon ICO_OCU = new ImageIcon(JTicketsBag.class.getResource("/com/openbravo/images/edit_group.png"));
-    private static final Icon ICO_FRE = new NullIcon(22, 22);
+//    private static final Icon ICO_OCU = new ImageIcon(JTicketsBag.class.getResource("/com/openbravo/images/edit_group.png"));
+//    private static final Icon ICO_FRE = new NullIcon(22, 22);
         
     private java.util.List<Place> m_aplaces;
     private java.util.List<Floor> m_afloors;
@@ -52,6 +51,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     private CustomerInfo customer;
 
     private DataLogicReceipts dlReceipts = null;
+    private DataLogicSales dlSales = null;
     
     /** Creates new form JTicketsBagRestaurant */
     public JTicketsBagRestaurantMap(AppView app, TicketsEditor panelticket) {
@@ -59,6 +59,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         super(app, panelticket);
         
         dlReceipts = (DataLogicReceipts) app.getBean("com.openbravo.pos.sales.DataLogicReceipts");
+        dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
         
         m_restaurantmap = new JTicketsBagRestaurant(app, this);
         m_PlaceCurrent = null;
@@ -409,9 +410,16 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                         // receive the customer
                         // table occupied
                         ticket = new TicketInfo();
-                        if (customer.getId() != null) {
-                            ticket.setCustomer(customer);
-                        }
+                        
+                        try {
+                            ticket.setCustomer(customer.getId() == null
+                                    ? null
+                                    : dlSales.loadCustomerExt(customer.getId()));
+                        } catch (BasicException e) {
+                            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
+                            msg.show(JTicketsBagRestaurantMap.this);            
+                        }                     
+                        
                         try {
                             dlReceipts.insertSharedTicket(m_place.getId(), ticket);
                         } catch (BasicException e) {
