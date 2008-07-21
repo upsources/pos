@@ -168,6 +168,15 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 , new CustomerExtRead()).find(id);        
     }
     
+    public final boolean isCashActive(String id) throws BasicException {
+        
+        return new PreparedSentence(s,
+                "SELECT MONEY FROM CLOSEDCASH WHERE DATEEND IS NULL AND MONEY = ?",
+                SerializerWriteString.INSTANCE,
+                SerializerReadString.INSTANCE).find(id)
+            != null;            
+    }
+    
     public final TicketInfo loadTicket(Integer ticketid) throws BasicException {
         TicketInfo ticket = (TicketInfo) new PreparedSentence(s
                 , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, P.ID, P.NAME, T.CUSTOMER FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETID = ?"

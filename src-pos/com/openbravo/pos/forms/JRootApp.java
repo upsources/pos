@@ -57,6 +57,7 @@ public class JRootApp extends JPanel implements AppView {
     
     private Properties m_propsdb = null;
     private String m_sActiveCashIndex;
+    private int m_iActiveCashSequence;
     private Date m_dActiveCashDateStart;
     private Date m_dActiveCashDateEnd;
     
@@ -156,13 +157,13 @@ public class JRootApp extends JPanel implements AppView {
             Object[] valcash = m_dlSystem.findActiveCash(sActiveCashIndex);
             if (valcash == null || !m_props.getHost().equals(valcash[0])) {
                 // no la encuentro o no es de mi host por tanto creo una...
-                setActiveCash(UUID.randomUUID().toString(), new Date(), null);
+                setActiveCash(UUID.randomUUID().toString(), 1, new Date(), null);
 
                 // creamos la caja activa      
                 m_dlSystem.execInsertCash(
-                        new Object[] {getActiveCashIndex(), m_props.getHost(), getActiveCashDateStart(), getActiveCashDateEnd()});                  
+                        new Object[] {getActiveCashIndex(), m_props.getHost(), getActiveCashSequence(), getActiveCashDateStart(), getActiveCashDateEnd()});                  
             } else {
-                setActiveCash(sActiveCashIndex, (Date) valcash[1], (Date) valcash[2]);
+                setActiveCash(sActiveCashIndex, (Integer) valcash[1], (Date) valcash[2], (Date) valcash[3]);
             }
         } catch (BasicException e) {
             // Casco. Sin caja no hay pos
@@ -261,14 +262,18 @@ public class JRootApp extends JPanel implements AppView {
     public String getActiveCashIndex() {
         return m_sActiveCashIndex;
     }
+    public int getActiveCashSequence() {
+        return m_iActiveCashSequence;
+    }
     public Date getActiveCashDateStart() {
         return m_dActiveCashDateStart;
     }
     public Date getActiveCashDateEnd(){
         return m_dActiveCashDateEnd;
     }
-    public void setActiveCash(String sIndex, Date dStart, Date dEnd) {
+    public void setActiveCash(String sIndex, int iSeq, Date dStart, Date dEnd) {
         m_sActiveCashIndex = sIndex;
+        m_iActiveCashSequence = iSeq;
         m_dActiveCashDateStart = dStart;
         m_dActiveCashDateEnd = dEnd;
         

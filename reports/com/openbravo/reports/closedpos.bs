@@ -24,6 +24,7 @@ report.setResourceBundle("com/openbravo/reports/closedpos_messages");
 
 report.setSentence("SELECT " + 
                     "CLOSEDCASH.HOST, " +
+                    "CLOSEDCASH.HOSTSEQUENCE, " +
                     "CLOSEDCASH.MONEY, " +
                     "CLOSEDCASH.DATESTART, " +
                     "CLOSEDCASH.DATEEND, " +
@@ -31,8 +32,8 @@ report.setSentence("SELECT " +
                     "SUM(PAYMENTS.TOTAL) AS TOTAL " +
                     "FROM CLOSEDCASH, PAYMENTS, RECEIPTS " +
                     "WHERE CLOSEDCASH.MONEY = RECEIPTS.MONEY AND PAYMENTS.RECEIPT = RECEIPTS.ID AND ?(QBF_FILTER) " +
-                    "GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATESTART, CLOSEDCASH.DATEEND, PAYMENTS.PAYMENT " +
-                    "ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART");
+                    "GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.HOSTSEQUENCE, CLOSEDCASH.MONEY, CLOSEDCASH.DATESTART, CLOSEDCASH.DATEEND, PAYMENTS.PAYMENT " +
+                    "ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.HOSTSEQUENCE");
 report.addParameter("CLOSEDCASH.DATEEND");
 report.addParameter("CLOSEDCASH.DATEEND");
 paramdates = new com.openbravo.pos.reports.JParamsDatesInterval();
@@ -40,6 +41,7 @@ paramdates.setStartDate(com.openbravo.beans.DateUtils.getToday());
 report.addQBFFilter(paramdates);
 
 report.addField("HOST", com.openbravo.data.loader.Datas.STRING);
+report.addField("SEQUENCE", com.openbravo.data.loader.Datas.INT);
 report.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
 report.addField("DATESTART", com.openbravo.data.loader.Datas.TIMESTAMP);
 report.addField("DATEEND", com.openbravo.data.loader.Datas.TIMESTAMP);

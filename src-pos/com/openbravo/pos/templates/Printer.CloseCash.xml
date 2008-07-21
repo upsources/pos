@@ -95,12 +95,16 @@
             <text>${payments.printHost()}</text>
         </line>    
         <line>
+            <text length="18">Sequence:</text>
+            <text length="24" align="right">${payments.printSequence()}</text>
+        </line> 
+        <line>
             <text length="18">Start date:</text>
-            <text>${payments.printDateStart()}</text>
+            <text length="24" align="right">${payments.printDateStart()}</text>
         </line>  
         <line>
             <text length="18">End date:</text>
-            <text>${payments.printDateEnd()}</text>
+            <text length="24" align="right">${payments.printDateEnd()}</text>
         </line>  
     </ticket>
 </output>

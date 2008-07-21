@@ -86,6 +86,10 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jTicketEditor.activate();
         
         m_panelticketedit.setActiveTicket(null, null); 
+        
+        m_jEdit.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.EditTicket"));
+        m_jRefund.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.RefundTicket"));
+        m_jPrint.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.PrintTicket"));
              
         // postcondicion es que tenemos ticket activado aqui y ticket en el panel
     }
@@ -162,7 +166,11 @@ public class JTicketsBagTicket extends JTicketsBag {
         
         // imprimo m_ticket
         
-        m_jEdit.setEnabled(m_ticket != null);
+        try {
+            m_jEdit.setEnabled(m_ticket != null && m_dlSales.isCashActive(m_ticket.getActiveCash()));
+        } catch (BasicException e) {
+            m_jEdit.setEnabled(false);
+        }
         m_jRefund.setEnabled(m_ticket != null && m_ticket.getTotal() > 0.0);
         m_jPrint.setEnabled(m_ticket != null);
         

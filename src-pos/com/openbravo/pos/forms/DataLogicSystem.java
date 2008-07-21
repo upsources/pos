@@ -102,12 +102,13 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
                 ,new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING}));
         
         m_activecash = new StaticSentence(s
-            , "SELECT HOST, DATESTART, DATEEND FROM CLOSEDCASH WHERE MONEY = ?"
+            , "SELECT HOST, HOSTSEQUENCE, DATESTART, DATEEND FROM CLOSEDCASH WHERE MONEY = ?"
             , SerializerWriteString.INSTANCE
-            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.TIMESTAMP}));            
+            , new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.INT, Datas.TIMESTAMP, Datas.TIMESTAMP}));            
         m_insertcash = new StaticSentence(s
-                , "INSERT INTO CLOSEDCASH(MONEY, HOST, DATESTART, DATEEND) VALUES (?, ?, ?, ?)"
-                , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.TIMESTAMP, Datas.TIMESTAMP}));
+                , "INSERT INTO CLOSEDCASH(MONEY, HOST, HOSTSEQUENCE, DATESTART, DATEEND) " +
+                  "VALUES (?, ?, ?, ?, ?)"
+                , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.INT, Datas.TIMESTAMP, Datas.TIMESTAMP}));
             
         m_locationfind = new StaticSentence(s
                 , "SELECT NAME FROM LOCATIONS WHERE ID = ?"

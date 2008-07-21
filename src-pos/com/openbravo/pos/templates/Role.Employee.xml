@@ -24,6 +24,10 @@
     <class name="com.openbravo.pos.sales.JPanelTicketEdits"/>
     <class name="com.openbravo.pos.panels.JPanelPayments"/>
     
+    <class name="sales.EditLines"/>
+    <class name="sales.RefundTicket"/>
+    <class name="sales.PrintTicket"/>
+    
     <class name="payment.cash"/>
     <class name="payment.cheque"/>
     <class name="payment.paper"/>

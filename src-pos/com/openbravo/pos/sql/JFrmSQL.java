@@ -99,14 +99,19 @@ public class JFrmSQL extends javax.swing.JFrame implements AppView {
     public Date getActiveCashDateStart() {
         return null;
     }
+    public int getActiveCashSequence() {
+        return 0;
+    }
     public Date getActiveCashDateEnd(){
         return null;
     }
     public String getInventoryLocation() {
         return null;
     }
-    public void setActiveCash(String iIndex, Date dStart, Date dEnd) {     
+
+    public void setActiveCash(String value, int iSeq, Date dStart, Date dEnd) {
     }
+
 
     public Session getSession() {
         return m_appcnt.getSession();

@@ -188,8 +188,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }               
         
         // Authorization for buttons
-        m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
-        m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
+        m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
+        m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
         m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());          
     }
     
@@ -621,7 +621,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } else if (cTrans == '\u00a7' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO) {
                 // Scale button pressed and a number typed as a price
-                if (m_App.getDeviceScale().existsScale() && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                if (m_App.getDeviceScale().existsScale() && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                     try {
                         Double value = m_App.getDeviceScale().readWeight();
                         if (value != null) {
@@ -678,7 +678,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             // Eliminamos un producto mas a la linea seleccionada
             } else if (cTrans == '-' 
                     && m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERZERO
-                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                    && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                 
                 int i = m_ticketlines.getSelectedIndex();
                 if (i < 0){
@@ -711,7 +711,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             // Ponemos n productos negativos a la linea seleccionada
             } else if (cTrans == '-' 
                     && m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERVALID
-                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                    && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                 
                 int i = m_ticketlines.getSelectedIndex();
                 if (i < 0){
@@ -727,25 +727,25 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             // Anadimos 1 producto
             } else if (cTrans == '+' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO
-                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                    && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                 addTicketLine(getInputProduct(), 1.0, includeTaxes(getInputValue()));
 
             // Anadimos 1 producto con precio negativo
             } else if (cTrans == '-' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO
-                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                    && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                 addTicketLine(getInputProduct(), 1.0, -includeTaxes(getInputValue()));
 
             // Anadimos n productos
             } else if (cTrans == '+' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERVALID
-                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                    && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                 addTicketLine(getInputProduct(), getPorValue(), includeTaxes(getInputValue()));
 
             // Anadimos n productos con precio negativo ?
             } else if (cTrans == '-' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERVALID
-                    && m_App.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits")) {
+                    && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
                 addTicketLine(getInputProduct(), getPorValue(), -includeTaxes(getInputValue()));
 
             // Totals() Igual;

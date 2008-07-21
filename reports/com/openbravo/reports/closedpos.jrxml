@@ -42,6 +42,7 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 	<field name="DATESTART" class="java.util.Date"/>
 	<field name="DATEEND" class="java.util.Date"/>
 	<field name="PAYMENT" class="java.lang.String"/>
+	<field name="SEQUENCE" class="java.lang.Integer"/>
 
 	<variable name="BIGTOTAL" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
@@ -138,12 +139,12 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 		<group  name="bymoney" >
 			<groupExpression><![CDATA[$F{MONEY}]]></groupExpression>
 			<groupHeader>
-			<band height="44"  isSplitAllowed="true" >
+			<band height="73"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
 						x="400"
-						y="22"
+						y="51"
 						width="110"
 						height="20"
 						forecolor="#000000"
@@ -163,7 +164,7 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="10"
-						y="0"
+						y="26"
 						width="190"
 						height="20"
 						forecolor="#000000"
@@ -183,7 +184,7 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="40"
+						y="69"
 						width="530"
 						height="0"
 						forecolor="#000000"
@@ -197,7 +198,7 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="220"
-						y="0"
+						y="26"
 						width="140"
 						height="20"
 						forecolor="#000000"
@@ -217,7 +218,7 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="370"
-						y="0"
+						y="26"
 						width="140"
 						height="20"
 						forecolor="#000000"
@@ -232,6 +233,46 @@ ORDER BY CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
 						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.TIMESTAMP.formatValue($F{DATEEND})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="370"
+						y="6"
+						width="140"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-22"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.INT.formatValue($F{SEQUENCE})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="10"
+						y="6"
+						width="190"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-23"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.sequence}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupHeader>
