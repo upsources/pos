@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,17 +18,27 @@
 
 package com.openbravo.pos.printer;
 
-import javax.swing.JComponent;
-
-public interface DeviceDisplay {
-
-    // INTERFAZ DESCRIPCION
-    public String getDisplayName();
-    public String getDisplayDescription();
-    public JComponent getDisplayComponent();
+/**
+ *
+ * @author adrianromero
+ */
+public abstract class BaseAnimator implements DisplayAnimator {
     
-    // INTERFAZ VISOR    
-    public void writeVisor(int animation, String sLine1, String sLine2);
-    public void writeVisor(String sLine1, String sLine2);
-    public void clearVisor();
+    protected String baseLine1;
+    protected String baseLine2;
+    protected String currentLine1;
+    protected String currentLine2; 
+    
+    public BaseAnimator(String line1, String line2) {
+        baseLine1 = line1;
+        baseLine2 = line2;
+    }
+
+    public String getLine1() {
+        return currentLine1;
+    }
+
+    public String getLine2() {
+        return currentLine2;
+    }
 }

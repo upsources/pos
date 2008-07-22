@@ -40,25 +40,23 @@ public class DeviceDisplayESCPOS extends DeviceDisplaySerial {
         display.write(ESCPOS.VISOR_HOME);
         display.flush();
     }
-    
         
-     @Override
-     public void writeVisor(String sLine1, String sLine2) {
-               
-        display.write(ESCPOS.SELECT_DISPLAY);
-        display.write(ESCPOS.VISOR_CLEAR);
-        display.write(ESCPOS.VISOR_HOME);
-        display.write(trans.transString(DeviceTicket.alignLeft(sLine1, 20)));
-        display.write(trans.transString(DeviceTicket.alignLeft(sLine2, 20)));        
-        display.flush();
-    }
-    
-    @Override
-    public void clearVisor() {
+//    @Override
+//    public void clearLines() {
+//
+//        display.write(ESCPOS.SELECT_DISPLAY);
+//        display.write(ESCPOS.VISOR_CLEAR);
+//        display.write(ESCPOS.VISOR_HOME);
+//        display.flush();
+//    }
 
+    public void repaintLines() {
+        
         display.write(ESCPOS.SELECT_DISPLAY);
         display.write(ESCPOS.VISOR_CLEAR);
         display.write(ESCPOS.VISOR_HOME);
+        display.write(trans.transString(DeviceTicket.alignLeft(m_displaylines.getLine1(), 20)));
+        display.write(trans.transString(DeviceTicket.alignLeft(m_displaylines.getLine2(), 20)));        
         display.flush();
     }
 }

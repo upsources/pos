@@ -58,6 +58,11 @@ public class DeviceDisplayPanel extends JPanel implements DeviceDisplay, DeviceD
         return this;
     }
     
+    public void writeVisor(int animation, String sLine1, String sLine2) {
+        
+        m_displaylines.writeVisor(animation, sLine1, sLine2);
+    }
+    
     public void writeVisor(String sLine1, String sLine2) {
         
         m_displaylines.writeVisor(sLine1, sLine2);
@@ -72,6 +77,7 @@ public class DeviceDisplayPanel extends JPanel implements DeviceDisplay, DeviceD
         jline2.setText(m_displaylines.getLine2());
     }
     
+    @Override
     protected void paintComponent(Graphics g) {
         
         paintBorder(g);

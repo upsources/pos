@@ -44,21 +44,11 @@ public class DeviceDisplaySurePOS extends DeviceDisplaySerial {
         display.flush();
     }
 
-    @Override
-    public void writeVisor(String sLine1, String sLine2) {
+    public void repaintLines() {
         display.write(new byte[]{0x10, 0x00}); // VISOR HOME
-        display.write(trans.transString(DeviceTicket.alignLeft(sLine1, 20)));
+        display.write(trans.transString(DeviceTicket.alignLeft(m_displaylines.getLine1(), 20)));
         display.write(new byte[]{0x10, 0x14});
-        display.write(trans.transString(DeviceTicket.alignLeft(sLine2, 20)));        
-        display.flush();
-    }
-
-    @Override
-    public void clearVisor() {
-        display.write(new byte[]{0x10, 0x00}); // VISOR HOME   
-        display.write(trans.transString(DeviceTicket.getWhiteString(20)));
-        display.write(new byte[]{0x10, 0x14});
-        display.write(trans.transString(DeviceTicket.getWhiteString(20)));          
+        display.write(trans.transString(DeviceTicket.alignLeft(m_displaylines.getLine2(), 20)));        
         display.flush();
     }
 }

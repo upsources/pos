@@ -45,6 +45,7 @@ public class TicketParser extends DefaultHandler {
     private int m_iTextStyle;
     
     private StringBuffer m_sVisorLine;
+    private int m_iVisorAnimation;
     private String m_sVisorLine1;
     private String m_sVisorLine2;
     
@@ -95,6 +96,7 @@ public class TicketParser extends DefaultHandler {
         bctype = null;
         bcposition = null;
         m_sVisorLine = null;
+        m_iVisorAnimation = DeviceDisplayBase.ANIMATION_NULL;
         m_sVisorLine1 = null;
         m_sVisorLine2 = null;
         m_iOutputType = OUTPUT_NONE;
@@ -120,6 +122,18 @@ public class TicketParser extends DefaultHandler {
                 m_oOutputPrinter.beginReceipt();
             } else if ("display".equals(qName)) {
                 m_iOutputType = OUTPUT_DISPLAY;
+                String animation = attributes.getValue("animation");
+                if ("scroll".equals(animation)) {
+                    m_iVisorAnimation = DeviceDisplayBase.ANIMATION_SCROLL;
+                } else if ("flyer".equals(animation)) {
+                    m_iVisorAnimation = DeviceDisplayBase.ANIMATION_FLYER;
+                } else if ("blink".equals(animation)) {
+                    m_iVisorAnimation = DeviceDisplayBase.ANIMATION_BLINK;
+                } else if ("curtain".equals(animation)) {
+                    m_iVisorAnimation = DeviceDisplayBase.ANIMATION_CURTAIN;
+                } else { // "none"
+                    m_iVisorAnimation = DeviceDisplayBase.ANIMATION_NULL;
+                }
                 m_sVisorLine1 = null;
                 m_sVisorLine2 = null;                
                 m_oOutputPrinter = null;
@@ -279,7 +293,8 @@ public class TicketParser extends DefaultHandler {
                 }
                 text = null;
             } else if ("display".equals(qName)) {
-                m_printer.getDeviceDisplay().writeVisor(m_sVisorLine1, m_sVisorLine2);                    
+                m_printer.getDeviceDisplay().writeVisor(m_iVisorAnimation, m_sVisorLine1, m_sVisorLine2);        
+                m_iVisorAnimation = DeviceDisplayBase.ANIMATION_NULL;                
                 m_sVisorLine1 = null;
                 m_sVisorLine2 = null;
                 m_iOutputType = OUTPUT_NONE;

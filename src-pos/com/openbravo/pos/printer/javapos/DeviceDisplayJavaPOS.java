@@ -29,10 +29,9 @@ import com.openbravo.pos.printer.TicketPrinterException;
 public class DeviceDisplayJavaPOS implements DeviceDisplay, DeviceDisplayImpl {
     
     private String m_sName;
+    private LineDisplay m_ld;
     
     private DeviceDisplayBase m_displaylines;
-    
-    private LineDisplay m_ld;
     
     /** Creates a new instance of DeviceDisplayJavaPOS */
     public DeviceDisplayJavaPOS(String sDeviceName) throws TicketPrinterException {
@@ -58,10 +57,13 @@ public class DeviceDisplayJavaPOS implements DeviceDisplay, DeviceDisplayImpl {
     }      
     public javax.swing.JComponent getDisplayComponent() {
         return null;
-    }   
+    }
     
-    public void writeVisor(String sLine1, String sLine2) {
-        
+    public void writeVisor(int animation, String sLine1, String sLine2) {
+        m_displaylines.writeVisor(animation, sLine1, sLine2);
+    }    
+    
+    public void writeVisor(String sLine1, String sLine2) {        
         m_displaylines.writeVisor(sLine1, sLine2);
     }
      

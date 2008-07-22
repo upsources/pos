@@ -24,10 +24,12 @@ import com.openbravo.pos.forms.AppLocal;
  *
  * @author adrianromero
  */
-public abstract class DeviceDisplaySerial implements DeviceDisplay {
+public abstract class DeviceDisplaySerial implements DeviceDisplay, DeviceDisplayImpl {
     
     private String m_sName;    
-    protected PrinterWritter display;     
+    protected PrinterWritter display;  
+    
+    protected DeviceDisplayBase m_displaylines;
     
     public DeviceDisplaySerial() {
     }
@@ -47,8 +49,18 @@ public abstract class DeviceDisplaySerial implements DeviceDisplay {
     public javax.swing.JComponent getDisplayComponent() {
         return null;
     }
-
+    
+    public void writeVisor(int animation, String sLine1, String sLine2) {
+        m_displaylines.writeVisor(animation, sLine1, sLine2);
+    }    
+    
+    public void writeVisor(String sLine1, String sLine2) {        
+        m_displaylines.writeVisor(sLine1, sLine2);
+    }
+     
+    public void clearVisor() {
+        m_displaylines.clearVisor();
+    }
+    
     public abstract void initVisor();
-    public abstract void writeVisor(String sLine1, String sLine2);    
-    public abstract void clearVisor();
 }

@@ -39,6 +39,9 @@
 <!ELEMENT barcode (#PCDATA)>
 <!ATTLIST barcode type (EAN13 | CODE128) "EAN13">
 
+<!ELEMENT display (line)*>
+<!ATTLIST display animation (scroll | flyer | blink | curtain | none) "none">
+
 <!ELEMENT play (#PCDATA)>
 
 <!ELEMENT opendrawer EMPTY>

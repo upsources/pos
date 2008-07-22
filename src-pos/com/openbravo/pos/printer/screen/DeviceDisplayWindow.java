@@ -53,6 +53,10 @@ public class DeviceDisplayWindow extends javax.swing.JFrame implements DeviceDis
         return null;
     }
     
+    public void writeVisor(int animation, String sLine1, String sLine2) {
+        m_display.writeVisor(animation, sLine1, sLine2);
+    }    
+    
     public void writeVisor(String sLine1, String sLine2) {
         m_display.writeVisor(sLine1, sLine2);
     }

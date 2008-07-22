@@ -21,7 +21,7 @@
  
 <output>
      
-    <display>
+    <display animation="scroll">
         <line>
             <text align="center" length="20">Openbravo POS</text>
         </line>

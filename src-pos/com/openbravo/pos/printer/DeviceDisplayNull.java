@@ -50,4 +50,6 @@ public class DeviceDisplayNull implements DeviceDisplay {
     }      
     public void writeVisor(String sLine1, String sLine2) {
     } 
+    public void writeVisor(int animation, String sLine1, String sLine2) {
+    } 
 }

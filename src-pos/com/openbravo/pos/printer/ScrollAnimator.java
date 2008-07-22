@@ -22,20 +22,14 @@ package com.openbravo.pos.printer;
  *
  * @author adrianromero
  */
-public class ScrollAnimator implements DisplayAnimator {
-    
-    protected String baseLine1;
-    protected String baseLine2;
-    protected String currentLine1;
-    protected String currentLine2; 
+public class ScrollAnimator extends BaseAnimator {
     
     public ScrollAnimator(String line1, String line2) {
-        baseLine1 = line1;
-        baseLine2 = line2;
+        super(line1, line2);
     }
 
     public void setTiming(int i) {
-        int j = i % 40;
+        int j = (i / 2) % 40;
         if (j < 20) {
             currentLine1 = DeviceTicket.alignLeft(baseLine1.substring(j), 20);
             currentLine2 = DeviceTicket.alignLeft(baseLine2.substring(j), 20);
@@ -43,13 +37,5 @@ public class ScrollAnimator implements DisplayAnimator {
             currentLine1 = DeviceTicket.alignRight(baseLine1.substring(0, j - 20), 20);
             currentLine2 = DeviceTicket.alignRight(baseLine2.substring(0, j - 20), 20);
         }
-    }
-
-    public String getLine1() {
-        return currentLine1;
-    }
-
-    public String getLine2() {
-        return currentLine2;
     }
 }
