@@ -41,6 +41,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private String m_sId;
     private int m_iTicketId;
     private java.util.Date m_dDate;
+    private Properties attributes;
     private UserInfo m_User;
     private CustomerInfoExt m_Customer;
     private String m_sActiveCash;
@@ -52,6 +53,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_sId = UUID.randomUUID().toString();
         m_iTicketId = 0; // incrementamos
         m_dDate = new Date();
+        attributes = new Properties();
         m_User = null;
         m_Customer = null;
         m_sActiveCash = null;
@@ -64,6 +66,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         out.writeInt(m_iTicketId);    
         out.writeObject(m_Customer);
         out.writeObject(m_dDate);
+        out.writeObject(attributes);
         out.writeObject(m_aLines);
     }   
     
@@ -73,6 +76,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_iTicketId = in.readInt();
         m_Customer = (CustomerInfoExt) in.readObject();
         m_dDate = (Date) in.readObject();
+        attributes = (Properties) in.readObject();
         m_User = null;
         m_sActiveCash = null;
         m_aPayment = new ArrayList<PaymentInfo>();        
@@ -84,13 +88,15 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_iTicketId = dr.getInt(2).intValue();
         m_dDate = dr.getTimestamp(3);
         m_sActiveCash = dr.getString(4);
-        m_User = new UserInfo(dr.getString(5), dr.getString(6)); 
-        String customerid = dr.getString(7);        
-        if (customerid == null ) {
-            m_Customer =  null;
-        } else {
-            m_Customer = new CustomerInfoExt(dr.getString(7));        
-        }
+        try {
+            byte[] img = dr.getBytes(5);
+            if (img != null) {
+                attributes.loadFromXML(new ByteArrayInputStream(img));
+            }
+        } catch (IOException e) {
+        } 
+        m_User = new UserInfo(dr.getString(6), dr.getString(7)); 
+        m_Customer = new CustomerInfoExt(dr.getString(8));        
         m_aPayment = new ArrayList<PaymentInfo>(); 
         m_aLines = new ArrayList<TicketLineInfo>();
     }
@@ -100,9 +106,10 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
         t.m_iTicketId = m_iTicketId;
         t.m_dDate = m_dDate;
+        t.m_sActiveCash = m_sActiveCash;
+        t.attributes = (Properties) attributes.clone(); 
         t.m_User = m_User;
         t.m_Customer = m_Customer;
-        t.m_sActiveCash = m_sActiveCash;
         
         t.m_aPayment = new LinkedList<PaymentInfo>(); 
         for (PaymentInfo p : m_aPayment) {
@@ -189,7 +196,23 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public String getActiveCash() {
         return m_sActiveCash;
     }
-   
+    
+    public String getProperty(String key) {
+        return attributes.getProperty(key);
+    }
+    
+    public String getProperty(String key, String defaultvalue) {
+        return attributes.getProperty(key, defaultvalue);
+    }
+    
+    public void setProperty(String key, String value) {
+        attributes.setProperty(key, value);
+    }
+    
+    public Properties getProperties() {
+        return attributes;
+    }
+    
     public TicketLineInfo getLine(int index){
         return m_aLines.get(index);
     }

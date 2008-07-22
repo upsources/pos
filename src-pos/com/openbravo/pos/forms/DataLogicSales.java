@@ -35,6 +35,8 @@ import com.openbravo.pos.inventory.MovementReason;
 import com.openbravo.pos.mant.FloorsInfo;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  *
@@ -179,7 +181,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     
     public final TicketInfo loadTicket(Integer ticketid) throws BasicException {
         TicketInfo ticket = (TicketInfo) new PreparedSentence(s
-                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, P.ID, P.NAME, T.CUSTOMER FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETID = ?"
+                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, R.ATTRIBUTES, P.ID, P.NAME, T.CUSTOMER FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETID = ?"
                 , SerializerWriteInteger.INSTANCE
                 , new SerializerReadClass(TicketInfo.class)).find(ticketid);
         if (ticket != null) {
@@ -210,26 +212,31 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 
                 // new receipt
                 new PreparedSentence(s
-                    , "INSERT INTO RECEIPTS (ID, MONEY, DATENEW) VALUES (?, ?, ?)"
-                    , new SerializerWrite<TicketInfo>() {
-                    public void writeValues(DataWrite dp, TicketInfo value) throws BasicException {
-                        dp.setString(1, value.getId());
-                        dp.setString(2, value.getActiveCash());
-                        dp.setTimestamp(3, value.getDate());             
-                    }})
-                    .exec(ticket);
+                    , "INSERT INTO RECEIPTS (ID, MONEY, DATENEW, ATTRIBUTES) VALUES (?, ?, ?, ?)"
+                    , SerializerWriteParams.INSTANCE
+                    ).exec(new DataParams() { public void writeValues() throws BasicException {
+                        setString(1, ticket.getId());
+                        setString(2, ticket.getActiveCash());
+                        setTimestamp(3, ticket.getDate());   
+                        try {
+                            ByteArrayOutputStream o = new ByteArrayOutputStream();
+                            ticket.getProperties().storeToXML(o, AppLocal.APP_NAME, "UTF-8");
+                            setBytes(4, o.toByteArray()); 
+                        } catch (IOException e) {
+                            setBytes(4, null);
+                        }                         
+                    }});
                 
                 // new ticket
                 new PreparedSentence(s
                     , "INSERT INTO TICKETS (ID, TICKETID, PERSON, CUSTOMER) VALUES (?, ?, ?, ?)"
-                    , new SerializerWrite<TicketInfo>() {
-                    public void writeValues(DataWrite dp, TicketInfo value) throws BasicException {
-                        dp.setString(1, value.getId());
-                        dp.setInt(2, value.getTicketId());
-                        dp.setString(3, value.getUser().getId());
-                        dp.setString(4, value.getCustomerId());            
-                    }})
-                    .exec(ticket);                
+                    , SerializerWriteParams.INSTANCE
+                    ).exec(new DataParams() { public void writeValues() throws BasicException {
+                        setString(1, ticket.getId());
+                        setInt(2, ticket.getTicketId());
+                        setString(3, ticket.getUser().getId());
+                        setString(4, ticket.getCustomerId());    
+                    }});                
                 
                 SentenceExec ticketlineinsert = new PreparedSentence(s
                     , "INSERT INTO TICKETLINES (TICKET, LINE, PRODUCT, NAME, ISCOM, UNITS, PRICE, TAXID, ATTRIBUTES) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -238,18 +245,18 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 for (TicketLineInfo l : ticket.getLines()) {
                     ticketlineinsert.exec(l);
                     if (l.getProduct().getId() != null)  {
-                        // update the stock
-                        Object[] diary = new Object[7];
-                        diary[0] = UUID.randomUUID().toString();
-                        diary[1] = ticket.getDate();
-                        diary[2] = l.getMultiply() < 0.0 
+                        // update the stock                             
+                        getStockDiaryInsert().exec(new Object[] {
+                            UUID.randomUUID().toString(),
+                            ticket.getDate(),
+                            l.getMultiply() < 0.0 
                                 ? MovementReason.IN_REFUND.getKey()
-                                : MovementReason.OUT_SALE.getKey();
-                        diary[3] = location;
-                        diary[4] = l.getProduct().getId();
-                        diary[5] = new Double(-l.getMultiply());
-                        diary[6] = new Double(l.getPrice());                                
-                        getStockDiaryInsert().exec(diary);
+                                : MovementReason.OUT_SALE.getKey(),
+                            location,
+                            l.getProduct().getId(),
+                            new Double(-l.getMultiply()),
+                            new Double(l.getPrice())
+                        });
                     }
                 }
                 
@@ -257,12 +264,12 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     , "INSERT INTO PAYMENTS (ID, RECEIPT, PAYMENT, TOTAL) VALUES (?, ?, ?, ?)"
                     , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE}));                
                 for (PaymentInfo p : ticket.getPayments()) {
-                    Object[] payment = new Object[4];
-                    payment[0] = UUID.randomUUID().toString();
-                    payment[1] = ticket.getId();
-                    payment[2] = p.getName();
-                    payment[3] = new Double(p.getTotal());
-                    paymentinsert.exec(payment);
+                    paymentinsert.exec(new Object[] {
+                        UUID.randomUUID().toString(),
+                        ticket.getId(),
+                        p.getName(),
+                        new Double(p.getTotal())
+                    });
                     if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
                         getDebtUpdate().exec(new Object[]{                           
                             ticket.getCustomer().getId(),
@@ -286,18 +293,18 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 Date d = new Date();
                 for (int i = 0; i < ticket.getLinesCount(); i++) {
                     if (ticket.getLine(i).getProduct().getId() != null)  {
-                        // Hay que actualizar el stock si el hay producto
-                        Object[] diary = new Object[7];
-                        diary[0] = UUID.randomUUID().toString();
-                        diary[1] = d;
-                        diary[2] = ticket.getLine(i).getMultiply() >= 0.0 
+                        // Hay que actualizar el stock si el hay producto                              
+                        getStockDiaryInsert().exec( new Object[] {
+                            UUID.randomUUID().toString(),
+                            d,
+                            ticket.getLine(i).getMultiply() >= 0.0 
                                 ? MovementReason.IN_REFUND.getKey()
-                                : MovementReason.OUT_SALE.getKey();                                
-                        diary[3] = location;
-                        diary[4] = ticket.getLine(i).getProduct().getId();
-                        diary[5] = new Double(ticket.getLine(i).getMultiply());
-                        diary[6] = new Double(ticket.getLine(i).getPrice());                                
-                        getStockDiaryInsert().exec(diary);
+                                : MovementReason.OUT_SALE.getKey(),
+                            location,
+                            ticket.getLine(i).getProduct().getId(),
+                            new Double(ticket.getLine(i).getMultiply()),
+                            new Double(ticket.getLine(i).getPrice())                                
+                        });
                     }
                 }  
                 

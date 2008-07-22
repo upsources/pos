@@ -144,7 +144,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         l.m_dMultiply = m_dMultiply;    
         l.m_dPrice = m_dPrice;
         l.tax = tax;   
-        l.attributes = attributes;        
+        l.attributes = (Properties) attributes.clone();        
         l.product = product.copyTicketProduct();
         return l;
     }
