@@ -61,23 +61,30 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         // 
         if (customerext == null) {
             m_jName.setText(null);
-            m_jNotes.setText(AppLocal.getIntString("message.nocustomernodebt"));
+            m_jNotes.setText(null);
             txtMaxdebt.setText(null);
             txtCurdate.setText(null);        
             txtCurdebt.setText(null);
             
             m_jKeys.setEnabled(false);
             m_jTendered.setEnabled(false);
+            
+            
         } else {            
             m_jName.setText(customerext.getName());
             m_jNotes.setText(customerext.getNotes());
             txtMaxdebt.setText(Formats.CURRENCY.formatValue(customerext.getMaxdebt()));
             txtCurdate.setText(Formats.DATE.formatValue(customerext.getCurdate()));        
             txtCurdebt.setText(Formats.CURRENCY.formatValue(customerext.getCurdebt()));   
-            
-            m_jKeys.setEnabled(true);
-            m_jTendered.setEnabled(true);
-            m_jTendered.activate();            
+                
+            if (RoundUtils.compare(customerext.getCurdebt(), customerext.getMaxdebt()) >= 0)  {
+                m_jKeys.setEnabled(false);
+                m_jTendered.setEnabled(false);                
+            } else {    
+                m_jKeys.setEnabled(true);
+                m_jTendered.setEnabled(true);
+                m_jTendered.activate();  
+            }
         }        
         
         printState();
@@ -94,6 +101,7 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         
         if (customerext == null) {
             m_jMoneyEuros.setText(null);
+            jlblMessage.setText(AppLocal.getIntString("message.nocustomernodebt"));
             notifier.setStatus(false, false);
         } else {
             try {
@@ -105,9 +113,17 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
 
             m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));
             
-            int iCompare = RoundUtils.compare(m_dPaid, m_dTotal);
-            // if iCompare > 0 then the payment is not valid
-            notifier.setStatus(m_dPaid > 0.0 && iCompare <= 0, iCompare == 0);
+            
+            if (RoundUtils.compare(customerext.getCurdebt() + m_dPaid, customerext.getMaxdebt()) >= 0)  { 
+                // maximum debt exceded
+                jlblMessage.setText(AppLocal.getIntString("message.customerdebtexceded"));
+                notifier.setStatus(false, false);
+            } else {
+                jlblMessage.setText(null);
+                int iCompare = RoundUtils.compare(m_dPaid, m_dTotal);
+                // if iCompare > 0 then the payment is not valid
+                notifier.setStatus(m_dPaid > 0.0 && iCompare <= 0, iCompare == 0);
+            }
         }        
     }
     
@@ -125,11 +141,7 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        m_jKeys = new com.openbravo.editor.JEditorKeys();
-        jPanel3 = new javax.swing.JPanel();
-        m_jTendered = new com.openbravo.editor.JEditorCurrencyPositive();
+        jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         m_jMoneyEuros = new javax.swing.JLabel();
@@ -144,23 +156,17 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         txtCurdate = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         m_jNotes = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        jlblMessage = new javax.swing.JTextArea();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        m_jKeys = new com.openbravo.editor.JEditorKeys();
+        jPanel3 = new javax.swing.JPanel();
+        m_jTendered = new com.openbravo.editor.JEditorCurrencyPositive();
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
-        jPanel1.add(m_jKeys);
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        jPanel3.setLayout(new java.awt.BorderLayout());
-        jPanel3.add(m_jTendered, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(jPanel3);
-
-        jPanel2.add(jPanel1, java.awt.BorderLayout.NORTH);
-
-        add(jPanel2, java.awt.BorderLayout.EAST);
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setLayout(null);
 
@@ -221,7 +227,35 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         jPanel4.add(jScrollPane1);
         jScrollPane1.setBounds(120, 100, 200, 70);
 
-        add(jPanel4, java.awt.BorderLayout.CENTER);
+        jPanel5.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        jlblMessage.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
+        jlblMessage.setEditable(false);
+        jlblMessage.setLineWrap(true);
+        jlblMessage.setWrapStyleWord(true);
+        jlblMessage.setFocusable(false);
+        jlblMessage.setPreferredSize(new java.awt.Dimension(300, 72));
+        jlblMessage.setRequestFocusEnabled(false);
+        jPanel6.add(jlblMessage);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.SOUTH);
+
+        add(jPanel5, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        jPanel1.add(m_jKeys);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+        jPanel3.add(m_jTendered, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel3);
+
+        jPanel2.add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        add(jPanel2, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
     
     
@@ -236,7 +270,10 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jlblMessage;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JLabel m_jMoneyEuros;
     private javax.swing.JTextField m_jName;
