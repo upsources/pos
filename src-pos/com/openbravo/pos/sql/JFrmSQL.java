@@ -34,7 +34,7 @@ import com.openbravo.pos.scanpal2.DeviceScanner;
 public class JFrmSQL extends javax.swing.JFrame implements AppView {
     
     private AppProperties m_props;
-    private AppViewConnection m_appcnt;        
+    private Session session;        
     private JPanelSQL sql;
     
     /** Creates new form JFrmSQL */
@@ -48,7 +48,7 @@ public class JFrmSQL extends javax.swing.JFrame implements AppView {
         initComponents();
         
         try {
-            m_appcnt = new AppViewConnection(m_props);
+            session = AppViewConnection.createSession(props);
         } catch (BasicException e) {
             JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, e.getMessage(), e));
             return false;
@@ -73,7 +73,7 @@ public class JFrmSQL extends javax.swing.JFrame implements AppView {
         
         public void windowClosing(WindowEvent evt) {
             sql.deactivate();
-            m_appcnt.disconnect();
+            session.close();
             dispose();
         }
         public void windowClosed(WindowEvent evt) {
@@ -114,7 +114,7 @@ public class JFrmSQL extends javax.swing.JFrame implements AppView {
 
 
     public Session getSession() {
-        return m_appcnt.getSession();
+        return session;
     }
     
 //    public DataSource getDataSource() {

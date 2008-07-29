@@ -35,12 +35,11 @@ import com.openbravo.pos.util.AltEncrypter;
  */
 public class AppViewConnection {
     
-    private Session m_s;
-    
     /** Creates a new instance of AppViewConnection */
-    public AppViewConnection(AppProperties props) throws BasicException {
-        
-        m_s = null;
+    private AppViewConnection() {
+    }
+    
+    public static Session createSession(AppProperties props) throws BasicException {
                
         // Inicializo la conexion contra la base de datos.
         try {   
@@ -56,7 +55,7 @@ public class AppViewConnection {
                 sDBPassword = cypher.decrypt(sDBPassword.substring(6));
             }   
 
-             m_s = new Session(props.getProperty("db.URL"), sDBUser,sDBPassword);     
+             return new Session(props.getProperty("db.URL"), sDBUser,sDBPassword);     
 
         } catch (InstantiationException e) {
             throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), e);
@@ -68,14 +67,6 @@ public class AppViewConnection {
             throw new BasicException(AppLocal.getIntString("message.databasedrivererror"), eCNF);
         } catch (SQLException eSQL) {
             throw new BasicException(AppLocal.getIntString("message.databaseconnectionerror"), eSQL);
-        }      
-    }
-    
-    public void disconnect() {
-        m_s.close();        
-    }
-    
-    public Session getSession() {
-        return m_s;
+        }   
     }
 }

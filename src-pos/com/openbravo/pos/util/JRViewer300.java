@@ -44,7 +44,7 @@
 // And the redesign of the design properties of the toolbar
 // Nothing else.
 
-package com.openbravo.pos.reports;
+package com.openbravo.pos.util;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -120,14 +120,14 @@ import net.sf.jasperreports.view.save.JRPrintSaveContributor;
 
 /**
  * @author Teodor Danciu (teodord@users.sourceforge.net)
- * @version $Id: JRViewer220.java 2160 2008-04-29 11:31:51Z lucianc $
+ * @version $Id: JRViewer300.java 2160 2008-04-29 11:31:51Z lucianc $
  */
-public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListener
+public class JRViewer300 extends javax.swing.JPanel implements JRHyperlinkListener
 {
 	private static final long serialVersionUID = JRConstants.SERIAL_VERSION_UID;
 
 	/**
-	 * Maximum size (in pixels) of a buffered image that would be used by {@link JRViewer220 JRViewer220} to render a report page.
+	 * Maximum size (in pixels) of a buffered image that would be used by {@link JRViewer300 JRViewer300} to render a report page.
 	 * <p>
 	 * If rendering a report page would require an image larger than this threshold
 	 * (i.e. image width x image height > maximum size), the report page will be rendered directly on the viewer component.
@@ -212,50 +212,50 @@ public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListen
 	protected File lastFolder = null;
 	protected JRSaveContributor lastSaveContributor = null;
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(String fileName, boolean isXML) throws JRException
+	/** Creates new form JRViewer300 */
+	public JRViewer300(String fileName, boolean isXML) throws JRException
 	{
 		this(fileName, isXML, null);
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(InputStream is, boolean isXML) throws JRException
+	/** Creates new form JRViewer300 */
+	public JRViewer300(InputStream is, boolean isXML) throws JRException
 	{
 		this(is, isXML, null);
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(JasperPrint jrPrint)
+	/** Creates new form JRViewer300 */
+	public JRViewer300(JasperPrint jrPrint)
 	{
 		this(jrPrint, null);
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(String fileName, boolean isXML, Locale locale) throws JRException
+	/** Creates new form JRViewer300 */
+	public JRViewer300(String fileName, boolean isXML, Locale locale) throws JRException
 	{
 		this(fileName, isXML, locale, null);
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(InputStream is, boolean isXML, Locale locale) throws JRException
+	/** Creates new form JRViewer300 */
+	public JRViewer300(InputStream is, boolean isXML, Locale locale) throws JRException
 	{
 		this(is, isXML, locale, null);
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(JasperPrint jrPrint, Locale locale)
+	/** Creates new form JRViewer300 */
+	public JRViewer300(JasperPrint jrPrint, Locale locale)
 	{
 		this(jrPrint, locale, null);
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(String fileName, boolean isXML, Locale locale, ResourceBundle resBundle) throws JRException
+	/** Creates new form JRViewer300 */
+	public JRViewer300(String fileName, boolean isXML, Locale locale, ResourceBundle resBundle) throws JRException
 	{
 		initResources(locale, resBundle);
 
@@ -275,8 +275,8 @@ public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListen
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(InputStream is, boolean isXML, Locale locale, ResourceBundle resBundle) throws JRException
+	/** Creates new form JRViewer300 */
+	public JRViewer300(InputStream is, boolean isXML, Locale locale, ResourceBundle resBundle) throws JRException
 	{
 		initResources(locale, resBundle);
 
@@ -296,8 +296,8 @@ public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListen
 	}
 
 
-	/** Creates new form JRViewer220 */
-	public JRViewer220(JasperPrint jrPrint, Locale locale, ResourceBundle resBundle)
+	/** Creates new form JRViewer300 */
+	public JRViewer300(JasperPrint jrPrint, Locale locale, ResourceBundle resBundle)
 	{
 		initResources(locale, resBundle);
 
@@ -1151,7 +1151,7 @@ public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListen
 						catch (Exception ex)
 						{
 							ex.printStackTrace();
-							JOptionPane.showMessageDialog(JRViewer220.this, getBundleString("error.printing"));
+							JOptionPane.showMessageDialog(JRViewer300.this, getBundleString("error.printing"));
 						}
 					}
 				}
@@ -1954,7 +1954,7 @@ public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListen
 			{
 				public void run()
 				{
-					JOptionPane.showMessageDialog(JRViewer220.this, getBundleString("error.displaying"));
+					JOptionPane.showMessageDialog(JRViewer300.this, getBundleString("error.displaying"));
 				}
 			});
 		}
@@ -2068,9 +2068,9 @@ public class JRViewer220 extends javax.swing.JPanel implements JRHyperlinkListen
 		private static final long serialVersionUID = JRConstants.SERIAL_VERSION_UID;
 
 		private boolean renderImage;
-		JRViewer220 viewer = null;
+		JRViewer300 viewer = null;
 
-		public PageRenderer(JRViewer220 viewer)
+		public PageRenderer(JRViewer300 viewer)
 		{
 			this.viewer = viewer;
 		}

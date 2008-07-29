@@ -25,16 +25,20 @@ import java.awt.print.PrinterJob;
 import javax.swing.JComponent;
 import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.ticket.BasicTicket;
+import com.openbravo.pos.util.ReportUtils;
+import javax.print.PrintService;
 
 public class DevicePrinterPrinter implements DevicePrinter {
     
     private String m_sName;
     private BasicTicket m_ticketcurrent;
+    private PrintService printservice;
     
     /** Creates a new instance of DevicePrinterPrinter */
-    public DevicePrinterPrinter() {
+    public DevicePrinterPrinter(String printername) {
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
+        printservice = ReportUtils.getPrintService(printername);
     }
     
     public String getPrinterName() {
@@ -70,17 +74,17 @@ public class DevicePrinterPrinter implements DevicePrinter {
         m_ticketcurrent.endLine();
     }
     public void endReceipt() {
-        // Print
-        PrinterJob printJob = PrinterJob.getPrinterJob();
-        printJob.setPrintable(new PrintableTicket(m_ticketcurrent));
-        printJob.setJobName(AppLocal.APP_NAME + " - Document.");
-        if (printJob.printDialog()) {
-            try {
-                printJob.print();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+
+        try {
+            // Print
+            PrinterJob printJob = PrinterJob.getPrinterJob();
+            printJob.setPrintable(new PrintableTicket(m_ticketcurrent));
+            printJob.setJobName(AppLocal.APP_NAME + " - Document");                    
+            printJob.setPrintService(printservice);
+            printJob.print();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }   
         
         m_ticketcurrent = null;
     }

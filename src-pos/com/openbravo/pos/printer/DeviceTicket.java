@@ -138,7 +138,7 @@ public class DeviceTicket {
                 if ("screen".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterPanel());
                 } else if ("printer".equals(sPrinterType)) {
-                    addPrinter(sPrinterIndex, new DevicePrinterPrinter());
+                    addPrinter(sPrinterIndex, new DevicePrinterPrinter(props.getProperty("machine.printername")));
                 } else if ("epson".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesEpson(), new UnicodeTranslatorInt()));                
                 } else if ("tmu220".equals(sPrinterType)) {

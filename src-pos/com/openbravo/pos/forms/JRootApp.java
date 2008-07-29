@@ -43,6 +43,7 @@ import com.openbravo.data.loader.Session;
 import com.openbravo.pos.scale.DeviceScale;
 import com.openbravo.pos.scanpal2.DeviceScanner;
 import com.openbravo.pos.scanpal2.DeviceScannerFactory;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 
 /**
@@ -52,7 +53,7 @@ import java.util.regex.Matcher;
 public class JRootApp extends JPanel implements AppView {
  
     private AppProperties m_props;
-    private AppViewConnection m_appcnt;     
+    private Session session;     
     private DataLogicSystem m_dlSystem;
     
     private Properties m_propsdb = null;
@@ -96,7 +97,7 @@ public class JRootApp extends JPanel implements AppView {
         
         // Database start
         try {
-            m_appcnt = new AppViewConnection(m_props);
+            session = AppViewConnection.createSession(m_props);
         } catch (BasicException e) {
             JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, e.getMessage(), e));
             return false;
@@ -117,7 +118,7 @@ public class JRootApp extends JPanel implements AppView {
             if (JRootApp.class.getResource(sScript) == null) {
                 // Upgrade script does not exist.
                 JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, AppLocal.getIntString("message.noupdatescript")));
-                m_appcnt.disconnect();
+                session.close();
                 return false;
             } else {
                 // Create or upgrade script exists.
@@ -127,7 +128,7 @@ public class JRootApp extends JPanel implements AppView {
                         , JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {  
 
                     try {
-                        BatchSentence bsentence = new BatchSentenceResource(m_appcnt.getSession(), sScript);
+                        BatchSentence bsentence = new BatchSentenceResource(session, sScript);
                         bsentence.putParameter("APP_ID", Matcher.quoteReplacement(AppLocal.APP_ID));
                         bsentence.putParameter("APP_NAME", Matcher.quoteReplacement(AppLocal.APP_NAME));
                         bsentence.putParameter("APP_VERSION", Matcher.quoteReplacement(AppLocal.APP_VERSION));
@@ -138,16 +139,16 @@ public class JRootApp extends JPanel implements AppView {
                         }
                    } catch (BasicException e) {
                         JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, AppLocal.getIntString("Database.ScriptError"), e));
-                        m_appcnt.disconnect();
+                        session.close();
                         return false;
                     }     
                 } else {
-                    m_appcnt.disconnect();
+                    session.close();
                     return false;
                 }
             }   
         }
-
+        
         // Cargamos las propiedades de base de datos
         m_propsdb = m_dlSystem.getResourceAsProperties(m_props.getHost() + "/properties");
         
@@ -169,7 +170,7 @@ public class JRootApp extends JPanel implements AppView {
             // Casco. Sin caja no hay pos
             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotclosecash"), e);
             msg.show(this);
-            m_appcnt.disconnect();
+            session.close();
             return false;
         }  
         
@@ -193,7 +194,7 @@ public class JRootApp extends JPanel implements AppView {
         
         // Inicializamos la scanpal
         m_Scanner = DeviceScannerFactory.createInstance(m_props);
-        
+            
         // Leemos los recursos basicos
         BufferedImage imgicon = m_dlSystem.getResourceAsImage("Window.Logo");
         m_jLblTitle.setIcon(imgicon == null ? null : new ImageIcon(imgicon));
@@ -205,7 +206,15 @@ public class JRootApp extends JPanel implements AppView {
         } catch (BasicException e) {
             sWareHouse = null; // no he encontrado el almacen principal
         }        
-        m_jHost.setText(sWareHouse + " (" + m_props.getHost() + ")");
+        
+        // Show Hostname, Warehouse and URL in taskbar
+        String url;
+        try {
+            url = session.getURL();
+        } catch (SQLException e) {
+            url = "";
+        }        
+        m_jHost.setText("<html>" + m_props.getHost() + " - " + sWareHouse + "<br>" + url);
         
         showLogin();
 
@@ -233,7 +242,7 @@ public class JRootApp extends JPanel implements AppView {
             // apago el visor
             m_TP.getDeviceDisplay().clearVisor();
             // me desconecto de la base de datos.
-            m_appcnt.disconnect();
+            session.close();
 
             // Download Root form
             SwingUtilities.getWindowAncestor(this).dispose();
@@ -253,7 +262,7 @@ public class JRootApp extends JPanel implements AppView {
     }
     
     public Session getSession() {
-        return m_appcnt.getSession();
+        return session;
     } 
 
     public String getInventoryLocation() {
@@ -468,8 +477,8 @@ public class JRootApp extends JPanel implements AppView {
             m_principalapp = new JPrincipalApp(this, user);
 
             // The user status notificator
-            panelTask.add(m_principalapp.getNotificator());
-            panelTask.revalidate();
+            jPanel3.add(m_principalapp.getNotificator());
+            jPanel3.revalidate();
             
             // The main panel
             m_jPanelContainer.add(m_principalapp, "_" + m_principalapp.getUser().getId());
@@ -555,9 +564,9 @@ public class JRootApp extends JPanel implements AppView {
     private void initComponents() {
 
         m_jPanelTitle = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         m_jLblTitle = new javax.swing.JLabel();
         poweredby = new javax.swing.JLabel();
-        blankspace = new javax.swing.JLabel();
         m_jPanelContainer = new javax.swing.JPanel();
         m_jPanelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -571,14 +580,19 @@ public class JRootApp extends JPanel implements AppView {
         m_txtKeys = new javax.swing.JTextField();
         m_jPanelDown = new javax.swing.JPanel();
         panelTask = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
         m_jHost = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new java.awt.BorderLayout());
 
         m_jPanelTitle.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
         m_jPanelTitle.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setOpaque(false);
+        jPanel4.setPreferredSize(new java.awt.Dimension(142, 34));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        m_jPanelTitle.add(jPanel4, java.awt.BorderLayout.WEST);
 
         m_jLblTitle.setForeground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleForeground"));
         m_jLblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -588,9 +602,6 @@ public class JRootApp extends JPanel implements AppView {
         poweredby.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
         poweredby.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         m_jPanelTitle.add(poweredby, java.awt.BorderLayout.EAST);
-
-        blankspace.setPreferredSize(new java.awt.Dimension(142, 34));
-        m_jPanelTitle.add(blankspace, java.awt.BorderLayout.WEST);
 
         add(m_jPanelTitle, java.awt.BorderLayout.NORTH);
 
@@ -669,16 +680,15 @@ public class JRootApp extends JPanel implements AppView {
 
         m_jPanelDown.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.lightGray), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        panelTask.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         m_jHost.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/display.png"))); // NOI18N
         m_jHost.setText("*Hostname");
-        jPanel3.add(m_jHost, java.awt.BorderLayout.CENTER);
+        m_jHost.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("TextField.shadow")), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));
+        panelTask.add(m_jHost);
 
-        panelTask.add(jPanel3);
-
-        m_jPanelDown.add(panelTask, java.awt.BorderLayout.WEST);
+        m_jPanelDown.add(panelTask, java.awt.BorderLayout.CENTER);
+        m_jPanelDown.add(jPanel3, java.awt.BorderLayout.EAST);
 
         add(m_jPanelDown, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -700,11 +710,11 @@ public class JRootApp extends JPanel implements AppView {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel blankspace;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;

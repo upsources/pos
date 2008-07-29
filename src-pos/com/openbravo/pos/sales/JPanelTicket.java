@@ -53,7 +53,21 @@ import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.pos.util.JRPrinterAWT300;
+import com.openbravo.pos.util.ReportUtils;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import javax.print.PrintService;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 /**
  *
@@ -351,20 +365,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             // event receipt
             executeEvent("ticket.change");
         }
-    }
-       
-    private Object executeEvent(String eventkey, ScriptArg ... args) {
-        
-        try {
-            String code = m_jbtnconfig.getEvent(eventkey);
-            if (code != null) {
-                return scriptobjinst.evalScript(code, args);
-            }
-        } catch (ScriptException e) {
-            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
-            msg.show(this);
-        }
-        return null;
     }
     
     private ProductInfoExt getInputProduct() {
@@ -755,6 +755,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     if (closeTicket(m_oTicket, m_oTicketExt)) {
                         // Ends edition of current receipt
                         m_ticketsbag.deleteTicket();  
+                    } else {
+                        // repaint current ticket
+                        setActiveTicket(m_oTicket, m_oTicketExt);
                     }
                 } else {
                     Toolkit.getDefaultToolkit().beep();
@@ -765,44 +768,52 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private boolean closeTicket(TicketInfo ticket, Object ticketext) {
         
-        // Muestro el total
-        printTicket("Printer.TicketTotal", ticket, ticketext);
+        if (executeEventTotal("ticket.total", ticket, ticketext) == null) {
 
-        // reset the payment info
-        ticket.resetPayments();
+            // Muestro el total
+            printTicket("Printer.TicketTotal", ticket, ticketext);
 
-        // Select the Payments information
-        JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
-                ? paymentdialogreceipt
-                : paymentdialogrefund;
-        paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
+            // reset the payment info
+            ticket.resetPayments();
 
-        if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
+            // Select the Payments information
+            JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
+                    ? paymentdialogreceipt
+                    : paymentdialogrefund;
+            paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
 
-            // assign the payments selected.
-            ticket.setPayments(paymentdialog.getSelectedPayments());
+            if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
 
-            // Asigno los valores definitivos del ticket...
-            ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
-            ticket.setActiveCash(m_App.getActiveCashIndex());
-            ticket.setDate(new Date()); // Le pongo la fecha de cobro
+                // assign the payments selected.
+                ticket.setPayments(paymentdialog.getSelectedPayments());
 
-            // Save the receipt and assign a receipt number
-            try {
-                dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
-            } catch (BasicException eData) {
-                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
-                msg.show(this);
+                // Asigno los valores definitivos del ticket...
+                ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
+                ticket.setActiveCash(m_App.getActiveCashIndex());
+                ticket.setDate(new Date()); // Le pongo la fecha de cobro
+
+                if (executeEventTotal("ticket.close", ticket, ticketext) == null) {
+                    // Save the receipt and assign a receipt number
+                    try {
+                        dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
+                    } catch (BasicException eData) {
+                        MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                        msg.show(this);
+                    }
+
+                    // Print receipt.
+                    printTicket(paymentdialog.isPrintSelected()
+                            ? "Printer.Ticket"
+                            : "Printer.Ticket2", ticket, ticketext);
+                    return true;
+                }
             }
-
-            // Print receipt.
-            printTicket(paymentdialog.isPrintSelected()
-                    ? "Printer.Ticket"
-                    : "Printer.Ticket2", ticket, ticketext);
-            return true;
-        } else {
-            return false;
         }
+        
+        // cancelled the ticket.total script
+        // or canceled the payment dialog
+        // or canceled the ticket.close script
+        return false;        
     }
        
     private void printTicket(String sresourcename, TicketInfo ticket, Object ticketext) {
@@ -826,6 +837,46 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 msg.show(JPanelTicket.this);
             }
         }
+    }
+    
+    private void printReport(String resourcefile, TicketInfo ticket, Object ticketext) {
+        
+        try {     
+         
+            JasperReport jr;
+           
+            InputStream in = getClass().getResourceAsStream(resourcefile + ".ser");
+            if (in == null) {      
+                // read and compile the report
+                JasperDesign jd = JRXmlLoader.load(getClass().getResourceAsStream(resourcefile + ".jrxml"));            
+                jr = JasperCompileManager.compileReport(jd);    
+            } else {
+                // read the compiled report
+                ObjectInputStream oin = new ObjectInputStream(in);
+                jr = (JasperReport) oin.readObject();
+                oin.close();
+            }
+           
+            // Construyo el mapa de los parametros.
+            Map reportparams = new HashMap();
+            // reportparams.put("ARG", params);
+            reportparams.put("TICKET", ticket);
+            reportparams.put("PLACE", ticketext);
+            try {
+                reportparams.put("REPORT_RESOURCE_BUNDLE", ResourceBundle.getBundle(resourcefile + ".properties"));
+            } catch (MissingResourceException e) {
+            }
+
+            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams);    
+            
+            PrintService service = ReportUtils.getPrintService(m_App.getProperties().getProperty("machine.printername"));
+            
+            JRPrinterAWT300.printPages(jp, 0, jp.getPages().size() - 1, service);
+            
+        } catch (Exception e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotloadreport"), e);
+            msg.show(this);
+        }               
     }
 
     private void visorTicketLine(TicketLineInfo oLine){
@@ -861,10 +912,82 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             return value;
         }
     }
+       
+    private Object executeEventTotal(String eventkey, TicketInfo ticket, Object ticketext, ScriptArg ... args) {
+        
+        try {
+            String code = m_jbtnconfig.getEvent(eventkey);
+            if (code != null) {
+                ScriptObjectTotal scr = new ScriptObjectTotal(ticket, ticketext);
+                return scr.evalScript(code, args);
+            }
+        } catch (ScriptException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
+            msg.show(this);
+        }
+        return null;
+    }
+    
+    public class ScriptObjectTotal {
+        private TicketInfo ticket;
+        private Object ticketext;
+        
+        private ScriptObjectTotal(TicketInfo ticket, Object ticketext) {
+            this.ticket = ticket;
+            this.ticketext = ticketext;
+        }
+        
+        public void printReport(String resourcefile) {
+            JPanelTicket.this.printReport(resourcefile, ticket, ticketext);
+        }
+        
+        public void printTicket(String sresourcename) {
+            JPanelTicket.this.printTicket(sresourcename, ticket, ticketext);   
+        }
+        
+        public String getResourceAsXML(String sresourcename) {
+            return dlSystem.getResourceAsXML(sresourcename);
+        }
+            
+        public BufferedImage getResourceAsImage(String sresourcename) {
+            return dlSystem.getResourceAsImage(sresourcename);
+        }
+        
+        public Object evalScript(String code, ScriptArg... args) throws ScriptException {
+
+            ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
+            script.put("ticket", ticket);
+            script.put("taxes", taxmap);
+            script.put("place", ticketext);
+            script.put("user", m_App.getAppUserView().getUser());
+            script.put("sales", this);
+
+            // more arguments
+            for(ScriptArg arg : args) {
+                script.put(arg.getKey(), arg.getValue());
+            }             
+
+            return script.eval(code);
+        }
+    }
+       
+    private Object executeEvent(String eventkey, ScriptArg ... args) {
+        
+        try {
+            String code = m_jbtnconfig.getEvent(eventkey);
+            if (code != null) {
+                return scriptobjinst.evalScript(code, args);
+            }
+        } catch (ScriptException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
+            msg.show(this);
+        }
+        return null;
+    }
     
     public class ScriptObject {
         
-        int selectedindex;
+        private int selectedindex;
         
         private ScriptObject() {
         }
@@ -904,6 +1027,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             JPanelTicket.this.addTicketLine(oProduct, dmult, dpricesell);
         }      
+        
+        public void printReport(String resourcefile) {
+            JPanelTicket.this.printReport(resourcefile, m_oTicket, m_oTicketExt);
+        }
         
         public void printTicket(String sresourcename) {
             JPanelTicket.this.printTicket(sresourcename, m_oTicket, m_oTicketExt);   

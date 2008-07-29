@@ -36,10 +36,11 @@ import com.openbravo.data.loader.BaseSentence;
 import com.openbravo.data.user.EditorCreator;
 import com.openbravo.pos.forms.BeanFactoryApp;
 import com.openbravo.pos.forms.BeanFactoryException;
+import com.openbravo.pos.util.JRViewer300;
 
 public abstract class JPanelReport extends JPanel implements JPanelView, BeanFactoryApp   {
     
-    private JRViewer220 reportviewer = null;   
+    private JRViewer300 reportviewer = null;   
     private JasperReport jr = null;
     private EditorCreator editor = null;
             
@@ -61,7 +62,7 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
             jPanelFilter.add(((ReportEditorCreator) editor).getComponent(), BorderLayout.CENTER);
         }
                   
-        reportviewer = new JRViewer220(null);                        
+        reportviewer = new JRViewer300(null);                        
         
         add(reportviewer, BorderLayout.CENTER);
         

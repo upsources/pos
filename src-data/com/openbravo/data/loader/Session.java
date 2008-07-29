@@ -140,4 +140,8 @@ public class Session {
         
         return getConnection().getMetaData().getDatabaseProductName();                   
     }
+    
+    public String getURL() throws SQLException {
+        return getConnection().getMetaData().getURL();
+    }
 }

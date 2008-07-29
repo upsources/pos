@@ -48,7 +48,7 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
     
     private DataLogicSystem m_dlSystem;
     
-    private JPrincipalNotificator m_principalnotificator;
+    private JLabel m_principalnotificator;
     
     private JPanelView m_jLastView;    
     private Action m_actionfirst;
@@ -67,8 +67,11 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         // Cargamos los permisos del usuario
         m_appuser.fillPermissions(m_dlSystem);
         
-        m_principalnotificator = new JPrincipalNotificator();
-        
+        m_principalnotificator = new JLabel();
+        m_principalnotificator.setText(m_appuser.getName());
+        m_principalnotificator.setIcon(m_appuser.getIcon());
+        m_principalnotificator.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("TextField.shadow")), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));
+       
         m_actionfirst = null;
         m_jLastView = null;
         m_aPreparedViews = new HashMap<String, JPanelView>();
@@ -358,27 +361,6 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         m_appview.waitCursorEnd();    
     }
     
-    private class JPrincipalNotificator extends javax.swing.JPanel {
-        
-        private javax.swing.JLabel jLabel1;  
-        
-        public JPrincipalNotificator() {
-
-            initComponents();
-
-            jLabel1.setText(m_appuser.getName());
-            jLabel1.setIcon(m_appuser.getIcon());
-        }
-
-        private void initComponents() {
-            jLabel1 = new javax.swing.JLabel();
-
-            setLayout(new java.awt.BorderLayout());
-            setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.LineBorder(java.awt.Color.lightGray), new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 5, 1, 5))));
-            add(jLabel1, java.awt.BorderLayout.WEST);
-        }                                        
-    }    
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
