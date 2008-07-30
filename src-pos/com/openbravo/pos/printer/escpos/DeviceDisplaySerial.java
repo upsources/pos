@@ -32,6 +32,7 @@ public abstract class DeviceDisplaySerial implements DeviceDisplay, DeviceDispla
     protected DeviceDisplayBase m_displaylines;
     
     public DeviceDisplaySerial() {
+        m_displaylines = new DeviceDisplayBase(this);
     }
     
     protected void init(PrinterWritter display) {                
