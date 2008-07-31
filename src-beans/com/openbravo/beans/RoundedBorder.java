@@ -89,6 +89,7 @@ public class RoundedBorder extends AbstractBorder {
         fbottominset = bbottomborder ? 0f : thickness; // para los bordes a derecha e izquierda
     }
     
+    @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         
         Graphics2D g2d = (Graphics2D) g;
@@ -102,7 +103,11 @@ public class RoundedBorder extends AbstractBorder {
         float imedium = thickness; 
         
         if (filled) {
-            g2d.setPaint(new GradientPaint(0, 0, colorgradient, width, 0, c.getBackground()));        
+            if (c.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT) {
+                g2d.setPaint(new GradientPaint(0, 0, c.getBackground(), width, 0, colorgradient));        
+            } else {
+                g2d.setPaint(new GradientPaint(0, 0, colorgradient, width, 0, c.getBackground()));        
+            }
             g2d.fillRoundRect(                
                     (int) (x + thickness), 
                     (int) (y + thickness - ftop), 
@@ -129,6 +134,7 @@ public class RoundedBorder extends AbstractBorder {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, oldAntialias);    
     }
 
+    @Override
     public Insets getBorderInsets(Component c) {
  
 //        // Los bordes estan arriba y abajo       
@@ -146,6 +152,7 @@ public class RoundedBorder extends AbstractBorder {
                 (int)(0.5 + thickness + roundedRadius));        
     }
 
+    @Override
     public Insets getBorderInsets(Component c, Insets insets) {
 
 //        insets.top = (int)(0.5 + thickness + roundedRadius - ftop);
@@ -173,6 +180,7 @@ public class RoundedBorder extends AbstractBorder {
         return filled;
     }
 
+    @Override
     public boolean isBorderOpaque() { 
         return true; 
     }

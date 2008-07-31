@@ -56,7 +56,7 @@ public class JCalendarItemRenderer extends javax.swing.JPanel implements ListCel
     
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         
-        setComponentOrientation(list.getComponentOrientation());
+        applyComponentOrientation(list.getComponentOrientation());
         
         if (isSelected) {
             setBackground(list.getSelectionBackground());

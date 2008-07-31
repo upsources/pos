@@ -18,6 +18,7 @@
 
 package com.openbravo.editor;
 
+import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
@@ -61,6 +62,11 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
         editorcurrent = null;
         setMode(MODE_STRING);
         doEnabled(false);
+    }
+    
+    @Override
+    public void setComponentOrientation(ComponentOrientation o) {
+        // Nothing to change
     }
     
     public void addActionListener(ActionListener l) {

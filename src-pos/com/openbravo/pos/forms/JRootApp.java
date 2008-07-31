@@ -32,7 +32,6 @@ import javax.swing.*;
 import com.openbravo.pos.printer.*;
 
 import com.openbravo.beans.*;
-import com.openbravo.pos.util.ThumbNailBuilder;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
@@ -94,6 +93,10 @@ public class JRootApp extends JPanel implements AppView {
     public boolean initApp(AppProperties props) {
         
         m_props = props;
+        
+        if ("true".equals(m_props.getProperty("user.rtl"))) {
+            applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        }
         
         // Database start
         try {
@@ -398,28 +401,25 @@ public class JRootApp extends JPanel implements AppView {
             jScrollPane1.getViewport().setView(null);
 
             JFlowPanel jPeople = new JFlowPanel();
-            jPeople.setOpaque(false);
+            jPeople.applyComponentOrientation(getComponentOrientation());
            
             java.util.List people = m_dlSystem.listPeopleVisible();
                      
-            ThumbNailBuilder tnb = new ThumbNailBuilder(32, 32, "com/openbravo/images/yast_sysadmin.png");            
-            
             for (int i = 0; i < people.size(); i++) {
                  
                 AppUser user = (AppUser) people.get(i);
 
                 JButton btn = new JButton(new AppUserAction(user));
+                btn.applyComponentOrientation(getComponentOrientation());
                 btn.setFocusPainted(false);
                 btn.setFocusable(false);
                 btn.setRequestFocusEnabled(false);
                 btn.setHorizontalAlignment(SwingConstants.LEADING);
-                // btn.setMargin(new Insets(2, 2, 2, 2));
                 btn.setMaximumSize(new Dimension(150, 50));
                 btn.setPreferredSize(new Dimension(150, 50));
                 btn.setMinimumSize(new Dimension(150, 50));
         
-                jPeople.add(btn);    
-                
+                jPeople.add(btn);                    
             }
             jScrollPane1.getViewport().setView(jPeople);
             
@@ -496,9 +496,9 @@ public class JRootApp extends JPanel implements AppView {
             return false;
         } else {
             // the status label
-            panelTask.remove(m_principalapp.getNotificator());
-            panelTask.revalidate();
-            panelTask.repaint();
+            jPanel3.remove(m_principalapp.getNotificator());
+            jPanel3.revalidate();
+            jPanel3.repaint();
 
             // remove the card
             m_jPanelContainer.remove(m_principalapp);
@@ -564,9 +564,9 @@ public class JRootApp extends JPanel implements AppView {
     private void initComponents() {
 
         m_jPanelTitle = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
         m_jLblTitle = new javax.swing.JLabel();
         poweredby = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         m_jPanelContainer = new javax.swing.JPanel();
         m_jPanelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -586,22 +586,19 @@ public class JRootApp extends JPanel implements AppView {
         setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new java.awt.BorderLayout());
 
-        m_jPanelTitle.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleBackground"));
+        m_jPanelTitle.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")));
         m_jPanelTitle.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setOpaque(false);
-        jPanel4.setPreferredSize(new java.awt.Dimension(142, 34));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        m_jPanelTitle.add(jPanel4, java.awt.BorderLayout.WEST);
-
-        m_jLblTitle.setForeground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.activeTitleForeground"));
         m_jLblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jLblTitle.setText("Window.Title");
         m_jPanelTitle.add(m_jLblTitle, java.awt.BorderLayout.CENTER);
 
         poweredby.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/poweredby.png"))); // NOI18N
         poweredby.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        m_jPanelTitle.add(poweredby, java.awt.BorderLayout.EAST);
+        m_jPanelTitle.add(poweredby, java.awt.BorderLayout.LINE_END);
+
+        jLabel2.setPreferredSize(new java.awt.Dimension(142, 34));
+        m_jPanelTitle.add(jLabel2, java.awt.BorderLayout.LINE_START);
 
         add(m_jPanelTitle, java.awt.BorderLayout.NORTH);
 
@@ -635,7 +632,7 @@ public class JRootApp extends JPanel implements AppView {
         jScrollPane1.setPreferredSize(new java.awt.Dimension(510, 118));
         m_jLogonName.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel8.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
@@ -668,7 +665,7 @@ public class JRootApp extends JPanel implements AppView {
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        m_jLogonName.add(jPanel2, java.awt.BorderLayout.EAST);
+        m_jLogonName.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
         jPanel5.add(m_jLogonName);
 
@@ -678,17 +675,15 @@ public class JRootApp extends JPanel implements AppView {
 
         add(m_jPanelContainer, java.awt.BorderLayout.CENTER);
 
+        m_jPanelDown.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")));
         m_jPanelDown.setLayout(new java.awt.BorderLayout());
-
-        panelTask.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         m_jHost.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/display.png"))); // NOI18N
         m_jHost.setText("*Hostname");
-        m_jHost.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("TextField.shadow")), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));
         panelTask.add(m_jHost);
 
-        m_jPanelDown.add(panelTask, java.awt.BorderLayout.CENTER);
-        m_jPanelDown.add(jPanel3, java.awt.BorderLayout.EAST);
+        m_jPanelDown.add(panelTask, java.awt.BorderLayout.LINE_START);
+        m_jPanelDown.add(jPanel3, java.awt.BorderLayout.LINE_END);
 
         add(m_jPanelDown, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -711,10 +706,10 @@ public class JRootApp extends JPanel implements AppView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;

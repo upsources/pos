@@ -19,6 +19,7 @@
 package com.openbravo.beans;
 
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.JPanel;
@@ -78,7 +79,7 @@ public class JFlowPanel extends JPanel implements Scrollable {
                     if (x == 0 || (x + hgap + d.width + hgap) <= maxWidth) {
                         // continuamos con esta linea
                         x += hgap;
-                        if (bDoChilds) m.setBounds(x, dim.height, d.width, d.height);
+                        if (bDoChilds) m.setBounds(getPosition(x, maxWidth - d.width), dim.height, d.width, d.height);
                         x += d.width;
                         if (d.height > maxRowHeight) {
                             maxRowHeight = d.height;
@@ -86,7 +87,7 @@ public class JFlowPanel extends JPanel implements Scrollable {
                     } else {
                         // nueva linea
                         dim.height += maxRowHeight + vgap;
-                        if (bDoChilds) m.setBounds(hgap, dim.height, d.width, d.height);
+                        if (bDoChilds) m.setBounds(getPosition(hgap, maxWidth - d.width), dim.height, d.width, d.height);
                         if (x > maxRowWidth) {
                             maxRowWidth = x;
                         }
@@ -104,6 +105,14 @@ public class JFlowPanel extends JPanel implements Scrollable {
             dim.width = maxRowWidth;
         }
         return dim;
+    }
+    
+    private int getPosition(int x, int width) {
+        if (getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT) {
+            return width - x ;
+        } else {
+            return x;
+        }
     }
        
     public Dimension getPreferredSize() {

@@ -172,7 +172,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
             // Load categories panel if not exists
             if (!m_categoriesset.contains(catid)) {
                 
-                JCatalogTab jcurrTab = new JCatalogTab();      
+                JCatalogTab jcurrTab = new JCatalogTab();     
+                jcurrTab.applyComponentOrientation(getComponentOrientation());
                 m_jProducts.add(jcurrTab, catid);
                 m_categoriesset.add(catid);
                 
@@ -276,6 +277,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
                         m_productsset.put(id, product);
 
                         JCatalogTab jcurrTab = new JCatalogTab();      
+                        jcurrTab.applyComponentOrientation(getComponentOrientation());
                         m_jProducts.add(jcurrTab, "PRODUCT." + id);                        
 
                         // Add products
@@ -395,7 +397,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         });
         m_jscrollcat.setViewportView(m_jListCategories);
 
-        m_jRootCategories.add(m_jscrollcat, java.awt.BorderLayout.WEST);
+        m_jRootCategories.add(m_jscrollcat, java.awt.BorderLayout.LINE_START);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -460,13 +462,12 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
         jPanel1.add(jPanel5, java.awt.BorderLayout.NORTH);
 
-        m_jSubCategories.add(jPanel1, java.awt.BorderLayout.EAST);
+        m_jSubCategories.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
         m_jCategories.add(m_jSubCategories, "subcategories");
 
-        add(m_jCategories, java.awt.BorderLayout.WEST);
+        add(m_jCategories, java.awt.BorderLayout.LINE_START);
 
-        m_jProducts.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
         m_jProducts.setLayout(new java.awt.CardLayout());
         add(m_jProducts, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

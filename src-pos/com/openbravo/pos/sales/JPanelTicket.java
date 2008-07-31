@@ -138,7 +138,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }
         
         m_ticketsbag = getJTicketsBag();
-        m_jPanelBag.add(m_ticketsbag.getBagComponent(), BorderLayout.CENTER);
+        m_jPanelBag.add(m_ticketsbag.getBagComponent(), BorderLayout.LINE_START);
         add(m_ticketsbag.getNullComponent(), "null");
 
         m_ticketlines = new JTicketLines(dlSystem.getResourceAsXML("Ticket.Line"));
@@ -1091,10 +1091,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jTicketId = new javax.swing.JLabel();
         btnCustomer = new javax.swing.JButton();
         m_jEditLine1 = new javax.swing.JButton();
-        m_jPanelBag = new javax.swing.JPanel();
+        m_jPanelScripts = new javax.swing.JPanel();
         m_jButtonsExt = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         m_jbtnScale = new javax.swing.JButton();
+        m_jPanelBag = new javax.swing.JPanel();
         m_jPanTicket = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -1163,9 +1164,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         m_jButtons.add(m_jEditLine1);
 
-        m_jOptions.add(m_jButtons, java.awt.BorderLayout.WEST);
+        m_jOptions.add(m_jButtons, java.awt.BorderLayout.LINE_START);
 
-        m_jPanelBag.setLayout(new java.awt.BorderLayout());
+        m_jPanelScripts.setLayout(new java.awt.BorderLayout());
 
         m_jButtonsExt.setLayout(new javax.swing.BoxLayout(m_jButtonsExt, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1184,8 +1185,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jButtonsExt.add(jPanel1);
 
-        m_jPanelBag.add(m_jButtonsExt, java.awt.BorderLayout.EAST);
+        m_jPanelScripts.add(m_jButtonsExt, java.awt.BorderLayout.LINE_END);
 
+        m_jOptions.add(m_jPanelScripts, java.awt.BorderLayout.LINE_END);
+
+        m_jPanelBag.setLayout(new java.awt.BorderLayout());
         m_jOptions.add(m_jPanelBag, java.awt.BorderLayout.CENTER);
 
         m_jPanContainer.add(m_jOptions, java.awt.BorderLayout.NORTH);
@@ -1195,7 +1199,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         jPanel2.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
 
         m_jUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1uparrow22.png"))); // NOI18N
@@ -1260,7 +1264,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         jPanel5.add(jPanel2, java.awt.BorderLayout.NORTH);
 
-        m_jPanTicket.add(jPanel5, java.awt.BorderLayout.EAST);
+        m_jPanTicket.add(jPanel5, java.awt.BorderLayout.LINE_END);
 
         m_jPanelCentral.setLayout(new java.awt.BorderLayout());
 
@@ -1269,8 +1273,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTotals.setLayout(new java.awt.GridBagLayout());
 
         m_jTotalEuros.setBackground(java.awt.Color.white);
-        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14));
-        m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jTotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTotalEuros.setOpaque(true);
         m_jTotalEuros.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -1293,7 +1297,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTotals.add(m_jLblTotalEuros1, gridBagConstraints);
 
         m_jSubtotalEuros.setBackground(java.awt.Color.white);
-        m_jSubtotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jSubtotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jSubtotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jSubtotalEuros.setOpaque(true);
         m_jSubtotalEuros.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -1308,7 +1312,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTotals.add(m_jSubtotalEuros, gridBagConstraints);
 
         m_jTaxesEuros.setBackground(java.awt.Color.white);
-        m_jTaxesEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jTaxesEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jTaxesEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTaxesEuros.setOpaque(true);
         m_jTaxesEuros.setPreferredSize(new java.awt.Dimension(150, 25));
@@ -1446,7 +1450,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jContEntries.add(m_jPanEntries, java.awt.BorderLayout.NORTH);
 
-        m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.EAST);
+        m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.LINE_END);
 
         catcontainer.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         catcontainer.setLayout(new java.awt.BorderLayout());
@@ -1595,6 +1599,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JPanel m_jPanTotals;
     private javax.swing.JPanel m_jPanelBag;
     private javax.swing.JPanel m_jPanelCentral;
+    private javax.swing.JPanel m_jPanelScripts;
     private javax.swing.JLabel m_jPor;
     private javax.swing.JLabel m_jPrice;
     private javax.swing.JLabel m_jSubtotalEuros;

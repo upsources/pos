@@ -18,10 +18,9 @@
 
 package com.openbravo.pos.forms;
 
-import java.awt.Point;
+import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 
 /**
@@ -36,7 +35,7 @@ public class MenuItemDefinition implements MenuElement {
         this.act = act;
     }
     
-    public void addComponent(JComponent comp, Point p) {
+    public void addComponent(JPanelMenu menu) {
         
         JButton btn = new JButton(act); 
         
@@ -44,14 +43,18 @@ public class MenuItemDefinition implements MenuElement {
         btn.setFocusable(false);
         btn.setRequestFocusEnabled(false);
         btn.setHorizontalAlignment(SwingConstants.LEADING);
-        btn.setSize(220, 50);
-        btn.setLocation(p);
-        if (p.x >= 470) {
-            p.x = 20;
-            p.y += 55;
-        } else {
-            p.x += 225;
-        }
-        comp.add(btn);        
+        btn.setPreferredSize(new Dimension(220, 50));
+        
+//        btn.setSize(220, 50);
+//        btn.setLocation(p);
+//        if (p.x >= 470) {
+//            p.x = 20;
+//            p.y += 55;
+//        } else {
+//            p.x += 225;
+//        }
+//        comp.add(btn);        
+        
+        menu.addEntry(btn);
     }
 }

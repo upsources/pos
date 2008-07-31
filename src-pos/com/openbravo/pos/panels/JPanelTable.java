@@ -79,12 +79,14 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
             // Add the filter panel
             Component c = getFilter();
             if (c != null) {
+                c.applyComponentOrientation(getComponentOrientation());
                 add(c, BorderLayout.NORTH);
             }
 
             // Add the editor
             c = getEditor().getComponent();
             if (c != null) {
+                c.applyComponentOrientation(getComponentOrientation());                
                 container.add(c, BorderLayout.CENTER);            
             }
 
@@ -92,21 +94,31 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
             ListCellRenderer cr = getListCellRenderer();
             if (cr != null) {
                 JListNavigator nl = new JListNavigator(bd);
+                nl.applyComponentOrientation(getComponentOrientation());
                 if (cr != null) nl.setCellRenderer(cr);
-                container.add(nl, java.awt.BorderLayout.WEST);
+                container.add(nl, java.awt.BorderLayout.LINE_START);
             }
 
             // add toolbar extras
             c = getToolbarExtras();
             if (c != null) {
+                c.applyComponentOrientation(getComponentOrientation());
                 toolbar.add(c);
             }
 
             // La Toolbar
-            toolbar.add(new JLabelDirty(dirty));
-            toolbar.add(new JCounter(bd));
-            toolbar.add(new JNavigator(bd, getVectorer(), getComparatorCreator()));
-            toolbar.add(new JSaver(bd));
+            c = new JLabelDirty(dirty);
+            c.applyComponentOrientation(getComponentOrientation());
+            toolbar.add(c);
+            c = new JCounter(bd);
+            c.applyComponentOrientation(getComponentOrientation());
+            toolbar.add(c);
+            c = new JNavigator(bd, getVectorer(), getComparatorCreator());
+            c.applyComponentOrientation(getComponentOrientation());
+            toolbar.add(c);
+            c = new JSaver(bd);
+            c.applyComponentOrientation(getComponentOrientation());
+            toolbar.add(c);
         }
     }
     

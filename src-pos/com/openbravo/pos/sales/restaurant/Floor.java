@@ -32,6 +32,7 @@ import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.ImageUtils;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.pos.util.ThumbNailBuilder;
+import java.awt.ComponentOrientation;
 
 public class Floor implements SerializableRead {
     

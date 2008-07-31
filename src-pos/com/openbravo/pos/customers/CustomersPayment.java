@@ -227,6 +227,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         btnCustomer = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -255,7 +256,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
         btnCustomer.setFocusPainted(false);
@@ -267,7 +268,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 btnCustomerActionPerformed(evt);
             }
         });
-        jPanel2.add(btnCustomer);
+        jPanel6.add(btnCustomer);
 
         btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/filesave.png"))); // NOI18N
         btnSave.setFocusPainted(false);
@@ -279,8 +280,8 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 btnSaveActionPerformed(evt);
             }
         });
-        jPanel2.add(btnSave);
-        jPanel2.add(jSeparator1);
+        jPanel6.add(btnSave);
+        jPanel6.add(jSeparator1);
 
         btnPay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/greenled.png"))); // NOI18N
         btnPay.setText(AppLocal.getIntString("button.pay")); // NOI18N
@@ -293,7 +294,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 btnPayActionPerformed(evt);
             }
         });
-        jPanel2.add(btnPay);
+        jPanel6.add(btnPay);
+
+        jPanel2.add(jPanel6, java.awt.BorderLayout.LINE_START);
 
         add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
@@ -335,7 +338,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.NORTH);
 
-        add(jPanel3, java.awt.BorderLayout.EAST);
+        add(jPanel3, java.awt.BorderLayout.LINE_END);
 
         jPanel1.setLayout(null);
 
@@ -535,6 +538,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JTextField txtCard;

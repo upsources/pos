@@ -18,6 +18,7 @@
 
 package com.openbravo.beans;
 
+import java.awt.ComponentOrientation;
 import java.util.*;
 
 public class JNumberKeys extends javax.swing.JPanel {
@@ -75,6 +76,11 @@ public class JNumberKeys extends javax.swing.JPanel {
         m_jPlus.setEnabled(b);       
         m_jMinus.setEnabled(minusenabled && isEnabled());
         m_jEquals.setEnabled(b);   
+    }
+    
+    @Override
+    public void setComponentOrientation(ComponentOrientation o) {
+        // Nothing to change
     }
     
     public void setMinusEnabled(boolean b) {

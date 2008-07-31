@@ -205,15 +205,15 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
 
         jLabel2.setText(AppLocal.getIntString("label.paymentreason")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(10, 30, 150, 14);
+        jLabel2.setBounds(10, 30, 150, 15);
 
         m_jtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(m_jtotal);
-        m_jtotal.setBounds(160, 60, 70, 18);
+        m_jtotal.setBounds(160, 60, 70, 19);
 
         jLabel3.setText(AppLocal.getIntString("label.paymenttotal")); // NOI18N
         add(jLabel3);
-        jLabel3.setBounds(10, 60, 150, 14);
+        jLabel3.setBounds(10, 60, 150, 15);
     }// </editor-fold>//GEN-END:initComponents
     
     
