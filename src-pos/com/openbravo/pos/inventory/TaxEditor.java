@@ -25,63 +25,151 @@ import javax.swing.*;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.DirtyManager;
+import com.openbravo.pos.forms.AppView;
+import com.openbravo.pos.forms.DataLogicSales;
+import java.util.List;
 
 public class TaxEditor extends JPanel implements EditorRecord {
     
     private Object m_oId;
     
+    private SentenceList taxcatsent;
+    private ComboBoxValModel taxcatmodel;    
+    
+    private SentenceList taxcustcatsent;
+    private ComboBoxValModel taxcustcatmodel;   
+    
+    private SentenceList taxparentsent;
+    private ComboBoxValModel taxparentmodel;    
+    
     /** Creates new form taxEditor */
-    public TaxEditor(DirtyManager dirty) {
+    public TaxEditor(AppView app, DirtyManager dirty) {
+        
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        
         initComponents();
+        
+        taxcatsent = dlSales.getTaxCategoriesList();
+        taxcatmodel = new ComboBoxValModel();        
+        
+        taxcustcatsent = dlSales.getTaxCustCategoriesList();
+        taxcustcatmodel = new ComboBoxValModel();    
+        
+        taxparentsent = dlSales.getTaxList();
+        taxparentmodel = new ComboBoxValModel();    
 
         m_jName.getDocument().addDocumentListener(dirty);
+        m_jTaxCategory.addActionListener(dirty);
+        m_jCustTaxCategory.addActionListener(dirty);
+        m_jTaxParent.addActionListener(dirty);
         m_jRate.getDocument().addDocumentListener(dirty);
+        jCascade.addActionListener(dirty);
         
         writeValueEOF();
     }
+    
+    public void activate() throws BasicException {
+        
+        List a = taxcatsent.list();
+        taxcatmodel = new ComboBoxValModel(a);
+        m_jTaxCategory.setModel(taxcatmodel);
+        
+        a = taxcustcatsent.list();
+        a.add(0, null); // The null item
+        taxcustcatmodel = new ComboBoxValModel(a);
+        m_jCustTaxCategory.setModel(taxcustcatmodel);    
+        
+        a = taxparentsent.list();
+        a.add(0, null); // The null item
+        taxparentmodel = new ComboBoxValModel(a);
+        m_jTaxParent.setModel(taxparentmodel);           
+    }
+    
     public void writeValueEOF() {
         m_oId = null;
         m_jName.setText(null);
+        taxcatmodel.setSelectedKey(null);
+        taxcustcatmodel.setSelectedKey(null);
+        taxparentmodel.setSelectedKey(null);
         m_jRate.setText(null);
+        jCascade.setSelected(false);
+        
         m_jName.setEnabled(false);
+        m_jTaxCategory.setEnabled(false);
+        m_jCustTaxCategory.setEnabled(false);
+        m_jTaxParent.setEnabled(false);
         m_jRate.setEnabled(false);
+        jCascade.setEnabled(false);
     }
     public void writeValueInsert() {
         m_oId = null;
         m_jName.setText(null);
+        taxcatmodel.setSelectedKey(null);
+        taxcustcatmodel.setSelectedKey(null);
+        taxparentmodel.setSelectedKey(null);
         m_jRate.setText(null);
+        jCascade.setSelected(false);
+        
         m_jName.setEnabled(true);
+        m_jTaxCategory.setEnabled(true);
+        m_jCustTaxCategory.setEnabled(true);
+        m_jTaxParent.setEnabled(true);        
         m_jRate.setEnabled(true);
+        jCascade.setEnabled(true);        
     }
     public void writeValueDelete(Object value) {
 
         Object[] tax = (Object[]) value;
         m_oId = tax[0];
         m_jName.setText(Formats.STRING.formatValue(tax[1]));
-        m_jRate.setText(Formats.PERCENT.formatValue(tax[2]));
+        taxcatmodel.setSelectedKey(tax[2]);
+        taxcustcatmodel.setSelectedKey(tax[3]);
+        taxparentmodel.setSelectedKey(tax[4]);        
+        m_jRate.setText(Formats.PERCENT.formatValue(tax[5]));
+        jCascade.setSelected((Boolean) tax[6]);
+        
         m_jName.setEnabled(false);
+        m_jTaxCategory.setEnabled(false);
+        m_jCustTaxCategory.setEnabled(false);
+        m_jTaxParent.setEnabled(false);
         m_jRate.setEnabled(false);
+        jCascade.setEnabled(false);
     }    
     public void writeValueEdit(Object value) {
 
         Object[] tax = (Object[]) value;
         m_oId = tax[0];
         m_jName.setText(Formats.STRING.formatValue(tax[1]));
-        m_jRate.setText(Formats.PERCENT.formatValue(tax[2]));
+        taxcatmodel.setSelectedKey(tax[2]);
+        taxcustcatmodel.setSelectedKey(tax[3]);
+        taxparentmodel.setSelectedKey(tax[4]);        
+        m_jRate.setText(Formats.PERCENT.formatValue(tax[5]));
+        jCascade.setSelected((Boolean) tax[6]);
+        
         m_jName.setEnabled(true);
+        m_jTaxCategory.setEnabled(true);
+        m_jCustTaxCategory.setEnabled(true);
+        m_jTaxParent.setEnabled(true);        
         m_jRate.setEnabled(true);
+        jCascade.setEnabled(true);
     }
 
     public Object createValue() throws BasicException {
         
-        Object[] tax = new Object[4];
+        Object[] tax = new Object[7];
 
         tax[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
         tax[1] = m_jName.getText();
-        tax[2] = Formats.PERCENT.parseValue(m_jRate.getText());
-
+        tax[2] = taxcatmodel.getSelectedKey();
+        tax[3] = taxcustcatmodel.getSelectedKey(); 
+        tax[4] = taxparentmodel.getSelectedKey(); 
+        tax[5] = Formats.PERCENT.parseValue(m_jRate.getText());
+        tax[6] = Boolean.valueOf(jCascade.isSelected());
+        
         return tax;
     }    
      
@@ -101,28 +189,64 @@ public class TaxEditor extends JPanel implements EditorRecord {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         m_jRate = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jCascade = new javax.swing.JCheckBox();
+        m_jTaxCategory = new javax.swing.JComboBox();
+        m_jTaxParent = new javax.swing.JComboBox();
+        m_jCustTaxCategory = new javax.swing.JComboBox();
 
         setLayout(null);
         add(m_jName);
-        m_jName.setBounds(100, 20, 200, 19);
+        m_jName.setBounds(200, 20, 200, 19);
 
         jLabel2.setText(AppLocal.getIntString("Label.Name")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 20, 80, 15);
+        jLabel2.setBounds(20, 20, 180, 15);
 
         jLabel3.setText(AppLocal.getIntString("label.dutyrate")); // NOI18N
         add(jLabel3);
-        jLabel3.setBounds(20, 50, 80, 15);
+        jLabel3.setBounds(20, 140, 80, 15);
         add(m_jRate);
-        m_jRate.setBounds(100, 50, 60, 19);
+        m_jRate.setBounds(200, 140, 60, 19);
+
+        jLabel1.setText(AppLocal.getIntString("label.taxcategory")); // NOI18N
+        add(jLabel1);
+        jLabel1.setBounds(20, 50, 180, 15);
+
+        jLabel4.setText(AppLocal.getIntString("label.custtaxcategory")); // NOI18N
+        add(jLabel4);
+        jLabel4.setBounds(20, 80, 180, 15);
+
+        jLabel5.setText(AppLocal.getIntString("label.taxparent")); // NOI18N
+        add(jLabel5);
+        jLabel5.setBounds(20, 110, 180, 15);
+
+        jCascade.setText(AppLocal.getIntString("label.cascade")); // NOI18N
+        add(jCascade);
+        jCascade.setBounds(280, 140, 110, 23);
+        add(m_jTaxCategory);
+        m_jTaxCategory.setBounds(200, 50, 200, 24);
+        add(m_jTaxParent);
+        m_jTaxParent.setBounds(200, 110, 200, 24);
+        add(m_jCustTaxCategory);
+        m_jCustTaxCategory.setBounds(200, 80, 200, 24);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox jCascade;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JComboBox m_jCustTaxCategory;
     private javax.swing.JTextField m_jName;
     private javax.swing.JTextField m_jRate;
+    private javax.swing.JComboBox m_jTaxCategory;
+    private javax.swing.JComboBox m_jTaxParent;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.inventory;
 
+import com.openbravo.basic.BasicException;
 import com.openbravo.pos.panels.*;
 import javax.swing.ListCellRenderer;
 import com.openbravo.data.gui.ListCellRendererBasic;
@@ -47,7 +48,14 @@ public class TaxPanel extends JPanelTable {
     protected void init() {
         DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");        
         ttaxes = dlSales.getTableTaxes();
-        jeditor = new TaxEditor(dirty);
+        jeditor = new TaxEditor(app, dirty);
+    }
+    
+    @Override
+    public void activate() throws BasicException { 
+        
+        jeditor.activate();         
+        super.activate();
     }
     
     public ListProvider getListProvider() {
@@ -58,14 +66,17 @@ public class TaxPanel extends JPanelTable {
         return new SaveProvider(ttaxes);      
     }
     
+    @Override
     public Vectorer getVectorer() {
-        return ttaxes.getVectorerBasic(new int[]{1, 2});
+        return ttaxes.getVectorerBasic(new int[]{1, 5});
     }
     
+    @Override
     public ComparatorCreator getComparatorCreator() {
-        return ttaxes.getComparatorCreator(new int[] {1, 2});
+        return ttaxes.getComparatorCreator(new int[] {1, 5});
     }
     
+    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(ttaxes.getRenderStringBasic(new int[]{1}));
     }

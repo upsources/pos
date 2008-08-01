@@ -33,6 +33,7 @@ import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.inventory.TaxCustCategoryInfo;
 import com.openbravo.pos.inventory.LocationInfo;
 import com.openbravo.pos.inventory.MovementReason;
+import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.mant.FloorsInfo;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
@@ -143,6 +144,12 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , "SELECT ID, NAME FROM TAXCUSTCATEGORIES ORDER BY NAME"
             , null
             , new SerializerReadClass(TaxCustCategoryInfo.class));
+    }
+    public final SentenceList getTaxCategoriesList() {
+        return new StaticSentence(s
+            , "SELECT ID, NAME FROM TAXCATEGORIES ORDER BY NAME"
+            , null
+            , new SerializerReadClass(TaxCategoryInfo.class));
     }
     public final SentenceList getLocationsList() {
         return new StaticSentence(s
@@ -535,10 +542,10 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public final TableDefinition getTableTaxes() {
         return new TableDefinition(s,
             "TAXES"
-            , new String[] {"ID", "NAME", "RATE"}
-            , new String[] {"ID", AppLocal.getIntString("Label.Name"), AppLocal.getIntString("label.dutyrate")}
-            , new Datas[] {Datas.STRING, Datas.STRING, Datas.DOUBLE}
-            , new Formats[] {Formats.STRING, Formats.STRING, Formats.PERCENT}
+            , new String[] {"ID", "NAME", "CATEGORY", "CUSTCATEGORY", "PARENTID", "RATE", "CASCADE"}
+            , new String[] {"ID", AppLocal.getIntString("Label.Name"), AppLocal.getIntString("label.taxcategory"), AppLocal.getIntString("label.custtaxcategory"), AppLocal.getIntString("label.taxparent"), AppLocal.getIntString("label.dutyrate"), AppLocal.getIntString("label.cascade")}
+            , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.BOOLEAN}
+            , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.PERCENT, Formats.BOOLEAN}
             , new int[] {0}
         );
     }    

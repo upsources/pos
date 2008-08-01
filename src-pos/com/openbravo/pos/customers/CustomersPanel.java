@@ -51,6 +51,7 @@ public class CustomersPanel extends JPanelTable {
         jeditor = new CustomersView(app, dirty);    
     }
     
+    @Override
     public void activate() throws BasicException { 
         
         jeditor.activate();         

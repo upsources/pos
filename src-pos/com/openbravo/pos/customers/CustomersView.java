@@ -420,13 +420,13 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         add(jLabel3);
         jLabel3.setBounds(20, 80, 140, 15);
         add(m_jName);
-        m_jName.setBounds(160, 80, 270, 19);
+        m_jName.setBounds(200, 80, 270, 19);
 
         jLabel4.setText(AppLocal.getIntString("label.visible")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 190, 140, 15);
+        jLabel4.setBounds(20, 170, 140, 15);
         add(m_jVisible);
-        m_jVisible.setBounds(160, 190, 140, 20);
+        m_jVisible.setBounds(200, 170, 140, 20);
 
         jLabel5.setText(AppLocal.getIntString("label.card")); // NOI18N
         add(jLabel5);
@@ -434,7 +434,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
         jcard.setEditable(false);
         add(jcard);
-        jcard.setBounds(160, 110, 270, 19);
+        jcard.setBounds(200, 110, 270, 19);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/color_line16.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -443,7 +443,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             }
         });
         add(jButton2);
-        jButton2.setBounds(440, 110, 50, 26);
+        jButton2.setBounds(480, 110, 50, 26);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -452,35 +452,35 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             }
         });
         add(jButton3);
-        jButton3.setBounds(500, 110, 50, 26);
+        jButton3.setBounds(540, 110, 50, 26);
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 220, 140, 15);
+        jLabel1.setBounds(20, 200, 140, 15);
 
         txtMaxdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtMaxdebt);
-        txtMaxdebt.setBounds(160, 220, 130, 19);
+        txtMaxdebt.setBounds(200, 200, 130, 19);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 280, 140, 15);
+        jLabel2.setBounds(20, 230, 140, 15);
 
         txtCurdebt.setEditable(false);
         txtCurdebt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         add(txtCurdebt);
-        txtCurdebt.setBounds(160, 280, 130, 19);
+        txtCurdebt.setBounds(200, 230, 130, 19);
 
         txtCurdate.setEditable(false);
         txtCurdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         add(txtCurdate);
-        txtCurdate.setBounds(160, 310, 130, 19);
+        txtCurdate.setBounds(200, 260, 130, 19);
 
         jLabel6.setText(AppLocal.getIntString("label.curdate")); // NOI18N
         add(jLabel6);
-        jLabel6.setBounds(20, 310, 140, 15);
+        jLabel6.setBounds(20, 260, 140, 15);
         add(m_jTaxID);
-        m_jTaxID.setBounds(160, 20, 270, 19);
+        m_jTaxID.setBounds(200, 20, 270, 19);
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
         add(jLabel7);
@@ -490,7 +490,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         add(jLabel8);
         jLabel8.setBounds(20, 50, 140, 15);
         add(m_jSearchkey);
-        m_jSearchkey.setBounds(160, 50, 270, 19);
+        m_jSearchkey.setBounds(200, 50, 270, 19);
 
         jPanel1.setLayout(null);
 
@@ -577,18 +577,18 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jScrollPane1.setViewportView(m_jNotes);
 
         jPanel3.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 10, 540, 180);
+        jScrollPane1.setBounds(10, 10, 550, 180);
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.notes"), jPanel3); // NOI18N
 
         add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 350, 560, 230);
+        jTabbedPane1.setBounds(10, 300, 580, 230);
 
-        jLabel9.setText(AppLocal.getIntString("label.prodcategory")); // NOI18N
+        jLabel9.setText(AppLocal.getIntString("label.custtaxcategory")); // NOI18N
         add(jLabel9);
-        jLabel9.setBounds(20, 140, 140, 15);
+        jLabel9.setBounds(20, 140, 180, 15);
         add(m_jCategory);
-        m_jCategory.setBounds(160, 140, 180, 20);
+        m_jCategory.setBounds(200, 140, 270, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
