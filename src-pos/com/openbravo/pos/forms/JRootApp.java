@@ -351,6 +351,7 @@ public class JRootApp extends JPanel implements AppView {
     private static void initOldClasses() {
         m_oldclasses = new HashMap<String, String>();
         
+        // update bean names from 2.00 to 2.20    
         m_oldclasses.put("com.openbravo.pos.reports.JReportCustomers", "/com/openbravo/reports/customers.bs");
         m_oldclasses.put("com.openbravo.pos.reports.JReportCustomersB", "/com/openbravo/reports/customersb.bs");
         m_oldclasses.put("com.openbravo.pos.reports.JReportClosedPos", "/com/openbravo/reports/closedpos.bs");
@@ -365,6 +366,10 @@ public class JRootApp extends JPanel implements AppView {
         m_oldclasses.put("com.openbravo.pos.reports.JReportUserSales", "/com/openbravo/reports/usersales.bs");
         m_oldclasses.put("com.openbravo.pos.reports.JReportProducts", "/com/openbravo/reports/products.bs");
         m_oldclasses.put("com.openbravo.pos.reports.JReportCatalog", "/com/openbravo/reports/productscatalog.bs");
+        
+        // update bean names from 2.10 to 2.20
+        m_oldclasses.put("com.openbravo.pos.panels.JPanelTax", "com.openbravo.pos.inventory.TaxPanel");
+       
     }
     
     public void waitCursorBegin() {

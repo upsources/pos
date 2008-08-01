@@ -35,13 +35,13 @@ import com.openbravo.pos.forms.DataLogicSales;
  *
  * @author adrianromero
  */
-public class JPanelTax extends JPanelTable {
+public class TaxPanel extends JPanelTable {
 
     private TableDefinition ttaxes;
     private TaxEditor jeditor;
     
     /** Creates a new instance of JPanelDuty */
-    public JPanelTax() {
+    public TaxPanel() {
     }
     
     protected void init() {

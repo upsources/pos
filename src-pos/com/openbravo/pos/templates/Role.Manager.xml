@@ -52,7 +52,7 @@
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>
     <class name="com.openbravo.pos.inventory.ProductsWarehousePanel"/>    
     <class name="com.openbravo.pos.inventory.CategoriesPanel"/>
-    <class name="com.openbravo.pos.inventory.JPanelTax"/>
+    <class name="com.openbravo.pos.inventory.TaxPanel"/>
     <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
     <class name="com.openbravo.pos.inventory.StockManagement"/>
     <class name="/com/openbravo/reports/products.bs"/>      
