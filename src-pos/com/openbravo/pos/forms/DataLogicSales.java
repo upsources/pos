@@ -552,7 +552,17 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new int[] {0}
         );
     } 
-   
+    public final TableDefinition getTableTaxCategories() {
+        return new TableDefinition(s,
+            "TAXCATEGORIES"
+            , new String[] {"ID", "NAME"}
+            , new String[] {"ID", AppLocal.getIntString("Label.Name")}
+            , new Datas[] {Datas.STRING, Datas.STRING}
+            , new Formats[] {Formats.STRING, Formats.STRING}
+            , new int[] {0}
+        );
+    } 
+    
     public final TableDefinition getTableLocations() {
         return new TableDefinition(s,
             "LOCATIONS"
