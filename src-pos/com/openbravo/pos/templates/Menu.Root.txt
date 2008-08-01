@@ -31,12 +31,14 @@
         submenu.addTitle("Menu.Customers.Reports");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.CustomersReport", "/com/openbravo/reports/customers.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.CustomersBReport", "/com/openbravo/reports/customersb.bs");
+        submenu.addTitle("Menu.Maintenance");
+        submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.TaxCustCategories", "com.openbravo.pos.inventory.TaxCustCategoriesPanel");
     submenu = group.addSubmenu("/com/openbravo/images/contents.png", "Menu.StockManagement", "com.openbravo.pos.forms.MenuStockManagement");
         submenu.addTitle("Menu.StockManagement.Edit");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Products", "com.openbravo.pos.inventory.ProductsPanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.ProductsWarehouse", "com.openbravo.pos.inventory.ProductsWarehousePanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Categories", "com.openbravo.pos.inventory.CategoriesPanel");
-        submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Taxes", "com.openbravo.pos.panels.JPanelTax");
+        submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Taxes", "com.openbravo.pos.inventory.JPanelTax");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.StockDiary", "com.openbravo.pos.inventory.StockDiaryPanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.StockMovement", "com.openbravo.pos.inventory.StockManagement");
         submenu.addTitle("Menu.StockManagement.Reports");

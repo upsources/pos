@@ -30,6 +30,7 @@ import com.openbravo.data.loader.*;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.inventory.TaxCustCategoryInfo;
 import com.openbravo.pos.inventory.LocationInfo;
 import com.openbravo.pos.inventory.MovementReason;
 import com.openbravo.pos.mant.FloorsInfo;
@@ -136,6 +137,12 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , "SELECT ID, NAME, IMAGE FROM CATEGORIES ORDER BY NAME"
             , null
             , new SerializerReadClass(CategoryInfo.class));
+    }
+    public final SentenceList getTaxCustCategoriesList() {
+        return new StaticSentence(s
+            , "SELECT ID, NAME FROM TAXCUSTCATEGORIES ORDER BY NAME"
+            , null
+            , new SerializerReadClass(TaxCustCategoryInfo.class));
     }
     public final SentenceList getLocationsList() {
         return new StaticSentence(s
@@ -535,7 +542,16 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new int[] {0}
         );
     }    
-
+    public final TableDefinition getTableTaxCustCategories() {
+        return new TableDefinition(s,
+            "TAXCUSTCATEGORIES"
+            , new String[] {"ID", "NAME"}
+            , new String[] {"ID", AppLocal.getIntString("Label.Name")}
+            , new Datas[] {Datas.STRING, Datas.STRING}
+            , new Formats[] {Formats.STRING, Formats.STRING}
+            , new int[] {0}
+        );
+    } 
    
     public final TableDefinition getTableLocations() {
         return new TableDefinition(s,

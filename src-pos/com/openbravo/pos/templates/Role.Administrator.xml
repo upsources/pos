@@ -47,12 +47,13 @@
     <class name="com.openbravo.pos.customers.CustomersPanel"/>
     <class name="/com/openbravo/reports/customers.bs"/>
     <class name="/com/openbravo/reports/customersb.bs"/>
+    <class name="com.openbravo.pos.inventory.TaxCustCategoriesPanel"/>
 
     <class name="com.openbravo.pos.forms.MenuStockManagement"/>
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>
     <class name="com.openbravo.pos.inventory.ProductsWarehousePanel"/>
     <class name="com.openbravo.pos.inventory.CategoriesPanel"/>
-    <class name="com.openbravo.pos.panels.JPanelTax"/>
+    <class name="com.openbravo.pos.inventory.JPanelTax"/>
     <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
     <class name="com.openbravo.pos.inventory.StockManagement"/>
     <class name="/com/openbravo/reports/products.bs"/>     
