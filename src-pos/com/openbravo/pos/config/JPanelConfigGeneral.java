@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.util.ReportUtils;
 import com.openbravo.pos.util.StringParser;
 import java.util.Map;
 import javax.swing.LookAndFeel;
@@ -80,6 +81,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboMachineScanner.addActionListener(dirty);
         jcboSerialScanner.addActionListener(dirty);
 
+        cboPrinters.addActionListener(dirty);
         
 //        // Openbravo Skin
 //        jcboLAF.addItem(new UIManager.LookAndFeelInfo("Openbravo", "com.openbravo.pos.skin.OpenbravoLookAndFeel"));
@@ -231,6 +233,12 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboSerialScanner.addItem("/dev/ttyS1");
         jcboSerialScanner.addItem("/dev/ttyS2");
         jcboSerialScanner.addItem("/dev/ttyS3");    
+        
+        // Printers
+        String[] printernames = ReportUtils.getPrintNames();
+        for (String name : printernames) {
+            cboPrinters.addItem(name);
+        }
     }
     
     public boolean hasChanged() {
@@ -336,6 +344,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
             jcboSerialScanner.setSelectedItem(p.nextToken(','));
         }    
         
+        cboPrinters.setSelectedItem(config.getProperty("machine.printername"));       
+        
         dirty.setDirty(false);        
     }
    
@@ -403,6 +413,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         } else {
             config.setProperty("machine.scanner", sMachineScanner);
         }
+        
+        config.setProperty("machine.printername", comboValue(cboPrinters.getSelectedItem()));       
         
         dirty.setDirty(false);
     }
@@ -546,8 +558,10 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboSerialScanner = new javax.swing.JComboBox();
         jcboLAF = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        cboPrinters = new javax.swing.JComboBox();
 
-        setPreferredSize(new java.awt.Dimension(680, 340));
+        setPreferredSize(new java.awt.Dimension(680, 370));
         setLayout(null);
         add(jtxtMachineHostname);
         jtxtMachineHostname.setBounds(150, 40, 180, 19);
@@ -840,6 +854,12 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jLabel2.setText(AppLocal.getIntString("label.looknfeel")); // NOI18N
         add(jLabel2);
         jLabel2.setBounds(20, 70, 130, 15);
+
+        jLabel1.setText(AppLocal.getIntString("label.reportsprinter")); // NOI18N
+        add(jLabel1);
+        jLabel1.setBounds(20, 340, 130, 15);
+        add(cboPrinters);
+        cboPrinters.setBounds(150, 340, 180, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcboMachineScannerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboMachineScannerActionPerformed
@@ -912,6 +932,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cboPrinters;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;

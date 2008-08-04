@@ -199,39 +199,39 @@ public class TaxEditor extends JPanel implements EditorRecord {
 
         setLayout(null);
         add(m_jName);
-        m_jName.setBounds(200, 20, 200, 19);
+        m_jName.setBounds(240, 20, 200, 19);
 
         jLabel2.setText(AppLocal.getIntString("Label.Name")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 20, 180, 15);
+        jLabel2.setBounds(20, 20, 220, 15);
 
         jLabel3.setText(AppLocal.getIntString("label.dutyrate")); // NOI18N
         add(jLabel3);
-        jLabel3.setBounds(20, 140, 80, 15);
+        jLabel3.setBounds(20, 140, 220, 15);
         add(m_jRate);
-        m_jRate.setBounds(200, 140, 60, 19);
+        m_jRate.setBounds(240, 140, 60, 19);
 
         jLabel1.setText(AppLocal.getIntString("label.taxcategory")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 50, 180, 15);
+        jLabel1.setBounds(20, 50, 220, 15);
 
         jLabel4.setText(AppLocal.getIntString("label.custtaxcategory")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 80, 180, 15);
+        jLabel4.setBounds(20, 80, 220, 15);
 
         jLabel5.setText(AppLocal.getIntString("label.taxparent")); // NOI18N
         add(jLabel5);
-        jLabel5.setBounds(20, 110, 180, 15);
+        jLabel5.setBounds(20, 110, 220, 15);
 
         jCascade.setText(AppLocal.getIntString("label.cascade")); // NOI18N
         add(jCascade);
-        jCascade.setBounds(280, 140, 110, 23);
+        jCascade.setBounds(320, 140, 110, 23);
         add(m_jTaxCategory);
-        m_jTaxCategory.setBounds(200, 50, 200, 24);
+        m_jTaxCategory.setBounds(240, 50, 200, 24);
         add(m_jTaxParent);
-        m_jTaxParent.setBounds(200, 110, 200, 24);
+        m_jTaxParent.setBounds(240, 110, 200, 24);
         add(m_jCustTaxCategory);
-        m_jCustTaxCategory.setBounds(200, 80, 200, 24);
+        m_jCustTaxCategory.setBounds(240, 80, 200, 24);
     }// </editor-fold>//GEN-END:initComponents
     
     

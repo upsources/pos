@@ -47,6 +47,7 @@
     <class name="com.openbravo.pos.customers.CustomersPanel"/>
     <class name="/com/openbravo/reports/customers.bs"/>
     <class name="/com/openbravo/reports/customersb.bs"/>
+    <class name="/com/openbravo/reports/customersdiary.bs"/>
     <class name="com.openbravo.pos.inventory.TaxCustCategoriesPanel"/>
 
     <class name="com.openbravo.pos.forms.MenuStockManagement"/>

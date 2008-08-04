@@ -62,6 +62,9 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.print.PrintService;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -867,7 +870,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } catch (MissingResourceException e) {
             }
 
-            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams);    
+            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams,  new JRDataSource() {
+                private int i= 0;
+                public Object getFieldValue(JRField jrField) throws JRException {
+                    return null;
+                }   
+                public boolean next() throws JRException {
+                    return false;
+                }
+            });
             
             PrintService service = ReportUtils.getPrintService(m_App.getProperties().getProperty("machine.printername"));
             

@@ -48,5 +48,17 @@ public class ReportUtils {
         
         return PrintServiceLookup.lookupDefaultPrintService();           
     }
+    
+    public static String[] getPrintNames() {
+        PrintService[] pservices = 
+                PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE , null);
+        
+        String printers[] = new String[pservices.length];
+        for (int i = 0; i < pservices.length; i++) {    
+            printers[i] = pservices[i].getName();
+        }
+        
+        return printers;
+    }
 
 }
