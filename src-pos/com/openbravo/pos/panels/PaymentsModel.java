@@ -118,7 +118,7 @@ public class PaymentsModel {
             "SUM(UNITS * PRICE), " +
             "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (1 + TAXES.RATE)) " +
             "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
-            "AND RECEIPTS.MONEY = ? AND RECEIPTS.ID IN (SELECT RECEIPT FROM PAYMENTS WHERE PAYMENT <>'free')" // hespen
+            "AND RECEIPTS.MONEY = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE, Datas.DOUBLE}))
             .find(app.getActiveCashIndex());            
@@ -137,7 +137,7 @@ public class PaymentsModel {
                 "SUM(UNITS * PRICE), " +
                 "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (1 + TAXES.RATE)) " +
                 "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
-                "AND RECEIPTS.MONEY = ? AND RECEIPTS.ID IN (SELECT RECEIPT FROM PAYMENTS WHERE PAYMENT <> 'free') " + // hespen
+                "AND RECEIPTS.MONEY = ? " + 
                 "GROUP BY TAXES.ID, TAXES.NAME"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(PaymentsModel.SalesLine.class))
