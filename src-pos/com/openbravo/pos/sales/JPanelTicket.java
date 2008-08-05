@@ -62,13 +62,11 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.print.PrintService;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
@@ -863,14 +861,16 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             // Construyo el mapa de los parametros.
             Map reportparams = new HashMap();
             // reportparams.put("ARG", params);
-            reportparams.put("TICKET", ticket);
-            reportparams.put("PLACE", ticketext);
             try {
                 reportparams.put("REPORT_RESOURCE_BUNDLE", ResourceBundle.getBundle(resourcefile + ".properties"));
             } catch (MissingResourceException e) {
             }
+            
+            Map reportfields = new HashMap();
+            reportfields.put("TICKET", ticket);
+            reportfields.put("PLACE", ticketext);
 
-            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams); // Results in an empty document
+            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams, new JRMapArrayDataSource(new Object[] { reportfields } ));
             
             PrintService service = ReportUtils.getPrintService(m_App.getProperties().getProperty("machine.printername"));
             
