@@ -870,15 +870,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } catch (MissingResourceException e) {
             }
 
-            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams,  new JRDataSource() {
-                private int i= 0;
-                public Object getFieldValue(JRField jrField) throws JRException {
-                    return null;
-                }   
-                public boolean next() throws JRException {
-                    return false;
-                }
-            });
+            JasperPrint jp = JasperFillManager.fillReport(jr, reportparams); // Results in an empty document
             
             PrintService service = ReportUtils.getPrintService(m_App.getProperties().getProperty("machine.printername"));
             
