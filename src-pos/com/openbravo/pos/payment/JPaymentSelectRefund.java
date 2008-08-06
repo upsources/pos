@@ -19,6 +19,7 @@
 package com.openbravo.pos.payment;
 
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Window;
@@ -30,12 +31,12 @@ import java.awt.Window;
 public class JPaymentSelectRefund extends JPaymentSelect {
     
     /** Creates new form JPaymentSelect */
-    protected JPaymentSelectRefund(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    protected JPaymentSelectRefund(java.awt.Frame parent, boolean modal, ComponentOrientation o) {
+        super(parent, modal, o);
     }
     /** Creates new form JPaymentSelect */
-    protected JPaymentSelectRefund(java.awt.Dialog parent, boolean modal) {
-        super(parent, modal);
+    protected JPaymentSelectRefund(java.awt.Dialog parent, boolean modal, ComponentOrientation o) {
+        super(parent, modal, o);
     } 
     
     public static JPaymentSelect getDialog(Component parent) {
@@ -43,9 +44,9 @@ public class JPaymentSelectRefund extends JPaymentSelect {
         Window window = getWindow(parent);
         
         if (window instanceof Frame) { 
-            return new JPaymentSelectRefund((Frame) window, true);
+            return new JPaymentSelectRefund((Frame) window, true, parent.getComponentOrientation());
         } else {
-            return new JPaymentSelectRefund((Dialog) window, true);
+            return new JPaymentSelectRefund((Dialog) window, true, parent.getComponentOrientation());
         }
     } 
     

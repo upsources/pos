@@ -59,7 +59,7 @@ public class RoundedBorder extends AbstractBorder {
         }
         return gradientBorder;
     }
-
+    
     public RoundedBorder(Color colorBorder) {
         this(colorBorder, Color.WHITE, 1f, 0, true, true);
     }

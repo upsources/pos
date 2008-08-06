@@ -232,7 +232,7 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        add(jPanel2, java.awt.BorderLayout.EAST);
+        add(jPanel2, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
     
     

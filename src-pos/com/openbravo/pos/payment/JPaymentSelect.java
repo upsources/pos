@@ -18,7 +18,6 @@
 
 package com.openbravo.pos.payment;
 
-import com.openbravo.basic.BasicException;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -27,11 +26,10 @@ import javax.swing.JFrame;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
-import com.openbravo.pos.customers.CustomerInfo;
-import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.payment.JPaymentInterface;
+import java.awt.ComponentOrientation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,15 +55,21 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
     
     /** Creates new form JPaymentSelect */
-    protected JPaymentSelect(java.awt.Frame parent, boolean modal) {
+    protected JPaymentSelect(java.awt.Frame parent, boolean modal, ComponentOrientation o) {
         super(parent, modal);
-        initComponents();        
+        initComponents();    
+        
+        this.applyComponentOrientation(o);
+        
         getRootPane().setDefaultButton(m_jButtonOK); 
     }
     /** Creates new form JPaymentSelect */
-    protected JPaymentSelect(java.awt.Dialog parent, boolean modal) {
+    protected JPaymentSelect(java.awt.Dialog parent, boolean modal, ComponentOrientation o) {
         super(parent, modal);
         initComponents();       
+        
+        this.applyComponentOrientation(o);
+        
         getRootPane().setDefaultButton(m_jButtonOK); 
     }    
     
@@ -140,6 +144,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
                 payments.put(jpay.getKey(), jpayinterface);
             }
             
+            jpayinterface.getComponent().applyComponentOrientation(getComponentOrientation());
             m_jTabPayment.addTab(
                     AppLocal.getIntString(jpay.getLabelKey()),
                     new javax.swing.ImageIcon(getClass().getResource(jpay.getIconKey())),
@@ -290,6 +295,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jButtonRemove = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         m_jTabPayment = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         m_jButtonPrint = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
@@ -304,7 +310,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         jPanel4.add(m_jLblTotalEuros1);
 
         m_jTotalEuros.setBackground(java.awt.Color.white);
-        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14));
+        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jTotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTotalEuros.setOpaque(true);
@@ -318,7 +324,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         jPanel6.add(m_jLblRemainingEuros);
 
         m_jRemaininglEuros.setBackground(java.awt.Color.white);
-        m_jRemaininglEuros.setFont(new java.awt.Font("Dialog", 1, 14));
+        m_jRemaininglEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jRemaininglEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jRemaininglEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jRemaininglEuros.setOpaque(true);
@@ -361,7 +367,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
         m_jButtonPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileprint.png"))); // NOI18N
         m_jButtonPrint.setSelected(true);
@@ -398,7 +404,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         });
         jPanel2.add(m_jButtonCancel);
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.SOUTH);
+        jPanel5.add(jPanel2, java.awt.BorderLayout.LINE_END);
+
+        getContentPane().add(jPanel5, java.awt.BorderLayout.SOUTH);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-672)/2, (screenSize.height-497)/2, 672, 497);
@@ -451,6 +459,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JButton m_jButtonAdd;
     private javax.swing.JButton m_jButtonCancel;

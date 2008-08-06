@@ -55,6 +55,9 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
     
     private Map<String, JPanelView> m_aPreparedViews; // Prepared views   
     private Map<String, JPanelView> m_aCreatedViews;
+    
+    private Icon menu_open;
+    private Icon menu_close;
         
     /** Creates new form JPrincipalApp */
     public JPrincipalApp(JRootApp appview, AppUser appuser) {
@@ -73,6 +76,9 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         m_aCreatedViews = new HashMap<String, JPanelView>();
                 
         initComponents();
+        
+        jPanel2.add(Box.createVerticalStrut(50), 0);        
+        
         applyComponentOrientation(appview.getComponentOrientation());
         
         m_principalnotificator = new JLabel();
@@ -81,6 +87,15 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         m_principalnotificator.setIcon(m_appuser.getIcon());
 //        m_principalnotificator.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("TextField.shadow")), javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5)));        
         
+        if (jButton1.getComponentOrientation().isLeftToRight()) {
+            menu_open = new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/menu-right.png"));
+            menu_close = new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/menu-left.png"));
+        } else {
+            menu_open = new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/menu-left.png"));
+            menu_close = new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/menu-right.png"));
+        }
+        assignMenuButtonIcon();        
+                
         // m_jPanelTitle.setUI(new GradientUI());
         m_jPanelTitle.setBorder(RoundedBorder.createGradientBorder());
         m_jPanelTitle.setVisible(false);
@@ -102,6 +117,12 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
             e.printStackTrace();
             // Error Message 
         }               
+    }
+    
+    private void assignMenuButtonIcon() {
+        jButton1.setIcon(m_jPanelLeft.isVisible()
+                ? menu_close
+                : menu_open);
     }
     
     public class ScriptMenu {
@@ -216,11 +237,21 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         }
     }
     
+    private void setMenuVisible(boolean value) {
+        
+        m_jPanelLeft.setVisible(value);
+        assignMenuButtonIcon();
+        revalidate();
+    }
+        
     public JComponent getNotificator() {
         return m_principalnotificator;
     }
     
     public void activate() {
+        
+        setMenuVisible(getBounds().width > 800);
+        
         // arranco la primera opcion
         if (m_actionfirst != null) {
             m_actionfirst.actionPerformed(null);
@@ -326,6 +357,8 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
                 // se tiene que mostrar el panel                
                 m_jLastView = m_jMyView;
 
+                setMenuVisible(getBounds().width > 800);
+
                 showView(sTaskClass);   
                 // Y ahora que he cerrado la antigua me abro yo            
                 String sTitle = m_jMyView.getTitle();
@@ -376,8 +409,9 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         m_jPanelLeft = new javax.swing.JScrollPane();
         m_jPanelRight = new javax.swing.JPanel();
         m_jPanelTitle = new javax.swing.JPanel();
@@ -386,18 +420,31 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
 
         setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(200);
-
         jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+
+        jButton1.setFocusPainted(false);
+        jButton1.setFocusable(false);
+        jButton1.setMargin(new java.awt.Insets(14, 2, 14, 2));
+        jButton1.setRequestFocusEnabled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_END);
         jPanel1.add(m_jPanelLeft, java.awt.BorderLayout.CENTER);
 
-        jSplitPane1.setLeftComponent(jPanel1);
+        add(jPanel1, java.awt.BorderLayout.LINE_START);
 
         m_jPanelRight.setLayout(new java.awt.BorderLayout());
 
         m_jPanelTitle.setLayout(new java.awt.BorderLayout());
 
-        m_jTitle.setFont(new java.awt.Font("SansSerif", 1, 18));
+        m_jTitle.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         m_jTitle.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.darkGray), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         m_jPanelTitle.add(m_jTitle, java.awt.BorderLayout.NORTH);
 
@@ -406,15 +453,20 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         m_jPanelContainer.setLayout(new java.awt.CardLayout());
         m_jPanelRight.add(m_jPanelContainer, java.awt.BorderLayout.CENTER);
 
-        jSplitPane1.setRightComponent(m_jPanelRight);
-
-        add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        add(m_jPanelRight, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    setMenuVisible(!m_jPanelLeft.isVisible());
+    
+}//GEN-LAST:event_jButton1ActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel m_jPanelContainer;
     private javax.swing.JScrollPane m_jPanelLeft;
     private javax.swing.JPanel m_jPanelRight;

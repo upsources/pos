@@ -324,8 +324,8 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         m_jbtnTables = new javax.swing.JButton();
         m_jbtnReceive = new javax.swing.JButton();
         m_jToolbar = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
         m_jPanelList = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         m_jPanelTime = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -342,7 +342,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
 
         jPanel3.setPreferredSize(new java.awt.Dimension(10, 210));
 
-        jPanelDate.setPreferredSize(new java.awt.Dimension(310, 190));
+        jPanelDate.setPreferredSize(new java.awt.Dimension(410, 190));
         jPanelDate.setLayout(new java.awt.BorderLayout());
         jPanel3.add(jPanelDate);
 
@@ -380,42 +380,42 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         });
         jPanel4.add(m_jbtnReceive);
 
-        m_jToolbarContainer.add(jPanel4, java.awt.BorderLayout.WEST);
+        m_jToolbarContainer.add(jPanel4, java.awt.BorderLayout.LINE_START);
         m_jToolbarContainer.add(m_jToolbar, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(m_jToolbarContainer, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setLayout(null);
-
+        m_jPanelList.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         m_jPanelList.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(m_jPanelList);
-        m_jPanelList.setBounds(10, 10, 250, 370);
+        jPanel2.add(m_jPanelList, java.awt.BorderLayout.LINE_START);
+
+        jPanel1.setLayout(null);
 
         m_jPanelTime.setLayout(new java.awt.BorderLayout());
         jPanel1.add(m_jPanelTime);
-        m_jPanelTime.setBounds(280, 30, 240, 130);
+        m_jPanelTime.setBounds(90, 10, 240, 130);
 
         jLabel1.setText(AppLocal.getIntString("rest.label.date")); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(280, 10, 240, 14);
+        jLabel1.setBounds(10, 10, 80, 15);
 
         jLabel2.setText(AppLocal.getIntString("rest.label.customer")); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(280, 170, 240, 14);
+        jLabel2.setBounds(10, 150, 80, 15);
 
         jLabel3.setText(AppLocal.getIntString("rest.label.chairs")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(280, 220, 240, 14);
+        jLabel3.setBounds(10, 180, 80, 15);
 
         jLabel4.setText(AppLocal.getIntString("rest.label.notes")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(280, 270, 240, 14);
+        jLabel4.setBounds(10, 210, 80, 15);
         jPanel1.add(m_jtxtDescription);
-        m_jtxtDescription.setBounds(280, 290, 240, 80);
+        m_jtxtDescription.setBounds(90, 210, 220, 50);
         jPanel1.add(m_jtxtChairs);
-        m_jtxtChairs.setBounds(280, 240, 140, 20);
+        m_jtxtChairs.setBounds(90, 180, 140, 20);
         jPanel1.add(txtCustomer);
-        txtCustomer.setBounds(280, 190, 240, 20);
+        txtCustomer.setBounds(90, 150, 220, 20);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
         jButton1.setFocusPainted(false);
@@ -427,14 +427,14 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(520, 190, 50, 26);
+        jButton1.setBounds(310, 150, 50, 26);
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel5.setLayout(new java.awt.BorderLayout());
         jPanel5.add(m_jKeys, java.awt.BorderLayout.NORTH);
 
-        jPanel2.add(jPanel5, java.awt.BorderLayout.EAST);
+        jPanel2.add(jPanel5, java.awt.BorderLayout.LINE_END);
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

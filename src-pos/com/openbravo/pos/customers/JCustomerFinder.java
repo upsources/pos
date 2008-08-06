@@ -61,6 +61,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
             myMsg = new JCustomerFinder((Dialog) window, true);
         }
         myMsg.init(dlCustomers);
+        myMsg.applyComponentOrientation(parent.getComponentOrientation());
         return myMsg;
     }
     
@@ -216,6 +217,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListCustomers = new javax.swing.JList();
+        jPanel8 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jcmdOK = new javax.swing.JButton();
         jcmdCancel = new javax.swing.JButton();
@@ -237,7 +239,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jLabel5.setText(AppLocal.getIntString("label.prodname")); // NOI18N
         jPanel7.add(jLabel5);
-        jLabel5.setBounds(20, 100, 90, 15);
+        jLabel5.setBounds(20, 100, 140, 15);
         jPanel7.add(m_jtxtName);
         m_jtxtName.setBounds(160, 100, 220, 25);
 
@@ -249,7 +251,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
         jPanel7.add(jLabel7);
-        jLabel7.setBounds(20, 20, 90, 15);
+        jLabel7.setBounds(20, 20, 140, 15);
         jPanel7.add(m_jtxtTaxID);
         m_jtxtTaxID.setBounds(160, 20, 220, 25);
 
@@ -292,7 +294,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        jPanel8.setLayout(new java.awt.BorderLayout());
 
         jcmdOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
         jcmdOK.setText(AppLocal.getIntString("Button.OK")); // NOI18N
@@ -321,7 +323,9 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         });
         jPanel1.add(jcmdCancel);
 
-        jPanel3.add(jPanel1, java.awt.BorderLayout.SOUTH);
+        jPanel8.add(jPanel1, java.awt.BorderLayout.LINE_END);
+
+        jPanel3.add(jPanel8, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -375,6 +379,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jcmdCancel;
     private javax.swing.JButton jcmdOK;

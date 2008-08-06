@@ -43,6 +43,7 @@ import com.openbravo.pos.scale.DeviceScale;
 import com.openbravo.pos.scanpal2.DeviceScanner;
 import com.openbravo.pos.scanpal2.DeviceScannerFactory;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 /**
@@ -86,17 +87,17 @@ public class JRootApp extends JPanel implements AppView {
         m_aBeanFactories = new HashMap<String, BeanFactory>();
         
         // Inicializo los componentes visuales
-        initComponents ();     
+        initComponents ();            
         jScrollPane1.getVerticalScrollBar().setPreferredSize(new Dimension(35, 35));   
     }
     
     public boolean initApp(AppProperties props) {
         
         m_props = props;
-        
-        if ("true".equals(m_props.getProperty("user.rtl"))) {
-            applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        }
+//         setPreferredSize(new java.awt.Dimension(800, 600));
+
+        // support for different component orientation languages.
+        applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
         
         // Database start
         try {
@@ -574,6 +575,7 @@ public class JRootApp extends JPanel implements AppView {
         jLabel2 = new javax.swing.JLabel();
         m_jPanelContainer = new javax.swing.JPanel();
         m_jPanelLogin = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         m_jLogonName = new javax.swing.JPanel();
@@ -611,6 +613,8 @@ public class JRootApp extends JPanel implements AppView {
 
         m_jPanelLogin.setLayout(new java.awt.BorderLayout());
 
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/logo.png"))); // NOI18N
         jLabel1.setText("<html><center>Openbravo POS is a point of sale application designed for touch screens.<br>" +
@@ -624,10 +628,13 @@ public class JRootApp extends JPanel implements AppView {
             "You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA<br>" +
             "</center>"
         );
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 100, 10, 100));
+        jLabel1.setAlignmentX(0.5F);
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel1.setMaximumSize(new java.awt.Dimension(800, 1024));
         jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        m_jPanelLogin.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jPanel4.add(jLabel1);
+
+        m_jPanelLogin.add(jPanel4, java.awt.BorderLayout.CENTER);
 
         m_jLogonName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         m_jLogonName.setLayout(new java.awt.BorderLayout());
@@ -715,6 +722,7 @@ public class JRootApp extends JPanel implements AppView {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
