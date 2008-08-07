@@ -69,7 +69,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         try {
             SentenceList sent = new StaticSentence(
                     app.getSession(), 
-                    "SELECT ID, NAME, IMAGE FROM FLOORS ORDER BY ID", 
+                    "SELECT ID, NAME, IMAGE FROM FLOORS ORDER BY NAME", 
                     null, 
                     new SerializerReadClass(Floor.class));
             m_afloors = sent.list();
