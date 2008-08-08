@@ -35,7 +35,7 @@
     <taxesincluded value="false"/>   
     
     <!-- <printselected value="true"/> -->    
-    <!-- <taxesid value="0"/> -->
+    <!-- <taxcategoryid value="001"/> -->
     <!-- <pricevisible value="true" /> -->
     
 </configuration>

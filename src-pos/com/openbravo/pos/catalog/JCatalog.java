@@ -32,6 +32,8 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.JMessageDialog;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.sales.TaxesLogic;
+import com.openbravo.pos.ticket.TaxInfo;
 
 /**
  *
@@ -41,6 +43,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     
     protected EventListenerList listeners = new EventListenerList();
     private DataLogicSales m_dlSales;   
+    private TaxesLogic taxeslogic;
+    
     private boolean pricevisible;
     private boolean taxesincluded;
     
@@ -97,6 +101,9 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         m_categoriesset.clear();
         
         showingcategory = null;
+        
+        // Load the taxes logic
+        taxeslogic = new TaxesLogic(m_dlSales.getTaxList().list());
 
         // Load all categories.
         java.util.List<CategoryInfo> categories = m_dlSales.getRootCategories(); 
@@ -202,7 +209,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
         if (pricevisible) {
             if (taxesincluded) {
-                return "<html><center>" + product.getName() + "<br>" + product.printPriceSellTax();
+                TaxInfo tax = taxeslogic.getTaxInfo(product.getTaxCategoryInfo());
+                return "<html><center>" + product.getName() + "<br>" + product.printPriceSellTax(tax);
             } else {
                 return "<html><center>" + product.getName() + "<br>" + product.printPriceSell();
             }

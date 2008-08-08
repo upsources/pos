@@ -47,12 +47,14 @@ import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.BeanFactoryApp;
 import com.openbravo.pos.forms.BeanFactoryException;
+import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.payment.JPaymentSelectReceipt;
 import com.openbravo.pos.payment.JPaymentSelectRefund;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.pos.ticket.TicketProductInfo;
 import com.openbravo.pos.util.JRPrinterAWT300;
 import com.openbravo.pos.util.ReportUtils;
 import java.io.InputStream;
@@ -60,6 +62,7 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.print.PrintService;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -105,9 +108,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
     private JTicketsBag m_ticketsbag;
     
-    private SentenceList m_senttax;
+    private SentenceList senttax;
     private Map<Object, TaxInfo> taxmap;
-    private ComboBoxValModel m_TaxModel;
+    // private ComboBoxValModel m_TaxModel;
+    
+    private SentenceList senttaxcategories;
+    private Map<Object, TaxCategoryInfo> taxcategoriesmap;
+    private ComboBoxValModel taxcategoriesmodel;
+    
+    private TaxesLogic taxeslogic;
     
     private ScriptObject scriptobjinst;
     protected JPanelButtons m_jbtnconfig;
@@ -156,8 +165,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         catcontainer.add(getSouthComponent(), BorderLayout.CENTER);
         
         // El modelo de impuestos
-        m_senttax = dlSales.getTaxList();
-        m_TaxModel = new ComboBoxValModel();
+        senttax = dlSales.getTaxList();
+        senttaxcategories = dlSales.getTaxCategoriesList();
+        
+        taxcategoriesmodel = new ComboBoxValModel();    
         
         // ponemos a cero el estado
         stateToZero();  
@@ -188,19 +199,24 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jaddtax.setSelected("true".equals(m_jbtnconfig.getProperty("taxesincluded")));
 
         // Inicializamos el combo de los impuestos.
-        java.util.List<TaxInfo> taxlist = m_senttax.list();
+        java.util.List<TaxInfo> taxlist = senttax.list();
         taxmap = new HashMapKeyed<TaxInfo>(taxlist);
-        m_TaxModel = new ComboBoxValModel(taxlist);
-        m_jTax.setModel(m_TaxModel);
+        java.util.List<TaxCategoryInfo> taxcategorieslist = senttaxcategories.list();
+        taxcategoriesmap = new HashMapKeyed<TaxCategoryInfo>(taxcategorieslist);
+        
+        taxcategoriesmodel = new ComboBoxValModel(taxcategorieslist);
+        m_jTax.setModel(taxcategoriesmodel);
 
-        String taxesid = m_jbtnconfig.getProperty("taxesid");
+        String taxesid = m_jbtnconfig.getProperty("taxcategoryid");
         if (taxesid == null) {
             if (m_jTax.getItemCount() > 0) {
                 m_jTax.setSelectedIndex(0);
             }
         } else {
-            m_TaxModel.setSelectedKey(taxesid);
-        }               
+            taxcategoriesmodel.setSelectedKey(taxesid);
+        }              
+                
+        taxeslogic = new TaxesLogic(taxlist);
         
         // Authorization for buttons
         m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
@@ -298,7 +314,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void addTicketLine(ProductInfoExt oProduct, double dMul, double dPrice) {   
         
-        addTicketLine(new TicketLineInfo(oProduct, dMul, dPrice, oProduct.getTaxInfo(), (java.util.Properties) (oProduct.getProperties().clone())));
+        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryInfo(), m_oTicket.getCustomer());
+        
+        addTicketLine(new TicketLineInfo(oProduct, dMul, dPrice, tax, (java.util.Properties) (oProduct.getProperties().clone())));
     }
     
     protected void addTicketLine(TicketLineInfo oLine) {   
@@ -373,14 +391,16 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         oProduct.setReference(null);
         oProduct.setCode(null);
         oProduct.setName("");
-        oProduct.setPriceSell(includeTaxes(getInputValue()));  
-        oProduct.setTaxInfo((TaxInfo) m_TaxModel.getSelectedItem());
+        oProduct.setTaxCategoryInfo((TaxCategoryInfo) taxcategoriesmodel.getSelectedItem());
+        
+        oProduct.setPriceSell(includeTaxes(oProduct.getTaxCategoryInfo(), getInputValue()));  
+        
         return oProduct;
     }
     
-    private double includeTaxes(double dValue) {
+    private double includeTaxes(TaxCategoryInfo tc, double dValue) {
         if (m_jaddtax.isSelected()) {
-            TaxInfo tax = (TaxInfo) m_TaxModel.getSelectedItem();
+            TaxInfo tax = taxeslogic.getTaxInfo(tc, m_oTicket.getCustomer());
             double dTaxRate = tax == null ? 0.0 : tax.getRate();           
             return dValue / (1.0 + dTaxRate);      
         } else {
@@ -448,7 +468,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 // Se anade directamente una unidad con el precio y todo
                 if (m_jaddtax.isSelected()) {
                     // debemos quitarle los impuestos ya que el precio es con iva incluido...
-                    addTicketLine(oProduct, 1.0, dPriceSell / (1.0 + oProduct.getTaxRate()));
+                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryInfo(), m_oTicket.getCustomer());                   
+                    addTicketLine(oProduct, 1.0, dPriceSell / (1.0 + tax.getRate()));
                 } else {
                     addTicketLine(oProduct, 1.0, dPriceSell);
                 }                
@@ -524,9 +545,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     oProduct.setCode(sCode);
                     oProduct.setName("Ticket " + sCode.substring(3, 7));
                     oProduct.setPriceSell(Double.parseDouble(sCode.substring(7, 12)) / 100);   
-                    oProduct.setTaxInfo((TaxInfo) m_TaxModel.getSelectedItem());
+                    oProduct.setTaxCategoryInfo((TaxCategoryInfo) taxcategoriesmodel.getSelectedItem());
                     // Se anade directamente una unidad con el precio y todo
-                    addTicketLine(oProduct, 1.0, includeTaxes(oProduct.getPriceSell()));
+                    addTicketLine(oProduct, 1.0, includeTaxes(oProduct.getTaxCategoryInfo(), oProduct.getPriceSell()));
                 } else if (sCode.length() == 13 && sCode.startsWith("210")) {
                     // barcode of a weigth product
                     incProductByCodePrice(sCode.substring(0, 7), Double.parseDouble(sCode.substring(7, 12)) / 100);
@@ -626,7 +647,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     try {
                         Double value = m_App.getDeviceScale().readWeight();
                         if (value != null) {
-                            addTicketLine(getInputProduct(), value.doubleValue(), includeTaxes(getInputValue()));
+                            ProductInfoExt product = getInputProduct();
+                            addTicketLine(product, value.doubleValue(), product.getPriceSell());
                         }
                     } catch (ScaleException e) {
                         Toolkit.getDefaultToolkit().beep();
@@ -729,25 +751,29 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             } else if (cTrans == '+' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO
                     && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
-                addTicketLine(getInputProduct(), 1.0, includeTaxes(getInputValue()));
-
+                ProductInfoExt product = getInputProduct();
+                addTicketLine(product, 1.0, product.getPriceSell());
+                
             // Anadimos 1 producto con precio negativo
             } else if (cTrans == '-' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERZERO
                     && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
-                addTicketLine(getInputProduct(), 1.0, -includeTaxes(getInputValue()));
+                ProductInfoExt product = getInputProduct();
+                addTicketLine(product, 1.0, -product.getPriceSell());
 
             // Anadimos n productos
             } else if (cTrans == '+' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERVALID
                     && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
-                addTicketLine(getInputProduct(), getPorValue(), includeTaxes(getInputValue()));
+                ProductInfoExt product = getInputProduct();
+                addTicketLine(product, getPorValue(), product.getPriceSell());
 
             // Anadimos n productos con precio negativo ?
             } else if (cTrans == '-' 
                     && m_iNumberStatusInput == NUMBERVALID && m_iNumberStatusPor == NUMBERVALID
                     && m_App.getAppUserView().getUser().hasPermission("sales.EditLines")) {
-                addTicketLine(getInputProduct(), getPorValue(), -includeTaxes(getInputValue()));
+                ProductInfoExt product = getInputProduct();
+                addTicketLine(product, getPorValue(), -product.getPriceSell());
 
             // Totals() Igual;
             } else if (cTrans == ' ' || cTrans == '=') {
@@ -1021,14 +1047,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         }
 
         public void addTicketLine(String sname, TaxInfo tax, double dmult, double dpricesell) {
-            ProductInfoExt oProduct = new ProductInfoExt(); // Es un ticket
-            oProduct.setReference(null);
-            oProduct.setCode(null);
-            oProduct.setName(sname);
-            oProduct.setPriceSell(dpricesell);  
-            oProduct.setTaxInfo(tax);
-            
-            JPanelTicket.this.addTicketLine(oProduct, dmult, dpricesell);
+            TicketProductInfo product = new TicketProductInfo(null, sname, false);           
+            JPanelTicket.this.addTicketLine(new TicketLineInfo(product, dmult, dpricesell, tax, new Properties()));
         }      
         
         public void printReport(String resourcefile) {

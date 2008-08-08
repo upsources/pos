@@ -27,12 +27,10 @@ import java.util.List;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataParams;
 import com.openbravo.data.loader.DataRead;
-import com.openbravo.data.loader.DataWrite;
 import com.openbravo.data.loader.ImageUtils;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerReadClass;
-import com.openbravo.data.loader.SerializerWrite;
 import com.openbravo.data.loader.SerializerWriteParams;
 import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.Session;
@@ -40,6 +38,7 @@ import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.Transaction;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.BeanFactoryDataSingle;
+import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
 import com.openbravo.pos.ticket.CategoryInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
@@ -72,7 +71,38 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
     
     public void syncProductsBefore() throws BasicException {
         new StaticSentence(s, "DELETE FROM PRODUCTS_CAT").exec();
-    }     
+    }   
+    
+    public void syncTaxCategory(final TaxCategoryInfo taxcat) throws BasicException {
+        
+        Transaction t = new Transaction(s) {
+            public Object transact() throws BasicException {
+                // Sync the Tax in a transaction
+                
+                // Try to update                
+                if (new PreparedSentence(s, 
+                            "UPDATE TAXCATEGORIES SET NAME = ?  WHERE ID = ?",
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, taxcat.getName());
+                                setString(2, taxcat.getID());                                    
+                            }}) == 0) {
+                       
+                    // If not updated, try to insert
+                    new PreparedSentence(s, 
+                            "INSERT INTO TAXCATEGORIES(ID, NAME) VALUES (?, ?)", 
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, taxcat.getID());
+                                setString(2, taxcat.getName());
+                            }});
+                }
+                
+                return null;
+            }
+        };
+        t.execute();                   
+    }
     
     public void syncTax(final TaxInfo tax) throws BasicException {
         
@@ -82,22 +112,24 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE TAXES SET NAME = ?, RATE = ? WHERE ID = ?",
+                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, RATE = ? WHERE ID = ?",
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getName());
-                                setDouble(2, tax.getRate());
-                                setString(3, tax.getId());                                    
+                                setString(2, tax.getTaxCategoryID());
+                                setDouble(3, tax.getRate());
+                                setString(4, tax.getId());                                    
                             }}) == 0) {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                            "INSERT INTO TAXES(ID, NAME, RATE) VALUES (?, ?, ?)", 
+                            "INSERT INTO TAXES(ID, NAME, CATEGORY, RATE) VALUES (?, ?, ?, ?)", 
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getId());
                                 setString(2, tax.getName());
-                                setDouble(3, tax.getRate());
+                                setString(3, tax.getTaxCategoryID());
+                                setDouble(4, tax.getRate());
                             }});
                 }
                 
@@ -158,7 +190,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                                 setDouble(4, prod.getPriceBuy());
                                 setDouble(5, prod.getPriceSell());
                                 setString(6, prod.getCategoryID());
-                                setString(7, prod.getTaxID());
+                                setString(7, prod.getTaxCategoryID());
                                 setBytes(8, ImageUtils.writeImage(prod.getImage()));
                                 // setDouble(x, 0.0);
                                 // setDouble(x, 0.0);
@@ -179,7 +211,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                                 setDouble(7, prod.getPriceBuy());
                                 setDouble(8, prod.getPriceSell());
                                 setString(9, prod.getCategoryID());
-                                setString(10, prod.getTaxID());
+                                setString(10, prod.getTaxCategoryID());
                                 setBytes(11, ImageUtils.writeImage(prod.getImage()));
                                 setDouble(12, 0.0);
                                 setDouble(13, 0.0);                               

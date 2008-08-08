@@ -24,13 +24,14 @@ import com.openbravo.data.loader.DataWrite;
 import com.openbravo.data.loader.SerializableWrite;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.IKeyed;
+import java.io.Serializable;
 
 /**
  *
  * @author  adrianromero
  * @version 
  */
-public class TaxCategoryInfo implements SerializableRead, SerializableWrite, IKeyed {
+public class TaxCategoryInfo implements SerializableRead, SerializableWrite, Serializable, IKeyed {
 
     private String m_sID;
     private String m_sName;
@@ -39,6 +40,11 @@ public class TaxCategoryInfo implements SerializableRead, SerializableWrite, IKe
     public TaxCategoryInfo() {
         m_sID = null;
         m_sName = null;
+    }
+    
+    public TaxCategoryInfo(String sID, String sName) {
+        m_sID = sID;
+        m_sName = sName;      
     }
     
     public Object getKey() {

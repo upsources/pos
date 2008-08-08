@@ -68,22 +68,22 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Utilidades de productos
     public final ProductInfoExt getProductInfo(String id) throws BasicException {
         return (ProductInfoExt) new PreparedSentence(s
-            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID WHERE P.ID = ?"
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE P.ID = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).find(id);
     }
     public final ProductInfoExt getProductInfoByCode(String sCode) throws BasicException {
         return (ProductInfoExt) new PreparedSentence(s
-            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID WHERE P.CODE = ?"
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE P.CODE = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).find(sCode);
     }
     public final ProductInfoExt getProductInfoByReference(String sReference) throws BasicException {
         return (ProductInfoExt) new PreparedSentence(s
-            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID WHERE P.REFERENCE = ?"
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE P.REFERENCE = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).find(sReference);
     }
@@ -103,16 +103,16 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     }    
     public final List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
         return new PreparedSentence(s
-            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ?" +
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ?" +
               "ORDER BY C.NAME, O.CATORDER, P.REFERENCE"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).list(category);
     }
     public final List<ProductInfoExt> getProductComments(String id) throws BasicException {
         return new PreparedSentence(s
-            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID, PRODUCTS_CAT O, PRODUCTS_COM M WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND M.PRODUCT = ? " +
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID, PRODUCTS_CAT O, PRODUCTS_COM M WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND M.PRODUCT = ? " +
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE 
             , new SerializerReadClass(ProductInfoExt.class)).list(id);
@@ -121,7 +121,9 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Products list
     public final SentenceList getProductList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID WHERE ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new QBFBuilder(
+              "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerReadClass(ProductInfoExt.class));
     }
@@ -129,7 +131,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Listados para combo        
     public final SentenceList getTaxList() {
         return new StaticSentence(s
-            , "SELECT ID, NAME, RATE FROM TAXES ORDER BY NAME"
+            , "SELECT ID, NAME, CATEGORY, CUSTCATEGORY, PARENTID, RATE, CASCADE FROM TAXES ORDER BY NAME"
             , null
             , new SerializerReadClass(TaxInfo.class));
     }        

@@ -35,6 +35,7 @@ import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.ProcessAction;
 import com.openbravo.pos.inventory.MovementReason;
+import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.ticket.CategoryInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
@@ -83,13 +84,21 @@ public class ProductsSync implements ProcessAction {
                 Date now = new Date();
                 
                 for (Product product : products) {
+                    
+                    // Synchonization of taxcategories
+                    TaxCategoryInfo tc = new TaxCategoryInfo();
+                    tc.setID(Integer.toString(product.getTax().getId()));
+                    tc.setName(product.getTax().getName());                     
+                    dlintegration.syncTaxCategory(tc);
+                    
                     // Synchonization of taxes
                     TaxInfo t = new TaxInfo();
                     t.setID(Integer.toString(product.getTax().getId()));
                     t.setName(product.getTax().getName());
+                    t.setTaxCategoryID(tc.getID());
                     t.setRate(product.getTax().getPercentage() / 100);                        
                     dlintegration.syncTax(t);
-
+                   
                     // Synchonization of categories
                     CategoryInfo c = new CategoryInfo();
                     c.setID(Integer.toString(product.getCategory().getId()));
@@ -108,7 +117,7 @@ public class ProductsSync implements ProcessAction {
                     p.setPriceBuy(product.getPurchasePrice());
                     p.setPriceSell(product.getListPrice());
                     p.setCategoryID(c.getID());
-                    p.setTaxInfo(t);
+                    p.setTaxCategoryInfo(tc);
                     p.setImage(ImageUtils.readImage(product.getImageUrl()));
                     dlintegration.syncProduct(p);  
                     

@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.ImageUtils;
+import com.openbravo.pos.inventory.TaxCategoryInfo;
 import java.util.Properties;
 
 public class ProductInfoExt extends ProductInfo {
@@ -37,6 +38,7 @@ public class ProductInfoExt extends ProductInfo {
         attributes = new Properties();
     }
     
+    @Override
     public void readValues(DataRead dr) throws BasicException {
         m_ID = dr.getString(1);
         m_sRef = dr.getString(2);
@@ -46,9 +48,9 @@ public class ProductInfoExt extends ProductInfo {
         m_bScale = dr.getBoolean(6).booleanValue();
         m_dPriceBuy = dr.getDouble(7).doubleValue();
         m_dPriceSell = dr.getDouble(8).doubleValue();
-        m_TaxInfo = new TaxInfo(dr.getString(9), dr.getString(10), dr.getDouble(11).doubleValue());      
-        m_sCategoryID = dr.getString(12);
-        m_Image = ImageUtils.readImage(dr.getBytes(13));
+        taxcategory = new TaxCategoryInfo(dr.getString(9), dr.getString(10));      
+        m_sCategoryID = dr.getString(11);
+        m_Image = ImageUtils.readImage(dr.getBytes(12));
         attributes = new Properties();
         try {
             byte[] img = dr.getBytes(14);

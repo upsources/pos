@@ -22,6 +22,7 @@ import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.basic.BasicException;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.inventory.TaxCategoryInfo;
 
 public class ProductInfo implements SerializableRead /* , Externalizable, SerializableWrite */ {
     
@@ -33,7 +34,7 @@ public class ProductInfo implements SerializableRead /* , Externalizable, Serial
     protected boolean m_bScale;
     protected String m_sCategoryID;
     
-    protected TaxInfo m_TaxInfo;
+    protected TaxCategoryInfo taxcategory;
     protected double m_dPriceBuy;
     protected double m_dPriceSell;
     
@@ -46,7 +47,7 @@ public class ProductInfo implements SerializableRead /* , Externalizable, Serial
         m_bCom = false;
         m_bScale = false;
         m_sCategoryID = null;
-        m_TaxInfo = null;
+        taxcategory = null;
         m_dPriceBuy = 0.0;
         m_dPriceSell = 0.0;
     }
@@ -60,8 +61,8 @@ public class ProductInfo implements SerializableRead /* , Externalizable, Serial
         m_bScale = dr.getBoolean(6).booleanValue();
         m_dPriceBuy = dr.getDouble(7).doubleValue();
         m_dPriceSell = dr.getDouble(8).doubleValue();
-        m_TaxInfo = new TaxInfo(dr.getString(9), dr.getString(10), dr.getDouble(11).doubleValue());    
-        m_sCategoryID = dr.getString(12);
+        taxcategory = new TaxCategoryInfo(dr.getString(9), dr.getString(10));    
+        m_sCategoryID = dr.getString(11);
     }
    
     public final String getID() {
@@ -108,29 +109,20 @@ public class ProductInfo implements SerializableRead /* , Externalizable, Serial
     public final void setCategoryID(String sCategoryID) {
         m_sCategoryID = sCategoryID;
     }
-    public final void setTaxInfo(TaxInfo tax) {
-        m_TaxInfo = tax;
+    public final void setTaxCategoryInfo(TaxCategoryInfo taxcat) {
+        taxcategory = taxcat;
     }
-    public final TaxInfo getTaxInfo() {
-        return m_TaxInfo;
+    public final TaxCategoryInfo getTaxCategoryInfo() {
+        return taxcategory;
     }
-    public final String getTaxID() {
-        return m_TaxInfo == null ? null : m_TaxInfo.getId();
+    public final String getTaxCategoryID() {
+        return taxcategory == null ? null : taxcategory.getID();
+    }   
+    public final String getTaxCategoryName() {
+        return taxcategory == null ? null : taxcategory.getName();
     }
-//    public final void setTaxID(Integer iTaxID) {
-//        m_iTaxID = iTaxID;
-//    }    
-    public final String getTaxName() {
-        return m_TaxInfo == null ? null : m_TaxInfo.getName();
-    }
-//    public final void setTaxName(String sName) {
-//        m_sTaxName = sName;
-//    }
-    public final double getTaxRate() {
-        return m_TaxInfo == null ? 0.0 : m_TaxInfo.getRate();
-    }
-//    public final void setTaxRate(double dRate) {
-//        m_dTaxRate = dRate;
+//    public final double getTaxRate() {
+//        return m_TaxInfo == null ? 0.0 : m_TaxInfo.getRate();
 //    }
     public final double getPriceBuy(){
         return m_dPriceBuy;
@@ -144,17 +136,17 @@ public class ProductInfo implements SerializableRead /* , Externalizable, Serial
     public final void setPriceSell(double dPrice) {        
         m_dPriceSell = dPrice;
     }      
-    public final double getPriceSellTax() {
-        return m_dPriceSell * (1.0 + getTaxRate());
-    }
-    
+    public final double getPriceSellTax(TaxInfo tax) {
+        return m_dPriceSell * (1.0 + tax.getRate());
+    }    
     public String printPriceSell() {
         return Formats.CURRENCY.formatValue(new Double(getPriceSell()));
     }    
-    public String printPriceSellTax() {
-        return Formats.CURRENCY.formatValue(new Double(getPriceSellTax()));
+    public String printPriceSellTax(TaxInfo tax) {
+        return Formats.CURRENCY.formatValue(new Double(getPriceSellTax(tax)));
     }     
     
+    @Override
     public final String toString() {
         return m_sRef + " - " + m_sName;
     }
