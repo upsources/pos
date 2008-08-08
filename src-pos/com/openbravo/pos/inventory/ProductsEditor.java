@@ -33,6 +33,7 @@ import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.sales.TaxesLogic;
 import com.openbravo.pos.ticket.TaxInfo;
 import java.util.UUID;
 
@@ -45,25 +46,32 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     private SentenceList m_sentcat;
     private ComboBoxValModel m_CategoryModel;
 
-    private SentenceList m_senttax;
-    private ComboBoxValModel m_TaxModel;  
+    private SentenceList taxcatsent;
+    private ComboBoxValModel taxcatmodel;  
+    
+    private SentenceList taxsent;
+    private TaxesLogic taxeslogic;
     
     private ComboBoxValModel m_CodetypeModel;
     
     private Object m_id;
-    private Double m_dPriceSell;
+    
+    private boolean reportlock = false;
     
     /** Creates new form JEditProduct */
     public ProductsEditor(DataLogicSales dlSales, DirtyManager dirty) {
         initComponents();
+        
+        // The taxes sentence
+        taxsent = dlSales.getTaxList();
              
-        // El modelo de categorias
+        // The categories model
         m_sentcat = dlSales.getCategoriesList();
         m_CategoryModel = new ComboBoxValModel();
         
-        // El modelo de impuestos
-        m_senttax = dlSales.getTaxList();
-        m_TaxModel = new ComboBoxValModel();
+        // The taxes model
+        taxcatsent = dlSales.getTaxCategoriesList();
+        taxcatmodel = new ComboBoxValModel();
         
         m_CodetypeModel = new ComboBoxValModel();
         m_CodetypeModel.add(null);
@@ -88,14 +96,11 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jCatalogOrder.getDocument().addDocumentListener(dirty);
         txtAttributes.getDocument().addDocumentListener(dirty);
 
-        // el informe de stock
-        ReportManager rm = new ReportManager();
-        m_jPriceBuy.getDocument().addDocumentListener(rm);
-        m_jTax.addActionListener(rm);
-        m_jstockcost.getDocument().addDocumentListener(rm);
-        m_jstockvolume.getDocument().addDocumentListener(rm);
+        FieldsManager fm = new FieldsManager();
+        m_jPriceBuy.getDocument().addDocumentListener(fm);
+        m_jPriceSell.getDocument().addDocumentListener(fm);
+        m_jTax.addActionListener(fm);
         
-        m_jPriceSell.getDocument().addDocumentListener(new PriceManager());
         m_jPriceSellTax.getDocument().addDocumentListener(new PriceTaxManager());
         m_jmargin.getDocument().addDocumentListener(new MarginManager());
         
@@ -104,15 +109,19 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     
     public void activate() throws BasicException {
         
+        // Load the taxes logic
+        taxeslogic = new TaxesLogic(taxsent.list());        
+        
         m_CategoryModel = new ComboBoxValModel(m_sentcat.list());
         m_jCategory.setModel(m_CategoryModel);
 
-        m_TaxModel = new ComboBoxValModel(m_senttax.list());
-        m_jTax.setModel(m_TaxModel);
+        taxcatmodel = new ComboBoxValModel(taxcatsent.list());
+        m_jTax.setModel(taxcatmodel);
     }
     
     public void writeValueEOF() {
         
+        reportlock = true;
         // Los valores
         m_jTitle.setText(AppLocal.getIntString("label.recordeof"));
         m_id = null;
@@ -122,17 +131,16 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jComment.setSelected(false);
         m_jScale.setSelected(false);
         m_CategoryModel.setSelectedKey(null);
-        m_TaxModel.setSelectedKey(null);
+        taxcatmodel.setSelectedKey(null);
         m_jPriceBuy.setText(null);
-        m_bPriceSellLock = true;
         m_jPriceSell.setText(null);            
-        m_bPriceSellLock = false;
         m_jImage.setImage(null);
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
         m_jInCatalog.setSelected(false);
         m_jCatalogOrder.setText(null);
         txtAttributes.setText(null);
+        reportlock = false;
         
         // Los habilitados
         m_jRef.setEnabled(false);
@@ -153,11 +161,12 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jCatalogOrder.setEnabled(false);
         txtAttributes.setEnabled(false);
         
-//        m_dUnits = null;
-        writeReport(null, 0.0);
+        calculateMargin();
+        calculatePriceSellTax();
     }
     public void writeValueInsert() {
-        
+       
+        reportlock = true;
         // Los valores
         m_jTitle.setText(AppLocal.getIntString("label.recordnew"));
         m_id = null;
@@ -167,18 +176,16 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jComment.setSelected(false);
         m_jScale.setSelected(false);
         m_CategoryModel.setSelectedKey(null);
-        m_TaxModel.setSelectedKey(null);
+        taxcatmodel.setSelectedKey(null);
         m_jPriceBuy.setText(null);
-        m_dPriceSell = null;
-        m_bPriceSellLock = true;
         m_jPriceSell.setText(null);            
-        m_bPriceSellLock = false;
         m_jImage.setImage(null);
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
         m_jInCatalog.setSelected(true);
         m_jCatalogOrder.setText(null);
         txtAttributes.setText(null);
+        reportlock = false;
         
         // Los habilitados
         m_jRef.setEnabled(true);
@@ -198,12 +205,13 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jInCatalog.setEnabled(true); 
         m_jCatalogOrder.setEnabled(false);
         txtAttributes.setEnabled(true);
-
-//        m_dUnits = null;
-        writeReport(null, 0.0);
+        
+        calculateMargin();
+        calculatePriceSellTax();
    }
     public void writeValueDelete(Object value) {
         
+        reportlock = true;       
         Object[] myprod = (Object[]) value;
         m_jTitle.setText(Formats.STRING.formatValue(myprod[1]) + " - " + Formats.STRING.formatValue(myprod[3]) + " " + AppLocal.getIntString("label.recorddeleted"));
         m_id = myprod[0];
@@ -213,12 +221,9 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jComment.setSelected(((Boolean)myprod[4]).booleanValue());
         m_jScale.setSelected(((Boolean)myprod[5]).booleanValue());
         m_jPriceBuy.setText(Formats.CURRENCY.formatValue(myprod[6]));
-        m_dPriceSell = (Double) myprod[7];
-        m_bPriceSellLock = true;
-        m_jPriceSell.setText(Formats.CURRENCY.formatValue(m_dPriceSell));            
-        m_bPriceSellLock = false;
+        m_jPriceSell.setText(Formats.CURRENCY.formatValue(myprod[7]));            
         m_CategoryModel.setSelectedKey(myprod[8]);
-        m_TaxModel.setSelectedKey(myprod[9]);
+        taxcatmodel.setSelectedKey(myprod[9]);
         m_jImage.setImage((BufferedImage) myprod[10]);
         m_jstockcost.setText(Formats.CURRENCY.formatValue(myprod[11]));
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[12]));
@@ -226,6 +231,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[14]));
         txtAttributes.setText(Formats.BYTEA.formatValue(myprod[15]));
         txtAttributes.setCaretPosition(0);
+        reportlock = false;
         
         // Los habilitados
         m_jRef.setEnabled(false);
@@ -245,14 +251,14 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jInCatalog.setEnabled(false);
         m_jCatalogOrder.setEnabled(false);
         txtAttributes.setEnabled(false);
-
-        TaxInfo tax = (TaxInfo) m_TaxModel.getElementByKey(myprod[9]);
-        double dTaxRate = (tax == null) ? 0.0 : tax.getRate();      
-        writeReport((Double) myprod[6], dTaxRate);
+        
+        calculateMargin();
+        calculatePriceSellTax();
     }    
     
     public void writeValueEdit(Object value) {
         
+        reportlock = true;
         Object[] myprod = (Object[]) value;
         m_jTitle.setText(Formats.STRING.formatValue(myprod[1]) + " - " + Formats.STRING.formatValue(myprod[3]));
         m_id = myprod[0];
@@ -262,12 +268,9 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jComment.setSelected(((Boolean)myprod[4]).booleanValue());
         m_jScale.setSelected(((Boolean)myprod[5]).booleanValue());
         m_jPriceBuy.setText(Formats.CURRENCY.formatValue(myprod[6]));
-        m_dPriceSell = (Double) myprod[7];
-        m_bPriceSellLock = true;
-        m_jPriceSell.setText(Formats.CURRENCY.formatValue(m_dPriceSell));            
-        m_bPriceSellLock = false;
+        m_jPriceSell.setText(Formats.CURRENCY.formatValue(myprod[7]));            
         m_CategoryModel.setSelectedKey(myprod[8]);
-        m_TaxModel.setSelectedKey(myprod[9]);
+        taxcatmodel.setSelectedKey(myprod[9]);
         m_jImage.setImage((BufferedImage) myprod[10]);
         m_jstockcost.setText(Formats.CURRENCY.formatValue(myprod[11]));
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[12]));
@@ -275,6 +278,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jCatalogOrder.setText(Formats.INT.formatValue(myprod[14]));
         txtAttributes.setText(Formats.BYTEA.formatValue(myprod[15]));
         txtAttributes.setCaretPosition(0);
+        reportlock = false;
         
         // Los habilitados
         m_jRef.setEnabled(true);
@@ -295,9 +299,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jCatalogOrder.setEnabled(m_jInCatalog.isSelected());  
         txtAttributes.setEnabled(true);
         
-        TaxInfo tax = (TaxInfo) m_TaxModel.getElementByKey(myprod[9]);
-        double dTaxRate = (tax == null) ? 0.0 : tax.getRate();   
-        writeReport((Double) myprod[6], dTaxRate);
+        calculateMargin();
+        calculatePriceSellTax();
     }
 
     public Object createValue() throws BasicException {
@@ -310,9 +313,9 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         myprod[4] = Boolean.valueOf(m_jComment.isSelected());
         myprod[5] = Boolean.valueOf(m_jScale.isSelected());
         myprod[6] = Formats.CURRENCY.parseValue(m_jPriceBuy.getText());
-        myprod[7] = m_dPriceSell; // Formats.CURRENCY.parseValue(m_jPriceSell.getText());
+        myprod[7] = Formats.CURRENCY.parseValue(m_jPriceSell.getText());
         myprod[8] = m_CategoryModel.getSelectedKey();
-        myprod[9] = m_TaxModel.getSelectedKey();
+        myprod[9] = taxcatmodel.getSelectedKey();
         myprod[10] = m_jImage.getImage();
         myprod[11] = Formats.CURRENCY.parseValue(m_jstockcost.getText());
         myprod[12] = Formats.DOUBLE.parseValue(m_jstockvolume.getText());
@@ -326,154 +329,122 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     public Component getComponent() {
         return this;
     }
-
-    private void writeReport() {
-
-        Double dPriceBuy = readCurrency(m_jPriceBuy.getText());
-        TaxInfo tax = (TaxInfo) m_TaxModel.getSelectedItem();
-        double dTaxRate = (tax == null) ? 0.0 : tax.getRate();  
-        writeReport(dPriceBuy, dTaxRate);
-    }
     
-    private void writePriceTax() {
+    private void calculateMargin() {
         
-        Double dPriceSellTax = readCurrency(m_jPriceSellTax.getText());  
-        TaxInfo tax = (TaxInfo) m_TaxModel.getSelectedItem();
-        double dTaxRate = (tax == null) ? 0.0 : tax.getRate();  
-        if (dPriceSellTax == null) {
-            m_dPriceSell = null;
-        } else {
-            m_dPriceSell = new Double(dPriceSellTax.doubleValue() / (1.0 + dTaxRate));
-        }
+        if (!reportlock) {
+            reportlock = true;
+            
+            Double dPriceBuy = readCurrency(m_jPriceBuy.getText());
+            Double dPriceSell = readCurrency(m_jPriceSell.getText());
 
-        m_bPriceSellLock = true;
-        m_jPriceSell.setText(Formats.CURRENCY.formatValue(m_dPriceSell));            
-        m_bPriceSellLock = false;
-
-        m_bPriceSellTaxWriteLock = true;
-        writeReport();
-        m_bPriceSellTaxWriteLock = false;
-    }
-    
-    private void writeMargin() {
-        
-        Double dPriceBuy = readCurrency(m_jPriceBuy.getText());
-        Double dMargin = readPercent(m_jmargin.getText());  
-        if (dMargin == null || dPriceBuy == null) {
-            m_dPriceSell = dPriceBuy;
-        } else {
-            m_dPriceSell = new Double(dPriceBuy.doubleValue() * (1.0 + dMargin.doubleValue()));
-        }
-
-        m_bPriceSellLock = true;
-        m_jPriceSell.setText(Formats.CURRENCY.formatValue(m_dPriceSell));            
-        m_bPriceSellLock = false;
-
-        m_bMarginWriteLock = true;
-        writeReport();
-        m_bMarginWriteLock = false;
-    }
-    
-    private boolean m_bPriceSellLock = false;
-    private boolean m_bMarginLock = false;
-    private boolean m_bPriceSellTaxLock = false;
-    
-    private boolean m_bMarginWriteLock = false;
-    private boolean m_bPriceSellTaxWriteLock = false;
-
-    
-    // private void writeReport(Double dPriceBuy, double dTaxRate, Double dStockSecurity, Double dStockCost, Double dStockVolume) {
-    private void writeReport(Double dPriceBuy, double dTaxRate) {
-               
-        if (!m_bPriceSellTaxWriteLock) { 
-            m_bPriceSellTaxLock = true;
-            if (m_dPriceSell == null) {
-                m_jPriceSellTax.setText(null);
-            } else {
-                m_jPriceSellTax.setText(Formats.CURRENCY.formatValue(new Double(m_dPriceSell.doubleValue() * (1.0 + dTaxRate))));
-            }      
-            m_bPriceSellTaxLock = false;
-        }
-        if (!m_bMarginWriteLock) {
-            m_bMarginLock = true;
-            if (dPriceBuy == null || m_dPriceSell == null) {
+            if (dPriceBuy == null || dPriceSell == null) {
                 m_jmargin.setText(null);
             } else {
-                m_jmargin.setText(Formats.PERCENT.formatValue(new Double(m_dPriceSell.doubleValue() / dPriceBuy.doubleValue() - 1.0)));
-            }
-            m_bMarginLock = false;
+                m_jmargin.setText(Formats.PERCENT.formatValue(new Double(dPriceSell.doubleValue() / dPriceBuy.doubleValue() - 1.0)));
+            }    
+            reportlock = false;
         }
     }
     
-    private class ReportManager implements DocumentListener, ActionListener {
+    private void calculatePriceSellTax() {
+        
+        if (!reportlock) {
+            reportlock = true;
+            
+            Double dPriceSell = readCurrency(m_jPriceSell.getText());
+            
+            if (dPriceSell == null) {
+                m_jPriceSellTax.setText(null);
+            } else {               
+                double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem());
+                m_jPriceSellTax.setText(Formats.CURRENCY.formatValue(new Double(dPriceSell.doubleValue() * (1.0 + dTaxRate))));
+            }            
+            reportlock = false;
+        }
+    }
+    
+    private void calculatePriceSellfromMargin() {
+        
+        if (!reportlock) {
+            reportlock = true;
+            
+            Double dPriceBuy = readCurrency(m_jPriceBuy.getText());
+            Double dMargin = readPercent(m_jmargin.getText());  
+            
+            if (dMargin == null || dPriceBuy == null) {
+                m_jPriceSell.setText(null);
+            } else {
+                m_jPriceSell.setText(Formats.CURRENCY.formatValue(new Double(dPriceBuy.doubleValue() * (1.0 + dMargin.doubleValue()))));
+            }
+            reportlock = false;
+        }
+      
+    }
+    
+    private void calculatePriceSellfromPST() {
+        
+        if (!reportlock) {
+            reportlock = true;
+                    
+            Double dPriceSellTax = readCurrency(m_jPriceSellTax.getText());  
+
+            if (dPriceSellTax == null) {
+                m_jPriceSell.setText(null);
+            } else {
+                double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem()); 
+                m_jPriceSell.setText(Formats.CURRENCY.formatValue(new Double(dPriceSellTax.doubleValue() / (1.0 + dTaxRate))));
+            }
+            reportlock = false;
+        }    
+    }
+
+    private class FieldsManager implements DocumentListener, ActionListener {
         public void changedUpdate(DocumentEvent e) {
-            writeReport();
+            calculateMargin();
+            calculatePriceSellTax();
         }
         public void insertUpdate(DocumentEvent e) {
-            writeReport();
+            calculateMargin();
+            calculatePriceSellTax();
         }    
         public void removeUpdate(DocumentEvent e) {
-            writeReport();
+            calculateMargin();
+            calculatePriceSellTax();
         }         
         public void actionPerformed(ActionEvent e) {
-            writeReport();
+            calculateMargin();
+            calculatePriceSellTax();
         }
     }
-    
-    private class PriceManager implements DocumentListener  {
-        public void changedUpdate(DocumentEvent e) {
-            if (!m_bPriceSellLock) { // veo si puedo tocar m_jPriceSell
-                m_dPriceSell = readCurrency(m_jPriceSell.getText());
-                writeReport();
-            }
-        }
-        public void insertUpdate(DocumentEvent e) {
-            if (!m_bPriceSellLock) { // veo si puedo tocar m_jPriceSell
-                m_dPriceSell = readCurrency(m_jPriceSell.getText());
-                writeReport();
-            }
-        }    
-        public void removeUpdate(DocumentEvent e) {
-            if (!m_bPriceSellLock) { // veo si puedo tocar m_jPriceSell
-                m_dPriceSell = readCurrency(m_jPriceSell.getText());
-                writeReport();
-            }
-        }         
-    }
-    
+
     private class PriceTaxManager implements DocumentListener {
         public void changedUpdate(DocumentEvent e) {
-            if (!m_bPriceSellTaxLock) {
-                writePriceTax();
-            }
+            calculatePriceSellfromPST();
+            calculateMargin();
         }
         public void insertUpdate(DocumentEvent e) {
-            if (!m_bPriceSellTaxLock) {
-                writePriceTax();
-            }
+            calculatePriceSellfromPST();
+            calculateMargin();
         }    
         public void removeUpdate(DocumentEvent e) {
-            if (!m_bPriceSellTaxLock) {
-                writePriceTax();
-            }
+            calculatePriceSellfromPST();
+            calculateMargin();
         }         
     }
     
     private class MarginManager implements DocumentListener  {
         public void changedUpdate(DocumentEvent e) {
-            if (!m_bMarginLock) {
-                writeMargin();
-            }
+            calculatePriceSellfromMargin();
+            calculatePriceSellTax();
         }
         public void insertUpdate(DocumentEvent e) {
-            if (!m_bMarginLock) {
-                writeMargin();
-            }
+            calculatePriceSellfromMargin();
+            calculatePriceSellTax();
         }    
         public void removeUpdate(DocumentEvent e) {
-            if (!m_bMarginLock) {
-                writeMargin();
-            }
+            calculatePriceSellfromMargin();
+            calculatePriceSellTax();
         }         
     }
     
@@ -493,22 +464,22 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         }
     }
 
-    private static class MyListData extends javax.swing.AbstractListModel {
-        
-        private java.util.List m_data;
-        
-        public MyListData(java.util.List data) {
-            m_data = data;
-        }
-        
-        public Object getElementAt(int index) {
-            return m_data.get(index);
-        }
-        
-        public int getSize() {
-            return m_data.size();
-        } 
-    } 
+//    private static class MyListData extends javax.swing.AbstractListModel {
+//        
+//        private java.util.List m_data;
+//        
+//        public MyListData(java.util.List data) {
+//            m_data = data;
+//        }
+//        
+//        public Object getElementAt(int index) {
+//            return m_data.get(index);
+//        }
+//        
+//        public int getSize() {
+//            return m_data.size();
+//        } 
+//    } 
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -571,7 +542,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         add(m_jName);
         m_jName.setBounds(250, 50, 220, 19);
 
-        m_jTitle.setFont(new java.awt.Font("SansSerif", 3, 18)); // NOI18N
+        m_jTitle.setFont(new java.awt.Font("SansSerif", 3, 18));
         add(m_jTitle);
         m_jTitle.setBounds(10, 10, 320, 30);
 
@@ -607,7 +578,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         jPanel1.add(m_jCategory);
         m_jCategory.setBounds(160, 170, 170, 20);
 
-        jLabel7.setText(AppLocal.getIntString("label.prodtax")); // NOI18N
+        jLabel7.setText(AppLocal.getIntString("label.taxcategory")); // NOI18N
         jPanel1.add(jLabel7);
         jLabel7.setBounds(10, 140, 150, 15);
         jPanel1.add(m_jTax);

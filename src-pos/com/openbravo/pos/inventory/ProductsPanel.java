@@ -96,7 +96,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
     @Override
     public Vectorer getVectorer() {
         return  new VectorerBasic(
-                new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname"), "ISCOM", "ISSCALE", AppLocal.getIntString("label.prodpricebuy"), AppLocal.getIntString("label.prodpricesell"), AppLocal.getIntString("label.prodcategory"), AppLocal.getIntString("label.prodtax"), "IMAGE", "STOCKCOST", "STOCKVOLUME"},
+                new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname"), "ISCOM", "ISSCALE", AppLocal.getIntString("label.prodpricebuy"), AppLocal.getIntString("label.prodpricesell"), AppLocal.getIntString("label.prodcategory"), AppLocal.getIntString("label.taxcategory"), "IMAGE", "STOCKCOST", "STOCKVOLUME"},
                 new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.BOOLEAN, Formats.CURRENCY, Formats.CURRENCY, Formats.STRING, Formats.STRING, Formats.NULL, Formats.CURRENCY, Formats.DOUBLE},
                 new int[] {1, 2, 3, 6, 7});
     }
@@ -104,7 +104,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
     @Override
     public ComparatorCreator getComparatorCreator() {
         return new ComparatorCreatorBasic(
-                new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname"), "ISCOM", "ISSCALE", AppLocal.getIntString("label.prodpricebuy"), AppLocal.getIntString("label.prodpricesell"), AppLocal.getIntString("label.prodcategory"), AppLocal.getIntString("label.prodtax"), "IMAGE", "STOCKCOST", "STOCKVOLUME"},
+                new String[]{"ID", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname"), "ISCOM", "ISSCALE", AppLocal.getIntString("label.prodpricebuy"), AppLocal.getIntString("label.prodpricesell"), AppLocal.getIntString("label.prodcategory"), AppLocal.getIntString("label.taxcategory"), "IMAGE", "STOCKCOST", "STOCKVOLUME"},
                 // El productCatDatas del SentenceContainer, igualito
                 new Datas[]{Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.BOOLEAN, Datas.DOUBLE, Datas.DOUBLE, Datas.STRING, Datas.STRING, Datas.IMAGE, Datas.DOUBLE, Datas.DOUBLE, Datas.BOOLEAN, Datas.INT}, 
                 new int[]{1, 2, 3, 6, 7, 8, 9});
@@ -129,7 +129,7 @@ public class ProductsPanel extends JPanelTable implements EditorListener {
         
         JButton btnScanPal = new JButton();
         btnScanPal.setText("ScanPal");
-        btnScanPal.setEnabled(app.getDeviceScanner() != null);
+        btnScanPal.setVisible(app.getDeviceScanner() != null);
         btnScanPal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnScanPalActionPerformed(evt);
