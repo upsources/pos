@@ -96,7 +96,8 @@ public class ProductsSync implements ProcessAction {
                     t.setID(Integer.toString(product.getTax().getId()));
                     t.setName(product.getTax().getName());
                     t.setTaxCategoryID(tc.getID());
-                    t.setRate(product.getTax().getPercentage() / 100);                        
+                    t.setRate(product.getTax().getPercentage() / 100);   
+                    t.setCascade(false);
                     dlintegration.syncTax(t);
                    
                     // Synchonization of categories

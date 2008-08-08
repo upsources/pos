@@ -34,7 +34,6 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.sales.TaxesLogic;
-import com.openbravo.pos.ticket.TaxInfo;
 import java.util.UUID;
 
 /**

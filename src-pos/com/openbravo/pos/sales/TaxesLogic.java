@@ -35,6 +35,11 @@ public class TaxesLogic {
     }
     
     
+    
+    public double getTaxRate(String tcid) {
+        return getTaxRate(tcid, null);
+    }
+    
     public double getTaxRate(TaxCategoryInfo tc) {
         return getTaxRate(tc, null);
     }
@@ -44,7 +49,16 @@ public class TaxesLogic {
         if (tc == null) {
             return 0.0;
         } else {
-            TaxInfo tax = getTaxInfo(tc, customer);
+            return getTaxRate(tc.getID(), customer);          
+        }
+    }
+    
+    public double getTaxRate(String tcid, CustomerInfo customer) {
+        
+        if (tcid == null) {
+            return 0.0;
+        } else {
+            TaxInfo tax = getTaxInfo(tcid, customer);
             if (tax == null) {
                 return 0.0;
             } else {
@@ -52,19 +66,26 @@ public class TaxesLogic {
             }            
         }
     }
-
-    public TaxInfo getTaxInfo(TaxCategoryInfo tc) {
-        return getTaxInfo(tc, null);
+    
+    public TaxInfo getTaxInfo(String tcid) {
+        return getTaxInfo(tcid, null);
     }
     
+    public TaxInfo getTaxInfo(TaxCategoryInfo tc) {
+        return getTaxInfo(tc.getID(), null);
+    }
     
-    public TaxInfo getTaxInfo(TaxCategoryInfo tc, CustomerInfo customer) {
+    public TaxInfo getTaxInfo(TaxCategoryInfo tc, CustomerInfo customer) {  
+        return getTaxInfo(tc.getID(), customer);
+    }    
+    
+    public TaxInfo getTaxInfo(String tcid, CustomerInfo customer) {
         
         
         TaxInfo defaulttax = null;
         
         for (TaxInfo tax : taxlist) {
-            if (tax.getParentID() == null && tax.getTaxCategoryID().equals(tc.getID())) {
+            if (tax.getParentID() == null && tax.getTaxCategoryID().equals(tcid)) {
                 if (customer == null && tax.getTaxCustCategoryID() == null) {
                     return tax;
                 } else if (customer != null && customer.getTaxid().endsWith(tax.getTaxCustCategoryID())) {

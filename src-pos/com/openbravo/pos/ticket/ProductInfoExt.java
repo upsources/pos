@@ -53,7 +53,7 @@ public class ProductInfoExt extends ProductInfo {
         m_Image = ImageUtils.readImage(dr.getBytes(12));
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(14);
+            byte[] img = dr.getBytes(13);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }

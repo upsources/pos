@@ -33,9 +33,12 @@ import net.sf.jasperreports.engine.design.*;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.BaseSentence;
+import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorCreator;
 import com.openbravo.pos.forms.BeanFactoryApp;
 import com.openbravo.pos.forms.BeanFactoryException;
+import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.pos.sales.TaxesLogic;
 import com.openbravo.pos.util.JRViewer300;
 
 public abstract class JPanelReport extends JPanel implements JPanelView, BeanFactoryApp   {
@@ -45,7 +48,9 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
     private EditorCreator editor = null;
             
     protected AppView m_App;
-
+    
+    protected SentenceList taxsent;
+    protected TaxesLogic taxeslogic;
 
     /** Creates new form JPanelReport */
     public JPanelReport() {
@@ -56,6 +61,8 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
     public void init(AppView app) throws BeanFactoryException {   
         
         m_App = app;
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        taxsent = dlSales.getTaxList();
         
         editor = getEditorCreator();
         if (editor instanceof ReportEditorCreator) {
@@ -105,6 +112,7 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
     public void activate() throws BasicException {
 
         setVisibleFilter(true);
+        taxeslogic = new TaxesLogic(taxsent.list()); 
     }    
     
     public boolean deactivate() {    
@@ -141,7 +149,8 @@ public abstract class JPanelReport extends JPanel implements JPanelView, BeanFac
                 reportparams.put("ARG", params);
                 if (res != null) {
                       reportparams.put("REPORT_RESOURCE_BUNDLE", ResourceBundle.getBundle(res));
-                }
+                }                
+                reportparams.put("TAXESLOGIC", taxeslogic); 
                 
                 JasperPrint jp = JasperFillManager.fillReport(jr, reportparams, data);    
             

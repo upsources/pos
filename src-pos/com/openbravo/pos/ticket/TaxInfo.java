@@ -21,8 +21,6 @@ package com.openbravo.pos.ticket;
 import java.io.Serializable;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
-import com.openbravo.data.loader.DataWrite;
-import com.openbravo.data.loader.SerializableWrite;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.IKeyed;
 
@@ -30,79 +28,69 @@ import com.openbravo.data.loader.IKeyed;
  *
  * @author adrianromero
  */
-public class TaxInfo implements SerializableRead, SerializableWrite, Serializable, IKeyed {
+public class TaxInfo implements SerializableRead, Serializable, IKeyed {
 
-    private String m_sID;
-    private String m_sName;
+    private String id;
+    private String name;
     private String taxcategoryid;
     private String taxcustcategoryid;
     private String parentid;
     
-    private double m_dRate;
+    private double rate;
     private boolean cascade;
     
     /** Creates new TaxInfo */
     public TaxInfo() {
-        m_sID = null;
-        m_sName = null;
+        id = null;
+        name = null;
         taxcategoryid = null;
         taxcustcategoryid = null;
         parentid = null;
         
-        m_dRate = 0.0;         
+        rate = 0.0;         
         cascade = false;
     }
     
     /** Creates new TaxInfo */
-    public TaxInfo(String sID, String sName, double dRate) {
-        m_sID = sID;
-        m_sName = sName;
-        taxcategoryid = null;
-        taxcustcategoryid = null;
-        parentid = null;
+    public TaxInfo(String id, String name, String taxcategoryid, String taxcustcategoryid, String parentid, double rate, boolean cascade) {
+        this.id = id;
+        this.name = name;
+        this.taxcategoryid = taxcategoryid;
+        this.taxcustcategoryid = taxcustcategoryid;
+        this.parentid = parentid;
         
-        m_dRate = dRate;
-        cascade = false;
+        this.rate = rate;
+        this.cascade = cascade;
     }
     
     public Object getKey() {
-        return m_sID;
+        return id;
     }
     public void readValues(DataRead dr) throws BasicException {
-        m_sID = dr.getString(1);
-        m_sName = dr.getString(2);
+        id = dr.getString(1);
+        name = dr.getString(2);
         taxcategoryid = dr.getString(3);
         taxcustcategoryid = dr.getString(4);
         parentid = dr.getString(5);
         
-        m_dRate = dr.getDouble(6).doubleValue();
+        rate = dr.getDouble(6).doubleValue();
         cascade = dr.getBoolean(7).booleanValue();
     }   
-    public void writeValues(DataWrite dp) throws BasicException {
-        dp.setString(1, m_sID);
-        dp.setString(2, m_sName);
-        dp.setString(3, taxcategoryid);
-        dp.setString(4, taxcustcategoryid);
-        dp.setString(5, parentid);
-        
-        dp.setDouble(6, new Double(m_dRate));
-        dp.setBoolean(7, Boolean.valueOf(cascade));
-    }
     
-    public void setID(String sID) {
-        m_sID = sID;
+    public void setID(String value) {
+        id = value;
     }
     
     public String getId() {
-        return m_sID;
+        return id;
     }
 
     public String getName() {
-        return m_sName;
+        return name;
     }
     
-    public void setName(String sName) {
-        m_sName = sName;
+    public void setName(String value) {
+        name = value;
     }
 
     public String getTaxCategoryID() {
@@ -130,11 +118,11 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
     }
     
     public double getRate() {
-        return m_dRate;
+        return rate;
     }
     
-    public void setRate(double dValue) {
-        m_dRate = dValue;
+    public void setRate(double value) {
+        rate = value;
     }
 
     public boolean isCascade() {
@@ -147,7 +135,7 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
     
     @Override
     public String toString(){
-        return m_sName;
+        return name;
     }
     
     @Override
@@ -157,46 +145,39 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
 	} else if (obj instanceof TaxInfo) {
             TaxInfo t = (TaxInfo) obj;
             
-            // el id
-            if (m_sID == null) {
-                if (t.m_sID != null) return false;
+            if (id == null) {
+                if (t.id != null) return false;
             } else {
-                if (!m_sID.equals(t.m_sID)) return false;
+                if (!id.equals(t.id)) return false;
             }
             
-            // el nombre
-            if (m_sName == null) {
-                if (t.m_sName != null) return false;
+            if (name == null) {
+                if (t.name != null) return false;
             } else {
-                if (!m_sName.equals(t.m_sName)) return false;
+                if (!name.equals(t.name)) return false;
             }          
             
-            // tax category ID
             if (taxcategoryid == null) {
                 if (t.taxcategoryid != null) return false;
             } else {
                 if (!taxcategoryid.equals(t.taxcategoryid)) return false;
             }   
-            
-            // tax cust category ID
+
             if (taxcustcategoryid == null) {
                 if (t.taxcustcategoryid != null) return false;
             } else {
                 if (!taxcustcategoryid.equals(t.taxcustcategoryid)) return false;
             } 
             
-            // Parent ID
             if (parentid == null) {
                 if (t.parentid != null) return false;
             } else {
                 if (!parentid.equals(parentid)) return false;
             } 
             
-            // Cascade
             if (cascade != t.cascade) return false;
-            
-            // el porcentage
-            if (m_dRate != t.m_dRate) return false;
+
+            if (rate != t.rate) return false;
             
             return true;
         } else {
@@ -206,12 +187,12 @@ public class TaxInfo implements SerializableRead, SerializableWrite, Serializabl
     
     @Override
     public int hashCode() {      
-        return (m_sID == null ? 0 : m_sID.hashCode()) 
-                + (m_sName == null ? 0 : m_sName.hashCode()) 
+        return (id == null ? 0 : id.hashCode()) 
+                + (name == null ? 0 : name.hashCode()) 
                 + (taxcategoryid == null ? 0 : taxcategoryid.hashCode()) 
                 + (taxcustcategoryid == null ? 0 : taxcustcategoryid.hashCode()) 
                 + (parentid == null ? 0 : parentid.hashCode()) 
-                + new Double(m_dRate).hashCode()
+                + new Double(rate).hashCode()
                 + Boolean.valueOf(cascade).hashCode();
     }    
 }

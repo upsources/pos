@@ -23,6 +23,7 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="TAXESLOGIC" isForPrompting="false" class="com.openbravo.pos.sales.TaxesLogic"/>
 	<queryString><![CDATA[SELECT PRODUCTS.REFERENCE, PRODUCTS.NAME, PRODUCTS.PRICESELL, PRODUCTS.CATEGORY, CATEGORIES.NAME AS CATEGORYNAME, TAXES.NAME AS TAXNAME, TAXES.RATE AS TAXRATE
 FROM PRODUCTS LEFT OUTER JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID LEFT OUTER JOIN TAXES ON PRODUCTS.TAX = TAXES.ID
 ORDER BY PRODUCTS.CATEGORY]]></queryString>
@@ -32,9 +33,8 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 	<field name="PRICESELL" class="java.lang.Double"/>
 	<field name="CATEGORY" class="java.lang.String"/>
 	<field name="CATEGORYNAME" class="java.lang.String"/>
-	<field name="TAXNAME" class="java.lang.String"/>
-	<field name="TAXRATE" class="java.lang.Double"/>
-	<field name="PRICESELLTAX" class="java.lang.Double"/>
+	<field name="TAXCAT" class="java.lang.String"/>
+	<field name="TAXCATNAME" class="java.lang.String"/>
 	<field name="PRICEBUY" class="java.lang.Double"/>
 
 
@@ -45,9 +45,9 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="450"
+						x="436"
 						y="50"
-						width="80"
+						width="94"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -67,7 +67,7 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 						mode="Opaque"
 						x="220"
 						y="50"
-						width="90"
+						width="76"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -85,7 +85,7 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="380"
+						x="366"
 						y="50"
 						width="70"
 						height="20"
@@ -307,7 +307,7 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="380"
+						x="366"
 						y="0"
 						width="70"
 						height="20"
@@ -343,7 +343,7 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 						mode="Transparent"
 						x="220"
 						y="0"
-						width="60"
+						width="76"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -356,14 +356,14 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TAXNAME}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TAXCATNAME}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="280"
+						x="436"
 						y="0"
-						width="30"
+						width="94"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -376,32 +376,13 @@ ORDER BY PRODUCTS.CATEGORY]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.PERCENT.formatValue($F{TAXRATE})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue(
+new Double($F{PRICESELL}.doubleValue() * (1.0 + $P{TAXESLOGIC}.getTaxRate($F{TAXCAT}))))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="450"
-						y="0"
-						width="80"
-						height="20"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-5"/>
-					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
-</box>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue($F{PRICESELLTAX})]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="310"
+						x="296"
 						y="0"
 						width="70"
 						height="20"

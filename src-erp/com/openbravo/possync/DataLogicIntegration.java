@@ -112,24 +112,30 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, RATE = ? WHERE ID = ?",
+                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, CUSTCATEGORY = ?, PARENTID = ?, RATE = ?, CASCADE = ?, WHERE ID = ?",
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getName());
                                 setString(2, tax.getTaxCategoryID());
-                                setDouble(3, tax.getRate());
-                                setString(4, tax.getId());                                    
+                                setString(3, tax.getTaxCustCategoryID());
+                                setString(4, tax.getParentID());
+                                setDouble(5, tax.getRate());
+                                setBoolean(6, tax.isCascade());
+                                setString(7, tax.getId());       
                             }}) == 0) {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                            "INSERT INTO TAXES(ID, NAME, CATEGORY, RATE) VALUES (?, ?, ?, ?)", 
+                            "INSERT INTO TAXES(ID, NAME, CATEGORY, CUSTCATEGORY, PARENTID, RATE, CASCADE) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getId());
                                 setString(2, tax.getName());
                                 setString(3, tax.getTaxCategoryID());
-                                setDouble(4, tax.getRate());
+                                setString(4, tax.getTaxCustCategoryID());
+                                setString(5, tax.getParentID());                                
+                                setDouble(6, tax.getRate());
+                                setBoolean(7, tax.isCascade());
                             }});
                 }
                 

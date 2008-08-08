@@ -853,6 +853,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
                 script.put("taxes", taxmap);
+                script.put("taxeslogic", taxeslogic);
                 script.put("ticket", ticket);
                 script.put("place", ticketext);
                 m_TTP.printTicket(script.eval(sresource).toString());
@@ -891,6 +892,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 reportparams.put("REPORT_RESOURCE_BUNDLE", ResourceBundle.getBundle(resourcefile + ".properties"));
             } catch (MissingResourceException e) {
             }
+            reportparams.put("TAXESLOGIC", taxeslogic); 
             
             Map reportfields = new HashMap();
             reportfields.put("TICKET", ticket);
@@ -986,8 +988,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
             ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
             script.put("ticket", ticket);
-            script.put("taxes", taxmap);
             script.put("place", ticketext);
+            script.put("taxes", taxmap);
+            script.put("taxeslogic", taxeslogic);             
             script.put("user", m_App.getAppUserView().getUser());
             script.put("sales", this);
 
@@ -1071,9 +1074,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                  
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
-                script.put("ticket", m_oTicket);
-                script.put("taxes", taxmap);
+                script.put("ticket", m_oTicket);      
                 script.put("place", m_oTicketExt);
+                script.put("taxes", taxmap);
+                script.put("taxeslogic", taxeslogic);       
                 script.put("user", m_App.getAppUserView().getUser());
                 script.put("sales", this);
                 
