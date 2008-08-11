@@ -169,7 +169,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         senttaxcategories = dlSales.getTaxCategoriesList();
         
         taxcategoriesmodel = new ComboBoxValModel();    
-        
+              
         // ponemos a cero el estado
         stateToZero();  
         
@@ -218,9 +218,20 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 
         taxeslogic = new TaxesLogic(taxlist);
         
+        // Show taxes options
+        if (m_App.getAppUserView().getUser().hasPermission("sales.ChangeTaxOptions")) {
+            m_jTax.setVisible(true);
+            m_jaddtax.setVisible(true);
+        } else {
+            m_jTax.setVisible(false);
+            m_jaddtax.setVisible(false);
+        }
+        
         // Authorization for buttons
+        btnSplit.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.Total"));
         m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
         m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
+        m_jNumberKeys.setEqualsEnabled(m_App.getAppUserView().getUser().hasPermission("sales.Total"));
         m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());          
     }
     
@@ -795,44 +806,46 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private boolean closeTicket(TicketInfo ticket, Object ticketext) {
         
-        if (executeEventTotal("ticket.total", ticket, ticketext) == null) {
+        if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {       
+            if (executeEventTotal("ticket.total", ticket, ticketext) == null) {
 
-            // Muestro el total
-            printTicket("Printer.TicketTotal", ticket, ticketext);
+                // Muestro el total
+                printTicket("Printer.TicketTotal", ticket, ticketext);
 
-            // reset the payment info
-            ticket.resetPayments();
+                // reset the payment info
+                ticket.resetPayments();
 
-            // Select the Payments information
-            JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
-                    ? paymentdialogreceipt
-                    : paymentdialogrefund;
-            paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
+                // Select the Payments information
+                JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
+                        ? paymentdialogreceipt
+                        : paymentdialogrefund;
+                paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
 
-            if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
+                if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
 
-                // assign the payments selected.
-                ticket.setPayments(paymentdialog.getSelectedPayments());
+                    // assign the payments selected.
+                    ticket.setPayments(paymentdialog.getSelectedPayments());
 
-                // Asigno los valores definitivos del ticket...
-                ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
-                ticket.setActiveCash(m_App.getActiveCashIndex());
-                ticket.setDate(new Date()); // Le pongo la fecha de cobro
+                    // Asigno los valores definitivos del ticket...
+                    ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
+                    ticket.setActiveCash(m_App.getActiveCashIndex());
+                    ticket.setDate(new Date()); // Le pongo la fecha de cobro
 
-                if (executeEventTotal("ticket.close", ticket, ticketext) == null) {
-                    // Save the receipt and assign a receipt number
-                    try {
-                        dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
-                    } catch (BasicException eData) {
-                        MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
-                        msg.show(this);
+                    if (executeEventTotal("ticket.close", ticket, ticketext) == null) {
+                        // Save the receipt and assign a receipt number
+                        try {
+                            dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
+                        } catch (BasicException eData) {
+                            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                            msg.show(this);
+                        }
+
+                        // Print receipt.
+                        printTicket(paymentdialog.isPrintSelected()
+                                ? "Printer.Ticket"
+                                : "Printer.Ticket2", ticket, ticketext);
+                        return true;
                     }
-
-                    // Print receipt.
-                    printTicket(paymentdialog.isPrintSelected()
-                            ? "Printer.Ticket"
-                            : "Printer.Ticket2", ticket, ticketext);
-                    return true;
                 }
             }
         }
@@ -1117,7 +1130,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jButtons = new javax.swing.JPanel();
         m_jTicketId = new javax.swing.JLabel();
         btnCustomer = new javax.swing.JButton();
-        m_jEditLine1 = new javax.swing.JButton();
+        btnSplit = new javax.swing.JButton();
         m_jPanelScripts = new javax.swing.JPanel();
         m_jButtonsExt = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -1179,17 +1192,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         m_jButtons.add(btnCustomer);
 
-        m_jEditLine1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editcut.png"))); // NOI18N
-        m_jEditLine1.setFocusPainted(false);
-        m_jEditLine1.setFocusable(false);
-        m_jEditLine1.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        m_jEditLine1.setRequestFocusEnabled(false);
-        m_jEditLine1.addActionListener(new java.awt.event.ActionListener() {
+        btnSplit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/editcut.png"))); // NOI18N
+        btnSplit.setFocusPainted(false);
+        btnSplit.setFocusable(false);
+        btnSplit.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnSplit.setRequestFocusEnabled(false);
+        btnSplit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jEditLine1ActionPerformed(evt);
+                btnSplitActionPerformed(evt);
             }
         });
-        m_jButtons.add(m_jEditLine1);
+        m_jButtons.add(btnSplit);
 
         m_jOptions.add(m_jButtons, java.awt.BorderLayout.LINE_START);
 
@@ -1467,6 +1480,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanEntries.add(jPanel9);
 
+        m_jKeyFactory.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        m_jKeyFactory.setForeground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        m_jKeyFactory.setBorder(null);
+        m_jKeyFactory.setCaretColor(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
         m_jKeyFactory.setPreferredSize(new java.awt.Dimension(1, 1));
         m_jKeyFactory.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -1578,7 +1595,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
 }//GEN-LAST:event_btnCustomerActionPerformed
 
-    private void m_jEditLine1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jEditLine1ActionPerformed
+    private void btnSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSplitActionPerformed
 
         if (m_oTicket.getLinesCount() > 0) {
             ReceiptSplit splitdialog = ReceiptSplit.getDialog(this, dlSystem.getResourceAsXML("Ticket.Line"), dlSales, dlCustomers);
@@ -1594,11 +1611,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         }
         
-    }//GEN-LAST:event_m_jEditLine1ActionPerformed
+}//GEN-LAST:event_btnSplitActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
+    private javax.swing.JButton btnSplit;
     private javax.swing.JPanel catcontainer;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1611,7 +1629,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JButton m_jDelete;
     private javax.swing.JButton m_jDown;
     private javax.swing.JButton m_jEditLine;
-    private javax.swing.JButton m_jEditLine1;
     private javax.swing.JButton m_jEnter;
     private javax.swing.JTextField m_jKeyFactory;
     private javax.swing.JLabel m_jLblTotalEuros1;
