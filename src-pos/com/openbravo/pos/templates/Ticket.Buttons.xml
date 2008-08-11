@@ -20,8 +20,8 @@
  -->
  
 <configuration>
-    <button key="button.print" name="button.print" template="Printer.TicketPreview"/>
-    <button key="button.opendrawer" name="button.opendrawer" template="Printer.OpenDrawer"/>
+    <button key="button.print" titlekey="button.print" template="Printer.TicketPreview"/>
+    <button key="button.opendrawer" titlekey="button.opendrawer" template="Printer.OpenDrawer"/>
     
     <!-- <event key="ticket.change" code="event.change"/> -->
     <!-- <event key="ticket.addline" code="event.addline"/> -->

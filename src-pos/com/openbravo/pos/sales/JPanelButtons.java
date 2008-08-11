@@ -118,11 +118,24 @@ public class JPanelButtons extends javax.swing.JPanel {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
             if ("button".equals(qName)){
+                
+                // The template resource
                 String stemplate = attributes.getValue("template");
+                
+                // The button title text
+                String titlekey = attributes.getValue("titlekey");
+                if (titlekey == null) {
+                    titlekey = attributes.getValue("name");
+                }
+                String title = titlekey == null
+                        ? attributes.getValue("title")
+                        : AppLocal.getIntString(titlekey);
+                
+                // adding the button to the panel
                 add(new JButtonFunc(
                         attributes.getValue("key"), 
                         attributes.getValue("image"), 
-                        attributes.getValue("name"),  
+                        title,  
                         stemplate == null
                             ? scriptobject.getResourceAsXML(attributes.getValue("code"))
                             : "sales.printTicket(\"" + stemplate + "\");"));
@@ -144,11 +157,11 @@ public class JPanelButtons extends javax.swing.JPanel {
     private class JButtonFunc extends JButton {
         private String m_sCode;
         
-        public JButtonFunc(String sKey, String sImage, String sKeyText, String sCode) {
+        public JButtonFunc(String sKey, String sImage, String title, String sCode) {
             
             m_sCode = sCode;
             setName(sKey);
-            setText(AppLocal.getIntString(sKeyText));
+            setText(title);
             setIcon(new ImageIcon(tnbmacro.getThumbNail(scriptobject.getResourceAsImage(sImage))));
             setFocusPainted(false);
             setFocusable(false);
