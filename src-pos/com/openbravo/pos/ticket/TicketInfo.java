@@ -22,7 +22,6 @@ import java.util.*;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import com.openbravo.pos.util.*;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
@@ -45,9 +44,11 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private UserInfo m_User;
     private CustomerInfoExt m_Customer;
     private String m_sActiveCash;
-    private List<PaymentInfo> m_aPayment;    
     private List<TicketLineInfo> m_aLines;
     
+    private List<PaymentInfo> payments; 
+    private List<TicketTaxInfo> taxes;
+  
     /** Creates new TicketModel */
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
@@ -57,8 +58,10 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_User = null;
         m_Customer = null;
         m_sActiveCash = null;
-        m_aPayment = new ArrayList<PaymentInfo>();        
         m_aLines = new ArrayList<TicketLineInfo>(); // vacio de lineas
+        
+        payments = new ArrayList<PaymentInfo>();        
+        taxes = null;
     }
     public void writeExternal(ObjectOutput out) throws IOException  {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
@@ -77,10 +80,12 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_Customer = (CustomerInfoExt) in.readObject();
         m_dDate = (Date) in.readObject();
         attributes = (Properties) in.readObject();
+        m_aLines = (List<TicketLineInfo>) in.readObject();
         m_User = null;
         m_sActiveCash = null;
-        m_aPayment = new ArrayList<PaymentInfo>();        
-        m_aLines = (List<TicketLineInfo>) in.readObject();
+        
+        payments = new ArrayList<PaymentInfo>();        
+        taxes = null;
     }
     
     public void readValues(DataRead dr) throws BasicException {
@@ -97,8 +102,10 @@ public class TicketInfo implements SerializableRead, Externalizable {
         } 
         m_User = new UserInfo(dr.getString(6), dr.getString(7)); 
         m_Customer = new CustomerInfoExt(dr.getString(8));        
-        m_aPayment = new ArrayList<PaymentInfo>(); 
         m_aLines = new ArrayList<TicketLineInfo>();
+        
+        payments = new ArrayList<PaymentInfo>(); 
+        taxes = null;
     }
     
     public TicketInfo copyTicket() {
@@ -111,16 +118,18 @@ public class TicketInfo implements SerializableRead, Externalizable {
         t.m_User = m_User;
         t.m_Customer = m_Customer;
         
-        t.m_aPayment = new LinkedList<PaymentInfo>(); 
-        for (PaymentInfo p : m_aPayment) {
-            t.m_aPayment.add(p.copyPayment());
-        }
-        
         t.m_aLines = new ArrayList<TicketLineInfo>(); 
         for (TicketLineInfo l : m_aLines) {
             t.m_aLines.add(l.copyTicketLine());
         }
         t.refreshLines();
+        
+        t.payments = new LinkedList<PaymentInfo>(); 
+        for (PaymentInfo p : payments) {
+            t.payments.add(p.copyPayment());
+        }
+        
+        // taxes are not copied, must be calculated again.
         
         return t;
     }
@@ -261,58 +270,42 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
     
     public double getSubTotal() {
-        double dSuma = 0.0;
-        TicketLineInfo oLine;            
-        for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
-            oLine = i.next();
-            dSuma += oLine.getSubValue();
+        double sum = 0.0;
+        for (TicketLineInfo line : m_aLines) {
+            sum += line.getSubValue();
         }        
-        return dSuma;
+        return sum;
     }
     
     public double getTax() {
-        double dSuma = 0.0;
-        TicketLineInfo oLine;            
-        for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
-            oLine = i.next();
-            dSuma += oLine.getTax();
+
+        double sum = 0.0;
+        if (hasTaxesCalculated()) {
+            for (TicketTaxInfo tax : taxes) {
+                sum += tax.getTax();
+            }            
+        } else {                   
+            for (TicketLineInfo line : m_aLines) {
+                sum += line.getTax();
+            }        
         }        
-        return dSuma;
+        return sum;
     }
     
-    public double getTotal() {  
+    public double getTotal() { 
         
-        double dSuma = 0.0;
-        TicketLineInfo oLine;            
-        for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
-            oLine = i.next();
-            dSuma += oLine.getValue();
-        }        
-        return dSuma;
+        return getSubTotal() + getTax();
     }
     
     public double getTotalPaid() {
         
         double sum = 0.0;
-        for (Iterator<PaymentInfo> i = m_aPayment.iterator(); i.hasNext();) {
-            PaymentInfo p = i.next();
+        for (PaymentInfo p : payments) {
             if (!"debtpaid".equals(p.getName())) {
                 sum += p.getTotal();
             }                    
         }
         return sum;
-    }
-    
-    public List<PaymentInfo> getPayments() {
-        return m_aPayment;
-    }
-    
-    public void setPayments(List<PaymentInfo> l) {
-        m_aPayment = l;
-    }
-    
-    public void resetPayments() {
-        m_aPayment = new ArrayList<PaymentInfo>();
     }
     
     public List<TicketLineInfo> getLines() {
@@ -323,41 +316,49 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_aLines = l;
     }
     
+    public List<PaymentInfo> getPayments() {
+        return payments;
+    }
+    
+    public void setPayments(List<PaymentInfo> l) {
+        payments = l;
+    }
+    
+    public void resetPayments() {
+        payments = new ArrayList<PaymentInfo>();
+    }
+    
+    public List<TicketTaxInfo> getTaxes() {
+        return taxes;        
+    }
+    
+    public boolean hasTaxesCalculated() {
+        return taxes != null;
+    }
+    
+    public void setTaxes(List<TicketTaxInfo> l) {
+        taxes = l;
+    }
+    
+    public void resetTaxes() {
+        taxes = null;
+    }
+    
     public TicketTaxInfo getTaxLine(TaxInfo tax) {
-        
-        TicketTaxInfo taxinfo = new TicketTaxInfo(tax);
-
-        TicketLineInfo oLine;            
-        for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
-            oLine = i.next();
-            
-            if (tax.getId().equals(oLine.getTaxInfo().getId())) {
-                taxinfo.add(oLine.getSubValue());
+      
+        for (TicketTaxInfo taxline : taxes) {            
+            if (tax.getId().equals(taxline.getTaxInfo().getId())) {
+                return taxline;
             }
         }
         
-        return taxinfo;
+        return new TicketTaxInfo(tax);
     }
     
+    @Deprecated
     public TicketTaxInfo[] getTaxLines() {
         
-        Map<TaxInfo, TicketTaxInfo> m = new HashMap<TaxInfo, TicketTaxInfo>();
-        
-        TicketLineInfo oLine;            
-        for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
-            oLine = i.next();
-            
-            TicketTaxInfo t = m.get(oLine.getTaxInfo());
-            if (t == null) {
-                t = new TicketTaxInfo(oLine.getTaxInfo());
-                m.put(t.getTaxInfo(), t);
-            }            
-            t.add(oLine.getSubValue());
-        }        
-        
-        // return dSuma;       
-        Collection<TicketTaxInfo> avalues = m.values();
-        return avalues.toArray(new TicketTaxInfo[avalues.size()]);
+        return taxes.toArray(new TicketTaxInfo[taxes.size()]);
     }
     
     public String printId() {
@@ -392,8 +393,5 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
     public String printTotalPaid() {
         return Formats.CURRENCY.formatValue(new Double(getTotalPaid()));
-    }
-    public String printTotalPts() {
-        return Formats.INT.formatValue(new Double(CurrencyChange.changeEurosToPts(getTotal())));
     }
 }

@@ -26,6 +26,8 @@ import java.util.Date;
  * @author adrianromero
  */
 public class CustomerInfoExt extends CustomerInfo {
+    
+    protected String taxcustomerid;
     protected String notes;
     protected boolean visible;
     protected String card;
@@ -55,6 +57,14 @@ public class CustomerInfoExt extends CustomerInfo {
         return Formats.CURRENCY.formatValue(getCurdebt() == null ? new Double(0.0) : getCurdebt());
     }
 
+    public String getTaxCustCategoryID() {
+        return taxcustomerid;
+    }
+    
+    public void setTaxCustomerID(String taxcustomerid) {
+        this.taxcustomerid = taxcustomerid;
+    }
+    
     public String getNotes() {
         return notes;
     }

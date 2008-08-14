@@ -37,6 +37,7 @@ import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.mant.FloorsInfo;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
+import com.openbravo.pos.ticket.TicketTaxInfo;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -168,7 +169,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     
     public CustomerInfoExt findCustomerExt(String card) throws BasicException {
         return (CustomerInfoExt) new PreparedSentence(s
-                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, TAXCATEGORY, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
                   ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX" +
                   ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY" +
                   " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = TRUE"
@@ -178,7 +179,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     
     public CustomerInfoExt loadCustomerExt(String id) throws BasicException {
         return (CustomerInfoExt) new PreparedSentence(s
-                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
+                , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, TAXCATEGORY, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
                   ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX" +
                   ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY" +
                 " FROM CUSTOMERS WHERE ID = ?"
@@ -205,7 +206,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             ticket.setCustomer(loadCustomerExt(ticket.getCustomerId()));
             
             ticket.setLines(new PreparedSentence(s
-                , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.NAME, L.ISCOM, L.UNITS, L.PRICE, T.ID, T.NAME, T.CATEGORY, T.CUSTCATEGORY, T.PARENTID, T.RATE, T.CASCADE, L.ATTRIBUTES " +
+                , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.UNITS, L.PRICE, T.ID, T.NAME, T.CATEGORY, T.CUSTCATEGORY, T.PARENTID, T.RATE, T.CASCADE, L.ATTRIBUTES " +
                   "FROM TICKETLINES L, TAXES T WHERE L.TAXID = T.ID AND L.TICKET = ? ORDER BY L.LINE"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(TicketLineInfo.class)).list(ticket.getId()));  
@@ -256,12 +257,12 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     }});                
                 
                 SentenceExec ticketlineinsert = new PreparedSentence(s
-                    , "INSERT INTO TICKETLINES (TICKET, LINE, PRODUCT, NAME, ISCOM, UNITS, PRICE, TAXID, ATTRIBUTES) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    , "INSERT INTO TICKETLINES (TICKET, LINE, PRODUCT, UNITS, PRICE, TAXID, ATTRIBUTES) VALUES (?, ?, ?, ?, ?, ?, ?)"
                     , SerializerWriteBuilder.INSTANCE); 
                 
                 for (TicketLineInfo l : ticket.getLines()) {
                     ticketlineinsert.exec(l);
-                    if (l.getProduct().getId() != null)  {
+                    if (l.getProductID() != null)  {
                         // update the stock                             
                         getStockDiaryInsert().exec(new Object[] {
                             UUID.randomUUID().toString(),
@@ -270,7 +271,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                                 ? MovementReason.IN_REFUND.getKey()
                                 : MovementReason.OUT_SALE.getKey(),
                             location,
-                            l.getProduct().getId(),
+                            l.getProductID(),
                             new Double(-l.getMultiply()),
                             new Double(l.getPrice())
                         });
@@ -279,14 +280,15 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 
                 SentenceExec paymentinsert = new PreparedSentence(s
                     , "INSERT INTO PAYMENTS (ID, RECEIPT, PAYMENT, TOTAL) VALUES (?, ?, ?, ?)"
-                    , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE}));                
-                for (PaymentInfo p : ticket.getPayments()) {
-                    paymentinsert.exec(new Object[] {
-                        UUID.randomUUID().toString(),
-                        ticket.getId(),
-                        p.getName(),
-                        new Double(p.getTotal())
-                    });
+                    , SerializerWriteParams.INSTANCE);
+                for (final PaymentInfo p : ticket.getPayments()) {
+                    paymentinsert.exec(new DataParams() { public void writeValues() throws BasicException {
+                        setString(1, UUID.randomUUID().toString());
+                        setString(2, ticket.getId());
+                        setString(3, p.getName());
+                        setDouble(4, p.getTotal());
+                    }});
+                    
                     if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
                         getDebtUpdate().exec(new Object[]{                           
                             ticket.getCustomer().getId(),
@@ -295,6 +297,20 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                         });
                     }
                 } 
+                
+                SentenceExec taxlinesinsert = new PreparedSentence(s
+                        , "INSERT INTO TAXLINES (ID, RECEIPT, TAXID, BASE, AMMOUNT)  VALUES (?, ?, ?, ?, ?)"
+                        , SerializerWriteParams.INSTANCE);
+                for (final TicketTaxInfo tickettax: ticket.getTaxes()) {
+                    taxlinesinsert.exec(new DataParams() { public void writeValues() throws BasicException {
+                        setString(1, UUID.randomUUID().toString());
+                        setString(2, ticket.getId());
+                        setString(3, tickettax.getTaxInfo().getId());
+                        setDouble(4, tickettax.getSubTotal());
+                        setDouble(5, tickettax.getTax());
+                    }});
+                }
+                
                 return null;
             }
         };
@@ -309,7 +325,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 // update the inventory
                 Date d = new Date();
                 for (int i = 0; i < ticket.getLinesCount(); i++) {
-                    if (ticket.getLine(i).getProduct().getId() != null)  {
+                    if (ticket.getLine(i).getProductID() != null)  {
                         // Hay que actualizar el stock si el hay producto                              
                         getStockDiaryInsert().exec( new Object[] {
                             UUID.randomUUID().toString(),
@@ -318,7 +334,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                                 ? MovementReason.IN_REFUND.getKey()
                                 : MovementReason.OUT_SALE.getKey(),
                             location,
-                            ticket.getLine(i).getProduct().getId(),
+                            ticket.getLine(i).getProductID(),
                             new Double(ticket.getLine(i).getMultiply()),
                             new Double(ticket.getLine(i).getPrice())                                
                         });
@@ -591,23 +607,24 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             c.setSearchkey(dr.getString(3));
             c.setName(dr.getString(4));
             c.setCard(dr.getString(5));
-            c.setNotes(dr.getString(6));
-            c.setMaxdebt(dr.getDouble(7));
-            c.setVisible(dr.getBoolean(8).booleanValue());
-            c.setCurdate(dr.getTimestamp(9));
-            c.setCurdebt(dr.getDouble(10));
-            c.setFirstname(dr.getString(11));
-            c.setLastname(dr.getString(12));
-            c.setEmail(dr.getString(13));
-            c.setPhone(dr.getString(14));
-            c.setPhone2(dr.getString(15));
-            c.setFax(dr.getString(16));
-            c.setAddress(dr.getString(17));
-            c.setAddress2(dr.getString(18));
-            c.setPostal(dr.getString(19));
-            c.setCity(dr.getString(20));
-            c.setRegion(dr.getString(21));
-            c.setCountry(dr.getString(22));
+            c.setTaxCustomerID(dr.getString(6));
+            c.setNotes(dr.getString(7));
+            c.setMaxdebt(dr.getDouble(8));
+            c.setVisible(dr.getBoolean(9).booleanValue());
+            c.setCurdate(dr.getTimestamp(10));
+            c.setCurdebt(dr.getDouble(11));
+            c.setFirstname(dr.getString(12));
+            c.setLastname(dr.getString(13));
+            c.setEmail(dr.getString(14));
+            c.setPhone(dr.getString(15));
+            c.setPhone2(dr.getString(16));
+            c.setFax(dr.getString(17));
+            c.setAddress(dr.getString(18));
+            c.setAddress2(dr.getString(19));
+            c.setPostal(dr.getString(20));
+            c.setCity(dr.getString(21));
+            c.setRegion(dr.getString(22));
+            c.setCountry(dr.getString(23));
             
             return c;
         }                  

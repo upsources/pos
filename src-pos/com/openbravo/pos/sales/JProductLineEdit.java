@@ -56,11 +56,11 @@ public class JProductLineEdit extends javax.swing.JDialog {
         m_bunitsok = true;
         m_bpriceok = true;
 
-        m_jName.setEnabled(m_oLine.getProduct().getId() == null && app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
+        m_jName.setEnabled(m_oLine.getProductID() == null && app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         m_jPrice.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         m_jPriceTax.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         
-        m_jName.setText(m_oLine.getProduct().getName());
+        m_jName.setText(m_oLine.getProductID());
         m_jUnits.setValue(oLine.getMultiply());
         m_jPrice.setValue(oLine.getPrice()); 
         m_jPriceTax.setValue(oLine.getPriceTax());
@@ -149,7 +149,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
     
     private class RecalculateName implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent evt) {
-            m_oLine.getProduct().setName(m_jName.getText());
+            m_oLine.setProperty("product.name", m_jName.getText());
         }
     }   
     
@@ -333,7 +333,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
 
     private void m_jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonOKActionPerformed
 
-        m_oLineTicket.getProduct().setName(m_oLine.getProduct().getName());         
+        m_oLineTicket.setProperty("product.name", m_oLine.getProperty("product.name"));         
         m_oLineTicket.setMultiply(m_oLine.getMultiply());
         m_oLineTicket.setPrice(m_oLine.getPrice());
         

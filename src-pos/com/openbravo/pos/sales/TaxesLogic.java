@@ -18,9 +18,16 @@
 
 package com.openbravo.pos.sales;
 
-import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.ticket.TaxInfo;
+import com.openbravo.pos.ticket.TicketInfo;
+import com.openbravo.pos.ticket.TicketLineInfo;
+import com.openbravo.pos.ticket.TicketTaxInfo;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -28,13 +35,127 @@ import com.openbravo.pos.ticket.TaxInfo;
  */
 public class TaxesLogic {
     
-    java.util.List<TaxInfo> taxlist;
+    private List<TaxInfo> taxlist;
     
-    public TaxesLogic(java.util.List<TaxInfo> taxlist) {
+    private Map<String, TaxesLogicElement> taxtrees;
+    
+    public TaxesLogic(List<TaxInfo> taxlist) {
         this.taxlist = taxlist;
+      
+        taxtrees = new HashMap<String, TaxesLogicElement>();
+        
+        // Generate the taxtrees
+        HashMap<String, TaxesLogicElement> taxorphans = new HashMap<String, TaxesLogicElement>();
+        
+        for (TaxInfo t : taxlist) {
+                       
+            TaxesLogicElement te = new TaxesLogicElement(t);
+            
+            // get the parent
+            TaxesLogicElement teparent = taxtrees.get(t.getParentID());
+            if (teparent == null) {
+                // orfan node
+                teparent = taxorphans.get(t.getParentID());
+                if (teparent == null) {
+                    teparent = new TaxesLogicElement(null);
+                    taxorphans.put(t.getParentID(), teparent);
+                } 
+            } 
+            
+            teparent.getSons().add(te);
+
+            // Does it have orphans ?
+            teparent = taxorphans.get(t.getId());
+            if (teparent != null) {
+                // get all the sons
+                te.getSons().addAll(teparent.getSons());
+                // remove the orphans
+                taxorphans.remove(t.getId());
+            }          
+            
+            // Add it to the tree...
+            taxtrees.put(t.getId(), te);
+        }
     }
     
+    public void calculateTaxes(TicketInfo ticket) {
+  
+        List<TicketTaxInfo> tickettaxes = new ArrayList<TicketTaxInfo>(); 
+        
+        for (TicketLineInfo line: ticket.getLines()) {
+            tickettaxes = sumLineTaxes(tickettaxes, calculateTaxes(line));
+        }
+        
+        ticket.setTaxes(tickettaxes);
+    }
     
+    public List<TicketTaxInfo> calculateTaxes(TicketLineInfo line) {
+        
+        TaxesLogicElement taxesapplied = getTaxesApplied(line.getTaxInfo());
+        return calculateLineTaxes(line.getSubValue(), taxesapplied);
+    }
+    
+    private List<TicketTaxInfo> calculateLineTaxes(double base, TaxesLogicElement taxesapplied) {
+ 
+        List<TicketTaxInfo> linetaxes = new ArrayList<TicketTaxInfo>();
+        
+        if (taxesapplied.getSons().isEmpty()) {           
+            TicketTaxInfo tickettax = new TicketTaxInfo(taxesapplied.getTax());
+            tickettax.add(base);
+            linetaxes.add(tickettax);
+        } else {
+            double acum = base;
+            
+            for (TaxesLogicElement te : taxesapplied.getSons()) {
+                
+                List<TicketTaxInfo> sublinetaxes = calculateLineTaxes(
+                        te.getTax().isCascade() ? acum : base, 
+                        te);
+                linetaxes.addAll(sublinetaxes);
+                acum += sumTaxes(sublinetaxes);
+            }
+        }
+        
+        return linetaxes;       
+    }
+    
+    private TaxesLogicElement getTaxesApplied(TaxInfo t) {
+        return taxtrees.get(t.getId());
+    }
+        
+    private double sumTaxes(List<TicketTaxInfo> linetaxes) {
+        
+        double taxtotal = 0.0;
+        
+        for (TicketTaxInfo tickettax : linetaxes) {
+            taxtotal += tickettax.getTax();
+            
+        }
+        return  taxtotal;
+    }
+    
+    private List<TicketTaxInfo> sumLineTaxes(List<TicketTaxInfo> list1, List<TicketTaxInfo> list2) {
+     
+        for (TicketTaxInfo tickettax : list2) {
+            TicketTaxInfo i = searchTicketTax(list1, tickettax.getTaxInfo().getId());
+            if (i == null) {
+                list1.add(tickettax);
+            } else {
+                i.add(tickettax.getSubTotal());
+            }
+        }
+        return list1;
+    }
+    
+    private TicketTaxInfo searchTicketTax(List<TicketTaxInfo> l, String id) {
+        
+        for (TicketTaxInfo tickettax : l) {
+            if (id.equals(tickettax.getTaxInfo().getId())) {
+                return tickettax;
+            }
+        }    
+        return null;
+    }
     
     public double getTaxRate(String tcid) {
         return getTaxRate(tcid, null);
@@ -44,7 +165,7 @@ public class TaxesLogic {
         return getTaxRate(tc, null);
     }
     
-    public double getTaxRate(TaxCategoryInfo tc, CustomerInfo customer) {
+    public double getTaxRate(TaxCategoryInfo tc, CustomerInfoExt customer) {
         
         if (tc == null) {
             return 0.0;
@@ -53,7 +174,7 @@ public class TaxesLogic {
         }
     }
     
-    public double getTaxRate(String tcid, CustomerInfo customer) {
+    public double getTaxRate(String tcid, CustomerInfoExt customer) {
         
         if (tcid == null) {
             return 0.0;
@@ -75,20 +196,20 @@ public class TaxesLogic {
         return getTaxInfo(tc.getID(), null);
     }
     
-    public TaxInfo getTaxInfo(TaxCategoryInfo tc, CustomerInfo customer) {  
+    public TaxInfo getTaxInfo(TaxCategoryInfo tc, CustomerInfoExt customer) {  
         return getTaxInfo(tc.getID(), customer);
     }    
     
-    public TaxInfo getTaxInfo(String tcid, CustomerInfo customer) {
+    public TaxInfo getTaxInfo(String tcid, CustomerInfoExt customer) {
         
         
         TaxInfo defaulttax = null;
         
         for (TaxInfo tax : taxlist) {
             if (tax.getParentID() == null && tax.getTaxCategoryID().equals(tcid)) {
-                if (customer == null && tax.getTaxCustCategoryID() == null) {
+                if ((customer == null || customer.getTaxCustCategoryID() == null) && tax.getTaxCustCategoryID() == null) {
                     return tax;
-                } else if (customer != null && customer.getTaxid().endsWith(tax.getTaxCustCategoryID())) {
+                } else if (customer != null && customer.getTaxCustCategoryID() != null && customer.getTaxCustCategoryID().equals(tax.getTaxCustCategoryID())) {
                     return tax;
                 }
                 

@@ -83,10 +83,10 @@
 
         #foreach ($ticketline in $ticket.getLines())
         <line>
-             #if ($ticketline.getProduct().isCom()) 
-                 <text align ="left" length="17">*${ticketline.getProduct().printName()}</text>
+             #if ($ticketline.isProductCom()) 
+                 <text align ="left" length="17">*${ticketline.printName()}</text>
              #else
-                 <text align ="left" length="17">${ticketline.getProduct().printName()}</text>
+                 <text align ="left" length="17">${ticketline.printName()}</text>
              #end
             <text align ="right" length="10">${ticketline.printPrice()}</text>
             <text align ="right" length="5">x${ticketline.printMultiply()}</text>
@@ -107,8 +107,9 @@
 	#foreach ($taxinfo in $taxes)  
 	#set( $taxline = $ticket.getTaxLine($taxinfo))
 	<line>  
-	<text align ="left" length="16">${taxline.getTaxInfo()}</text>  
-	<text align ="right" length="20">${taxline.printSubTotal()}</text> 
+	<text align ="left" length="18">${taxline.getTaxInfo()}</text>  
+	<text align ="right" length="12">${taxline.printSubTotal()}</text> 
+	<text align ="right" length="12">${taxline.printTax()}</text> 
 	</line>  
 	#end 
 

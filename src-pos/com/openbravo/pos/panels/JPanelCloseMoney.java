@@ -77,7 +77,7 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         m_jTicketTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);         
         
         m_jsalestable.setDefaultRenderer(Object.class, new TableRendererBasic(
-                new Formats[] {Formats.STRING, Formats.CURRENCY, Formats.CURRENCY}));
+                new Formats[] {Formats.STRING, Formats.CURRENCY, Formats.CURRENCY, Formats.CURRENCY}));
         m_jsalestable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         m_jScrollSales.getVerticalScrollBar().setPreferredSize(new Dimension(25,25));       
         m_jsalestable.getTableHeader().setReorderingAllowed(false);         
@@ -118,6 +118,7 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
 
         m_jSales.setText(null);
         m_jSalesSubtotal.setText(null);
+        m_jSalesTaxes.setText(null);
         m_jSalesTotal.setText(null);
         
         m_jTicketTable.setModel(new DefaultTableModel());
@@ -139,14 +140,15 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
             m_jCash.setText(m_PaymentsToClose.printPaymentsTotal());
             
             m_jSales.setText(m_PaymentsToClose.printSales());
-            m_jSalesSubtotal.setText(m_PaymentsToClose.printSalesSubtotal());
+            m_jSalesSubtotal.setText(m_PaymentsToClose.printSalesBase());
+            m_jSalesTaxes.setText(m_PaymentsToClose.printSalesTaxes());
             m_jSalesTotal.setText(m_PaymentsToClose.printSalesTotal());
         }          
         
         m_jTicketTable.setModel(m_PaymentsToClose.getPaymentsModel());
                 
         TableColumnModel jColumns = m_jTicketTable.getColumnModel();
-        jColumns.getColumn(0).setPreferredWidth(150);
+        jColumns.getColumn(0).setPreferredWidth(350);
         jColumns.getColumn(0).setResizable(false);
         jColumns.getColumn(1).setPreferredWidth(100);
         jColumns.getColumn(1).setResizable(false);
@@ -162,8 +164,10 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         jColumns.getColumn(0).setResizable(false);
         jColumns.getColumn(1).setPreferredWidth(100);
         jColumns.getColumn(1).setResizable(false);
-        jColumns.getColumn(1).setPreferredWidth(100);
-        jColumns.getColumn(1).setResizable(false);
+        jColumns.getColumn(2).setPreferredWidth(100);
+        jColumns.getColumn(2).setResizable(false);
+        jColumns.getColumn(3).setPreferredWidth(100);
+        jColumns.getColumn(3).setResizable(false);
     }   
     
     private void printPayments() {
@@ -207,77 +211,75 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        m_jCount = new javax.swing.JTextField();
-        m_jMinDate = new javax.swing.JTextField();
-        m_jMaxDate = new javax.swing.JTextField();
-        m_jCash = new javax.swing.JTextField();
-        m_jCloseCash = new javax.swing.JButton();
-        m_jScrollTableTicket = new javax.swing.JScrollPane();
-        m_jTicketTable = new javax.swing.JTable();
-        m_jScrollSales = new javax.swing.JScrollPane();
-        m_jsalestable = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
-        m_jSales = new javax.swing.JTextField();
-        m_jSalesTotal = new javax.swing.JTextField();
-        m_jSalesSubtotal = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         m_jSequence = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        m_jMinDate = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        m_jMaxDate = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        m_jScrollTableTicket = new javax.swing.JScrollPane();
+        m_jTicketTable = new javax.swing.JTable();
+        m_jCount = new javax.swing.JTextField();
+        m_jCash = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        m_jSalesTotal = new javax.swing.JTextField();
+        m_jScrollSales = new javax.swing.JScrollPane();
+        m_jsalestable = new javax.swing.JTable();
+        m_jSalesTaxes = new javax.swing.JTextField();
+        m_jSalesSubtotal = new javax.swing.JTextField();
+        m_jSales = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        m_jCloseCash = new javax.swing.JButton();
 
-        setLayout(null);
+        setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(AppLocal.getIntString("Label.Tickets")); // NOI18N
-        add(jLabel1);
-        jLabel1.setBounds(430, 170, 90, 15);
+        jPanel1.setLayout(null);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.datestitle"))); // NOI18N
+        jPanel4.setLayout(null);
+
+        jLabel11.setText(AppLocal.getIntString("label.sequence")); // NOI18N
+        jPanel4.add(jLabel11);
+        jLabel11.setBounds(20, 20, 140, 15);
+
+        m_jSequence.setEditable(false);
+        m_jSequence.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel4.add(m_jSequence);
+        m_jSequence.setBounds(160, 20, 160, 19);
 
         jLabel2.setText(AppLocal.getIntString("Label.StartDate")); // NOI18N
-        add(jLabel2);
-        jLabel2.setBounds(10, 80, 140, 15);
-
-        jLabel3.setText(AppLocal.getIntString("Label.EndDate")); // NOI18N
-        add(jLabel3);
-        jLabel3.setBounds(10, 110, 140, 15);
-
-        jLabel4.setText(AppLocal.getIntString("Label.Cash")); // NOI18N
-        add(jLabel4);
-        jLabel4.setBounds(430, 200, 90, 15);
-
-        m_jCount.setEditable(false);
-        m_jCount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jCount);
-        m_jCount.setBounds(520, 170, 100, 19);
+        jPanel4.add(jLabel2);
+        jLabel2.setBounds(20, 50, 140, 15);
 
         m_jMinDate.setEditable(false);
         m_jMinDate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jMinDate);
-        m_jMinDate.setBounds(150, 80, 160, 19);
+        jPanel4.add(m_jMinDate);
+        m_jMinDate.setBounds(160, 50, 160, 19);
+
+        jLabel3.setText(AppLocal.getIntString("Label.EndDate")); // NOI18N
+        jPanel4.add(jLabel3);
+        jLabel3.setBounds(20, 80, 140, 15);
 
         m_jMaxDate.setEditable(false);
         m_jMaxDate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jMaxDate);
-        m_jMaxDate.setBounds(150, 110, 160, 19);
+        jPanel4.add(m_jMaxDate);
+        m_jMaxDate.setBounds(160, 80, 160, 19);
 
-        m_jCash.setEditable(false);
-        m_jCash.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jCash);
-        m_jCash.setBounds(520, 200, 100, 19);
+        jPanel1.add(jPanel4);
+        jPanel4.setBounds(10, 10, 750, 120);
 
-        m_jCloseCash.setText(AppLocal.getIntString("Button.CloseCash")); // NOI18N
-        m_jCloseCash.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jCloseCashActionPerformed(evt);
-            }
-        });
-        add(m_jCloseCash);
-        m_jCloseCash.setBounds(10, 510, 110, 30);
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.paymentstitle"))); // NOI18N
+        jPanel5.setLayout(null);
 
         m_jTicketTable.setFocusable(false);
         m_jTicketTable.setIntercellSpacing(new java.awt.Dimension(0, 1));
@@ -285,8 +287,37 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         m_jTicketTable.setShowVerticalLines(false);
         m_jScrollTableTicket.setViewportView(m_jTicketTable);
 
-        add(m_jScrollTableTicket);
-        m_jScrollTableTicket.setBounds(10, 170, 400, 140);
+        jPanel5.add(m_jScrollTableTicket);
+        m_jScrollTableTicket.setBounds(20, 30, 500, 140);
+
+        m_jCount.setEditable(false);
+        m_jCount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel5.add(m_jCount);
+        m_jCount.setBounds(630, 30, 100, 19);
+
+        m_jCash.setEditable(false);
+        m_jCash.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel5.add(m_jCash);
+        m_jCash.setBounds(630, 60, 100, 19);
+
+        jLabel4.setText(AppLocal.getIntString("Label.Cash")); // NOI18N
+        jPanel5.add(jLabel4);
+        jLabel4.setBounds(540, 60, 90, 15);
+
+        jLabel1.setText(AppLocal.getIntString("Label.Tickets")); // NOI18N
+        jPanel5.add(jLabel1);
+        jLabel1.setBounds(540, 30, 90, 15);
+
+        jPanel1.add(jPanel5);
+        jPanel5.setBounds(10, 140, 750, 190);
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.salestitle"))); // NOI18N
+        jPanel6.setLayout(null);
+
+        m_jSalesTotal.setEditable(false);
+        m_jSalesTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel6.add(m_jSalesTotal);
+        m_jSalesTotal.setBounds(630, 120, 100, 19);
 
         m_jsalestable.setFocusable(false);
         m_jsalestable.setIntercellSpacing(new java.awt.Dimension(0, 1));
@@ -294,59 +325,58 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         m_jsalestable.setShowVerticalLines(false);
         m_jScrollSales.setViewportView(m_jsalestable);
 
-        add(m_jScrollSales);
-        m_jScrollSales.setBounds(10, 350, 400, 140);
+        jPanel6.add(m_jScrollSales);
+        m_jScrollSales.setBounds(20, 30, 500, 140);
 
-        jLabel5.setText(AppLocal.getIntString("label.sales")); // NOI18N
-        add(jLabel5);
-        jLabel5.setBounds(430, 360, 90, 15);
-
-        m_jSales.setEditable(false);
-        m_jSales.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jSales);
-        m_jSales.setBounds(520, 360, 100, 19);
-
-        m_jSalesTotal.setEditable(false);
-        m_jSalesTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jSalesTotal);
-        m_jSalesTotal.setBounds(520, 420, 100, 19);
+        m_jSalesTaxes.setEditable(false);
+        m_jSalesTaxes.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel6.add(m_jSalesTaxes);
+        m_jSalesTaxes.setBounds(630, 90, 100, 19);
 
         m_jSalesSubtotal.setEditable(false);
         m_jSalesSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jSalesSubtotal);
-        m_jSalesSubtotal.setBounds(520, 390, 100, 19);
+        jPanel6.add(m_jSalesSubtotal);
+        m_jSalesSubtotal.setBounds(630, 60, 100, 19);
+
+        m_jSales.setEditable(false);
+        m_jSales.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jPanel6.add(m_jSales);
+        m_jSales.setBounds(630, 30, 100, 19);
+
+        jLabel5.setText(AppLocal.getIntString("label.sales")); // NOI18N
+        jPanel6.add(jLabel5);
+        jLabel5.setBounds(540, 30, 90, 15);
 
         jLabel6.setText(AppLocal.getIntString("label.subtotalcash")); // NOI18N
-        add(jLabel6);
-        jLabel6.setBounds(430, 390, 90, 15);
+        jPanel6.add(jLabel6);
+        jLabel6.setBounds(540, 60, 90, 15);
+
+        jLabel12.setText(AppLocal.getIntString("label.taxescash")); // NOI18N
+        jPanel6.add(jLabel12);
+        jLabel12.setBounds(540, 90, 90, 15);
 
         jLabel7.setText(AppLocal.getIntString("label.totalcash")); // NOI18N
-        add(jLabel7);
-        jLabel7.setBounds(430, 420, 90, 15);
+        jPanel6.add(jLabel7);
+        jLabel7.setBounds(540, 120, 90, 15);
 
-        jLabel8.setText(AppLocal.getIntString("label.paymentstitle")); // NOI18N
-        jLabel8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
-        add(jLabel8);
-        jLabel8.setBounds(10, 140, 660, 16);
+        jPanel1.add(jPanel6);
+        jPanel6.setBounds(10, 340, 750, 190);
 
-        jLabel9.setText(AppLocal.getIntString("label.salestitle")); // NOI18N
-        jLabel9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
-        add(jLabel9);
-        jLabel9.setBounds(10, 320, 660, 16);
+        add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jLabel10.setText(AppLocal.getIntString("label.datestitle")); // NOI18N
-        jLabel10.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
-        add(jLabel10);
-        jLabel10.setBounds(10, 20, 660, 16);
+        jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jLabel11.setText(AppLocal.getIntString("label.sequence")); // NOI18N
-        add(jLabel11);
-        jLabel11.setBounds(10, 50, 140, 15);
+        m_jCloseCash.setText(AppLocal.getIntString("Button.CloseCash")); // NOI18N
+        m_jCloseCash.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jCloseCashActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jCloseCash);
 
-        m_jSequence.setEditable(false);
-        m_jSequence.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jSequence);
-        m_jSequence.setBounds(150, 50, 160, 19);
+        jPanel3.add(jPanel2, java.awt.BorderLayout.LINE_END);
+
+        add(jPanel3, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jCloseCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jCloseCashActionPerformed
@@ -401,16 +431,20 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JTextField m_jCash;
     private javax.swing.JButton m_jCloseCash;
     private javax.swing.JTextField m_jCount;
@@ -418,6 +452,7 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
     private javax.swing.JTextField m_jMinDate;
     private javax.swing.JTextField m_jSales;
     private javax.swing.JTextField m_jSalesSubtotal;
+    private javax.swing.JTextField m_jSalesTaxes;
     private javax.swing.JTextField m_jSalesTotal;
     private javax.swing.JScrollPane m_jScrollSales;
     private javax.swing.JScrollPane m_jScrollTableTicket;

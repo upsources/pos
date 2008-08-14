@@ -20,7 +20,6 @@ package com.openbravo.pos.sales;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
-import com.openbravo.format.Formats;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.forms.AppLocal;
@@ -37,13 +36,14 @@ public class SimpleReceipt extends javax.swing.JPanel {
     
     protected DataLogicCustomers dlCustomers;
     protected DataLogicSales dlSales;
+    protected TaxesLogic taxeslogic;
         
     private JTicketLines ticketlines;
     private TicketInfo ticket;
     private Object ticketext;
     
     /** Creates new form SimpleReceipt */
-    public SimpleReceipt(String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {        
+    public SimpleReceipt(String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers, TaxesLogic taxeslogic) {        
         
         initComponents();
         
@@ -51,6 +51,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
         ticketlines = new JTicketLines(ticketline);
         this.dlCustomers = dlCustomers;
         this.dlSales = dlSales;
+        this.taxeslogic = taxeslogic;
         
         jPanel2.add(ticketlines, BorderLayout.CENTER);
     }
@@ -80,16 +81,23 @@ public class SimpleReceipt extends javax.swing.JPanel {
                
     }
     
+    private void refreshTicketTaxes() {
+        
+        for (TicketLineInfo line : ticket.getLines()) {
+            line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), ticket.getCustomer()));
+        }
+    }
+    
     private void printTotals() {
         
-        if (ticket.getLinesCount() > 0) {
-            m_jSubtotalEuros.setText(Formats.CURRENCY.formatValue(new Double(ticket.getSubTotal())));
-            m_jTaxesEuros.setText(Formats.CURRENCY.formatValue(new Double(ticket.getTax())));
-            m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(ticket.getTotal()))); 
-        } else {
+        if (ticket.getLinesCount() == 0) {
             m_jSubtotalEuros.setText(null);
             m_jTaxesEuros.setText(null);
-            m_jTotalEuros.setText(null); 
+            m_jTotalEuros.setText(null);
+        } else {
+            m_jSubtotalEuros.setText(ticket.printSubTotal());
+            m_jTaxesEuros.setText(ticket.printTax());
+            m_jTotalEuros.setText(ticket.printTotal());
         }
     }
     
@@ -139,7 +147,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
     public void addSelectedLine(TicketLineInfo line) {
         int i = ticketlines.getSelectedIndex();
         if (i >= 0 
-                && ticket.getLine(i).getProduct().getId() != null && line.getProduct().getId() != null && ticket.getLine(i).getProduct().getId().equals(line.getProduct().getId())
+                && ticket.getLine(i).getProductID() != null && line.getProductID() != null && ticket.getLine(i).getProductID().equals(line.getProductID())
                 && ticket.getLine(i).getTaxInfo().getId().equals(line.getTaxInfo().getId())
                 && ticket.getLine(i).getPrice() == line.getPrice()) {    
             // inc the line
@@ -304,6 +312,11 @@ public class SimpleReceipt extends javax.swing.JPanel {
         
         // The ticket name
         m_jTicketId.setText(ticket.getName(ticketext));
+        
+        refreshTicketTaxes();     
+        
+        // refresh the receipt....
+        setTicket(ticket, ticketext);
         
     }//GEN-LAST:event_btnCustomerActionPerformed
     

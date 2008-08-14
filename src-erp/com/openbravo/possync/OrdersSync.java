@@ -133,10 +133,10 @@ public class OrdersSync implements ProcessAction {
 
                 orderLine[j] = new OrderLine();
                 orderLine[j].setOrderLineId(line.getTicketLine()); // o simplemente "j"
-                if (line.getProduct().getId() == null) {
+                if (line.getProductID() == null) {
                     orderLine[j].setProductId(0);
                 } else {
-                    orderLine[j].setProductId(parseInt(line.getProduct().getId())); // capturar error
+                    orderLine[j].setProductId(parseInt(line.getProductID())); // capturar error
                 }
                 orderLine[j].setUnits(line.getMultiply());
                 orderLine[j].setPrice(line.getPrice());

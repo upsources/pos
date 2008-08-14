@@ -171,7 +171,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         } catch (BasicException e) {
             m_jEdit.setEnabled(false);
         }
-        m_jRefund.setEnabled(m_ticket != null && m_ticket.getTotal() > 0.0);
+        m_jRefund.setEnabled(m_ticket != null && m_ticket.getSubTotal() > 0.0);
         m_jPrint.setEnabled(m_ticket != null);
         
         // Este deviceticket solo tiene una impresora, la de pantalla

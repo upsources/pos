@@ -42,38 +42,42 @@ public class ReceiptSplit extends javax.swing.JDialog {
     SimpleReceipt receipttwo;
     
     /** Creates new form ReceiptSplit */
-    protected ReceiptSplit(java.awt.Frame parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
+    protected ReceiptSplit(java.awt.Frame parent) {
         super(parent, true);
-        init(ticketline, dlSales, dlCustomers);
     }
     /** Creates new form ReceiptSplit */
-    protected ReceiptSplit(java.awt.Dialog parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
+    protected ReceiptSplit(java.awt.Dialog parent) {
         super(parent, true);
-        init(ticketline, dlSales, dlCustomers);
     } 
     
-    private void init(String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
+    private void init(String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers, TaxesLogic taxeslogic) {
         
         initComponents();        
         getRootPane().setDefaultButton(m_jButtonOK); 
         
-        receiptone = new SimpleReceipt(ticketline, dlSales, dlCustomers);
+        receiptone = new SimpleReceipt(ticketline, dlSales, dlCustomers, taxeslogic);
         receiptone.setCustomerEnabled(false);
         jPanel5.add(receiptone, BorderLayout.CENTER);
         
-        receipttwo = new SimpleReceipt(ticketline, dlSales, dlCustomers);
+        receipttwo = new SimpleReceipt(ticketline, dlSales, dlCustomers, taxeslogic);
         jPanel3.add(receipttwo, BorderLayout.CENTER);  
     }
     
-    public static ReceiptSplit getDialog(Component parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
+    public static ReceiptSplit getDialog(Component parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers, TaxesLogic taxeslogic) {
          
         Window window = getWindow(parent);
         
+        ReceiptSplit myreceiptsplit;
+        
         if (window instanceof Frame) { 
-            return new ReceiptSplit((Frame) window, ticketline, dlSales, dlCustomers);
+            myreceiptsplit = new ReceiptSplit((Frame) window);
         } else {
-            return new ReceiptSplit((Dialog) window, ticketline, dlSales, dlCustomers);
+            myreceiptsplit = new ReceiptSplit((Dialog) window);
         }
+        
+        myreceiptsplit.init(ticketline, dlSales, dlCustomers, taxeslogic);         
+        
+        return myreceiptsplit;
     } 
     
     protected static Window getWindow(Component parent) {

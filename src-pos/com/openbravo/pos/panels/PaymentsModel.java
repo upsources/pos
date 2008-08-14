@@ -44,11 +44,11 @@ public class PaymentsModel {
     private final static String[] PAYMENTHEADERS = {"Label.Payment", "label.totalcash"};
     
     private Integer m_iSales;
-    private Double m_dSalesSubtotal;
-    private Double m_dSalesTotal;
+    private Double m_dSalesBase;
+    private Double m_dSalesTaxes;
     private java.util.List<SalesLine> m_lsales;
     
-    private final static String[] SALEHEADERS = {"label.taxcash", "label.subtotalcash", "label.totalcash"};
+    private final static String[] SALEHEADERS = {"label.taxcash", "label.subtotalcash", "label.taxescash", "label.totalcash"};
 
     private PaymentsModel() {
     }    
@@ -62,8 +62,8 @@ public class PaymentsModel {
         p.m_lpayments = new ArrayList<PaymentsLine>();
         
         p.m_iSales = new Integer(0);
-        p.m_dSalesSubtotal = new Double(0.0);
-        p.m_dSalesTotal = new Double(0.0);
+        p.m_dSalesBase = new Double(0.0);
+        p.m_dSalesTaxes = new Double(0.0);
         p.m_lsales = new ArrayList<SalesLine>();
         
         return p;
@@ -114,31 +114,32 @@ public class PaymentsModel {
         
         // Ventas
         Object[] recsales = (Object []) new StaticSentence(app.getSession(),
-            "SELECT COUNT(DISTINCT TICKETS.ID), " +
-            "SUM(UNITS * PRICE), " +
-            "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (1 + TAXES.RATE)) " +
-            "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
-            "AND RECEIPTS.MONEY = ?"
+            "SELECT COUNT(DISTINCT TAXLINES.RECEIPT), SUM(TAXLINES.BASE), SUM(TAXLINES.AMMOUNT) " +
+            "FROM RECEIPTS, TAXLINES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND RECEIPTS.MONEY = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE, Datas.DOUBLE}))
             .find(app.getActiveCashIndex());            
         if (recsales == null) {
             p.m_iSales = new Integer(0);
-            p.m_dSalesSubtotal = new Double(0.0);
-            p.m_dSalesTotal = new Double(0.0);
+            p.m_dSalesBase = new Double(0.0);
+            p.m_dSalesTaxes = new Double(0.0);
         } else {
             p.m_iSales = (Integer) recsales[0];
-            p.m_dSalesSubtotal = (Double) recsales[1];
-            p.m_dSalesTotal = (Double) recsales[2];
+            p.m_dSalesBase = (Double) recsales[1];
+            p.m_dSalesTaxes = (Double) recsales[2];
         } 
                 
-        List<SalesLine> asales = new StaticSentence(app.getSession()
-                ,"SELECT TAXES.NAME, " +
-                "SUM(UNITS * PRICE), " +
-                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (1 + TAXES.RATE)) " +
-                "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
-                "AND RECEIPTS.MONEY = ? " + 
-                "GROUP BY TAXES.ID, TAXES.NAME"
+        List<SalesLine> asales = new StaticSentence(app.getSession(),
+                "SELECT TAXCATEGORIES.NAME, SUM(TAXLINES.BASE), SUM(TAXLINES.AMMOUNT) " +
+                "FROM RECEIPTS, TAXLINES, TAXES, TAXCATEGORIES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND TAXLINES.TAXID = TAXES.ID AND TAXES.CATEGORY = TAXCATEGORIES.ID " +
+                "AND RECEIPTS.MONEY = ?" +
+                "GROUP BY TAXCATEGORIES.NAME"
+//                ,"SELECT TAXES.NAME, " +
+//                "SUM(UNITS * PRICE), " +
+//                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (1 + TAXES.RATE)) " +
+//                "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
+//                "AND RECEIPTS.MONEY = ? " + 
+//                "GROUP BY TAXES.ID, TAXES.NAME"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(PaymentsModel.SalesLine.class))
                 .list(app.getActiveCashIndex());
@@ -204,11 +205,14 @@ public class PaymentsModel {
     public String printSales() {
         return Formats.INT.formatValue(m_iSales);
     }
-    public String printSalesSubtotal() {
-        return Formats.CURRENCY.formatValue(m_dSalesSubtotal);
+    public String printSalesBase() {
+        return Formats.CURRENCY.formatValue(m_dSalesBase);
+    }     
+    public String printSalesTaxes() {
+        return Formats.CURRENCY.formatValue(m_dSalesTaxes);
     }     
     public String printSalesTotal() {
-        return Formats.CURRENCY.formatValue(m_dSalesTotal);
+        return Formats.CURRENCY.formatValue(m_dSalesBase + m_dSalesTaxes);
     }     
     public List<SalesLine> getSaleLines() {
         return m_lsales;
@@ -238,35 +242,38 @@ public class PaymentsModel {
     
     public static class SalesLine implements SerializableRead {
         
-        private String m_SalesTaxes;
-        private Double m_SalesSubtotal;
-        private Double m_SalesTotal;
+        private String m_SalesTaxName;
+        private Double m_SalesBase;
+        private Double m_SalesTaxes;
         
         public void readValues(DataRead dr) throws BasicException {
-            m_SalesTaxes = dr.getString(1);
-            m_SalesSubtotal = dr.getDouble(2);
-            m_SalesTotal = dr.getDouble(3);
+            m_SalesTaxName = dr.getString(1);
+            m_SalesBase = dr.getDouble(2);
+            m_SalesTaxes = dr.getDouble(3);
         }
-        public String printTax() {
-            return m_SalesTaxes;
+        public String printTaxName() {
+            return m_SalesTaxName;
         }
-        public String printSubtotal() {
-            return Formats.CURRENCY.formatValue(m_SalesSubtotal);
+        public String printBase() {
+            return Formats.CURRENCY.formatValue(m_SalesBase);
         }
         public String printTotal() {
-            return Formats.CURRENCY.formatValue(m_SalesTotal);
+            return Formats.CURRENCY.formatValue(m_SalesBase + m_SalesTaxes);
         }        
-        public String printTaxtotal() {
-            return Formats.CURRENCY.formatValue(m_SalesTotal - m_SalesSubtotal);
+        public String printTaxes() {
+            return Formats.CURRENCY.formatValue(m_SalesTaxes);
         }
-        public String getTax() {
+        public String getTaxName() {
+            return m_SalesTaxName;
+        }
+        public Double getBase() {
+            return m_SalesBase;
+        }
+        public Double getTaxes() {
             return m_SalesTaxes;
-        }
-        public Double getSubtotal() {
-            return m_SalesSubtotal;
-        }
+        }        
         public Double getTotal() {
-            return m_SalesTotal;
+            return m_SalesBase + m_SalesTaxes;
         }
     }
 
@@ -284,9 +291,10 @@ public class PaymentsModel {
             public Object getValueAt(int row, int column) {
                 SalesLine l = m_lsales.get(row);
                 switch (column) {
-                case 0: return l.getTax();
-                case 1: return l.getSubtotal();
-                case 2: return l.getTotal();
+                case 0: return l.getTaxName();
+                case 1: return l.getBase();
+                case 2: return l.getTaxes();
+                case 3: return l.getTotal();
                 default: return null;
                 }
             }  

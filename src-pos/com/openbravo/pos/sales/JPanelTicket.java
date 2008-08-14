@@ -33,9 +33,8 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.panels.JProductFinder;
 import com.openbravo.pos.scale.ScaleException;
 import com.openbravo.pos.payment.JPaymentSelect;
-import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.gui.HashMapKeyed;
+import com.openbravo.data.gui.ListKeyed;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.customers.DataLogicCustomers;
@@ -54,7 +53,6 @@ import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
-import com.openbravo.pos.ticket.TicketProductInfo;
 import com.openbravo.pos.util.JRPrinterAWT300;
 import com.openbravo.pos.util.ReportUtils;
 import java.io.InputStream;
@@ -62,7 +60,6 @@ import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.print.PrintService;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -109,11 +106,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private JTicketsBag m_ticketsbag;
     
     private SentenceList senttax;
-    private Map<Object, TaxInfo> taxmap;
+    private ListKeyed taxcollection;
     // private ComboBoxValModel m_TaxModel;
     
     private SentenceList senttaxcategories;
-    private Map<Object, TaxCategoryInfo> taxcategoriesmap;
+    private ListKeyed taxcategoriescollection;
     private ComboBoxValModel taxcategoriesmodel;
     
     private TaxesLogic taxeslogic;
@@ -200,9 +197,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         // Inicializamos el combo de los impuestos.
         java.util.List<TaxInfo> taxlist = senttax.list();
-        taxmap = new HashMapKeyed<TaxInfo>(taxlist);
+        taxcollection = new ListKeyed<TaxInfo>(taxlist);
         java.util.List<TaxCategoryInfo> taxcategorieslist = senttaxcategories.list();
-        taxcategoriesmap = new HashMapKeyed<TaxCategoryInfo>(taxcategorieslist);
+        taxcategoriescollection = new ListKeyed<TaxCategoryInfo>(taxcategorieslist);
         
         taxcategoriesmodel = new ComboBoxValModel(taxcategorieslist);
         m_jTax.setModel(taxcategoriesmodel);
@@ -247,7 +244,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         m_oTicket = oTicket;
         m_oTicketExt = oTicketExt;
-        
+                
         CardLayout cl = (CardLayout)(getLayout());
         
         if (m_oTicket == null) {        
@@ -263,8 +260,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             // Muestro el panel de nulos.
             cl.show(this, "null");  
 
-        } else {         
+        } else {    
             
+            // Refresh ticket taxes
+            for (TicketLineInfo line : m_oTicket.getLines()) {
+                line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getCustomer()));
+            }  
+        
             // The ticket name
             m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
 
@@ -301,9 +303,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_jTaxesEuros.setText(null);
             m_jTotalEuros.setText(null);
         } else {
-            m_jSubtotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_oTicket.getSubTotal())));
-            m_jTaxesEuros.setText(Formats.CURRENCY.formatValue(new Double(m_oTicket.getTax())));
-            m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_oTicket.getTotal())));
+            m_jSubtotalEuros.setText(m_oTicket.printSubTotal());
+            m_jTaxesEuros.setText(m_oTicket.printTax());
+            m_jTotalEuros.setText(m_oTicket.printTotal());
         }
     }
     
@@ -334,17 +336,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (executeEvent("ticket.addline", new ScriptArg("line", oLine)) == null) {
         
-            if (oLine.getProduct().isCom()) {
+            if (oLine.isProductCom()) {
                 // Comentario entonces donde se pueda
                 int i = m_ticketlines.getSelectedIndex();
 
                 // me salto el primer producto normal...
-                if (i >= 0 && !m_oTicket.getLine(i).getProduct().isCom()) {
+                if (i >= 0 && !m_oTicket.getLine(i).isProductCom()) {
                     i++;
                 }
 
                 // me salto todos los productos auxiliares...
-                while (i >= 0 && i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).getProduct().isCom()) {
+                while (i >= 0 && i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).isProductCom()) {
                     i++;
                 }
 
@@ -373,7 +375,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (executeEvent("ticket.removeline", new ScriptArg("index", i)) == null) {
         
-            if (m_oTicket.getLine(i).getProduct().isCom()) {
+            if (m_oTicket.getLine(i).isProductCom()) {
                 // Es un producto auxiliar, lo borro y santas pascuas.
                 m_oTicket.removeLine(i);
                 m_ticketlines.removeTicketLine(i);   
@@ -382,7 +384,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_oTicket.removeLine(i);
                 m_ticketlines.removeTicketLine(i); 
                 // Y todos lo auxiliaries que hubiera debajo.
-                while(i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).getProduct().isCom()) {
+                while(i < m_oTicket.getLinesCount() && m_oTicket.getLine(i).isProductCom()) {
                     m_oTicket.removeLine(i);
                     m_ticketlines.removeTicketLine(i); 
                 }
@@ -806,14 +808,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private boolean closeTicket(TicketInfo ticket, Object ticketext) {
         
-        if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {       
+        boolean resultok = false;
+        
+        if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {  
+            
+            // reset the payment info
+            taxeslogic.calculateTaxes(ticket);
+            ticket.resetPayments();
+                
             if (executeEventTotal("ticket.total", ticket, ticketext) == null) {
 
                 // Muestro el total
                 printTicket("Printer.TicketTotal", ticket, ticketext);
 
-                // reset the payment info
-                ticket.resetPayments();
 
                 // Select the Payments information
                 JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
@@ -823,7 +830,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
                 if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
 
-                    // assign the payments selected.
+                    // assign the payments selected and calculate taxes.                    
                     ticket.setPayments(paymentdialog.getSelectedPayments());
 
                     // Asigno los valores definitivos del ticket...
@@ -844,16 +851,20 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         printTicket(paymentdialog.isPrintSelected()
                                 ? "Printer.Ticket"
                                 : "Printer.Ticket2", ticket, ticketext);
-                        return true;
+                        resultok = true;
                     }
                 }
             }
+            
+            // reset the payment info
+            m_oTicket.resetTaxes();
+            m_oTicket.resetPayments();
         }
         
         // cancelled the ticket.total script
         // or canceled the payment dialog
         // or canceled the ticket.close script
-        return false;        
+        return resultok;        
     }
        
     private void printTicket(String sresourcename, TicketInfo ticket, Object ticketext) {
@@ -865,7 +876,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         } else {
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
-                script.put("taxes", taxmap);
+                script.put("taxes", taxcollection);
                 script.put("taxeslogic", taxeslogic);
                 script.put("ticket", ticket);
                 script.put("place", ticketext);
@@ -1002,7 +1013,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
             script.put("ticket", ticket);
             script.put("place", ticketext);
-            script.put("taxes", taxmap);
+            script.put("taxes", taxcollection);
             script.put("taxeslogic", taxeslogic);             
             script.put("user", m_App.getAppUserView().getUser());
             script.put("sales", this);
@@ -1060,12 +1071,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         public void setSelectedIndex(int i) {
             selectedindex = i;
-        }
-
-        public void addTicketLine(String sname, TaxInfo tax, double dmult, double dpricesell) {
-            TicketProductInfo product = new TicketProductInfo(null, sname, false);           
-            JPanelTicket.this.addTicketLine(new TicketLineInfo(product, dmult, dpricesell, tax, new Properties()));
-        }      
+        }  
         
         public void printReport(String resourcefile) {
             JPanelTicket.this.printReport(resourcefile, m_oTicket, m_oTicketExt);
@@ -1089,7 +1095,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
                 script.put("ticket", m_oTicket);      
                 script.put("place", m_oTicketExt);
-                script.put("taxes", taxmap);
+                script.put("taxes", taxcollection);
                 script.put("taxeslogic", taxeslogic);       
                 script.put("user", m_App.getAppUserView().getUser());
                 script.put("sales", this);
@@ -1590,15 +1596,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             msg.show(this);            
         }
         
-        // The ticket name
-        m_jTicketId.setText(m_oTicket.getName(m_oTicketExt));
+        // refresh the receipt....
+        setActiveTicket(m_oTicket, m_oTicketExt);
         
 }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnSplitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSplitActionPerformed
 
         if (m_oTicket.getLinesCount() > 0) {
-            ReceiptSplit splitdialog = ReceiptSplit.getDialog(this, dlSystem.getResourceAsXML("Ticket.Line"), dlSales, dlCustomers);
+            ReceiptSplit splitdialog = ReceiptSplit.getDialog(this, dlSystem.getResourceAsXML("Ticket.Line"), dlSales, dlCustomers, taxeslogic);
             
             TicketInfo ticket1 = m_oTicket.copyTicket();
             TicketInfo ticket2 = new TicketInfo();

@@ -22,15 +22,12 @@ report.setTitleKey("Menu.ReportTaxes");
 report.setReport("/com/openbravo/reports/taxes");
 report.setResourceBundle("com/openbravo/reports/taxes_messages");
 
-report.setSentence("SELECT " +
-                "TAXES.ID AS TAXID, " +
-                "TAXES.NAME AS TAXNAME, " +
-                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) AS TOTAL, " +
-                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (TAXES.RATE)) AS TOTALTAXES " +
-                "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES " +
-                "WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
+report.setSentence(
+                "SELECT TAXCATEGORIES.ID AS TAXID, TAXCATEGORIES.NAME AS TAXNAME, SUM(TAXLINES.BASE) AS TOTAL, SUM(TAXLINES.AMMOUNT) AS TOTALTAXES " +
+                "FROM RECEIPTS, TAXLINES, TAXES, TAXCATEGORIES " + 
+                "WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND TAXLINES.TAXID = TAXES.ID AND TAXES.CATEGORY = TAXCATEGORIES.ID " +
                 "AND ?(QBF_FILTER) " +
-                "GROUP BY TAXES.ID, TAXES.NAME");
+                "GROUP BY TAXCATEGORIES.ID,  TAXCATEGORIES.NAME");
 report.addParameter("RECEIPTS.DATENEW");
 report.addParameter("RECEIPTS.DATENEW");
 report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());

@@ -138,61 +138,61 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
         return name;
     }
     
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj) {
-	    return true;
-	} else if (obj instanceof TaxInfo) {
-            TaxInfo t = (TaxInfo) obj;
-            
-            if (id == null) {
-                if (t.id != null) return false;
-            } else {
-                if (!id.equals(t.id)) return false;
-            }
-            
-            if (name == null) {
-                if (t.name != null) return false;
-            } else {
-                if (!name.equals(t.name)) return false;
-            }          
-            
-            if (taxcategoryid == null) {
-                if (t.taxcategoryid != null) return false;
-            } else {
-                if (!taxcategoryid.equals(t.taxcategoryid)) return false;
-            }   
-
-            if (taxcustcategoryid == null) {
-                if (t.taxcustcategoryid != null) return false;
-            } else {
-                if (!taxcustcategoryid.equals(t.taxcustcategoryid)) return false;
-            } 
-            
-            if (parentid == null) {
-                if (t.parentid != null) return false;
-            } else {
-                if (!parentid.equals(parentid)) return false;
-            } 
-            
-            if (cascade != t.cascade) return false;
-
-            if (rate != t.rate) return false;
-            
-            return true;
-        } else {
-            return false;
-        }           
-    }
-    
-    @Override
-    public int hashCode() {      
-        return (id == null ? 0 : id.hashCode()) 
-                + (name == null ? 0 : name.hashCode()) 
-                + (taxcategoryid == null ? 0 : taxcategoryid.hashCode()) 
-                + (taxcustcategoryid == null ? 0 : taxcustcategoryid.hashCode()) 
-                + (parentid == null ? 0 : parentid.hashCode()) 
-                + new Double(rate).hashCode()
-                + Boolean.valueOf(cascade).hashCode();
-    }    
+//    @Override
+//    public boolean equals(Object obj) {
+//	if (this == obj) {
+//	    return true;
+//	} else if (obj instanceof TaxInfo) {
+//            TaxInfo t = (TaxInfo) obj;
+//            
+//            if (id == null) {
+//                if (t.id != null) return false;
+//            } else {
+//                if (!id.equals(t.id)) return false;
+//            }
+//            
+//            if (name == null) {
+//                if (t.name != null) return false;
+//            } else {
+//                if (!name.equals(t.name)) return false;
+//            }          
+//            
+//            if (taxcategoryid == null) {
+//                if (t.taxcategoryid != null) return false;
+//            } else {
+//                if (!taxcategoryid.equals(t.taxcategoryid)) return false;
+//            }   
+//
+//            if (taxcustcategoryid == null) {
+//                if (t.taxcustcategoryid != null) return false;
+//            } else {
+//                if (!taxcustcategoryid.equals(t.taxcustcategoryid)) return false;
+//            } 
+//            
+//            if (parentid == null) {
+//                if (t.parentid != null) return false;
+//            } else {
+//                if (!parentid.equals(parentid)) return false;
+//            } 
+//            
+//            if (cascade != t.cascade) return false;
+//
+//            if (rate != t.rate) return false;
+//            
+//            return true;
+//        } else {
+//            return false;
+//        }           
+//    }
+//    
+//    @Override
+//    public int hashCode() {      
+//        return (id == null ? 0 : id.hashCode()) 
+//                + (name == null ? 0 : name.hashCode()) 
+//                + (taxcategoryid == null ? 0 : taxcategoryid.hashCode()) 
+//                + (taxcustcategoryid == null ? 0 : taxcustcategoryid.hashCode()) 
+//                + (parentid == null ? 0 : parentid.hashCode()) 
+//                + new Double(rate).hashCode()
+//                + Boolean.valueOf(cascade).hashCode();
+//    }    
 }

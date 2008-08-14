@@ -213,6 +213,7 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         jLabel7 = new javax.swing.JLabel();
         m_jtxtTaxID = new com.openbravo.editor.JEditorString();
         jPanel6 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -256,6 +257,14 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         m_jtxtTaxID.setBounds(160, 20, 220, 25);
 
         jPanel5.add(jPanel7, java.awt.BorderLayout.CENTER);
+
+        jButton1.setText(AppLocal.getIntString("button.clean")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton1);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/launch.png"))); // NOI18N
         jButton3.setText(AppLocal.getIntString("button.executefilter")); // NOI18N
@@ -366,7 +375,19 @@ public class JCustomerFinder extends javax.swing.JDialog implements EditorCreato
         
     }//GEN-LAST:event_jListCustomersMouseClicked
 
+private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ 
+        m_jtxtTaxID.reset();
+        m_jtxtSearchKey.reset();
+        m_jtxtName.reset();
+
+        m_jtxtTaxID.activate();    
+
+        cleanSearch();           
+}//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

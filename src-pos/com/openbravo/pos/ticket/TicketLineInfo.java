@@ -43,54 +43,61 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     private TaxInfo tax;
     private Properties attributes;
     
-    private TicketProductInfo product;
+    private String productid;
 
     /** Creates new TicketLineInfo */   
-     public TicketLineInfo(TicketProductInfo product, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
-        this.product = product; 
-        m_dMultiply = dMultiply;
-        m_dPrice = dPrice;
-        this.tax = tax;
-        this.attributes = attributes;
-        
-        m_sTicket = null;
-        m_iLine = -1;
+     public TicketLineInfo(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties props) {
+        init(productid, dMultiply, dPrice, tax, props);
     }
      
-    public TicketLineInfo(TicketProductInfo product, double dMultiply, double dPrice, TaxInfo tax) {
-        this(product, dMultiply, dPrice, tax, new Properties());
+    public TicketLineInfo(String productid, double dMultiply, double dPrice, TaxInfo tax) {
+        init(productid, dMultiply, dPrice, tax, new Properties());
+    }
+    
+    public TicketLineInfo(String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
+        
+        Properties props = new Properties();
+        attributes.setProperty("product.name", productname);
+        attributes.setProperty("product.taxcategoryid", producttaxcategory);
+        init(null, dMultiply, dPrice, tax, props);
     }
      
      public TicketLineInfo() {
-        this(new TicketProductInfo(), 0.0, 0.0, null, new Properties());
+        init(null, 0.0, 0.0, null, new Properties());
     }
      
-    public TicketLineInfo(ProductInfoExt oProduct, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
-        if (oProduct == null) {
-            product = new TicketProductInfo();
-        } else {
-            product = new TicketProductInfo(oProduct);
-        }    
-        m_dMultiply = dMultiply;
-        m_dPrice = dPrice;
-        this.tax = tax;
-        this.attributes = attributes;
+    public TicketLineInfo(ProductInfoExt product, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
         
-        m_sTicket = null;
-        m_iLine = -1;
+        String pid;
+        
+        if (product == null) {
+            pid = null;
+        } else {
+            pid = product.getID();
+            attributes.setProperty("product.name", product.getName());
+            attributes.setProperty("product.com", product.isCom() ? "true" : "false");
+            attributes.setProperty("product.taxcategoryid", product.getTaxCategoryID());
+            attributes.setProperty("product.categoryid", product.getCategoryID());                    
+        }    
+        init(pid, dMultiply, dPrice, tax, attributes);
     }    
     public TicketLineInfo(ProductInfoExt oProduct, double dPrice, TaxInfo tax, Properties attributes) {       
         this(oProduct, 1.0, dPrice, tax, attributes);
     }
-     
-    public TicketLineInfo(TicketLineInfo line) {  
         
-        product = line.product.copyTicketProduct();
-        m_dMultiply = line.m_dMultiply;
-        m_dPrice = line.m_dPrice;
+    public TicketLineInfo(TicketLineInfo line) {  
+        init(line.productid, line.m_dMultiply, line.m_dPrice, line.tax, (Properties) attributes.clone());
+    }
+    
+    private void init(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
+        
+        this.productid = productid; 
+        m_dMultiply = dMultiply;
+        m_dPrice = dPrice;
+        this.tax = tax;
+        this.attributes = attributes;
+        
         m_sTicket = null;
-        tax = line.tax; 
-        attributes = line.attributes; 
         m_iLine = -1;
     }
      
@@ -102,50 +109,45 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public void writeValues(DataWrite dp) throws BasicException {
         dp.setString(1, m_sTicket);
         dp.setInt(2, new Integer(m_iLine));
-        dp.setString(3, product.getId());
-        dp.setString(4, product.getName());
-        dp.setBoolean(5, new Boolean(product.isCom()));
-        dp.setDouble(6, new Double(m_dMultiply));
-        dp.setDouble(7, new Double(m_dPrice));
-        dp.setString(8, tax.getId());
+        dp.setString(3, productid);
+        dp.setDouble(4, new Double(m_dMultiply));
+        dp.setDouble(5, new Double(m_dPrice));
+        dp.setString(6, tax.getId());
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
             attributes.storeToXML(o, AppLocal.APP_NAME, "UTF-8");
-            dp.setBytes(9, o.toByteArray()); 
+            dp.setBytes(7, o.toByteArray()); 
         } catch (IOException e) {
-            dp.setBytes(9, null);
+            dp.setBytes(7, null);
         } 
     }
     
     public void readValues(DataRead dr) throws BasicException {
         m_sTicket = dr.getString(1);
         m_iLine = dr.getInt(2).intValue();
-        String prodid = dr.getString(3);
-        String prodname = dr.getString(4);
-        boolean prodcom = dr.getBoolean(5).booleanValue();
-        m_dMultiply = dr.getDouble(6).doubleValue();
-        m_dPrice = dr.getDouble(7).doubleValue();
-        tax = new TaxInfo(dr.getString(8), dr.getString(9), dr.getString(10), dr.getString(11), dr.getString(12), dr.getDouble(13), dr.getBoolean(14));
+        productid = dr.getString(3);
+        m_dMultiply = dr.getDouble(4).doubleValue();
+        m_dPrice = dr.getDouble(5).doubleValue();
+        tax = new TaxInfo(dr.getString(6), dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10), dr.getDouble(11), dr.getBoolean(12));
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(15);
+            byte[] img = dr.getBytes(13);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
         } catch (IOException e) {
         }         
-        product = new TicketProductInfo(prodid, prodname, prodcom);
     }
     
     public TicketLineInfo copyTicketLine() {
         TicketLineInfo l = new TicketLineInfo();
         // l.m_sTicket = null;
         // l.m_iLine = -1;
+        l.productid = productid;
         l.m_dMultiply = m_dMultiply;    
         l.m_dPrice = m_dPrice;
         l.tax = tax;   
         l.attributes = (Properties) attributes.clone();        
-        l.product = product.copyTicketProduct();
         return l;
     }
     
@@ -153,21 +155,30 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         return m_iLine;
     }
     
-    public TicketProductInfo getProduct() {
-        return product;
+    public String getProductID() {
+        return productid;
     }
     
-    public void setProduct(TicketProductInfo value) {
-        product = value;
+    public void setProductID(String value) {
+        productid = value;
+        // change the product properties.
     }
     
     public String getProductName() {
-        return product.getName();
+        return attributes.getProperty("product.name");
     }
     
     public boolean isProductCom() {
-        return product.isCom();
+        return "true".equals(attributes.getProperty("product.com"));
     }
+    
+    public String getProductTaxCategoryID() {
+        return (attributes.getProperty("product.taxcategoryid"));
+    }
+    
+    public String getProductCategoryID() {
+        return (attributes.getProperty("product.categoryid"));
+    }    
     
     public double getMultiply() {
         return m_dMultiply;
@@ -244,7 +255,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
     
     public String printName() {
-         return product.getName() == null ? "" : StringUtils.encodeXML(product.getName());
+         return StringUtils.encodeXML(attributes.getProperty("product.name"));
     }
     public String printMultiply() {
         return Formats.DOUBLE.formatValue(new Double(m_dMultiply));

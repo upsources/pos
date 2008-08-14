@@ -19,37 +19,43 @@
 package com.openbravo.pos.ticket;
 
 import com.openbravo.format.Formats;
+import com.openbravo.pos.util.RoundUtils;
 
 
 public class TicketTaxInfo {
     
-    private TaxInfo m_TaxInfo;
-    private double m_dSubTotal;
+    private TaxInfo tax;
+    
+    private double subtotal;
+    private double taxtotal;
             
     /** Creates a new instance of TicketTaxInfo */
-    public TicketTaxInfo(TaxInfo t) {
-        m_TaxInfo = t;
-        m_dSubTotal = 0.0;
+    public TicketTaxInfo(TaxInfo tax) {
+        this.tax = tax;
+        
+        subtotal = 0.0;
+        taxtotal = 0.0;
     }
     
     public TaxInfo getTaxInfo() {
-        return m_TaxInfo;
+        return tax;
     }
     
     public void add(double dValue) {
-        m_dSubTotal += dValue;
+        subtotal += dValue;
+        taxtotal = RoundUtils.round(subtotal * tax.getRate());
     }
     
     public double getSubTotal() {    
-        return m_dSubTotal;
+        return subtotal;
     }
     
     public double getTax() {       
-        return m_dSubTotal * m_TaxInfo.getRate();
+        return taxtotal;
     }
     
     public double getTotal() {         
-        return m_dSubTotal * (1 + m_TaxInfo.getRate());
+        return subtotal + taxtotal;
     }
     
     public String printSubTotal() {
