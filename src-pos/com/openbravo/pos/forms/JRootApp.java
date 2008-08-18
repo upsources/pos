@@ -94,7 +94,7 @@ public class JRootApp extends JPanel implements AppView {
     public boolean initApp(AppProperties props) {
         
         m_props = props;
-//         setPreferredSize(new java.awt.Dimension(800, 600));
+        //setPreferredSize(new java.awt.Dimension(800, 600));
 
         // support for different component orientation languages.
         applyComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));

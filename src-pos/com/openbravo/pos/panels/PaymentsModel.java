@@ -114,7 +114,7 @@ public class PaymentsModel {
         
         // Ventas
         Object[] recsales = (Object []) new StaticSentence(app.getSession(),
-            "SELECT COUNT(DISTINCT TAXLINES.RECEIPT), SUM(TAXLINES.BASE), SUM(TAXLINES.AMMOUNT) " +
+            "SELECT COUNT(DISTINCT TAXLINES.RECEIPT), SUM(TAXLINES.BASE), SUM(TAXLINES.AMOUNT) " +
             "FROM RECEIPTS, TAXLINES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND RECEIPTS.MONEY = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE, Datas.DOUBLE}))
@@ -130,16 +130,10 @@ public class PaymentsModel {
         } 
                 
         List<SalesLine> asales = new StaticSentence(app.getSession(),
-                "SELECT TAXCATEGORIES.NAME, SUM(TAXLINES.BASE), SUM(TAXLINES.AMMOUNT) " +
+                "SELECT TAXCATEGORIES.NAME, SUM(TAXLINES.BASE), SUM(TAXLINES.AMOUNT) " +
                 "FROM RECEIPTS, TAXLINES, TAXES, TAXCATEGORIES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND TAXLINES.TAXID = TAXES.ID AND TAXES.CATEGORY = TAXCATEGORIES.ID " +
                 "AND RECEIPTS.MONEY = ?" +
                 "GROUP BY TAXCATEGORIES.NAME"
-//                ,"SELECT TAXES.NAME, " +
-//                "SUM(UNITS * PRICE), " +
-//                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * (1 + TAXES.RATE)) " +
-//                "FROM RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
-//                "AND RECEIPTS.MONEY = ? " + 
-//                "GROUP BY TAXES.ID, TAXES.NAME"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(PaymentsModel.SalesLine.class))
                 .list(app.getActiveCashIndex());

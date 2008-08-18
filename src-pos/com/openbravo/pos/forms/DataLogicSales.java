@@ -299,7 +299,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 } 
                 
                 SentenceExec taxlinesinsert = new PreparedSentence(s
-                        , "INSERT INTO TAXLINES (ID, RECEIPT, TAXID, BASE, AMMOUNT)  VALUES (?, ?, ?, ?, ?)"
+                        , "INSERT INTO TAXLINES (ID, RECEIPT, TAXID, BASE, AMOUNT)  VALUES (?, ?, ?, ?, ?)"
                         , SerializerWriteParams.INSTANCE);
                 for (final TicketTaxInfo tickettax: ticket.getTaxes()) {
                     taxlinesinsert.exec(new DataParams() { public void writeValues() throws BasicException {
