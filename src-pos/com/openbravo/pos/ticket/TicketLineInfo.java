@@ -38,8 +38,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     private String m_sTicket;
     private int m_iLine;
     
-    private double m_dMultiply;    
-    private double m_dPrice;
+    private double multiply;    
+    private double price;
+    
     private TaxInfo tax;
     private Properties attributes;
     
@@ -77,7 +78,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             attributes.setProperty("product.name", product.getName());
             attributes.setProperty("product.com", product.isCom() ? "true" : "false");
             attributes.setProperty("product.taxcategoryid", product.getTaxCategoryID());
-            attributes.setProperty("product.categoryid", product.getCategoryID());                    
+            if (product.getCategoryID() != null) {
+                attributes.setProperty("product.categoryid", product.getCategoryID());
+            }
         }    
         init(pid, dMultiply, dPrice, tax, attributes);
     }    
@@ -86,14 +89,14 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
         
     public TicketLineInfo(TicketLineInfo line) {  
-        init(line.productid, line.m_dMultiply, line.m_dPrice, line.tax, (Properties) attributes.clone());
+        init(line.productid, line.multiply, line.price, line.tax, (Properties) line.attributes.clone());
     }
     
     private void init(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
         
         this.productid = productid; 
-        m_dMultiply = dMultiply;
-        m_dPrice = dPrice;
+        multiply = dMultiply;
+        price = dPrice;
         this.tax = tax;
         this.attributes = attributes;
         
@@ -110,8 +113,10 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         dp.setString(1, m_sTicket);
         dp.setInt(2, new Integer(m_iLine));
         dp.setString(3, productid);
-        dp.setDouble(4, new Double(m_dMultiply));
-        dp.setDouble(5, new Double(m_dPrice));
+        
+        dp.setDouble(4, new Double(multiply));
+        dp.setDouble(5, new Double(price));
+        
         dp.setString(6, tax.getId());
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
@@ -124,10 +129,12 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     
     public void readValues(DataRead dr) throws BasicException {
         m_sTicket = dr.getString(1);
-        m_iLine = dr.getInt(2).intValue();
+        m_iLine = dr.getInt(2).intValue();        
         productid = dr.getString(3);
-        m_dMultiply = dr.getDouble(4).doubleValue();
-        m_dPrice = dr.getDouble(5).doubleValue();
+        
+        multiply = dr.getDouble(4);       
+        price = dr.getDouble(5);
+        
         tax = new TaxInfo(dr.getString(6), dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10), dr.getDouble(11), dr.getBoolean(12));
         attributes = new Properties();
         try {
@@ -144,8 +151,8 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         // l.m_sTicket = null;
         // l.m_iLine = -1;
         l.productid = productid;
-        l.m_dMultiply = m_dMultiply;    
-        l.m_dPrice = m_dPrice;
+        l.multiply = multiply;    
+        l.price = price;
         l.tax = tax;   
         l.attributes = (Properties) attributes.clone();        
         return l;
@@ -157,11 +164,6 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     
     public String getProductID() {
         return productid;
-    }
-    
-    public void setProductID(String value) {
-        productid = value;
-        // change the product properties.
     }
     
     public String getProductName() {
@@ -181,27 +183,27 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }    
     
     public double getMultiply() {
-        return m_dMultiply;
+        return multiply;
     }
     
     public void setMultiply(double dValue) {
-        m_dMultiply = dValue;
+        multiply = dValue;  
     }
     
     public double getPrice() {
-        return m_dPrice;
+        return price;
     }
     
     public void setPrice(double dValue) {
-        m_dPrice = dValue;
+        price = dValue;
     }    
     
     public double getPriceTax() {
-        return m_dPrice * (1.0 + getTaxRate());
+        return price * (1.0 + getTaxRate());
     }
     
     public void setPriceTax(double dValue) {
-        m_dPrice = dValue / (1.0 + getTaxRate());
+        price = dValue / (1.0 + getTaxRate());
     }
     
     public TaxInfo getTaxInfo() {
@@ -233,42 +235,32 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
     
     public double getSubValue() {
-        return m_dMultiply * m_dPrice;
+        return price * multiply;
     }
     
     public double getTax() {
-        return m_dMultiply * m_dPrice * getTaxRate();
+        return price * multiply * getTaxRate();
     }
     
     public double getValue() {
-        return m_dMultiply * m_dPrice * (1.0 + getTaxRate());
-    }
-    
-    public void addMore(double dPor) {
-        m_dMultiply +=dPor;
-    }
-    public void addOneMore() {
-        m_dMultiply ++;
-    }
-    public void remOneMore() {
-        m_dMultiply --;
+        return price * multiply * (1.0 + getTaxRate());
     }
     
     public String printName() {
          return StringUtils.encodeXML(attributes.getProperty("product.name"));
     }
     public String printMultiply() {
-        return Formats.DOUBLE.formatValue(new Double(m_dMultiply));
+        return Formats.DOUBLE.formatValue(new Double(multiply));
     }
     public String printPrice() {
-        if (m_dMultiply == 1.0) {
+        if (multiply == 1.0) {
             return "";
         } else {
             return Formats.CURRENCY.formatValue(new Double(getPrice()));
         }
     }    
     public String printPriceTax() {
-        if (m_dMultiply == 1.0) {
+        if (multiply == 1.0) {
             return "";
         } else {
             return Formats.CURRENCY.formatValue(new Double(getPriceTax()));

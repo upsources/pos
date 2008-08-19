@@ -60,10 +60,11 @@ public class JProductLineEdit extends javax.swing.JDialog {
         m_jPrice.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         m_jPriceTax.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         
-        m_jName.setText(m_oLine.getProductID());
+        m_jName.setText(m_oLine.getProperty("product.name"));
         m_jUnits.setValue(oLine.getMultiply());
         m_jPrice.setValue(oLine.getPrice()); 
         m_jPriceTax.setValue(oLine.getPriceTax());
+        m_jTaxrate.setText(oLine.getTaxInfo().getName());
         
         m_jName.addPropertyChangeListener("Edition", new RecalculateName());
         m_jUnits.addPropertyChangeListener("Edition", new RecalculateUnits());
@@ -93,12 +94,10 @@ public class JProductLineEdit extends javax.swing.JDialog {
     private void printTotals() {
         
         if (m_bunitsok && m_bpriceok) {
-            m_jTaxrate.setText(m_oLine.printTaxRate());
             m_jSubtotal.setText(m_oLine.printSubValue());
             m_jTotal.setText(m_oLine.printValue());
             m_jButtonOK.setEnabled(true);
        } else {
-            m_jTaxrate.setText(null);
             m_jSubtotal.setText(null);
             m_jTotal.setText(null);
             m_jButtonOK.setEnabled(false);

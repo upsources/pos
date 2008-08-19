@@ -359,7 +359,6 @@ public class JTicketsBagTicket extends JTicketsBag {
         
         for(int i = 0; i < m_ticket.getLinesCount(); i++) {
             TicketLineInfo newline = new TicketLineInfo(m_ticket.getLine(i));
-            newline.setMultiply(newline.getMultiply());
             aRefundLines.add(newline);
         } 
         

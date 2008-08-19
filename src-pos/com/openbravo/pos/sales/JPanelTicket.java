@@ -707,7 +707,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 } else {
                     // Sumamos uno a la seleccionada...
                     TicketLineInfo oLine = m_oTicket.getLine(i);
-                    oLine.addOneMore();
+                    oLine.setMultiply(oLine.getMultiply() + 1.0);
                     paintTicketLine(i, oLine); 
                 }
 
@@ -722,7 +722,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 } else {
                     // Restamos uno a la seleccionada...
                     TicketLineInfo oLine = m_oTicket.getLine(i);
-                    oLine.remOneMore();
+                    oLine.setMultiply(oLine.getMultiply() - 1.0);
                     if (oLine.getMultiply() <= 0.0) {                   
                         removeTicketLine(i); // elimino la linea
                     } else {
