@@ -249,37 +249,32 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String printName() {
          return StringUtils.encodeXML(attributes.getProperty("product.name"));
     }
+    
     public String printMultiply() {
-        return Formats.DOUBLE.formatValue(new Double(multiply));
+        return Formats.DOUBLE.formatValue(multiply);
     }
+    
     public String printPrice() {
-        if (multiply == 1.0) {
-            return "";
-        } else {
-            return Formats.CURRENCY.formatValue(new Double(getPrice()));
-        }
-    }    
+        return Formats.CURRENCY.formatValue(getPrice());
+    }  
+    
     public String printPriceTax() {
-        if (multiply == 1.0) {
-            return "";
-        } else {
-            return Formats.CURRENCY.formatValue(new Double(getPriceTax()));
-        }
-    }    
+        return Formats.CURRENCY.formatValue(getPriceTax());
+    }   
+    
     public String printTax() {
-        return Formats.CURRENCY.formatValue(new Double(getTax()));
+        return Formats.CURRENCY.formatValue(getTax());
     }
+    
     public String printTaxRate() {
-        if (getTaxRate() == 0.0) {
-            return "";
-        } else {
-            return Formats.PERCENT.formatValue(new Double(getTaxRate()));        
-        }
+        return Formats.PERCENT.formatValue(getTaxRate());        
     }
+    
     public String printSubValue() {
-        return Formats.CURRENCY.formatValue(new Double(getSubValue()));
+        return Formats.CURRENCY.formatValue(getSubValue());
     }
+    
     public String printValue() {
-        return Formats.CURRENCY.formatValue(new Double(getValue()));
+        return Formats.CURRENCY.formatValue(getValue());
     }
 }
