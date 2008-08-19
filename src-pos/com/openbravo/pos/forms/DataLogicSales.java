@@ -301,14 +301,16 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 SentenceExec taxlinesinsert = new PreparedSentence(s
                         , "INSERT INTO TAXLINES (ID, RECEIPT, TAXID, BASE, AMOUNT)  VALUES (?, ?, ?, ?, ?)"
                         , SerializerWriteParams.INSTANCE);
-                for (final TicketTaxInfo tickettax: ticket.getTaxes()) {
-                    taxlinesinsert.exec(new DataParams() { public void writeValues() throws BasicException {
-                        setString(1, UUID.randomUUID().toString());
-                        setString(2, ticket.getId());
-                        setString(3, tickettax.getTaxInfo().getId());
-                        setDouble(4, tickettax.getSubTotal());
-                        setDouble(5, tickettax.getTax());
-                    }});
+                if (ticket.getTaxes() != null) {
+                    for (final TicketTaxInfo tickettax: ticket.getTaxes()) {
+                        taxlinesinsert.exec(new DataParams() { public void writeValues() throws BasicException {
+                            setString(1, UUID.randomUUID().toString());
+                            setString(2, ticket.getId());
+                            setString(3, tickettax.getTaxInfo().getId());
+                            setDouble(4, tickettax.getSubTotal());
+                            setDouble(5, tickettax.getTax());
+                        }});
+                    }
                 }
                 
                 return null;
