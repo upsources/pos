@@ -205,8 +205,10 @@ public class PaymentsModel {
     public String printSalesTaxes() {
         return Formats.CURRENCY.formatValue(m_dSalesTaxes);
     }     
-    public String printSalesTotal() {
-        return Formats.CURRENCY.formatValue(m_dSalesBase + m_dSalesTaxes);
+    public String printSalesTotal() {            
+        return Formats.CURRENCY.formatValue((m_dSalesBase == null || m_dSalesTaxes == null)
+                ? null
+                : m_dSalesBase + m_dSalesTaxes);
     }     
     public List<SalesLine> getSaleLines() {
         return m_lsales;

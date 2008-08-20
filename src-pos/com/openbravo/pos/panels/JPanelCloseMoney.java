@@ -152,10 +152,6 @@ public class JPanelCloseMoney extends JPanel implements JPanelView, BeanFactoryA
         jColumns.getColumn(0).setResizable(false);
         jColumns.getColumn(1).setPreferredWidth(100);
         jColumns.getColumn(1).setResizable(false);
-//        jColumns.getColumn(2).setPreferredWidth(100);
-//        jColumns.getColumn(2).setResizable(false);
-//        jColumns.getColumn(3).setPreferredWidth(100);
-//        jColumns.getColumn(3).setResizable(false);    
         
         m_jsalestable.setModel(m_PaymentsToClose.getSalesModel());
         

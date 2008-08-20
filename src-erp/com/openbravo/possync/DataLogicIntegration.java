@@ -112,7 +112,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, CUSTCATEGORY = ?, PARENTID = ?, RATE = ?, CASCADE = ?, WHERE ID = ?",
+                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, CUSTCATEGORY = ?, PARENTID = ?, RATE = ?, RATECASCADE = ?, WHERE ID = ?",
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getName());
@@ -126,7 +126,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                        
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                            "INSERT INTO TAXES(ID, NAME, CATEGORY, CUSTCATEGORY, PARENTID, RATE, CASCADE) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                            "INSERT INTO TAXES(ID, NAME, CATEGORY, CUSTCATEGORY, PARENTID, RATE, RATECASCADE) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getId());
