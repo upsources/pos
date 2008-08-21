@@ -17,7 +17,7 @@ B) Some portions of the Openbravo POS Software are provided by third parties. In
 - Translation of the POS interface in Galician (files marked "(c) mancomun.org"). © 2007 mancomun.org  (GPL) 
 - Files in folders /i18n/ and /possync/ and /ws/types/. Copyright © 2007 openTrends Solucions i Sistemes, S.L (GPL)
 - Payment gateways in /tpv/payment/: PaymentGatewayAuthorizeNet.java and PaymentGatewaySECPay.java © 2003 Authorize.Net and © 2002 SECPay Ltd. respectively. 
-- Files in /tpv/reports/: reports/JRViewerMod.java and JRViewerMod.form - ©2001-2004 Teodor Danciu (JasperReports Licence, LGPL)
+- Files in /src-pos/com/openbravo/pos/util/: JRPrinterAWT300.java and JRViewer300.form and JRViewer300.form - Copyright (C) 2001-2006 JasperSoft Corporation http://www.jaspersoft.com. Distributed under the Lesser General Public License (LGPL)
 
  
 C) This product uses certain third party software libraries, found in /lib/ 
@@ -64,7 +64,11 @@ Other third party libraries in /lib/
 - librxtxSerial.jnilib
 All available from http://www.rxtx.org/. Copyright 1998-2006 Keane Jarvi. Distributed under the RXTX License v 2.1 (LGPL v 2.1 + Linking Over Controlled Interface)
 
+- swingx-0.9.3.jar - available from https://swingx.dev.java.net/. Copyright (c) 2005-2006 Sun Microsystems, Inc. Distributed under the Lesser General Public License (LGPL).
+
 - substance.jar - available from https://substance.dev.java.net/. Copyright (c) 2005-2008 Kirill Grouchnikov. Distributed under the Berkeley Software Distribution (BSD) License
+
+- substance-swingx.jar - available from https://substance-swingx.dev.java.net/. Copyright (c) 2005-2008 Kirill Grouchnikov. Distributed under the Lesser General Public License (LGPL).
 
 - jdt-compiler-3.1.1.jar (a dependency of jasperreports) - Copyright © 2008 The Eclipse Foundation. Distributed under the Common Public License - v 1.0
 
