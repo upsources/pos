@@ -33,8 +33,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import com.openbravo.data.gui.MessageInf;
-import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppUser;
 import com.openbravo.pos.util.ThumbNailBuilder;
@@ -52,21 +50,21 @@ public class JPanelButtons extends javax.swing.JPanel {
     
     private ThumbNailBuilder tnbmacro;
     
-    private JPanelTicket.ScriptObject scriptobject;
+    private JPanelTicket panelticket;
     
     /** Creates new form JPanelButtons */
-    public JPanelButtons(String sConfigKey, JPanelTicket.ScriptObject scriptobject) {
+    public JPanelButtons(String sConfigKey, JPanelTicket panelticket) {
         initComponents();
         
         // Load categories default thumbnail
         tnbmacro = new ThumbNailBuilder(16, 16, "com/openbravo/images/greenled.png");
         
-        this.scriptobject = scriptobject;
+        this.panelticket = panelticket;
         
         props = new Properties();
         events = new HashMap<String, String>();
         
-        String sConfigRes = scriptobject.getResourceAsXML(sConfigKey);
+        String sConfigRes = panelticket.getResourceAsXML(sConfigKey);
         
         if (sConfigRes != null) {
             try {
@@ -137,10 +135,10 @@ public class JPanelButtons extends javax.swing.JPanel {
                         attributes.getValue("image"), 
                         title,  
                         stemplate == null
-                            ? scriptobject.getResourceAsXML(attributes.getValue("code"))
+                            ? panelticket.getResourceAsXML(attributes.getValue("code"))
                             : "sales.printTicket(\"" + stemplate + "\");"));
             } else if ("event".equals(qName)) {
-                events.put(attributes.getValue("key"), scriptobject.getResourceAsXML(attributes.getValue("code")));
+                events.put(attributes.getValue("key"), panelticket.getResourceAsXML(attributes.getValue("code")));
             } else {
                 String value = attributes.getValue("value");
                 if (value != null) {                  
@@ -162,7 +160,7 @@ public class JPanelButtons extends javax.swing.JPanel {
             m_sCode = sCode;
             setName(sKey);
             setText(title);
-            setIcon(new ImageIcon(tnbmacro.getThumbNail(scriptobject.getResourceAsImage(sImage))));
+            setIcon(new ImageIcon(tnbmacro.getThumbNail(panelticket.getResourceAsImage(sImage))));
             setFocusPainted(false);
             setFocusable(false);
             setRequestFocusEnabled(false);
@@ -170,18 +168,7 @@ public class JPanelButtons extends javax.swing.JPanel {
   
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-
-                    if (m_sCode == null) {
-                        MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotexecute"));
-                        msg.show(JPanelButtons.this);
-                    } else {
-                        try {
-                            scriptobject.evalScript(m_sCode);
-                        } catch (ScriptException e) {
-                            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotexecute"), e);
-                            msg.show(JPanelButtons.this);
-                        }
-                    }
+                    panelticket.evalScriptAndRefresh(m_sCode);
                 }
             });
         }         
