@@ -38,10 +38,9 @@ public class ScriptFactory {
         if (VELOCITY.equals(name)) {
             return new ScriptEngineVelocity();
         } else if (BEANSHELL.equals(name)) {
-//            return new ScriptEngineBeanshell();
-            return new ScriptEngineRhino();
-        } else if (RHINO.equals(name)) {
-            return new ScriptEngineRhino();
+            return new ScriptEngineBeanshell();
+//        } else if (RHINO.equals(name)) {
+//            return new ScriptEngineRhino();
 //        } else if (name.startsWith("generic:")) {
 //            return new ScriptEngineGeneric(name.substring(8));            
         } else {
