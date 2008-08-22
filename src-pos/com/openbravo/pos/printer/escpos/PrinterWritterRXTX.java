@@ -54,9 +54,13 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
             }
             m_out.write(data);
         } catch (NoSuchPortException e) {
+            System.err.println(e);
         } catch (PortInUseException e) {
+            System.err.println(e);
         } catch (UnsupportedCommOperationException e) {
+            System.err.println(e);
         } catch (IOException e) {
+            System.err.println(e);
         }      
     }
     
@@ -66,6 +70,7 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
                 m_out.flush();
             }
         } catch (IOException e) {
+            System.err.println(e);
         }    
     }
     
@@ -79,6 +84,7 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
                 m_PortIdPrinter = null;
             }
         } catch (IOException e) {
+            System.err.println(e);
         }    
     }
 }

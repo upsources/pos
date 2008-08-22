@@ -19,7 +19,6 @@
 package com.openbravo.pos.printer.escpos;
 
 import java.io.*;
-import com.openbravo.pos.printer.*;
 
 public class PrinterWritterFile extends PrinterWritter {
     
@@ -41,6 +40,7 @@ public class PrinterWritterFile extends PrinterWritter {
             }
             m_out.write(data);
         } catch (IOException e) {
+            System.err.println(e);
         }    
     }
     
@@ -52,6 +52,7 @@ public class PrinterWritterFile extends PrinterWritter {
                 m_out = null;
             }
         } catch (IOException e) {
+            System.err.println(e);
         }    
     }
     
@@ -63,6 +64,7 @@ public class PrinterWritterFile extends PrinterWritter {
                 m_out = null;
             }
         } catch (IOException e) {
+            System.err.println(e);
         }    
     }    
 }
