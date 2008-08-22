@@ -112,7 +112,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 
                 // Try to update                
                 if (new PreparedSentence(s, 
-                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, CUSTCATEGORY = ?, PARENTID = ?, RATE = ?, RATECASCADE = ?, WHERE ID = ?",
+                            "UPDATE TAXES SET NAME = ?, CATEGORY = ?, CUSTCATEGORY = ?, PARENTID = ?, RATE = ?, RATECASCADE = ? WHERE ID = ?",
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, tax.getName());
@@ -185,7 +185,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                 
                 // Try to update
                 if (new PreparedSentence(s, 
-                            "UPDATE PRODUCTS SET REFERENCE = ?, CODE = ?, NAME = ?, PRICEBUY = ?, PRICESELL = ?, CATEGORY = ?, TAX = ?, IMAGE = ? WHERE ID = ?", 
+                            "UPDATE PRODUCTS SET REFERENCE = ?, CODE = ?, NAME = ?, PRICEBUY = ?, PRICESELL = ?, CATEGORY = ?, TAXCAT = ?, IMAGE = ? WHERE ID = ?", 
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, prod.getReference());
@@ -205,7 +205,7 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
                             
                     // If not updated, try to insert
                     new PreparedSentence(s, 
-                            "INSERT INTO PRODUCTS (ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, CATEGORY, TAX, IMAGE, STOCKCOST, STOCKVOLUME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            "INSERT INTO PRODUCTS (ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, CATEGORY, TAXCAT, IMAGE, STOCKCOST, STOCKVOLUME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                             SerializerWriteParams.INSTANCE
                             ).exec(new DataParams() { public void writeValues() throws BasicException {
                                 setString(1, prod.getID());
