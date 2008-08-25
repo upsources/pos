@@ -68,6 +68,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_jTaxParent.addActionListener(dirty);
         m_jRate.getDocument().addDocumentListener(dirty);
         jCascade.addActionListener(dirty);
+        jOrder.getDocument().addDocumentListener(dirty);
         
         writeValueEOF();
     }
@@ -97,6 +98,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         taxparentmodel.setSelectedKey(null);
         m_jRate.setText(null);
         jCascade.setSelected(false);
+        jOrder.setText(null);
         
         m_jName.setEnabled(false);
         m_jTaxCategory.setEnabled(false);
@@ -104,6 +106,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_jTaxParent.setEnabled(false);
         m_jRate.setEnabled(false);
         jCascade.setEnabled(false);
+        jOrder.setEnabled(false);
     }
     public void writeValueInsert() {
         m_oId = null;
@@ -113,13 +116,15 @@ public class TaxEditor extends JPanel implements EditorRecord {
         taxparentmodel.setSelectedKey(null);
         m_jRate.setText(null);
         jCascade.setSelected(false);
+        jOrder.setText(null);
         
         m_jName.setEnabled(true);
         m_jTaxCategory.setEnabled(true);
         m_jCustTaxCategory.setEnabled(true);
         m_jTaxParent.setEnabled(true);        
         m_jRate.setEnabled(true);
-        jCascade.setEnabled(true);        
+        jCascade.setEnabled(true);    
+        jOrder.setEnabled(true);
     }
     public void writeValueDelete(Object value) {
 
@@ -131,6 +136,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         taxparentmodel.setSelectedKey(tax[4]);        
         m_jRate.setText(Formats.PERCENT.formatValue(tax[5]));
         jCascade.setSelected((Boolean) tax[6]);
+        jOrder.setText(Formats.INT.formatValue(tax[7]));
         
         m_jName.setEnabled(false);
         m_jTaxCategory.setEnabled(false);
@@ -138,6 +144,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_jTaxParent.setEnabled(false);
         m_jRate.setEnabled(false);
         jCascade.setEnabled(false);
+        jOrder.setEnabled(false);
     }    
     public void writeValueEdit(Object value) {
 
@@ -149,6 +156,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         taxparentmodel.setSelectedKey(tax[4]);        
         m_jRate.setText(Formats.PERCENT.formatValue(tax[5]));
         jCascade.setSelected((Boolean) tax[6]);
+        jOrder.setText(Formats.INT.formatValue(tax[7]));
         
         m_jName.setEnabled(true);
         m_jTaxCategory.setEnabled(true);
@@ -156,11 +164,12 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_jTaxParent.setEnabled(true);        
         m_jRate.setEnabled(true);
         jCascade.setEnabled(true);
+        jOrder.setEnabled(true);
     }
 
     public Object createValue() throws BasicException {
         
-        Object[] tax = new Object[7];
+        Object[] tax = new Object[8];
 
         tax[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
         tax[1] = m_jName.getText();
@@ -169,6 +178,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         tax[4] = taxparentmodel.getSelectedKey(); 
         tax[5] = Formats.PERCENT.parseValue(m_jRate.getText());
         tax[6] = Boolean.valueOf(jCascade.isSelected());
+        tax[7] = Formats.INT.parseValue(jOrder.getText());
         
         return tax;
     }    
@@ -196,6 +206,8 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_jTaxCategory = new javax.swing.JComboBox();
         m_jTaxParent = new javax.swing.JComboBox();
         m_jCustTaxCategory = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        jOrder = new javax.swing.JTextField();
 
         setLayout(null);
         add(m_jName);
@@ -232,6 +244,12 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_jTaxParent.setBounds(240, 110, 200, 24);
         add(m_jCustTaxCategory);
         m_jCustTaxCategory.setBounds(240, 80, 200, 24);
+
+        jLabel6.setText(AppLocal.getIntString("label.order")); // NOI18N
+        add(jLabel6);
+        jLabel6.setBounds(20, 170, 35, 15);
+        add(jOrder);
+        jOrder.setBounds(240, 170, 60, 19);
     }// </editor-fold>//GEN-END:initComponents
     
     
@@ -242,6 +260,8 @@ public class TaxEditor extends JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JTextField jOrder;
     private javax.swing.JComboBox m_jCustTaxCategory;
     private javax.swing.JTextField m_jName;
     private javax.swing.JTextField m_jRate;

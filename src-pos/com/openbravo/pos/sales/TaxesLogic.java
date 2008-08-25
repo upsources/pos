@@ -25,6 +25,8 @@ import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import com.openbravo.pos.ticket.TicketTaxInfo;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,18 +45,33 @@ public class TaxesLogic {
         this.taxlist = taxlist;
       
         taxtrees = new HashMap<String, TaxesLogicElement>();
+                
+        // Order the taxlist by Application Order...
+        List<TaxInfo> taxlistordered = new ArrayList<TaxInfo>();
+        taxlistordered.addAll(taxlist);
+        Collections.sort(taxlistordered, new Comparator<TaxInfo>() {
+            public int compare(TaxInfo o1, TaxInfo o2) {
+                if (o1.getApplicationOrder() < o2.getApplicationOrder()) {
+                    return -1;
+                } else if (o1.getApplicationOrder() == o2.getApplicationOrder()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
         
         // Generate the taxtrees
         HashMap<String, TaxesLogicElement> taxorphans = new HashMap<String, TaxesLogicElement>();
         
-        for (TaxInfo t : taxlist) {
+        for (TaxInfo t : taxlistordered) {
                        
             TaxesLogicElement te = new TaxesLogicElement(t);
             
             // get the parent
             TaxesLogicElement teparent = taxtrees.get(t.getParentID());
             if (teparent == null) {
-                // orfan node
+                // orphan node
                 teparent = taxorphans.get(t.getParentID());
                 if (teparent == null) {
                     teparent = new TaxesLogicElement(null);

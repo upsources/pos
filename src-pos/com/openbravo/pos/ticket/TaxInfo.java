@@ -38,6 +38,7 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
     
     private double rate;
     private boolean cascade;
+    private Integer order;
     
     /** Creates new TaxInfo */
     public TaxInfo() {
@@ -49,10 +50,11 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
         
         rate = 0.0;         
         cascade = false;
+        order = null;
     }
     
     /** Creates new TaxInfo */
-    public TaxInfo(String id, String name, String taxcategoryid, String taxcustcategoryid, String parentid, double rate, boolean cascade) {
+    public TaxInfo(String id, String name, String taxcategoryid, String taxcustcategoryid, String parentid, double rate, boolean cascade, Integer order) {
         this.id = id;
         this.name = name;
         this.taxcategoryid = taxcategoryid;
@@ -61,6 +63,7 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
         
         this.rate = rate;
         this.cascade = cascade;
+        this.order = order;
     }
     
     public Object getKey() {
@@ -75,6 +78,7 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
         
         rate = dr.getDouble(6).doubleValue();
         cascade = dr.getBoolean(7).booleanValue();
+        order = dr.getInt(8);
     }   
     
     public void setID(String value) {
@@ -133,66 +137,20 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
         cascade = value;
     }
     
+    public Integer getOrder() {
+        return order;
+    }
+    
+    public Integer getApplicationOrder() {
+        return order == null ? Integer.MAX_VALUE : order.intValue();
+    }    
+    
+    public void setOrder(Integer value) {
+        order = value;
+    }
+    
     @Override
     public String toString(){
         return name;
     }
-    
-//    @Override
-//    public boolean equals(Object obj) {
-//	if (this == obj) {
-//	    return true;
-//	} else if (obj instanceof TaxInfo) {
-//            TaxInfo t = (TaxInfo) obj;
-//            
-//            if (id == null) {
-//                if (t.id != null) return false;
-//            } else {
-//                if (!id.equals(t.id)) return false;
-//            }
-//            
-//            if (name == null) {
-//                if (t.name != null) return false;
-//            } else {
-//                if (!name.equals(t.name)) return false;
-//            }          
-//            
-//            if (taxcategoryid == null) {
-//                if (t.taxcategoryid != null) return false;
-//            } else {
-//                if (!taxcategoryid.equals(t.taxcategoryid)) return false;
-//            }   
-//
-//            if (taxcustcategoryid == null) {
-//                if (t.taxcustcategoryid != null) return false;
-//            } else {
-//                if (!taxcustcategoryid.equals(t.taxcustcategoryid)) return false;
-//            } 
-//            
-//            if (parentid == null) {
-//                if (t.parentid != null) return false;
-//            } else {
-//                if (!parentid.equals(parentid)) return false;
-//            } 
-//            
-//            if (cascade != t.cascade) return false;
-//
-//            if (rate != t.rate) return false;
-//            
-//            return true;
-//        } else {
-//            return false;
-//        }           
-//    }
-//    
-//    @Override
-//    public int hashCode() {      
-//        return (id == null ? 0 : id.hashCode()) 
-//                + (name == null ? 0 : name.hashCode()) 
-//                + (taxcategoryid == null ? 0 : taxcategoryid.hashCode()) 
-//                + (taxcustcategoryid == null ? 0 : taxcustcategoryid.hashCode()) 
-//                + (parentid == null ? 0 : parentid.hashCode()) 
-//                + new Double(rate).hashCode()
-//                + Boolean.valueOf(cascade).hashCode();
-//    }    
 }

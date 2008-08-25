@@ -135,10 +135,10 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         multiply = dr.getDouble(4);       
         price = dr.getDouble(5);
         
-        tax = new TaxInfo(dr.getString(6), dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10), dr.getDouble(11), dr.getBoolean(12));
+        tax = new TaxInfo(dr.getString(6), dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10), dr.getDouble(11), dr.getBoolean(12), dr.getInt(13));
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(13);
+            byte[] img = dr.getBytes(14);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
