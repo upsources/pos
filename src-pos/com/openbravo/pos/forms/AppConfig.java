@@ -118,8 +118,11 @@ public class AppConfig implements AppProperties {
     private void loadDefault() {
         
         m_propsconfig = new Properties();
-                
-        m_propsconfig.setProperty("db.driverlib", "lib/hsqldb.jar");
+        
+        String dirname = System.getProperty("dirname.path");
+        dirname = dirname == null ? "./" : dirname;
+        
+        m_propsconfig.setProperty("db.driverlib", new File(new File(dirname), "lib/hsqldb.jar").getAbsolutePath());   
         m_propsconfig.setProperty("db.driver", "org.hsqldb.jdbcDriver");
         m_propsconfig.setProperty("db.URL", "jdbc:hsqldb:file:" + new File(new File(System.getProperty("user.home")), AppLocal.APP_ID + "-db").getAbsolutePath() + ";shutdown=true");
         m_propsconfig.setProperty("db.user", "sa");         

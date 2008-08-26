@@ -54,4 +54,4 @@ CP=$CP:$DIRNAME/lib/commons-logging-1.0.4.jar
 CP=$CP:$DIRNAME/locales/
 CP=$CP:$DIRNAME/reports/
 
-java -cp $CP -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -Djava.library.path=$DIRNAME/lib/Linux/i686-unknown-linux-gnu com.openbravo.pos.forms.StartPOS "$@"
+java -cp $CP -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -Djava.library.path=$DIRNAME/lib/Linux/i686-unknown-linux-gnu -Ddirname.path=$DIRNAME/ com.openbravo.pos.forms.StartPOS "$@"
