@@ -247,7 +247,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
 
         jLabel6.setText(AppLocal.getIntString("label.order")); // NOI18N
         add(jLabel6);
-        jLabel6.setBounds(20, 170, 35, 15);
+        jLabel6.setBounds(20, 170, 220, 15);
         add(jOrder);
         jOrder.setBounds(240, 170, 60, 19);
     }// </editor-fold>//GEN-END:initComponents
