@@ -73,11 +73,11 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
         } else {            
             m_jName.setText(customerext.getName());
             m_jNotes.setText(customerext.getNotes());
-            txtMaxdebt.setText(Formats.CURRENCY.formatValue(customerext.getMaxdebt()));
+            txtMaxdebt.setText(Formats.CURRENCY.formatValue(RoundUtils.getValue(customerext.getMaxdebt())));
             txtCurdate.setText(Formats.DATE.formatValue(customerext.getCurdate()));        
-            txtCurdebt.setText(Formats.CURRENCY.formatValue(customerext.getCurdebt()));   
+            txtCurdebt.setText(Formats.CURRENCY.formatValue(RoundUtils.getValue(customerext.getCurdebt())));   
                 
-            if (RoundUtils.compare(customerext.getCurdebt(), customerext.getMaxdebt()) >= 0)  {
+            if (RoundUtils.compare(RoundUtils.getValue(customerext.getCurdebt()), RoundUtils.getValue(customerext.getMaxdebt())) >= 0)  {
                 m_jKeys.setEnabled(false);
                 m_jTendered.setEnabled(false);                
             } else {    
@@ -114,7 +114,7 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
             m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));
             
             
-            if (RoundUtils.compare(customerext.getCurdebt() + m_dPaid, customerext.getMaxdebt()) >= 0)  { 
+            if (RoundUtils.compare(RoundUtils.getValue(customerext.getCurdebt()) + m_dPaid, RoundUtils.getValue(customerext.getMaxdebt())) >= 0)  { 
                 // maximum debt exceded
                 jlblMessage.setText(AppLocal.getIntString("message.customerdebtexceded"));
                 notifier.setStatus(false, false);

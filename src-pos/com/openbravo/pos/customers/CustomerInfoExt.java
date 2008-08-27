@@ -19,6 +19,7 @@
 package com.openbravo.pos.customers;
 
 import com.openbravo.format.Formats;
+import com.openbravo.pos.util.RoundUtils;
 import java.util.Date;
 
 /**
@@ -52,11 +53,6 @@ public class CustomerInfoExt extends CustomerInfo {
         super(id);
     } 
   
-    public String printCurDebt() {
-        
-        return Formats.CURRENCY.formatValue(getCurdebt() == null ? new Double(0.0) : getCurdebt());
-    }
-
     public String getTaxCustCategoryID() {
         return taxcustomerid;
     }
@@ -92,7 +88,11 @@ public class CustomerInfoExt extends CustomerInfo {
     public Double getMaxdebt() {
         return maxdebt;
     }
-
+    
+    public String printMaxDebt() {       
+        return Formats.CURRENCY.formatValue(RoundUtils.getValue(getMaxdebt()));
+    }
+    
     public void setMaxdebt(Double maxdebt) {
         this.maxdebt = maxdebt;
     }
@@ -108,7 +108,11 @@ public class CustomerInfoExt extends CustomerInfo {
     public Double getCurdebt() {
         return curdebt;
     }
-
+    
+    public String printCurDebt() {       
+        return Formats.CURRENCY.formatValue(RoundUtils.getValue(getCurdebt()));
+    }
+    
     public void setCurdebt(Double curdebt) {
         this.curdebt = curdebt;
     }
