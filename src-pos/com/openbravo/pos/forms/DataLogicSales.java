@@ -206,7 +206,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             String customerid = ticket.getCustomerId();
             ticket.setCustomer(customerid == null 
                     ? null
-                    : loadCustomerExt(null));
+                    : loadCustomerExt(customerid));
             
             ticket.setLines(new PreparedSentence(s
                 , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.UNITS, L.PRICE, T.ID, T.NAME, T.CATEGORY, T.CUSTCATEGORY, T.PARENTID, T.RATE, T.RATECASCADE, T.RATEORDER, L.ATTRIBUTES " +
