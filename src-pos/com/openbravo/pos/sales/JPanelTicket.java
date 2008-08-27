@@ -189,8 +189,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         paymentdialogrefund = JPaymentSelectRefund.getDialog(this); 
         paymentdialogrefund.init(m_App);
         
-        m_ticketsbag.activate();
-        
         // impuestos incluidos seleccionado ?
         m_jaddtax.setSelected("true".equals(m_jbtnconfig.getProperty("taxesincluded")));
 
@@ -228,7 +226,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
         m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
         m_jNumberKeys.setEqualsEnabled(m_App.getAppUserView().getUser().hasPermission("sales.Total"));
-        m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());          
+        m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());  
+               
+        m_ticketsbag.activate();        
     }
     
     public boolean deactivate() {
