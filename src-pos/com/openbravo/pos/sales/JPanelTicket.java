@@ -844,7 +844,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     ticket.setActiveCash(m_App.getActiveCashIndex());
                     ticket.setDate(new Date()); // Le pongo la fecha de cobro
 
-                    if (executeEvent(ticket, ticketext, "ticket.close") == null) {
+                    if (executeEvent(ticket, ticketext, "ticket.save") == null) {
                         // Save the receipt and assign a receipt number
                         try {
                             dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
@@ -852,7 +852,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
                             msg.show(this);
                         }
-
+                        
+                        executeEvent(ticket, ticketext, "ticket.close");
+                        
                         // Print receipt.
                         printTicket(paymentdialog.isPrintSelected()
                                 ? "Printer.Ticket"
