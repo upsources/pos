@@ -291,7 +291,9 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 						width="238"
 						height="0"
 						key="line-2"/>
-					<graphicElement stretchType="NoStretch"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+</graphicElement>
 				</line>
 				<line direction="TopDown">
 					<reportElement
@@ -300,7 +302,9 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 						width="238"
 						height="0"
 						key="line-3"/>
-					<graphicElement stretchType="NoStretch"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+</graphicElement>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -360,7 +364,9 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 						width="238"
 						height="0"
 						key="line-4"/>
-					<graphicElement stretchType="NoStretch"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+</graphicElement>
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

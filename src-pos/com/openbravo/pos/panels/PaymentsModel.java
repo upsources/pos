@@ -48,7 +48,7 @@ public class PaymentsModel {
     private Double m_dSalesTaxes;
     private java.util.List<SalesLine> m_lsales;
     
-    private final static String[] SALEHEADERS = {"label.taxcash", "label.subtotalcash", "label.taxescash", "label.totalcash"};
+    private final static String[] SALEHEADERS = {"label.taxcash", "label.totalcash"};
 
     private PaymentsModel() {
     }    
@@ -61,9 +61,9 @@ public class PaymentsModel {
         p.m_dPaymentsTotal = new Double(0.0);
         p.m_lpayments = new ArrayList<PaymentsLine>();
         
-        p.m_iSales = new Integer(0);
-        p.m_dSalesBase = new Double(0.0);
-        p.m_dSalesTaxes = new Double(0.0);
+        p.m_iSales = null;
+        p.m_dSalesBase = null;
+        p.m_dSalesTaxes = null;
         p.m_lsales = new ArrayList<SalesLine>();
         
         return p;
@@ -112,25 +112,36 @@ public class PaymentsModel {
             p.m_lpayments = l;
         }        
         
-        // Ventas
+        // Sales
         Object[] recsales = (Object []) new StaticSentence(app.getSession(),
-            "SELECT COUNT(DISTINCT TAXLINES.RECEIPT), SUM(TAXLINES.BASE), SUM(TAXLINES.AMOUNT) " +
-            "FROM RECEIPTS, TAXLINES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND RECEIPTS.MONEY = ?"
-            , SerializerWriteString.INSTANCE
-            , new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE, Datas.DOUBLE}))
-            .find(app.getActiveCashIndex());            
+            "SELECT COUNT(DISTINCT RECEIPTS.ID), SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) " +
+            "FROM RECEIPTS, TICKETLINES WHERE RECEIPTS.ID = TICKETLINES.TICKET AND RECEIPTS.MONEY = ?",
+            SerializerWriteString.INSTANCE,
+            new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE}))
+            .find(app.getActiveCashIndex());
         if (recsales == null) {
-            p.m_iSales = new Integer(0);
-            p.m_dSalesBase = new Double(0.0);
-            p.m_dSalesTaxes = new Double(0.0);
+            p.m_iSales = null;
+            p.m_dSalesBase = null;
         } else {
             p.m_iSales = (Integer) recsales[0];
             p.m_dSalesBase = (Double) recsales[1];
-            p.m_dSalesTaxes = (Double) recsales[2];
+        }             
+        
+        // Taxes
+        Object[] rectaxes = (Object []) new StaticSentence(app.getSession(),
+            "SELECT SUM(TAXLINES.AMOUNT) " +
+            "FROM RECEIPTS, TAXLINES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND RECEIPTS.MONEY = ?"
+            , SerializerWriteString.INSTANCE
+            , new SerializerReadBasic(new Datas[] {Datas.DOUBLE}))
+            .find(app.getActiveCashIndex());            
+        if (rectaxes == null) {
+            p.m_dSalesTaxes = null;
+        } else {
+            p.m_dSalesTaxes = (Double) rectaxes[0];
         } 
                 
         List<SalesLine> asales = new StaticSentence(app.getSession(),
-                "SELECT TAXCATEGORIES.NAME, SUM(TAXLINES.BASE), SUM(TAXLINES.AMOUNT) " +
+                "SELECT TAXCATEGORIES.NAME, SUM(TAXLINES.AMOUNT) " +
                 "FROM RECEIPTS, TAXLINES, TAXES, TAXCATEGORIES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND TAXLINES.TAXID = TAXES.ID AND TAXES.CATEGORY = TAXCATEGORIES.ID " +
                 "AND RECEIPTS.MONEY = ?" +
                 "GROUP BY TAXCATEGORIES.NAME"
@@ -194,7 +205,7 @@ public class PaymentsModel {
     }
     
     public int getSales() {
-        return m_iSales.intValue();
+        return m_iSales == null ? 0 : m_iSales.intValue();
     }    
     public String printSales() {
         return Formats.INT.formatValue(m_iSales);
@@ -239,38 +250,24 @@ public class PaymentsModel {
     public static class SalesLine implements SerializableRead {
         
         private String m_SalesTaxName;
-        private Double m_SalesBase;
         private Double m_SalesTaxes;
         
         public void readValues(DataRead dr) throws BasicException {
             m_SalesTaxName = dr.getString(1);
-            m_SalesBase = dr.getDouble(2);
-            m_SalesTaxes = dr.getDouble(3);
+            m_SalesTaxes = dr.getDouble(2);
         }
         public String printTaxName() {
             return m_SalesTaxName;
-        }
-        public String printBase() {
-            return Formats.CURRENCY.formatValue(m_SalesBase);
-        }
-        public String printTotal() {
-            return Formats.CURRENCY.formatValue(m_SalesBase + m_SalesTaxes);
-        }        
+        }      
         public String printTaxes() {
             return Formats.CURRENCY.formatValue(m_SalesTaxes);
         }
         public String getTaxName() {
             return m_SalesTaxName;
         }
-        public Double getBase() {
-            return m_SalesBase;
-        }
         public Double getTaxes() {
             return m_SalesTaxes;
         }        
-        public Double getTotal() {
-            return m_SalesBase + m_SalesTaxes;
-        }
     }
 
     public AbstractTableModel getSalesModel() {
@@ -288,9 +285,7 @@ public class PaymentsModel {
                 SalesLine l = m_lsales.get(row);
                 switch (column) {
                 case 0: return l.getTaxName();
-                case 1: return l.getBase();
-                case 2: return l.getTaxes();
-                case 3: return l.getTotal();
+                case 1: return l.getTaxes();
                 default: return null;
                 }
             }  

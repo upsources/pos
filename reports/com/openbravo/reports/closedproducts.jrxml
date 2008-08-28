@@ -186,6 +186,20 @@ ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryStri
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.host}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="3"
+						y="56"
+						width="520"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+</graphicElement>
+				</line>
 			</band>
 			</groupHeader>
 			<groupFooter>
