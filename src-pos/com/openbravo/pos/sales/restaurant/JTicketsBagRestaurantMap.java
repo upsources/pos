@@ -73,6 +73,12 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                     null, 
                     new SerializerReadClass(Floor.class));
             m_afloors = sent.list();
+            
+                System.out.println(m_afloors.get(0).getName());
+                System.out.println(m_afloors.get(1).getName());
+            
+                
+            
         } catch (BasicException eD) {
             m_afloors = new ArrayList<Floor>();
         }
@@ -138,10 +144,11 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         
         // Add all the Table buttons.
         Floor currfloor = null;
-        int iFloor = 0;
-
+        
+        
         for (Place pl : m_aplaces) {
-
+            int iFloor = 0;
+            
             if (currfloor == null || !currfloor.getID().equals(pl.getFloor())) {
                 // Look for a new floor
                 do {
