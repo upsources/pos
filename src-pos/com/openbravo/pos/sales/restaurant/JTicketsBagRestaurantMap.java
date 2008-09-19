@@ -73,10 +73,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                     null, 
                     new SerializerReadClass(Floor.class));
             m_afloors = sent.list();
-            
-                System.out.println(m_afloors.get(0).getName());
-                System.out.println(m_afloors.get(1).getName());
-            
+               
                 
             
         } catch (BasicException eD) {
