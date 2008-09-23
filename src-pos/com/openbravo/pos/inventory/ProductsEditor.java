@@ -54,6 +54,8 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     private ComboBoxValModel m_CodetypeModel;
     
     private Object m_id;
+    private Object pricesell;
+    private boolean priceselllock = false;
     
     private boolean reportlock = false;
     
@@ -97,7 +99,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
 
         FieldsManager fm = new FieldsManager();
         m_jPriceBuy.getDocument().addDocumentListener(fm);
-        m_jPriceSell.getDocument().addDocumentListener(fm);
+        m_jPriceSell.getDocument().addDocumentListener(new PriceSellManager());
         m_jTax.addActionListener(fm);
         
         m_jPriceSellTax.getDocument().addDocumentListener(new PriceTaxManager());
@@ -132,7 +134,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_CategoryModel.setSelectedKey(null);
         taxcatmodel.setSelectedKey(null);
         m_jPriceBuy.setText(null);
-        m_jPriceSell.setText(null);            
+        setPriceSell(null);         
         m_jImage.setImage(null);
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
@@ -177,7 +179,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_CategoryModel.setSelectedKey(null);
         taxcatmodel.setSelectedKey(null);
         m_jPriceBuy.setText(null);
-        m_jPriceSell.setText(null);            
+        setPriceSell(null);                     
         m_jImage.setImage(null);
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
@@ -220,7 +222,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jComment.setSelected(((Boolean)myprod[4]).booleanValue());
         m_jScale.setSelected(((Boolean)myprod[5]).booleanValue());
         m_jPriceBuy.setText(Formats.CURRENCY.formatValue(myprod[6]));
-        m_jPriceSell.setText(Formats.CURRENCY.formatValue(myprod[7]));            
+        setPriceSell(myprod[7]);                    
         m_CategoryModel.setSelectedKey(myprod[8]);
         taxcatmodel.setSelectedKey(myprod[9]);
         m_jImage.setImage((BufferedImage) myprod[10]);
@@ -267,7 +269,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jComment.setSelected(((Boolean)myprod[4]).booleanValue());
         m_jScale.setSelected(((Boolean)myprod[5]).booleanValue());
         m_jPriceBuy.setText(Formats.CURRENCY.formatValue(myprod[6]));
-        m_jPriceSell.setText(Formats.CURRENCY.formatValue(myprod[7]));            
+        setPriceSell(myprod[7]);                               
         m_CategoryModel.setSelectedKey(myprod[8]);
         taxcatmodel.setSelectedKey(myprod[9]);
         m_jImage.setImage((BufferedImage) myprod[10]);
@@ -312,7 +314,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         myprod[4] = Boolean.valueOf(m_jComment.isSelected());
         myprod[5] = Boolean.valueOf(m_jScale.isSelected());
         myprod[6] = Formats.CURRENCY.parseValue(m_jPriceBuy.getText());
-        myprod[7] = Formats.CURRENCY.parseValue(m_jPriceSell.getText());
+        myprod[7] = pricesell;
         myprod[8] = m_CategoryModel.getSelectedKey();
         myprod[9] = taxcatmodel.getSelectedKey();
         myprod[10] = m_jImage.getImage();
@@ -335,7 +337,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             reportlock = true;
             
             Double dPriceBuy = readCurrency(m_jPriceBuy.getText());
-            Double dPriceSell = readCurrency(m_jPriceSell.getText());
+            Double dPriceSell = (Double) pricesell;
 
             if (dPriceBuy == null || dPriceSell == null) {
                 m_jmargin.setText(null);
@@ -351,7 +353,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         if (!reportlock) {
             reportlock = true;
             
-            Double dPriceSell = readCurrency(m_jPriceSell.getText());
+            Double dPriceSell = (Double) pricesell;
             
             if (dPriceSell == null) {
                 m_jPriceSellTax.setText(null);
@@ -372,10 +374,11 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             Double dMargin = readPercent(m_jmargin.getText());  
             
             if (dMargin == null || dPriceBuy == null) {
-                m_jPriceSell.setText(null);
+                setPriceSell(null);
             } else {
-                m_jPriceSell.setText(Formats.CURRENCY.formatValue(new Double(dPriceBuy.doubleValue() * (1.0 + dMargin.doubleValue()))));
-            }
+                setPriceSell(new Double(dPriceBuy.doubleValue() * (1.0 + dMargin.doubleValue())));
+            }                        
+            
             reportlock = false;
         }
       
@@ -389,15 +392,56 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             Double dPriceSellTax = readCurrency(m_jPriceSellTax.getText());  
 
             if (dPriceSellTax == null) {
-                m_jPriceSell.setText(null);
+                setPriceSell(null);
             } else {
                 double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem()); 
-                m_jPriceSell.setText(Formats.CURRENCY.formatValue(new Double(dPriceSellTax.doubleValue() / (1.0 + dTaxRate))));
-            }
+                setPriceSell(new Double(dPriceSellTax.doubleValue() / (1.0 + dTaxRate)));
+            }   
+                        
             reportlock = false;
         }    
     }
-
+    
+    private void setPriceSell(Object value) {
+        
+        if (!priceselllock) {
+            priceselllock = true;
+            pricesell = value;
+            m_jPriceSell.setText(Formats.CURRENCY.formatValue(pricesell));  
+            priceselllock = false;
+        }
+    }
+    
+    private class PriceSellManager implements DocumentListener {
+        public void changedUpdate(DocumentEvent e) {
+            if (!priceselllock) {
+                priceselllock = true;
+                pricesell = readCurrency(m_jPriceSell.getText());
+                priceselllock = false;
+            }
+            calculateMargin();
+            calculatePriceSellTax();
+        }
+        public void insertUpdate(DocumentEvent e) {
+            if (!priceselllock) {
+                priceselllock = true;
+                pricesell = readCurrency(m_jPriceSell.getText());
+                priceselllock = false;
+            }
+            calculateMargin();
+            calculatePriceSellTax();
+        }    
+        public void removeUpdate(DocumentEvent e) {
+            if (!priceselllock) {
+                priceselllock = true;
+                pricesell = readCurrency(m_jPriceSell.getText());
+                priceselllock = false;
+            }
+            calculateMargin();
+            calculatePriceSellTax();
+        }  
+    }
+    
     private class FieldsManager implements DocumentListener, ActionListener {
         public void changedUpdate(DocumentEvent e) {
             calculateMargin();
@@ -462,23 +506,6 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             return null;
         }
     }
-
-//    private static class MyListData extends javax.swing.AbstractListModel {
-//        
-//        private java.util.List m_data;
-//        
-//        public MyListData(java.util.List data) {
-//            m_data = data;
-//        }
-//        
-//        public Object getElementAt(int index) {
-//            return m_data.get(index);
-//        }
-//        
-//        public int getSize() {
-//            return m_data.size();
-//        } 
-//    } 
     
     /** This method is called from within the constructor to
      * initialize the form.
