@@ -65,4 +65,4 @@ report.addField("STOCKCOST", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("STOCKSECURITY", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("STOCKMAXIMUM", com.openbravo.data.loader.Datas.DOUBLE);
 
-return report;
+report;

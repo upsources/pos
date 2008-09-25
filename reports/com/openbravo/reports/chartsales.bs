@@ -35,4 +35,4 @@ report.addField("PERSON", com.openbravo.data.loader.Datas.STRING);
 report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
 report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
 
-return report;
+report;

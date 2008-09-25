@@ -34,4 +34,4 @@ report.addField("STARTDATE", com.openbravo.data.loader.Datas.TIMESTAMP);
 report.addField("ENDDATE", com.openbravo.data.loader.Datas.TIMESTAMP);
 report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
 
-return report;
+report;

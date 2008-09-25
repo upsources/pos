@@ -57,5 +57,5 @@ report.addField("TOTALIN", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("UNITSDIFF", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("TOTALDIFF", com.openbravo.data.loader.Datas.DOUBLE);
 
-return report;
+report;
 

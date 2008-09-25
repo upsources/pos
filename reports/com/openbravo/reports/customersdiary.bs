@@ -41,5 +41,5 @@ report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("TAXID", com.openbravo.data.loader.Datas.STRING);
 report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
 
-return report;
+report;
 

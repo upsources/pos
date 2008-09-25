@@ -48,4 +48,4 @@ report.addField("MAXDEBT", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("CURDATE", com.openbravo.data.loader.Datas.TIMESTAMP);
 report.addField("CURDEBT", com.openbravo.data.loader.Datas.DOUBLE);
 
-return report;
+report;

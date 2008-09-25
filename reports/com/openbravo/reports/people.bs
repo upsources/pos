@@ -38,4 +38,4 @@ report.addField("CARD", com.openbravo.data.loader.Datas.STRING);
 report.addField("ROLE", com.openbravo.data.loader.Datas.STRING);
 report.addField("IMAGE", com.openbravo.data.loader.Datas.IMAGE);
 
-return report;
+report;

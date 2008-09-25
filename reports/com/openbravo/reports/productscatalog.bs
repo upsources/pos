@@ -38,4 +38,4 @@ report.addField("TAXCATNAME", com.openbravo.data.loader.Datas.STRING);
 report.addField("CATEGORY", com.openbravo.data.loader.Datas.STRING);
 report.addField("CATEGORYNAME", com.openbravo.data.loader.Datas.STRING);
 
-return report;
+report;
