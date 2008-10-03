@@ -17,7 +17,7 @@
 --    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 -- Database initial script for ORACLE
--- v2.20
+-- v2.30
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR2(255) NOT NULL,
