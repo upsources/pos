@@ -388,13 +388,14 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
         setLayout(new java.awt.BorderLayout());
 
+        m_jCategories.setMaximumSize(new java.awt.Dimension(275, 600));
+        m_jCategories.setPreferredSize(new java.awt.Dimension(275, 600));
         m_jCategories.setLayout(new java.awt.CardLayout());
 
         m_jRootCategories.setLayout(new java.awt.BorderLayout());
 
         m_jscrollcat.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         m_jscrollcat.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        m_jscrollcat.setPreferredSize(new java.awt.Dimension(210, 0));
 
         m_jListCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         m_jListCategories.setFocusable(false);
@@ -405,7 +406,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         });
         m_jscrollcat.setViewportView(m_jListCategories);
 
-        m_jRootCategories.add(m_jscrollcat, java.awt.BorderLayout.LINE_START);
+        m_jRootCategories.add(m_jscrollcat, java.awt.BorderLayout.CENTER);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -438,7 +439,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.NORTH);
 
-        m_jRootCategories.add(jPanel2, java.awt.BorderLayout.CENTER);
+        m_jRootCategories.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
         m_jCategories.add(m_jRootCategories, "rootcategories");
 
