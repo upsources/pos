@@ -30,7 +30,7 @@
     <property name="name" value="openbravopos"/>
 
     <!-- project version -->
-    <property name="version" value="2.20"/>
+    <property name="version" value="2.30"/>
 
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
@@ -302,11 +302,11 @@
     </target>
 
     <target name="init.installer">
-	<mkdir dir="${basedir}/build/installer" /> 
+	    <mkdir dir="${basedir}/build/installer" /> 
     </target>
 
     <target name="installer.linux" depends="init.installer, jar" description="Generate an installer for Linux">
-    	<exec executable="${bitrock}/builder">
+    	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="linux" /> 
@@ -314,7 +314,7 @@
     </target>
 
    <target name="installer.linux-x64" depends="init.installer, jar" description="Generate an installer for Linux x64">
-	<exec executable="${bitrock}/builder">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="linux-x64" /> 
@@ -322,7 +322,7 @@
     </target>
 
    <target name="installer.linux-ia64" depends="init.installer, jar" description="Generate an installer for Linux ia64">
-	<exec executable="${bitrock}/builder">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="linux-ia64" /> 
@@ -330,7 +330,7 @@
     </target>
 
     <target name="installer.windows" depends="init.installer, jar" description="Generate an installer for Windows">
-	<exec executable="${bitrock}/builder">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="windows" /> 
@@ -338,7 +338,7 @@
     </target>
 
    <target name="installer.osx" depends="init.installer, jar" description="Generate an installer for OSX">
-	<exec executable="${bitrock}/builder">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="osx" /> 
@@ -346,7 +346,7 @@
     </target>
 
    <target name="installer.solaris-intel" depends="init.installer, jar" description="Generate an installer for Solaris-Intel">
-	<exec executable="${bitrock}/builder">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="solaris-intel" /> 
