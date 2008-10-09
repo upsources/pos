@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
-bash /opt/openbravopos-2.20/start.sh
+sh /opt/openbravopos-2.30/start.sh
 
