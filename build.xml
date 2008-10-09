@@ -30,7 +30,7 @@
     <property name="name" value="openbravopos"/>
 
     <!-- project version -->
-    <property name="version" value="2.30"/>
+    <property name="version" value="2.20"/>
 
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
@@ -55,6 +55,9 @@
 
     <!-- where the class files go -->
     <property name="dest.classes" value="${basedir}/build/classes"/>
+
+    <!-- the path to bitrock -->
+    
 
 
     <!-- ================================================================= -->
@@ -241,7 +244,7 @@
             <fileset dir="${src.data}">
                 <exclude name="**/.nbattrs"/>
                 <exclude name="**/Thumbs.db"/>
-                <exclude name="**/filesystem.attributes"/>
+                <exclude name="**/filesystem.attributes" />
             </fileset>
         </copy>
         <copy todir="${basedir}/build/zip/src-pos">
@@ -287,6 +290,68 @@
         <mkdir dir="${dest.dist}" />
         <zip zipfile="${dest.dist}/${name}_${version}_src.zip" basedir="${basedir}/build/zip" />
         <delete dir="${basedir}/build/zip" />
-    </target>     
+    </target>   
+
+    <!-- ================================================================= -->
+    <!-- I N S T A L L E R S                                               -->
+    <!-- ================================================================= -->  
+
+    <target name="installer" depends="installer.linux, installer.linux-x64, installer.linux-ia64, installer.windows, installer.osx, installer.solaris-intel" 
+			description="Generate installers for all predefined platforms">
+		
+    </target>
+
+    <target name="init.installer">
+	<mkdir dir="${basedir}/build/installer" /> 
+    </target>
+
+    <target name="installer.linux" depends="init.installer, jar" description="Generate an installer for Linux">
+    	<exec executable="${bitrock}/builder">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer.xml" />
+	    <arg value="linux" /> 
+    	</exec>
+    </target>
+
+   <target name="installer.linux-x64" depends="init.installer, jar" description="Generate an installer for Linux x64">
+	<exec executable="${bitrock}/builder">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer.xml" />
+	    <arg value="linux-x64" /> 
+    	</exec> 
+    </target>
+
+   <target name="installer.linux-ia64" depends="init.installer, jar" description="Generate an installer for Linux ia64">
+	<exec executable="${bitrock}/builder">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer.xml" />
+	    <arg value="linux-ia64" /> 
+    	</exec> 
+    </target>
+
+    <target name="installer.windows" depends="init.installer, jar" description="Generate an installer for Windows">
+	<exec executable="${bitrock}/builder">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer.xml" />
+	    <arg value="windows" /> 
+    	</exec> 
+    </target>
+
+   <target name="installer.osx" depends="init.installer, jar" description="Generate an installer for OSX">
+	<exec executable="${bitrock}/builder">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer.xml" />
+	    <arg value="osx" /> 
+    	</exec> 
+    </target>
+
+   <target name="installer.solaris-intel" depends="init.installer, jar" description="Generate an installer for Solaris-Intel">
+	<exec executable="${bitrock}/builder">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer.xml" />
+	    <arg value="solaris-intel" /> 
+    	</exec> 
+    </target>
+		
 
 </project>
