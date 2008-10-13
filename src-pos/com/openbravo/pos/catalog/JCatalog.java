@@ -553,8 +553,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
     private void m_btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_btnBackActionPerformed
         
-        //this.showParentCategory();
-        showRootCategoriesPanel();
+        this.showParentCategory();
+       // showRootCategoriesPanel();
         
     }//GEN-LAST:event_m_btnBackActionPerformed
 
