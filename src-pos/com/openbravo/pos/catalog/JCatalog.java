@@ -60,7 +60,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     private CategoryInfo showingcategory = null;
     
     private ArrayList<CategoryInfo> listOfCategories;
-    
+        
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales) {
         this(dlSales, false, false, 64, 54);
@@ -173,6 +173,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
             }
             ((ActionListener) l[i]).actionPerformed(e);	       
         }
+       this.checkForAuxilar(prod);
     }   
     
     private void selectCategoryPanel(String catid) {
@@ -256,10 +257,24 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
         if(listOfCategories == null)
             listOfCategories = new ArrayList<CategoryInfo>();
+
         selectIndicatorPanel(new ImageIcon(tnbbutton.getThumbNail(category.getImage())), category.getName());
         selectCategoryPanel(category.getID());
-        listOfCategories.add(category);
+
+        if((listOfCategories.size() - 1) > 0){
+            if(listOfCategories.get(listOfCategories.size() - 1) != category)
+                listOfCategories.add(category);
+        } else
+            listOfCategories.add(category);
+    
         showingcategory = category;
+    }
+
+    //it checks if a product is an auxliar and keeps track of staying in a category
+    private void checkForAuxilar(ProductInfoExt prod){
+         if(prod.isCom())
+            if((listOfCategories != null) && (listOfCategories.size() > 0) && (listOfCategories.get(listOfCategories.size() - 1) != listOfCategories.get(listOfCategories.size() - 2)))
+                this.listOfCategories.add(listOfCategories.get(listOfCategories.size() - 1));
     }
 
     /**
@@ -268,21 +283,27 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
      */
     private void showParentCategory(){
 
+        int categoryOneLevelHigher = 0;
         //gets the index of the current category from the arraylist minus one
-        int categoryOneLevelHigher = (listOfCategories.size() - 2);
+        if(listOfCategories != null){
+            categoryOneLevelHigher = (listOfCategories.size() - 2);
         
-        //checks if a root category
-        if(categoryOneLevelHigher < 0){
-            this.showRootCategoriesPanel();
-        }
-        //shows the category a level higher
-        else{
-            selectIndicatorPanel(new ImageIcon(tnbbutton.getThumbNail(listOfCategories.get(categoryOneLevelHigher).getImage())), listOfCategories.get(categoryOneLevelHigher).getName());
-            selectCategoryPanel(listOfCategories.get(categoryOneLevelHigher).getID());
+            //checks if a root category
+            if(categoryOneLevelHigher < 0){
+                this.showRootCategoriesPanel();
+            }
+            //shows the category a level higher
+            else{
+                selectIndicatorPanel(new ImageIcon(tnbbutton.getThumbNail(listOfCategories.get(categoryOneLevelHigher).getImage())), listOfCategories.get(categoryOneLevelHigher).getName());
+                selectCategoryPanel(listOfCategories.get(categoryOneLevelHigher).getID());
 
-            //removes the category that has been shown
-            //because it will not be needed any more
-            listOfCategories.remove(listOfCategories.size() - 1);
+                //removes the category that has been shown
+                //because it will not be needed any more
+                listOfCategories.remove(listOfCategories.size() - 1);
+            }
+        }
+        else{
+            this.showRootCategoriesPanel();
         }
        
     }
@@ -532,8 +553,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
     private void m_btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_btnBackActionPerformed
         
-        this.showParentCategory();
-        //showRootCategoriesPanel();
+        //this.showParentCategory();
+        showRootCategoriesPanel();
         
     }//GEN-LAST:event_m_btnBackActionPerformed
 
