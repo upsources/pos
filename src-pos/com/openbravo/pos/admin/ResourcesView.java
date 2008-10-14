@@ -167,6 +167,9 @@ public class ResourcesView extends JPanel implements EditorRecord {
         return this;
     }
     
+    public void refresh() {
+    }
+    
     private void showView(String view) {
         CardLayout cl = (CardLayout)(m_jContainer.getLayout());
         cl.show(m_jContainer, view);  

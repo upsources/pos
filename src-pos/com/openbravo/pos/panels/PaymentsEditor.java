@@ -116,6 +116,9 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         return this;
     }
     
+    public void refresh() {
+    }  
+    
     private void setReasonTotal(Object reasonfield, Object totalfield) {
         
         m_ReasonModel.setSelectedKey(reasonfield);

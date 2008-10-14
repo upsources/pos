@@ -158,6 +158,9 @@ public class PeopleView extends JPanel implements EditorRecord {
         m_RoleModel = new ComboBoxValModel(m_sentrole.list());
         m_jRole.setModel(m_RoleModel);
     }
+    
+    public void refresh() {
+    }
      
     /** This method is called from within the constructor to
      * initialize the form.

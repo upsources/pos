@@ -20,6 +20,7 @@ package com.openbravo.pos.customers;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
@@ -29,6 +30,7 @@ import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.util.StringUtils;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.JOptionPane;
@@ -87,7 +89,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         List a = m_sentcat.list();
         a.add(0, null); // The null item
         m_CategoryModel = new ComboBoxValModel(a);
-        m_jCategory.setModel(m_CategoryModel);
+        m_jCategory.setModel(m_CategoryModel);         
+    }
+    
+    public void refresh() {
     }
     
     public void writeValueEOF() {

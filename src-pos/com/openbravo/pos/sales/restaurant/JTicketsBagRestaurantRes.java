@@ -127,6 +127,9 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         reload(DateUtils.getTodayHours(new Date()));
     }
     
+    public void refresh() {
+    }  
+    
     public boolean deactivate() {
         try {
             return m_bd.actionClosingForm(this);

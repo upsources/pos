@@ -51,12 +51,6 @@ public class CategoriesPanel extends JPanelTable {
         jeditor = new CategoriesEditor(app, dirty);    
     }
     
-    public void activate() throws BasicException { 
-        
-        jeditor.activate();         
-        super.activate();
-    }
-    
     public ListProvider getListProvider() {
         return new ListProviderCreator(tcategories);
     }

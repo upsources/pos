@@ -36,6 +36,7 @@ import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
+import java.util.ArrayList;
 
 /**
  *
@@ -72,9 +73,18 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         writeValueEOF();
     }
     
-    public void activate() throws BasicException {
+    public void refresh() {
         
-        List a = m_sentcat.list();
+        List a;
+        
+        try {
+            a = m_sentcat.list();
+        } catch (BasicException eD) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotloadlists"), eD);
+            msg.show(this);
+            a = new ArrayList();
+        }
+        
         a.add(0, null); // The null item
         m_CategoryModel = new ComboBoxValModel(a);
         m_jCategory.setModel(m_CategoryModel);

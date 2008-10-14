@@ -63,6 +63,9 @@ public class PlacesEditor extends JPanel implements EditorRecord {
         m_jFloor.setModel(m_FloorModel);
     }
     
+    public void refresh() {
+    }   
+    
     public void writeValueEOF() {
         
         m_sID = null;

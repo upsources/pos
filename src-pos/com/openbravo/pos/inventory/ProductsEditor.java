@@ -120,6 +120,9 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jTax.setModel(taxcatmodel);
     }
     
+    public void refresh() {
+    }    
+    
     public void writeValueEOF() {
         
         reportlock = true;

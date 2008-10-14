@@ -26,11 +26,13 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaxEditor extends JPanel implements EditorRecord {
@@ -84,10 +86,24 @@ public class TaxEditor extends JPanel implements EditorRecord {
         taxcustcatmodel = new ComboBoxValModel(a);
         m_jCustTaxCategory.setModel(taxcustcatmodel);    
         
-        a = taxparentsent.list();
+       
+    }
+    
+    public void refresh() {
+        
+        List a;
+        
+        try {
+            a = taxparentsent.list();
+        } catch (BasicException eD) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.cannotloadlists"), eD);
+            msg.show(this);
+            a = new ArrayList();
+        }
+        
         a.add(0, null); // The null item
         taxparentmodel = new ComboBoxValModel(a);
-        m_jTaxParent.setModel(taxparentmodel);           
+        m_jTaxParent.setModel(taxparentmodel);    
     }
     
     public void writeValueEOF() {

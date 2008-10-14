@@ -106,6 +106,9 @@ public class StockDiaryEditor extends javax.swing.JPanel implements EditorRecord
         m_jLocation.setModel(m_LocationsModel); // para que lo refresque   
     }
     
+    public void refresh() {
+    }
+    
     public void writeValueEOF() {
         m_sID = null;
         m_jdate.setText(null);

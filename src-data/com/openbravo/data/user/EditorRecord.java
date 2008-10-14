@@ -27,5 +27,7 @@ public interface EditorRecord extends EditorCreator {
     public void writeValueEdit(Object value); // not null por definicion.
     public void writeValueDelete(Object value); // not null por definicion.
     
+    public void refresh();
+    
     public Component getComponent(); 
 }
