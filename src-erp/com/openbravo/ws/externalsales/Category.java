@@ -10,7 +10,7 @@ package com.openbravo.ws.externalsales;
 public class Category  implements java.io.Serializable {
     private java.lang.String description;
 
-    private int id;
+    private java.lang.String id;
 
     private java.lang.String name;
 
@@ -19,7 +19,7 @@ public class Category  implements java.io.Serializable {
 
     public Category(
            java.lang.String description,
-           int id,
+           java.lang.String id,
            java.lang.String name) {
            this.description = description;
            this.id = id;
@@ -52,7 +52,7 @@ public class Category  implements java.io.Serializable {
      * 
      * @return id
      */
-    public int getId() {
+    public java.lang.String getId() {
         return id;
     }
 
@@ -62,7 +62,7 @@ public class Category  implements java.io.Serializable {
      * 
      * @param id
      */
-    public void setId(int id) {
+    public void setId(java.lang.String id) {
         this.id = id;
     }
 
@@ -101,7 +101,9 @@ public class Category  implements java.io.Serializable {
             ((this.description==null && other.getDescription()==null) || 
              (this.description!=null &&
               this.description.equals(other.getDescription()))) &&
-            this.id == other.getId() &&
+            ((this.id==null && other.getId()==null) || 
+             (this.id!=null &&
+              this.id.equals(other.getId()))) &&
             ((this.name==null && other.getName()==null) || 
              (this.name!=null &&
               this.name.equals(other.getName())));
@@ -119,7 +121,9 @@ public class Category  implements java.io.Serializable {
         if (getDescription() != null) {
             _hashCode += getDescription().hashCode();
         }
-        _hashCode += getId();
+        if (getId() != null) {
+            _hashCode += getId().hashCode();
+        }
         if (getName() != null) {
             _hashCode += getName().hashCode();
         }
@@ -142,8 +146,8 @@ public class Category  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("", "id"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("name");

@@ -8,13 +8,13 @@
 package com.openbravo.ws.externalsales;
 
 public class OrderLine  implements java.io.Serializable {
-    private int orderLineId;
+    private java.lang.String orderLineId;
 
     private double price;
 
-    private int productId;
+    private java.lang.String productId;
 
-    private int taxId;
+    private java.lang.String taxId;
 
     private double units;
 
@@ -22,10 +22,10 @@ public class OrderLine  implements java.io.Serializable {
     }
 
     public OrderLine(
-           int orderLineId,
+           java.lang.String orderLineId,
            double price,
-           int productId,
-           int taxId,
+           java.lang.String productId,
+           java.lang.String taxId,
            double units) {
            this.orderLineId = orderLineId;
            this.price = price;
@@ -40,7 +40,7 @@ public class OrderLine  implements java.io.Serializable {
      * 
      * @return orderLineId
      */
-    public int getOrderLineId() {
+    public java.lang.String getOrderLineId() {
         return orderLineId;
     }
 
@@ -50,7 +50,7 @@ public class OrderLine  implements java.io.Serializable {
      * 
      * @param orderLineId
      */
-    public void setOrderLineId(int orderLineId) {
+    public void setOrderLineId(java.lang.String orderLineId) {
         this.orderLineId = orderLineId;
     }
 
@@ -80,7 +80,7 @@ public class OrderLine  implements java.io.Serializable {
      * 
      * @return productId
      */
-    public int getProductId() {
+    public java.lang.String getProductId() {
         return productId;
     }
 
@@ -90,7 +90,7 @@ public class OrderLine  implements java.io.Serializable {
      * 
      * @param productId
      */
-    public void setProductId(int productId) {
+    public void setProductId(java.lang.String productId) {
         this.productId = productId;
     }
 
@@ -100,7 +100,7 @@ public class OrderLine  implements java.io.Serializable {
      * 
      * @return taxId
      */
-    public int getTaxId() {
+    public java.lang.String getTaxId() {
         return taxId;
     }
 
@@ -110,7 +110,7 @@ public class OrderLine  implements java.io.Serializable {
      * 
      * @param taxId
      */
-    public void setTaxId(int taxId) {
+    public void setTaxId(java.lang.String taxId) {
         this.taxId = taxId;
     }
 
@@ -146,10 +146,16 @@ public class OrderLine  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            this.orderLineId == other.getOrderLineId() &&
+            ((this.orderLineId==null && other.getOrderLineId()==null) || 
+             (this.orderLineId!=null &&
+              this.orderLineId.equals(other.getOrderLineId()))) &&
             this.price == other.getPrice() &&
-            this.productId == other.getProductId() &&
-            this.taxId == other.getTaxId() &&
+            ((this.productId==null && other.getProductId()==null) || 
+             (this.productId!=null &&
+              this.productId.equals(other.getProductId()))) &&
+            ((this.taxId==null && other.getTaxId()==null) || 
+             (this.taxId!=null &&
+              this.taxId.equals(other.getTaxId()))) &&
             this.units == other.getUnits();
         __equalsCalc = null;
         return _equals;
@@ -162,10 +168,16 @@ public class OrderLine  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        _hashCode += getOrderLineId();
+        if (getOrderLineId() != null) {
+            _hashCode += getOrderLineId().hashCode();
+        }
         _hashCode += new Double(getPrice()).hashCode();
-        _hashCode += getProductId();
-        _hashCode += getTaxId();
+        if (getProductId() != null) {
+            _hashCode += getProductId().hashCode();
+        }
+        if (getTaxId() != null) {
+            _hashCode += getTaxId().hashCode();
+        }
         _hashCode += new Double(getUnits()).hashCode();
         __hashCodeCalc = false;
         return _hashCode;
@@ -180,8 +192,8 @@ public class OrderLine  implements java.io.Serializable {
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("orderLineId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "orderLineId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("price");
@@ -192,14 +204,14 @@ public class OrderLine  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("productId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "productId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("taxId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "taxId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("units");

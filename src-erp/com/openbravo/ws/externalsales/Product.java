@@ -14,7 +14,7 @@ public class Product  implements java.io.Serializable {
 
     private java.lang.String ean;
 
-    private int id;
+    private java.lang.String id;
 
     private java.lang.String imageUrl;
 
@@ -35,7 +35,7 @@ public class Product  implements java.io.Serializable {
            com.openbravo.ws.externalsales.Category category,
            java.lang.String description,
            java.lang.String ean,
-           int id,
+           java.lang.String id,
            java.lang.String imageUrl,
            double listPrice,
            java.lang.String name,
@@ -120,7 +120,7 @@ public class Product  implements java.io.Serializable {
      * 
      * @return id
      */
-    public int getId() {
+    public java.lang.String getId() {
         return id;
     }
 
@@ -130,7 +130,7 @@ public class Product  implements java.io.Serializable {
      * 
      * @param id
      */
-    public void setId(int id) {
+    public void setId(java.lang.String id) {
         this.id = id;
     }
 
@@ -275,7 +275,9 @@ public class Product  implements java.io.Serializable {
             ((this.ean==null && other.getEan()==null) || 
              (this.ean!=null &&
               this.ean.equals(other.getEan()))) &&
-            this.id == other.getId() &&
+            ((this.id==null && other.getId()==null) || 
+             (this.id!=null &&
+              this.id.equals(other.getId()))) &&
             ((this.imageUrl==null && other.getImageUrl()==null) || 
              (this.imageUrl!=null &&
               this.imageUrl.equals(other.getImageUrl()))) &&
@@ -310,7 +312,9 @@ public class Product  implements java.io.Serializable {
         if (getEan() != null) {
             _hashCode += getEan().hashCode();
         }
-        _hashCode += getId();
+        if (getId() != null) {
+            _hashCode += getId().hashCode();
+        }
         if (getImageUrl() != null) {
             _hashCode += getImageUrl().hashCode();
         }
@@ -356,8 +360,8 @@ public class Product  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("", "id"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("imageUrl");

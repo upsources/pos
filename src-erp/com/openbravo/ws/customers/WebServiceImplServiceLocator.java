@@ -22,7 +22,7 @@ public class WebServiceImplServiceLocator extends org.apache.axis.client.Service
     }
 
     // Use to get a proxy class for WebService
-    private java.lang.String WebService_address = "http://localhost:8080/openbravo/services/WebService";
+    private java.lang.String WebService_address = "http://localhost:8180/openbravo/services/WebService";
 
     public java.lang.String getWebServiceAddress() {
         return WebService_address;
@@ -105,7 +105,7 @@ public class WebServiceImplServiceLocator extends org.apache.axis.client.Service
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/WebService", "WebServiceImplService");
+        return new javax.xml.namespace.QName("http://localhost:8180/openbravo/services/WebService", "WebServiceImplService");
     }
 
     private java.util.HashSet ports = null;
@@ -113,7 +113,7 @@ public class WebServiceImplServiceLocator extends org.apache.axis.client.Service
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/WebService", "WebService"));
+            ports.add(new javax.xml.namespace.QName("http://localhost:8180/openbravo/services/WebService", "WebService"));
         }
         return ports.iterator();
     }

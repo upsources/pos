@@ -12,12 +12,12 @@ public class Customer  extends com.openbravo.ws.customers.BusinessPartner  imple
     }
 
     public Customer(
-           int clientId,
+           java.lang.String clientId,
            java.lang.Boolean complete,
            com.openbravo.ws.customers.Contact[] contacts,
            java.lang.Boolean customer,
            java.lang.String description,
-           int id,
+           java.lang.String id,
            com.openbravo.ws.customers.Location[] locations,
            java.lang.String name,
            java.lang.String searchKey,

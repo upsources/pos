@@ -52,9 +52,9 @@ public class ExternalSalesHelper {
     
     private String m_sERPUser;
     private String m_sERPPassword;
-    private int m_iERPId;
-    private int m_iERPOrg;
-    private int m_iERPPos;
+    private String m_iERPId;
+    private String m_iERPOrg;
+    private String m_iERPPos;
     
     /** Creates a new instance of WebServiceHelper */
     public ExternalSalesHelper(DataLogicSystem dlsystem) throws BasicException, ServiceException, MalformedURLException {
@@ -87,9 +87,9 @@ public class ExternalSalesHelper {
                     m_sERPPassword = cypher.decrypt(m_sERPPassword.substring(6));
                 } 
                 m_sERPPassword = getPasswordHash(m_sERPPassword);
-                m_iERPId = Integer.parseInt(prop.getProperty("id"));
-                m_iERPOrg = Integer.parseInt(prop.getProperty("org"));
-                m_iERPPos = Integer.parseInt(prop.getProperty("pos"));
+                m_iERPId = prop.getProperty("id");
+                m_iERPOrg = prop.getProperty("org");
+                m_iERPPos = prop.getProperty("pos");
             }
         }
     }

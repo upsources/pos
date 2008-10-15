@@ -8,7 +8,7 @@
 package com.openbravo.ws.customers;
 
 public class BusinessPartner  implements java.io.Serializable {
-    private int clientId;
+    private java.lang.String clientId;
 
     private java.lang.Boolean complete;
 
@@ -18,7 +18,7 @@ public class BusinessPartner  implements java.io.Serializable {
 
     private java.lang.String description;
 
-    private int id;
+    private java.lang.String id;
 
     private com.openbravo.ws.customers.Location[] locations;
 
@@ -32,12 +32,12 @@ public class BusinessPartner  implements java.io.Serializable {
     }
 
     public BusinessPartner(
-           int clientId,
+           java.lang.String clientId,
            java.lang.Boolean complete,
            com.openbravo.ws.customers.Contact[] contacts,
            java.lang.Boolean customer,
            java.lang.String description,
-           int id,
+           java.lang.String id,
            com.openbravo.ws.customers.Location[] locations,
            java.lang.String name,
            java.lang.String searchKey,
@@ -60,7 +60,7 @@ public class BusinessPartner  implements java.io.Serializable {
      * 
      * @return clientId
      */
-    public int getClientId() {
+    public java.lang.String getClientId() {
         return clientId;
     }
 
@@ -70,7 +70,7 @@ public class BusinessPartner  implements java.io.Serializable {
      * 
      * @param clientId
      */
-    public void setClientId(int clientId) {
+    public void setClientId(java.lang.String clientId) {
         this.clientId = clientId;
     }
 
@@ -160,7 +160,7 @@ public class BusinessPartner  implements java.io.Serializable {
      * 
      * @return id
      */
-    public int getId() {
+    public java.lang.String getId() {
         return id;
     }
 
@@ -170,7 +170,7 @@ public class BusinessPartner  implements java.io.Serializable {
      * 
      * @param id
      */
-    public void setId(int id) {
+    public void setId(java.lang.String id) {
         this.id = id;
     }
 
@@ -266,7 +266,9 @@ public class BusinessPartner  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            this.clientId == other.getClientId() &&
+            ((this.clientId==null && other.getClientId()==null) || 
+             (this.clientId!=null &&
+              this.clientId.equals(other.getClientId()))) &&
             ((this.complete==null && other.getComplete()==null) || 
              (this.complete!=null &&
               this.complete.equals(other.getComplete()))) &&
@@ -279,7 +281,9 @@ public class BusinessPartner  implements java.io.Serializable {
             ((this.description==null && other.getDescription()==null) || 
              (this.description!=null &&
               this.description.equals(other.getDescription()))) &&
-            this.id == other.getId() &&
+            ((this.id==null && other.getId()==null) || 
+             (this.id!=null &&
+              this.id.equals(other.getId()))) &&
             ((this.locations==null && other.getLocations()==null) || 
              (this.locations!=null &&
               java.util.Arrays.equals(this.locations, other.getLocations()))) &&
@@ -303,7 +307,9 @@ public class BusinessPartner  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        _hashCode += getClientId();
+        if (getClientId() != null) {
+            _hashCode += getClientId().hashCode();
+        }
         if (getComplete() != null) {
             _hashCode += getComplete().hashCode();
         }
@@ -324,7 +330,9 @@ public class BusinessPartner  implements java.io.Serializable {
         if (getDescription() != null) {
             _hashCode += getDescription().hashCode();
         }
-        _hashCode += getId();
+        if (getId() != null) {
+            _hashCode += getId().hashCode();
+        }
         if (getLocations() != null) {
             for (int i=0;
                  i<java.lang.reflect.Array.getLength(getLocations());
@@ -358,8 +366,8 @@ public class BusinessPartner  implements java.io.Serializable {
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("clientId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "clientId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("complete");
@@ -388,8 +396,8 @@ public class BusinessPartner  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("", "id"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("locations");

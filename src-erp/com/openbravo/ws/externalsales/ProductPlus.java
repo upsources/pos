@@ -17,7 +17,7 @@ public class ProductPlus  extends com.openbravo.ws.externalsales.Product  implem
            com.openbravo.ws.externalsales.Category category,
            java.lang.String description,
            java.lang.String ean,
-           int id,
+           java.lang.String id,
            java.lang.String imageUrl,
            double listPrice,
            java.lang.String name,

@@ -87,13 +87,13 @@ public class ProductsSync implements ProcessAction {
                     
                     // Synchonization of taxcategories
                     TaxCategoryInfo tc = new TaxCategoryInfo();
-                    tc.setID(Integer.toString(product.getTax().getId()));
+                    tc.setID(product.getTax().getId());
                     tc.setName(product.getTax().getName());                     
                     dlintegration.syncTaxCategory(tc);
                     
                     // Synchonization of taxes
                     TaxInfo t = new TaxInfo();
-                    t.setID(Integer.toString(product.getTax().getId()));
+                    t.setID(product.getTax().getId());
                     t.setName(product.getTax().getName());
                     t.setTaxCategoryID(tc.getID());
                     t.setRate(product.getTax().getPercentage() / 100);   
@@ -102,16 +102,16 @@ public class ProductsSync implements ProcessAction {
                    
                     // Synchonization of categories
                     CategoryInfo c = new CategoryInfo();
-                    c.setID(Integer.toString(product.getCategory().getId()));
+                    c.setID(product.getCategory().getId());
                     c.setName(product.getCategory().getName());
                     c.setImage(null);                        
                     dlintegration.syncCategory(c);
 
                     // Synchonization of products
                     ProductInfoExt p = new ProductInfoExt();
-                    p.setID(Integer.toString(product.getId()));
-                    p.setReference(Integer.toString(product.getId()));
-                    p.setCode(product.getEan() == null || product.getEan().equals("") ? Integer.toString(product.getId()) : product.getEan());
+                    p.setID(product.getId());
+                    p.setReference(product.getId());
+                    p.setCode(product.getEan() == null || product.getEan().equals("") ? product.getId() : product.getEan());
                     p.setName(product.getName());
                     p.setCom(false);
                     p.setScale(false);
@@ -151,7 +151,7 @@ public class ProductsSync implements ProcessAction {
                 dlintegration. syncCustomersBefore();
                 
                 for (Customer customer : customers) {                    
-                    CustomerInfoExt cinfo = new CustomerInfoExt(Integer.toString(customer.getId()));
+                    CustomerInfoExt cinfo = new CustomerInfoExt(customer.getId());
                     cinfo.setSearchkey(customer.getSearchKey());
                     cinfo.setName(customer.getName());          
                     cinfo.setNotes(customer.getDescription());

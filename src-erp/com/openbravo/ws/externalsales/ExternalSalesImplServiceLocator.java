@@ -22,7 +22,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
     }
 
     // Use to get a proxy class for ExternalSales
-    private java.lang.String ExternalSales_address = "http://localhost:8080/openbravo/services/ExternalSales";
+    private java.lang.String ExternalSales_address = "http://localhost:8180/openbravo/services/ExternalSales";
 
     public java.lang.String getExternalSalesAddress() {
         return ExternalSales_address;
@@ -105,7 +105,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ExternalSalesImplService");
+        return new javax.xml.namespace.QName("http://localhost:8180/openbravo/services/ExternalSales", "ExternalSalesImplService");
     }
 
     private java.util.HashSet ports = null;
@@ -113,7 +113,7 @@ public class ExternalSalesImplServiceLocator extends org.apache.axis.client.Serv
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://localhost:8080/openbravo/services/ExternalSales", "ExternalSales"));
+            ports.add(new javax.xml.namespace.QName("http://localhost:8180/openbravo/services/ExternalSales", "ExternalSales"));
         }
         return ports.iterator();
     }

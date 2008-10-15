@@ -8,13 +8,13 @@
 package com.openbravo.ws.customers;
 
 public interface WebServiceImpl extends java.rmi.Remote {
-    public com.openbravo.ws.customers.Customer[] getCustomers(int in0, java.lang.String in1, java.lang.String in2) throws java.rmi.RemoteException;
-    public com.openbravo.ws.customers.Customer getCustomer(int in0, int in1, java.lang.String in2, java.lang.String in3) throws java.rmi.RemoteException;
-    public com.openbravo.ws.customers.Customer getCustomer(int in0, java.lang.String in1, java.lang.String in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException;
-    public java.lang.Boolean updateCustomer(com.openbravo.ws.customers.BusinessPartner in0, java.lang.String in1, java.lang.String in2) throws java.rmi.RemoteException;
-    public int[] getCustomerAddresses(int in0, int in1, java.lang.String in2, java.lang.String in3) throws java.rmi.RemoteException;
-    public com.openbravo.ws.customers.Location getCustomerLocation(int in0, int in1, int in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException;
-    public java.lang.Boolean updateAddress(com.openbravo.ws.customers.Location in0, java.lang.String in1, java.lang.String in2) throws java.rmi.RemoteException;
-    public com.openbravo.ws.customers.Contact getCustomerContact(int in0, int in1, int in2, java.lang.String in3, java.lang.String in4) throws java.rmi.RemoteException;
-    public java.lang.Boolean updateContact(com.openbravo.ws.customers.Contact in0, java.lang.String in1, java.lang.String in2) throws java.rmi.RemoteException;
+    public com.openbravo.ws.customers.Customer[] getCustomers(java.lang.String clientId, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public com.openbravo.ws.customers.Customer getCustomer(java.lang.String clientId, java.lang.String customerId, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public com.openbravo.ws.customers.Customer getCustomer(java.lang.String clientId, java.lang.String name, java.lang.String searchKey, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public boolean updateCustomer(com.openbravo.ws.customers.BusinessPartner customer, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public int[] getCustomerAddresses(java.lang.String clientId, java.lang.String customerId, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public com.openbravo.ws.customers.Location getCustomerLocation(java.lang.String clientId, java.lang.String customerId, java.lang.String locationId, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public boolean updateAddress(com.openbravo.ws.customers.Location addr, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public com.openbravo.ws.customers.Contact getCustomerContact(java.lang.String clientId, java.lang.String customerId, java.lang.String contactId, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public boolean updateContact(com.openbravo.ws.customers.Contact contact, java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
 }

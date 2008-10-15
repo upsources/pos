@@ -8,9 +8,9 @@
 package com.openbravo.ws.customers;
 
 public class Contact  implements java.io.Serializable {
-    private int businessPartnerId;
+    private java.lang.String businessPartnerId;
 
-    private int clientId;
+    private java.lang.String clientId;
 
     private java.lang.String email;
 
@@ -18,7 +18,7 @@ public class Contact  implements java.io.Serializable {
 
     private java.lang.String firstName;
 
-    private int id;
+    private java.lang.String id;
 
     private java.lang.String lastName;
 
@@ -30,12 +30,12 @@ public class Contact  implements java.io.Serializable {
     }
 
     public Contact(
-           int businessPartnerId,
-           int clientId,
+           java.lang.String businessPartnerId,
+           java.lang.String clientId,
            java.lang.String email,
            java.lang.String fax,
            java.lang.String firstName,
-           int id,
+           java.lang.String id,
            java.lang.String lastName,
            java.lang.String phone,
            java.lang.String phone2) {
@@ -56,7 +56,7 @@ public class Contact  implements java.io.Serializable {
      * 
      * @return businessPartnerId
      */
-    public int getBusinessPartnerId() {
+    public java.lang.String getBusinessPartnerId() {
         return businessPartnerId;
     }
 
@@ -66,7 +66,7 @@ public class Contact  implements java.io.Serializable {
      * 
      * @param businessPartnerId
      */
-    public void setBusinessPartnerId(int businessPartnerId) {
+    public void setBusinessPartnerId(java.lang.String businessPartnerId) {
         this.businessPartnerId = businessPartnerId;
     }
 
@@ -76,7 +76,7 @@ public class Contact  implements java.io.Serializable {
      * 
      * @return clientId
      */
-    public int getClientId() {
+    public java.lang.String getClientId() {
         return clientId;
     }
 
@@ -86,7 +86,7 @@ public class Contact  implements java.io.Serializable {
      * 
      * @param clientId
      */
-    public void setClientId(int clientId) {
+    public void setClientId(java.lang.String clientId) {
         this.clientId = clientId;
     }
 
@@ -156,7 +156,7 @@ public class Contact  implements java.io.Serializable {
      * 
      * @return id
      */
-    public int getId() {
+    public java.lang.String getId() {
         return id;
     }
 
@@ -166,7 +166,7 @@ public class Contact  implements java.io.Serializable {
      * 
      * @param id
      */
-    public void setId(int id) {
+    public void setId(java.lang.String id) {
         this.id = id;
     }
 
@@ -242,8 +242,12 @@ public class Contact  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            this.businessPartnerId == other.getBusinessPartnerId() &&
-            this.clientId == other.getClientId() &&
+            ((this.businessPartnerId==null && other.getBusinessPartnerId()==null) || 
+             (this.businessPartnerId!=null &&
+              this.businessPartnerId.equals(other.getBusinessPartnerId()))) &&
+            ((this.clientId==null && other.getClientId()==null) || 
+             (this.clientId!=null &&
+              this.clientId.equals(other.getClientId()))) &&
             ((this.email==null && other.getEmail()==null) || 
              (this.email!=null &&
               this.email.equals(other.getEmail()))) &&
@@ -253,7 +257,9 @@ public class Contact  implements java.io.Serializable {
             ((this.firstName==null && other.getFirstName()==null) || 
              (this.firstName!=null &&
               this.firstName.equals(other.getFirstName()))) &&
-            this.id == other.getId() &&
+            ((this.id==null && other.getId()==null) || 
+             (this.id!=null &&
+              this.id.equals(other.getId()))) &&
             ((this.lastName==null && other.getLastName()==null) || 
              (this.lastName!=null &&
               this.lastName.equals(other.getLastName()))) &&
@@ -274,8 +280,12 @@ public class Contact  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        _hashCode += getBusinessPartnerId();
-        _hashCode += getClientId();
+        if (getBusinessPartnerId() != null) {
+            _hashCode += getBusinessPartnerId().hashCode();
+        }
+        if (getClientId() != null) {
+            _hashCode += getClientId().hashCode();
+        }
         if (getEmail() != null) {
             _hashCode += getEmail().hashCode();
         }
@@ -285,7 +295,9 @@ public class Contact  implements java.io.Serializable {
         if (getFirstName() != null) {
             _hashCode += getFirstName().hashCode();
         }
-        _hashCode += getId();
+        if (getId() != null) {
+            _hashCode += getId().hashCode();
+        }
         if (getLastName() != null) {
             _hashCode += getLastName().hashCode();
         }
@@ -308,14 +320,14 @@ public class Contact  implements java.io.Serializable {
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("businessPartnerId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "businessPartnerId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("clientId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "clientId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("email");
@@ -338,8 +350,8 @@ public class Contact  implements java.io.Serializable {
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("", "id"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("lastName");
