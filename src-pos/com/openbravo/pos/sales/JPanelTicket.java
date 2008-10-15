@@ -688,10 +688,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     try {
                         Double value = m_App.getDeviceScale().readWeight();
                         if (value != null) {
-                            TicketLineInfo oLine = m_oTicket.getLine(i);
-                            oLine.setMultiply(value.doubleValue());
-                            oLine.setPrice(Math.abs(oLine.getPrice()));
-                            paintTicketLine(i, oLine);
+                            TicketLineInfo newline = new TicketLineInfo(m_oTicket.getLine(i));
+                            newline.setMultiply(value.doubleValue());
+                            newline.setPrice(Math.abs(newline.getPrice()));
+                            paintTicketLine(i, newline);
                         }
                     } catch (ScaleException e) {
                         // Error de pesada.
@@ -711,10 +711,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 if (i < 0){
                     Toolkit.getDefaultToolkit().beep();
                 } else {
-                    // Sumamos uno a la seleccionada...
-                    TicketLineInfo oLine = m_oTicket.getLine(i);
-                    oLine.setMultiply(oLine.getMultiply() + 1.0);
-                    paintTicketLine(i, oLine); 
+                    // add one unit to the selected line
+                    TicketLineInfo newline = new TicketLineInfo(m_oTicket.getLine(i));
+                    newline.setMultiply(newline.getMultiply() + 1.0);
+                    paintTicketLine(i, newline); 
                 }
 
             // Eliminamos un producto mas a la linea seleccionada
@@ -726,13 +726,13 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 if (i < 0){
                     Toolkit.getDefaultToolkit().beep();
                 } else {
-                    // Restamos uno a la seleccionada...
-                    TicketLineInfo oLine = m_oTicket.getLine(i);
-                    oLine.setMultiply(oLine.getMultiply() - 1.0);
-                    if (oLine.getMultiply() <= 0.0) {                   
+                    // substract one unit to the selected line
+                    TicketLineInfo newline = new TicketLineInfo(m_oTicket.getLine(i));
+                    newline.setMultiply(newline.getMultiply() - 1.0);
+                    if (newline.getMultiply() <= 0.0) {                   
                         removeTicketLine(i); // elimino la linea
                     } else {
-                        paintTicketLine(i, oLine);                   
+                        paintTicketLine(i, newline);                   
                     }
                 }
 
@@ -744,10 +744,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     Toolkit.getDefaultToolkit().beep();
                 } else {
                     double dPor = getPorValue();
-                    TicketLineInfo oLine = m_oTicket.getLine(i);
-                    oLine.setMultiply(dPor);
-                    oLine.setPrice(Math.abs(oLine.getPrice()));
-                    paintTicketLine(i, oLine); 
+                    TicketLineInfo newline = new TicketLineInfo(m_oTicket.getLine(i));
+                    newline.setMultiply(dPor);
+                    newline.setPrice(Math.abs(newline.getPrice()));
+                    paintTicketLine(i, newline); 
                 }
 
             // Ponemos n productos negativos a la linea seleccionada
@@ -760,10 +760,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     Toolkit.getDefaultToolkit().beep();
                 } else {
                     double dPor = getPorValue();
-                    TicketLineInfo oLine = m_oTicket.getLine(i);
-                    oLine.setMultiply(dPor);
-                    oLine.setPrice(-Math.abs(oLine.getPrice()));
-                    paintTicketLine(i, oLine);                
+                    TicketLineInfo newline = new TicketLineInfo(m_oTicket.getLine(i));
+                    newline.setMultiply(dPor);
+                    newline.setPrice(-Math.abs(newline.getPrice()));
+                    paintTicketLine(i, newline);                
                 }
 
             // Anadimos 1 producto
@@ -1498,12 +1498,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         int i = m_ticketlines.getSelectedIndex();
         if (i < 0){
-            Toolkit.getDefaultToolkit().beep(); // No hay ninguna seleccionada
+            Toolkit.getDefaultToolkit().beep(); // no line selected
         } else { 
-            TicketLineInfo oLine = m_oTicket.getLine(i);
-            if (JProductLineEdit.showMessage(this, m_App, m_oTicket.getLine(i))) {
-                // se ha modificado la linea
-                paintTicketLine(i, oLine); 
+            TicketLineInfo newline = JProductLineEdit.showMessage(this, m_App, m_oTicket.getLine(i));
+            if (newline != null) {
+                // line has been modified
+                paintTicketLine(i, newline); 
             }
         }
 

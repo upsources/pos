@@ -32,8 +32,7 @@ import com.openbravo.pos.ticket.TicketLineInfo;
 
 public class JProductLineEdit extends javax.swing.JDialog {
     
-    private boolean m_bok;
-    private TicketLineInfo m_oLineTicket;
+    private TicketLineInfo returnLine;
     private TicketLineInfo m_oLine;
     private boolean m_bunitsok;
     private boolean m_bpriceok;
@@ -47,11 +46,10 @@ public class JProductLineEdit extends javax.swing.JDialog {
         super(parent, modal);
     }
     
-    private boolean init(AppView app, TicketLineInfo oLine) {
+    private TicketLineInfo init(AppView app, TicketLineInfo oLine) {
         // Inicializo los componentes
         initComponents();
         
-        m_oLineTicket = oLine;
         m_oLine = new TicketLineInfo(oLine);
         m_bunitsok = true;
         m_bpriceok = true;
@@ -85,10 +83,10 @@ public class JProductLineEdit extends javax.swing.JDialog {
         printTotals();
 
         getRootPane().setDefaultButton(m_jButtonOK);   
-        m_bok = false;
+        returnLine = null;
         setVisible(true);
       
-        return m_bok;
+        return returnLine;
     }
     
     private void printTotals() {
@@ -162,7 +160,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
         }
     }       
     
-    public static boolean showMessage(Component parent, AppView app, TicketLineInfo oLine) {
+    public static TicketLineInfo showMessage(Component parent, AppView app, TicketLineInfo oLine) {
          
         Window window = getWindow(parent);
         
@@ -332,11 +330,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
 
     private void m_jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonOKActionPerformed
 
-        m_oLineTicket.setProperty("product.name", m_oLine.getProperty("product.name"));         
-        m_oLineTicket.setMultiply(m_oLine.getMultiply());
-        m_oLineTicket.setPrice(m_oLine.getPrice());
-        
-        m_bok = true;
+        returnLine = m_oLine;
         
         dispose();
 
