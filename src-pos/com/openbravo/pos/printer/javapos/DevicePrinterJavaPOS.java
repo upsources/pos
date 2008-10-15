@@ -45,28 +45,38 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
     
     private String m_sName;
     
-    private POSPrinter m_printer;
-    private CashDrawer m_drawer;
+    private POSPrinter m_printer = null;
+    private CashDrawer m_drawer = null;
     
     private StringBuffer m_sline;
 
     /** Creates a new instance of DevicePrinterJavaPOS */
     public DevicePrinterJavaPOS(String sDevicePrinterName, String sDeviceDrawerName) throws TicketPrinterException {
-        m_sName = sDevicePrinterName; 
         
-        m_printer = new POSPrinter();
-        m_drawer = new CashDrawer();
+        m_sName = sDevicePrinterName;
+        if (sDeviceDrawerName != null && !sDeviceDrawerName.equals("")) {
+            m_sName += " - " + sDeviceDrawerName;
+        }
+               
         try {       
+            m_printer = new POSPrinter();
             m_printer.open(sDevicePrinterName);
             m_printer.claim(10000);
             m_printer.setDeviceEnabled(true);
             m_printer.setMapMode(POSPrinterConst.PTR_MM_METRIC);  // unit = 1/100 mm - i.e. 1 cm = 10 mm = 10 * 100 units
-           
+        } catch (JposException e) {
+            // cannot live without the printer.
+            throw new TicketPrinterException(e.getMessage(), e);
+        } 
+        
+        try {
+            m_drawer = new CashDrawer();
             m_drawer.open(sDeviceDrawerName);
             m_drawer.claim(10000);
             m_drawer.setDeviceEnabled(true);
         } catch (JposException e) {
-            throw new TicketPrinterException(e.getMessage(), e);
+            // can live without the drawer;
+            m_drawer = null;
         }
     }
    
@@ -166,21 +176,27 @@ public class DevicePrinterJavaPOS  implements DevicePrinter {
     }     
     
     public void openDrawer() {
-        try {
-            m_drawer.openDrawer();
-        } catch (JposException e) {
+        
+        if (m_drawer != null) {
+            try {
+                m_drawer.openDrawer();
+            } catch (JposException e) {
+            }
         }
     }
     
+    @Override
     public void finalize() throws Throwable {
        
         m_printer.setDeviceEnabled(false);
         m_printer.release();
         m_printer.close();
         
-        m_drawer.setDeviceEnabled(false);
-        m_drawer.release();
-        m_drawer.close();
+        if (m_drawer != null) {
+            m_drawer.setDeviceEnabled(false);
+            m_drawer.release();
+            m_drawer.close();
+        }
         
         super.finalize();
     }    

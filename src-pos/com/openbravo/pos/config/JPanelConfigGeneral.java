@@ -520,6 +520,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jLabel21 = new javax.swing.JLabel();
         m_jtxtJPOSPrinter = new javax.swing.JTextField();
         m_jtxtJPOSDrawer = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
         m_jPrinterParams2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -528,9 +529,10 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jlblPrinterPort2 = new javax.swing.JLabel();
         jcboSerialPrinter2 = new javax.swing.JComboBox();
         jPanel11 = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
         m_jtxtJPOSPrinter2 = new javax.swing.JTextField();
         m_jtxtJPOSDrawer2 = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
         m_jPrinterParams3 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
@@ -539,9 +541,10 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jlblPrinterPort3 = new javax.swing.JLabel();
         jcboSerialPrinter3 = new javax.swing.JComboBox();
         jPanel12 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
         m_jtxtJPOSPrinter3 = new javax.swing.JTextField();
         m_jtxtJPOSDrawer3 = new javax.swing.JTextField();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         m_jScaleParams = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
@@ -644,17 +647,17 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         jlblConnDisplay.setText(AppLocal.getIntString("label.machinedisplayconn")); // NOI18N
         jPanel1.add(jlblConnDisplay);
-        jlblConnDisplay.setBounds(10, 0, 50, 15);
+        jlblConnDisplay.setBounds(10, 0, 110, 15);
         jPanel1.add(jcboConnDisplay);
-        jcboConnDisplay.setBounds(60, 0, 80, 20);
+        jcboConnDisplay.setBounds(120, 0, 90, 20);
 
         jlblDisplayPort.setText(AppLocal.getIntString("label.machinedisplayport")); // NOI18N
         jPanel1.add(jlblDisplayPort);
-        jlblDisplayPort.setBounds(160, 0, 50, 15);
+        jlblDisplayPort.setBounds(220, 0, 110, 15);
 
         jcboSerialDisplay.setEditable(true);
         jPanel1.add(jcboSerialDisplay);
-        jcboSerialDisplay.setBounds(210, 0, 130, 20);
+        jcboSerialDisplay.setBounds(330, 0, 90, 20);
 
         m_jDisplayParams.add(jPanel1, "comm");
 
@@ -664,12 +667,12 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jPanel3.add(jLabel20);
         jLabel20.setBounds(10, 0, 50, 15);
         jPanel3.add(m_jtxtJPOSName);
-        m_jtxtJPOSName.setBounds(60, 0, 150, 19);
+        m_jtxtJPOSName.setBounds(120, 0, 90, 19);
 
         m_jDisplayParams.add(jPanel3, "javapos");
 
         add(m_jDisplayParams);
-        m_jDisplayParams.setBounds(340, 160, 350, 20);
+        m_jDisplayParams.setBounds(340, 160, 440, 20);
 
         m_jPrinterParams1.setLayout(new java.awt.CardLayout());
 
@@ -680,34 +683,38 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         jlblConnPrinter.setText(AppLocal.getIntString("label.machinedisplayconn")); // NOI18N
         jPanel6.add(jlblConnPrinter);
-        jlblConnPrinter.setBounds(10, 0, 50, 15);
+        jlblConnPrinter.setBounds(10, 0, 110, 15);
         jPanel6.add(jcboConnPrinter);
-        jcboConnPrinter.setBounds(60, 0, 80, 20);
+        jcboConnPrinter.setBounds(120, 0, 90, 20);
 
         jlblPrinterPort.setText(AppLocal.getIntString("label.machineprinterport")); // NOI18N
         jPanel6.add(jlblPrinterPort);
-        jlblPrinterPort.setBounds(160, 0, 50, 15);
+        jlblPrinterPort.setBounds(220, 0, 110, 15);
 
         jcboSerialPrinter.setEditable(true);
         jPanel6.add(jcboSerialPrinter);
-        jcboSerialPrinter.setBounds(210, 0, 130, 20);
+        jcboSerialPrinter.setBounds(330, 0, 90, 20);
 
         m_jPrinterParams1.add(jPanel6, "comm");
 
         jPanel4.setLayout(null);
 
-        jLabel21.setText(AppLocal.getIntString("Label.Name")); // NOI18N
+        jLabel21.setText(AppLocal.getIntString("label.javapos.drawer")); // NOI18N
         jPanel4.add(jLabel21);
-        jLabel21.setBounds(10, 0, 50, 15);
+        jLabel21.setBounds(220, 0, 110, 15);
         jPanel4.add(m_jtxtJPOSPrinter);
-        m_jtxtJPOSPrinter.setBounds(60, 0, 110, 19);
+        m_jtxtJPOSPrinter.setBounds(120, 0, 90, 19);
         jPanel4.add(m_jtxtJPOSDrawer);
-        m_jtxtJPOSDrawer.setBounds(180, 0, 110, 19);
+        m_jtxtJPOSDrawer.setBounds(330, 0, 90, 19);
+
+        jLabel24.setText(AppLocal.getIntString("label.javapos.printer")); // NOI18N
+        jPanel4.add(jLabel24);
+        jLabel24.setBounds(10, 0, 110, 15);
 
         m_jPrinterParams1.add(jPanel4, "javapos");
 
         add(m_jPrinterParams1);
-        m_jPrinterParams1.setBounds(340, 190, 350, 20);
+        m_jPrinterParams1.setBounds(340, 190, 440, 20);
 
         m_jPrinterParams2.setLayout(new java.awt.CardLayout());
 
@@ -718,34 +725,38 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         jlblConnPrinter2.setText(AppLocal.getIntString("label.machinedisplayconn")); // NOI18N
         jPanel8.add(jlblConnPrinter2);
-        jlblConnPrinter2.setBounds(10, 0, 50, 15);
+        jlblConnPrinter2.setBounds(10, 0, 110, 15);
         jPanel8.add(jcboConnPrinter2);
-        jcboConnPrinter2.setBounds(60, 0, 80, 20);
+        jcboConnPrinter2.setBounds(120, 0, 90, 20);
 
         jlblPrinterPort2.setText(AppLocal.getIntString("label.machineprinterport")); // NOI18N
         jPanel8.add(jlblPrinterPort2);
-        jlblPrinterPort2.setBounds(160, 0, 50, 15);
+        jlblPrinterPort2.setBounds(220, 0, 110, 15);
 
         jcboSerialPrinter2.setEditable(true);
         jPanel8.add(jcboSerialPrinter2);
-        jcboSerialPrinter2.setBounds(210, 0, 130, 20);
+        jcboSerialPrinter2.setBounds(330, 0, 90, 20);
 
         m_jPrinterParams2.add(jPanel8, "comm");
 
         jPanel11.setLayout(null);
-
-        jLabel22.setText(AppLocal.getIntString("Label.Name")); // NOI18N
-        jPanel11.add(jLabel22);
-        jLabel22.setBounds(10, 0, 50, 15);
         jPanel11.add(m_jtxtJPOSPrinter2);
-        m_jtxtJPOSPrinter2.setBounds(60, 0, 110, 19);
+        m_jtxtJPOSPrinter2.setBounds(120, 0, 90, 19);
         jPanel11.add(m_jtxtJPOSDrawer2);
-        m_jtxtJPOSDrawer2.setBounds(180, 0, 110, 19);
+        m_jtxtJPOSDrawer2.setBounds(330, 0, 90, 19);
+
+        jLabel27.setText(AppLocal.getIntString("label.javapos.printer")); // NOI18N
+        jPanel11.add(jLabel27);
+        jLabel27.setBounds(10, 0, 110, 15);
+
+        jLabel22.setText(AppLocal.getIntString("label.javapos.drawer")); // NOI18N
+        jPanel11.add(jLabel22);
+        jLabel22.setBounds(220, 0, 110, 15);
 
         m_jPrinterParams2.add(jPanel11, "javapos");
 
         add(m_jPrinterParams2);
-        m_jPrinterParams2.setBounds(340, 220, 350, 20);
+        m_jPrinterParams2.setBounds(340, 220, 440, 20);
 
         m_jPrinterParams3.setLayout(new java.awt.CardLayout());
 
@@ -756,34 +767,38 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         jlblConnPrinter3.setText(AppLocal.getIntString("label.machinedisplayconn")); // NOI18N
         jPanel10.add(jlblConnPrinter3);
-        jlblConnPrinter3.setBounds(10, 0, 50, 15);
+        jlblConnPrinter3.setBounds(10, 0, 110, 15);
         jPanel10.add(jcboConnPrinter3);
-        jcboConnPrinter3.setBounds(60, 0, 80, 20);
+        jcboConnPrinter3.setBounds(120, 0, 90, 20);
 
         jlblPrinterPort3.setText(AppLocal.getIntString("label.machineprinterport")); // NOI18N
         jPanel10.add(jlblPrinterPort3);
-        jlblPrinterPort3.setBounds(160, 0, 50, 15);
+        jlblPrinterPort3.setBounds(220, 0, 110, 15);
 
         jcboSerialPrinter3.setEditable(true);
         jPanel10.add(jcboSerialPrinter3);
-        jcboSerialPrinter3.setBounds(210, 0, 130, 20);
+        jcboSerialPrinter3.setBounds(330, 0, 90, 20);
 
         m_jPrinterParams3.add(jPanel10, "comm");
 
         jPanel12.setLayout(null);
-
-        jLabel23.setText(AppLocal.getIntString("Label.Name")); // NOI18N
-        jPanel12.add(jLabel23);
-        jLabel23.setBounds(10, 0, 50, 15);
         jPanel12.add(m_jtxtJPOSPrinter3);
-        m_jtxtJPOSPrinter3.setBounds(60, 0, 110, 19);
+        m_jtxtJPOSPrinter3.setBounds(120, 0, 90, 19);
         jPanel12.add(m_jtxtJPOSDrawer3);
-        m_jtxtJPOSDrawer3.setBounds(180, 0, 110, 19);
+        m_jtxtJPOSDrawer3.setBounds(330, 0, 90, 19);
+
+        jLabel28.setText(AppLocal.getIntString("label.javapos.printer")); // NOI18N
+        jPanel12.add(jLabel28);
+        jLabel28.setBounds(10, 0, 110, 15);
+
+        jLabel23.setText(AppLocal.getIntString("label.javapos.drawer")); // NOI18N
+        jPanel12.add(jLabel23);
+        jLabel23.setBounds(220, 0, 110, 15);
 
         m_jPrinterParams3.add(jPanel12, "javapos");
 
         add(m_jPrinterParams3);
-        m_jPrinterParams3.setBounds(340, 250, 350, 20);
+        m_jPrinterParams3.setBounds(340, 250, 440, 20);
 
         m_jScaleParams.setLayout(new java.awt.CardLayout());
 
@@ -798,7 +813,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         jcboSerialScale.setEditable(true);
         jPanel17.add(jcboSerialScale);
-        jcboSerialScale.setBounds(60, 0, 130, 20);
+        jcboSerialScale.setBounds(120, 0, 90, 20);
 
         m_jScaleParams.add(jPanel17, "comm");
 
@@ -838,11 +853,11 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         jlblPrinterPort5.setText(AppLocal.getIntString("label.machineprinterport")); // NOI18N
         jPanel19.add(jlblPrinterPort5);
-        jlblPrinterPort5.setBounds(10, 0, 50, 15);
+        jlblPrinterPort5.setBounds(10, 0, 110, 15);
 
         jcboSerialScanner.setEditable(true);
         jPanel19.add(jcboSerialScanner);
-        jcboSerialScanner.setBounds(60, 0, 130, 20);
+        jcboSerialScanner.setBounds(120, 0, 90, 20);
 
         m_jScannerParams.add(jPanel19, "comm");
 
@@ -943,8 +958,11 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

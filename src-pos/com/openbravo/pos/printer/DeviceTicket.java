@@ -116,9 +116,6 @@ public class DeviceTicket {
         int iPrinterIndex = 1;
         String sPrinterIndex = Integer.toString(iPrinterIndex);
         String sprinter = props.getProperty("machine.printer");
-//        if (sprinter == null || "".equals(sprinter)) {
-//            sprinter = app.getProperty("machine.printer." + sPrinterIndex);
-//        }
         
         while (sprinter != null && !"".equals(sprinter)) {
             
