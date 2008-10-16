@@ -95,7 +95,7 @@ public class TaxesLogic {
         }
     }
     
-    public void calculateTaxes(TicketInfo ticket) {
+    public void calculateTaxes(TicketInfo ticket) throws TaxesException {
   
         List<TicketTaxInfo> tickettaxes = new ArrayList<TicketTaxInfo>(); 
         
@@ -106,7 +106,7 @@ public class TaxesLogic {
         ticket.setTaxes(tickettaxes);
     }
     
-    public List<TicketTaxInfo> calculateTaxes(TicketLineInfo line) {
+    public List<TicketTaxInfo> calculateTaxes(TicketLineInfo line) throws TaxesException {
         
         TaxesLogicElement taxesapplied = getTaxesApplied(line.getTaxInfo());
         return calculateLineTaxes(line.getSubValue(), taxesapplied);
@@ -136,7 +136,12 @@ public class TaxesLogic {
         return linetaxes;       
     }
     
-    private TaxesLogicElement getTaxesApplied(TaxInfo t) {
+    private TaxesLogicElement getTaxesApplied(TaxInfo t) throws TaxesException {
+        
+        if (t == null) {
+            throw new TaxesException(new java.lang.NullPointerException());
+        }
+        
         return taxtrees.get(t.getId());
     }
         

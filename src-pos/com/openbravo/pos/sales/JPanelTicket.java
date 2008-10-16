@@ -819,50 +819,56 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {  
             
-            // reset the payment info
-            taxeslogic.calculateTaxes(ticket);
-            ticket.resetPayments();
-                
-            if (executeEvent(ticket, ticketext, "ticket.total") == null) {
+            try {
+                // reset the payment info
+                taxeslogic.calculateTaxes(ticket);
+                ticket.resetPayments();
 
-                // Muestro el total
-                printTicket("Printer.TicketTotal", ticket, ticketext);
+                if (executeEvent(ticket, ticketext, "ticket.total") == null) {
+
+                    // Muestro el total
+                    printTicket("Printer.TicketTotal", ticket, ticketext);
 
 
-                // Select the Payments information
-                JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
-                        ? paymentdialogreceipt
-                        : paymentdialogrefund;
-                paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
+                    // Select the Payments information
+                    JPaymentSelect paymentdialog = ticket.getTotal() >= 0.0 
+                            ? paymentdialogreceipt
+                            : paymentdialogrefund;
+                    paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
 
-                if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
+                    if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
 
-                    // assign the payments selected and calculate taxes.                    
-                    ticket.setPayments(paymentdialog.getSelectedPayments());
+                        // assign the payments selected and calculate taxes.                    
+                        ticket.setPayments(paymentdialog.getSelectedPayments());
 
-                    // Asigno los valores definitivos del ticket...
-                    ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
-                    ticket.setActiveCash(m_App.getActiveCashIndex());
-                    ticket.setDate(new Date()); // Le pongo la fecha de cobro
+                        // Asigno los valores definitivos del ticket...
+                        ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
+                        ticket.setActiveCash(m_App.getActiveCashIndex());
+                        ticket.setDate(new Date()); // Le pongo la fecha de cobro
 
-                    if (executeEvent(ticket, ticketext, "ticket.save") == null) {
-                        // Save the receipt and assign a receipt number
-                        try {
-                            dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
-                        } catch (BasicException eData) {
-                            MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
-                            msg.show(this);
+                        if (executeEvent(ticket, ticketext, "ticket.save") == null) {
+                            // Save the receipt and assign a receipt number
+                            try {
+                                dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
+                            } catch (BasicException eData) {
+                                MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                                msg.show(this);
+                            }
+
+                            executeEvent(ticket, ticketext, "ticket.close");
+
+                            // Print receipt.
+                            printTicket(paymentdialog.isPrintSelected()
+                                    ? "Printer.Ticket"
+                                    : "Printer.Ticket2", ticket, ticketext);
+                            resultok = true;
                         }
-                        
-                        executeEvent(ticket, ticketext, "ticket.close");
-                        
-                        // Print receipt.
-                        printTicket(paymentdialog.isPrintSelected()
-                                ? "Printer.Ticket"
-                                : "Printer.Ticket2", ticket, ticketext);
-                        resultok = true;
                     }
                 }
+            } catch (TaxesException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotcalculatetaxes"));
+                msg.show(this);
+                resultok = false;
             }
             
             // reset the payment info
