@@ -23,6 +23,7 @@ import jpos.FiscalPrinter;
 import jpos.JposException;
 import com.openbravo.pos.printer.DeviceFiscalPrinter;
 import com.openbravo.pos.printer.TicketPrinterException;
+import com.openbravo.pos.util.RoundUtils;
 
 public class DeviceFiscalPrinterJavaPOS extends javax.swing.JPanel implements DeviceFiscalPrinter  {
     
@@ -75,7 +76,7 @@ public class DeviceFiscalPrinterJavaPOS extends javax.swing.JPanel implements De
     
     public void printLine(String sproduct, double dprice, double dunits) {
         try {
-            m_fiscal.printRecItem(sproduct, (int)(dprice * dunits * 10000.0), 0, 0, (int)(dprice * 10000.0), "");
+            m_fiscal.printRecItem(sproduct, roundFiscal(dprice * dunits), 0, 0, roundFiscal(dprice), "");
         } catch (JposException e) {
         }             
     }
@@ -91,7 +92,7 @@ public class DeviceFiscalPrinterJavaPOS extends javax.swing.JPanel implements De
         try {
             // el primer valor es el total calculado por la aplicacion.
             // al poner 0 no se debe chequear: CAPCHECKTOTAL = false.
-            m_fiscal.printRecTotal(0, (int)(dpaid * 10000), sPayment);
+            m_fiscal.printRecTotal(0, roundFiscal(dpaid), sPayment);
         } catch (JposException e) {
         }          
     }
@@ -118,6 +119,10 @@ public class DeviceFiscalPrinterJavaPOS extends javax.swing.JPanel implements De
         
         super.finalize();       
     } 
+    
+    private int roundFiscal(double value) {
+        return (int) Math.floor(RoundUtils.round(value) * 10000.0 + 0.5);
+    }
     
     /** This method is called from within the constructor to
      * initialize the form.
