@@ -319,6 +319,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (executeEventAndRefresh("ticket.setline", new ScriptArg("index", index), new ScriptArg("line", oLine)) == null) {
 
+            m_oTicket.setLine(index, oLine);
             m_ticketlines.setTicketLine(index, oLine);
             m_ticketlines.setSelectedIndex(index);
 
@@ -363,7 +364,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     Toolkit.getDefaultToolkit().beep();                                   
                 }
             } else {    
-                // Producto normal, entonces al final
+                // Producto normal, entonces al finalnewline.getMultiply() 
                 m_oTicket.addLine(oLine);            
                 m_ticketlines.addTicketLine(oLine); // Pintamos la linea en la vista... 
             }
