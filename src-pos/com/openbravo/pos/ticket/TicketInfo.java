@@ -28,6 +28,7 @@ import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.util.RoundUtils;
 
 /**
  *
@@ -282,11 +283,11 @@ public class TicketInfo implements SerializableRead, Externalizable {
         double sum = 0.0;
         if (hasTaxesCalculated()) {
             for (TicketTaxInfo tax : taxes) {
-                sum += tax.getTax();
+                sum += tax.getTax(); // Taxes are already rounded...
             }            
         } else {                   
             for (TicketLineInfo line : m_aLines) {
-                sum += line.getTax();
+                sum += RoundUtils.round(line.getTax()); 
             }        
         }        
         return sum;
