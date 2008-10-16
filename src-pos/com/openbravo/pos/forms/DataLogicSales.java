@@ -293,11 +293,16 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                     }});
                     
                     if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
-                        getDebtUpdate().exec(new Object[]{                           
-                            ticket.getCustomer().getId(),
-                            new Double(p.getTotal()),
-                            ticket.getDate()
-                        });
+                        
+                        // udate customer fields...
+                        ticket.getCustomer().updateCurDebt(p.getTotal(), ticket.getDate());
+                        
+                        // save customer fields...
+                        getDebtUpdate().exec(new DataParams() { public void writeValues() throws BasicException {                  
+                            setDouble(1, ticket.getCustomer().getCurdebt());
+                            setTimestamp(2, ticket.getCustomer().getCurdate());
+                            setString(3, ticket.getCustomer().getId());
+                        }});
                     }
                 } 
                 
@@ -349,11 +354,16 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 // update customer debts
                 for (PaymentInfo p : ticket.getPayments()) {
                     if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
-                        getDebtUpdate().exec(new Object[]{                           
-                            ticket.getCustomer().getId(),
-                            new Double(-p.getTotal()),
-                            ticket.getDate()
-                        });
+                        
+                        // udate customer fields...
+                        ticket.getCustomer().updateCurDebt(-p.getTotal(), ticket.getDate());
+ 
+                         // save customer fields...
+                        getDebtUpdate().exec(new DataParams() { public void writeValues() throws BasicException {                  
+                            setDouble(1, ticket.getCustomer().getCurdebt());
+                            setTimestamp(2, ticket.getCustomer().getCurdate());
+                            setString(3, ticket.getCustomer().getId());
+                        }});
                     }
                 }
                 
@@ -441,11 +451,8 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public final SentenceExec getDebtUpdate() {
         
         return new PreparedSentence(s
-                , "UPDATE CUSTOMERS SET " +
-                " CURDEBT = CASE WHEN (COALESCE(CURDEBT, 0) + ?) <= 0 THEN NULL ELSE (COALESCE(CURDEBT, 0) + ?) END, " +
-                " CURDATE = CASE WHEN (COALESCE(CURDEBT, 0) + ?) <= 0 THEN NULL WHEN CURDATE IS NULL THEN ? ELSE CURDATE END " +
-                " WHERE ID = ?"
-                , new SerializerWriteBasicExt(new Datas[] {Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP}, new int[]{1, 1, 1, 2, 0}));   
+                , "UPDATE CUSTOMERS SET CURDEBT = ?, CURDATE = ? WHERE ID = ?"
+                , SerializerWriteParams.INSTANCE);   
     }
     
     public final SentenceExec getStockDiaryInsert() {

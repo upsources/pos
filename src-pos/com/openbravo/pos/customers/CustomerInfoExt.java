@@ -116,6 +116,22 @@ public class CustomerInfoExt extends CustomerInfo {
     public void setCurdebt(Double curdebt) {
         this.curdebt = curdebt;
     }
+    
+    public void updateCurDebt(Double ammount, Date d) {
+        
+        curdebt = RoundUtils.round(RoundUtils.getValue(curdebt) + ammount);
+        if (RoundUtils.compare(curdebt, 0.0) > 0) {
+            if (curdate == null) {
+                // new date
+                curdate = d;
+            }
+        } else if (RoundUtils.compare(curdebt, 0.0) == 0) {
+            curdebt = null;
+            curdate = null;
+        } else { // < 0
+            curdate = null;
+        }
+    }
 
     public String getFirstname() {
         return firstname;
