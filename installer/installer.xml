@@ -98,7 +98,7 @@
                 <folder>
                     <description>DEB</description>
                     <destination>${installdir}</destination>
-                    <name>openbravopos</name>
+                    <name>openbravopos-linux</name>
                     <platforms>linux</platforms>
                     <distributionFileList>
                         <distributionFile>
@@ -166,7 +166,7 @@
                 <folder>
                     <description>linux-x64</description>
                     <destination>${installdir}</destination>
-                    <name>openbravopos</name>
+                    <name>openbravopos-linux-x64</name>
                     <platforms>linux-x64</platforms>
                     <distributionFileList>
                         <distributionFile>
@@ -201,7 +201,7 @@
                 <folder>
                     <description>linux-ia64</description>
                    <destination>${installdir}</destination>
-                    <name>openbravopos</name>
+                    <name>openbravopos-linux-ia64</name>
                     <platforms>linux-ia64</platforms>
                     <distributionFileList>
                         <distributionFile>
@@ -236,7 +236,7 @@
                 <folder>
                     <description>osx</description>
                    <destination>${installdir}</destination>
-                    <name>openbravopos</name>
+                    <name>openbravopos-osx</name>
                     <platforms>osx</platforms>
                     <distributionFileList>
                         <distributionFile>
@@ -271,7 +271,7 @@
                 <folder>
                     <description>solaris-intel</description>
                     <destination>${installdir}</destination>
-                    <name>openbravopos</name>
+                    <name>openbravopos-solaris-intel</name>
                     <platforms>solaris-intel</platforms>
                     <distributionFileList>
                         <distributionFile>
