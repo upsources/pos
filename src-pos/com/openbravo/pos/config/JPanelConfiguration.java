@@ -55,7 +55,6 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
         m_panelconfig.add(new JPanelConfigGeneral());
         m_panelconfig.add(new JPanelConfigLocale());
         m_panelconfig.add(new JPanelConfigPayment());
-        // m_panelconfig.add(new JPanelConfigERP());
         
         // paneles auxiliares
         for (PanelConfig c: m_panelconfig) {
@@ -145,44 +144,14 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel14 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         m_jConfigOptions = new javax.swing.JPanel();
-        jPanel15 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jbtnSave = new javax.swing.JButton();
-        jbtnRestore = new javax.swing.JButton();
         jbtnCancel = new javax.swing.JButton();
-
-        setLayout(new java.awt.BorderLayout());
-
-        jPanel14.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        jPanel14.setLayout(new java.awt.BorderLayout());
+        jbtnRestore = new javax.swing.JButton();
+        jbtnSave = new javax.swing.JButton();
 
         m_jConfigOptions.setLayout(new javax.swing.BoxLayout(m_jConfigOptions, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane1.setViewportView(m_jConfigOptions);
-
-        jPanel14.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        add(jPanel14, java.awt.BorderLayout.CENTER);
-
-        jPanel15.setLayout(new java.awt.BorderLayout());
-
-        jbtnSave.setText(AppLocal.getIntString("Button.Save")); // NOI18N
-        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnSaveActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jbtnSave);
-
-        jbtnRestore.setText(AppLocal.getIntString("Button.Factory")); // NOI18N
-        jbtnRestore.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnRestoreActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jbtnRestore);
 
         jbtnCancel.setText(AppLocal.getIntString("Button.Restore")); // NOI18N
         jbtnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -190,11 +159,49 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
                 jbtnCancelActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtnCancel);
 
-        jPanel15.add(jPanel1, java.awt.BorderLayout.LINE_END);
+        jbtnRestore.setText(AppLocal.getIntString("Button.Factory")); // NOI18N
+        jbtnRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnRestoreActionPerformed(evt);
+            }
+        });
 
-        add(jPanel15, java.awt.BorderLayout.SOUTH);
+        jbtnSave.setText(AppLocal.getIntString("Button.Save")); // NOI18N
+        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSaveActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbtnSave)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnRestore)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnCancel)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnCancel)
+                    .addComponent(jbtnRestore)
+                    .addComponent(jbtnSave))
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelActionPerformed
@@ -221,9 +228,6 @@ public class JPanelConfiguration extends JPanel implements JPanelView {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtnCancel;
     private javax.swing.JButton jbtnRestore;
