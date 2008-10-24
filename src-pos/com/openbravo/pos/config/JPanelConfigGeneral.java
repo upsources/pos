@@ -408,7 +408,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         
         // El scanner
         String sMachineScanner = comboValue(jcboMachineScanner.getSelectedItem());
-        if ("scanpal2".equals(sMachineScale)) {
+        if ("scanpal2".equals(sMachineScanner)) {
             config.setProperty("machine.scanner", sMachineScanner + ":" + comboValue(jcboSerialScanner.getSelectedItem()));
         } else {
             config.setProperty("machine.scanner", sMachineScanner);
