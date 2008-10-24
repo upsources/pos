@@ -60,6 +60,7 @@
     <class name="com.openbravo.pos.inventory.TaxCategoriesPanel"/>
     <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
     <class name="com.openbravo.pos.inventory.StockManagement"/>
+    <class name="com.openbravo.pos.inventory.AuxiliarPanel"/>
     <class name="/com/openbravo/reports/products.bs"/>     
     <class name="/com/openbravo/reports/productlabels.bs"/>     
     <class name="/com/openbravo/reports/productscatalog.bs"/>
