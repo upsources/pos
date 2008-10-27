@@ -114,8 +114,8 @@ public class ExternalSalesHelper {
         }        
     }
     
-    public void uploadOrders(Order[] orderstoupload) throws RemoteException {
-        externalSales.uploadOrders(m_iERPId, m_iERPOrg, m_iERPPos, orderstoupload, m_sERPUser, m_sERPPassword);
+    public boolean uploadOrders(Order[] orderstoupload) throws RemoteException {
+        return externalSales.uploadOrders(m_iERPId, m_iERPOrg, m_iERPPos, orderstoupload, m_sERPUser, m_sERPPassword);
     }
        
     private static String getPasswordHash(String password) {

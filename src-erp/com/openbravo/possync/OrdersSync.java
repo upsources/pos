@@ -79,8 +79,9 @@ public class OrdersSync implements ProcessAction {
                 // transformo tickets en ordenes
                 Order[] orders = transformTickets(ticketlist);
 
-                // subo las ordenes
-                externalsales.uploadOrders(orders);
+                //uploads orders and return boolean as a result
+                if(!externalsales.uploadOrders(orders))
+                    throw new BasicException(AppLocal.getIntString("message.returnnull"));
 
                 // actualizo los tickets como subidos
                 dlintegration.execTicketUpdate();
