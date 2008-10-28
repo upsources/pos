@@ -56,11 +56,15 @@ public abstract class JEditorNumber extends JEditorAbstract {
         firePropertyChange("Text", sOldText, getText());
     }   
     
-    public void setValue(double dvalue) {
+    public void setDoubleValue(Double dvalue) {
         
         String sOldText = getText();
-
-        if (dvalue >= 0.0) {
+        
+        if (dvalue == null) {
+            m_sNumber = "";
+            m_bNegative = false;
+            m_iNumberStatus = NUMBER_ZERONULL;                 
+        } else if (dvalue >= 0.0) {
             m_sNumber = formatDouble(dvalue);
             m_bNegative = false;
             m_iNumberStatus = NUMBER_ZERONULL;            
@@ -74,11 +78,17 @@ public abstract class JEditorNumber extends JEditorAbstract {
         firePropertyChange("Text", sOldText, getText());
     } 
     
-    public double getValue() throws BasicException {  
-        try {
-            return Double.parseDouble(getText());
-        } catch (NumberFormatException e) {
-            throw new BasicException(e);
+    public Double getDoubleValue() {  
+        
+        String text = getText();
+        if (text == null || text.equals("")) {
+            return null; 
+        } else {
+            try {
+                return Double.parseDouble(text);
+            } catch (NumberFormatException e) {
+                return null;
+            }
         }
     }
     
@@ -108,8 +118,8 @@ public abstract class JEditorNumber extends JEditorAbstract {
         }
     }    
     
-    private String formatDouble(double dvalue) {
-        String sNumber = Double.toString(dvalue);
+    private String formatDouble(Double dvalue) {
+        String sNumber = dvalue.toString();
         if (sNumber.endsWith(".0")) {
             sNumber = sNumber.substring(0,  sNumber.length() - 2);
         }
@@ -133,7 +143,7 @@ public abstract class JEditorNumber extends JEditorAbstract {
     }
     
     protected String getTextFormat() throws BasicException {
-        return m_fmt.formatValue(new Double(getValue()));
+        return m_fmt.formatValue(getDoubleValue());
     }
     
     protected void typeCharInternal(char cTrans) {

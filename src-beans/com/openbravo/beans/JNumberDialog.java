@@ -60,7 +60,7 @@ public class JNumberDialog extends javax.swing.JDialog {
         
         m_jnumber.addEditorKeys(m_jKeys);
         m_jnumber.reset();
-        m_jnumber.setValue(0.0);
+        m_jnumber.setDoubleValue(0.0);
         m_jnumber.activate();
         
         m_jPanelTitle.setBorder(RoundedBorder.createGradientBorder());
@@ -188,13 +188,11 @@ public class JNumberDialog extends javax.swing.JDialog {
 
     private void jcmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmdOKActionPerformed
 
-        try {
-            m_value = new Double(m_jnumber.getValue());
-        } catch (BasicException e) {
-        } finally {
-            setVisible(false);
-            dispose();
-        }
+
+        m_value = m_jnumber.getDoubleValue();
+        setVisible(false);
+        dispose();
+
         
     }//GEN-LAST:event_jcmdOKActionPerformed
 

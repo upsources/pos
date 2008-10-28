@@ -72,11 +72,12 @@ public class JPaymentPaper extends javax.swing.JPanel implements JPaymentInterfa
     
     private void printState() {
 
-        try {
-            m_dTicket = m_jTendered.getValue();
-        } catch (BasicException e){
+        Double value = m_jTendered.getDoubleValue();
+        if (value == null) {
             m_dTicket = 0.0;
-        }   
+        } else {
+            m_dTicket = value;
+        } 
         
         m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTicket)));
         

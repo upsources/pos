@@ -104,12 +104,12 @@ public class JPaymentDebt extends javax.swing.JPanel implements JPaymentInterfac
             jlblMessage.setText(AppLocal.getIntString("message.nocustomernodebt"));
             notifier.setStatus(false, false);
         } else {
-            try {
-                m_dPaid = m_jTendered.getValue();
-                m_dPaid = m_dPaid == 0.0 ? m_dTotal : m_dPaid;
-            } catch (BasicException e){
+            Double value = m_jTendered.getDoubleValue();
+            if (value == null || value == 0.0) {
                 m_dPaid = m_dTotal;
-            }   
+            } else {
+                m_dPaid = value;
+            } 
 
             m_jMoneyEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dPaid)));
             

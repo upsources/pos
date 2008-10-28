@@ -96,11 +96,11 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
     
     private void printState() {
 
-        try {
-            m_dPaid = m_jTendered.getValue();
-            m_dPaid = m_dPaid == 0.0 ? m_dTotal : m_dPaid; // si es 0.0 entonces es como si estuviera pagado.
-        } catch (BasicException e){
+        Double value = m_jTendered.getDoubleValue();
+        if (value == null || value == 0.0) {
             m_dPaid = m_dTotal;
+        } else {            
+            m_dPaid = value;
         }   
 
         int iCompare = RoundUtils.compare(m_dPaid, m_dTotal);
@@ -149,13 +149,13 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
             this.amount = amount;
         }
         public void actionPerformed(ActionEvent e) {
-            double tendered;
-            try {
-                tendered = m_jTendered.getValue();
-            } catch (BasicException eB){
-                tendered = 0.0;
-            }   
-            m_jTendered.setValue(RoundUtils.round(tendered + amount));
+            Double tendered = m_jTendered.getDoubleValue();
+            if (tendered == null) {
+                m_jTendered.setDoubleValue(RoundUtils.round(amount));
+            } else {
+                m_jTendered.setDoubleValue(RoundUtils.round(tendered + amount));
+            }
+
             printState();
         }
     }

@@ -59,9 +59,9 @@ public class JProductLineEdit extends javax.swing.JDialog {
         m_jPriceTax.setEnabled(app.getAppUserView().getUser().hasPermission("com.openbravo.pos.sales.JPanelTicketEdits"));
         
         m_jName.setText(m_oLine.getProperty("product.name"));
-        m_jUnits.setValue(oLine.getMultiply());
-        m_jPrice.setValue(oLine.getPrice()); 
-        m_jPriceTax.setValue(oLine.getPriceTax());
+        m_jUnits.setDoubleValue(oLine.getMultiply());
+        m_jPrice.setDoubleValue(oLine.getPrice()); 
+        m_jPriceTax.setDoubleValue(oLine.getPriceTax());
         m_jTaxrate.setText(oLine.getTaxInfo().getName());
         
         m_jName.addPropertyChangeListener("Edition", new RecalculateName());
@@ -104,12 +104,14 @@ public class JProductLineEdit extends javax.swing.JDialog {
     
     private class RecalculateUnits implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent evt) {
-            try {
-                m_oLine.setMultiply(m_jUnits.getValue());
-                m_bunitsok = true;
-            } catch (BasicException e) {
+            Double value = m_jUnits.getDoubleValue();
+            if (value == null || value == 0.0) {
                 m_bunitsok = false;
-            }    
+            } else {
+                m_oLine.setMultiply(value);
+                m_bunitsok = true;                
+            }
+
             printTotals();
         }
     }
@@ -117,14 +119,15 @@ public class JProductLineEdit extends javax.swing.JDialog {
     private class RecalculatePrice implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent evt) {
 
-            try {
-                m_oLine.setPrice(m_jPrice.getValue());
-                m_jPriceTax.setValue(m_oLine.getPriceTax());
-                m_bpriceok = true;
-            } catch (BasicException e) {
-                // m_jPriceTax.setValue(m_oLine.getPriceTax());
+            Double value = m_jPrice.getDoubleValue();
+            if (value == null || value == 0.0) {
                 m_bpriceok = false;
+            } else {
+                m_oLine.setPrice(value);
+                m_jPriceTax.setDoubleValue(m_oLine.getPriceTax());
+                m_bpriceok = true;
             }
+
             printTotals();
         }
     }    
@@ -132,14 +135,16 @@ public class JProductLineEdit extends javax.swing.JDialog {
     private class RecalculatePriceTax implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent evt) {
 
-            try {
-                m_oLine.setPriceTax(m_jPriceTax.getValue());
-                m_jPrice.setValue(m_oLine.getPrice());
-                m_bpriceok = true;
-            } catch (BasicException e) {
+            Double value = m_jPriceTax.getDoubleValue();
+            if (value == null || value == 0.0) {
                 // m_jPriceTax.setValue(m_oLine.getPriceTax());
                 m_bpriceok = false;
+            } else {
+                m_oLine.setPriceTax(value);
+                m_jPrice.setDoubleValue(m_oLine.getPrice());
+                m_bpriceok = true;
             }
+
             printTotals();
         }
     }   

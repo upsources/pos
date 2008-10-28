@@ -87,22 +87,12 @@ public class ProductFilterSales extends javax.swing.JPanel implements EditorCrea
         }
         
         // Precio de compra
-        try {
-            afilter[2] = m_jCboPriceBuy.getSelectedItem();
-            afilter[3] =  new Double(m_jPriceBuy.getValue());
-        } catch (BasicException e) {
-            afilter[2] = QBFCompareEnum.COMP_NONE;
-            afilter[3] = null;
-        }
+        afilter[3] = m_jPriceBuy.getDoubleValue();
+        afilter[2] = afilter[3] == null ? QBFCompareEnum.COMP_NONE : m_jCboPriceBuy.getSelectedItem();
 
         // Precio de venta
-        try {
-            afilter[4] = m_jCboPriceSell.getSelectedItem();
-            afilter[5] =  new Double(m_jPriceSell.getValue());
-        } catch (BasicException e) {
-            afilter[4] = QBFCompareEnum.COMP_NONE;
-            afilter[5] = null;
-        }
+        afilter[5] = m_jPriceSell.getDoubleValue();
+        afilter[4] = afilter[5] == null ? QBFCompareEnum.COMP_NONE : m_jCboPriceSell.getSelectedItem();
         
         // Categoria
         if (m_CategoryModel.getSelectedKey() == null) {
