@@ -26,7 +26,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="372" max="32767" attributes="0"/>
+              <EmptySpace pref="371" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -52,26 +52,19 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="m_jReference1" pref="219" max="32767" attributes="1"/>
-                              <Component id="m_jBarcode1" alignment="0" pref="219" max="32767" attributes="1"/>
+                              <Component id="m_jReference1" pref="234" max="32767" attributes="1"/>
+                              <Component id="m_jBarcode1" alignment="0" pref="234" max="32767" attributes="1"/>
                           </Group>
                       </Group>
                       <Component id="m_jSearch" pref="306" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="Enter2" pref="49" max="32767" attributes="1"/>
-                              <Component id="Enter1" alignment="1" pref="49" max="32767" attributes="1"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="search" min="-2" max="-2" attributes="1"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="search" max="32767" attributes="1"/>
+                      <Component id="Enter2" max="32767" attributes="1"/>
+                      <Component id="Enter1" alignment="1" max="32767" attributes="1"/>
                   </Group>
+                  <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -84,12 +77,12 @@
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="m_jReference1" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="Enter1" min="-2" pref="26" max="-2" attributes="0"/>
+                      <Component id="Enter1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="Enter2" min="-2" pref="26" max="-2" attributes="0"/>
+                          <Component id="Enter2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
@@ -101,10 +94,10 @@
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="search" min="-2" max="-2" attributes="1"/>
                       <Component id="m_jSearch" min="-2" max="-2" attributes="1"/>
+                      <Component id="search" min="-2" max="-2" attributes="1"/>
                   </Group>
-                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -112,18 +105,16 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="DejaVu Sans" size="13" style="1"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="pos_messages.properties" key="label.prodref" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Reference"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="DejaVu Sans" size="13" style="1"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="pos_messages.properties" key="label.prodbarcode" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Barcode"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="m_jReference1">
@@ -139,7 +130,7 @@
         <Component class="javax.swing.JButton" name="Enter2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/openbravo/images/button_ok.png"/>
+              <Image iconType="3" name="/com/openbravo/images/apply.png"/>
             </Property>
           </Properties>
           <Events>
@@ -159,7 +150,7 @@
         <Component class="javax.swing.JButton" name="Enter1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/openbravo/images/button_ok.png"/>
+              <Image iconType="3" name="/com/openbravo/images/apply.png"/>
             </Property>
           </Properties>
           <Events>

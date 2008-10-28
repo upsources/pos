@@ -28,10 +28,10 @@ import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.AuxiliarFilter;
-import com.openbravo.pos.panels.JAuxiliarFinder;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import java.awt.Component;
-
+import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.panels.JProductFinder;
 import java.awt.Toolkit;
 
 
@@ -225,21 +225,18 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         m_jEnter1 = new javax.swing.JButton();
         m_jProduct = new javax.swing.JTextField();
 
-        m_jProductLabel.setFont(new java.awt.Font("DejaVu Sans", 3, 18));
+        m_jProductLabel.setFont(new java.awt.Font("SansSerif", 3, 18)); // NOI18N
         m_jProductLabel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 m_jProductLabelPropertyChange(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
-        jLabel2.setText("Product");
+        jLabel2.setText(AppLocal.getIntString("label.stockproduct")); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
-        jLabel3.setText("Reference");
+        jLabel3.setText(AppLocal.getIntString("label.prodref")); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("DejaVu Sans", 1, 13));
-        jLabel4.setText("Barcode");
+        jLabel4.setText(AppLocal.getIntString("label.prodbarcode")); // NOI18N
 
         m_jReference.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,7 +250,9 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
             }
         });
 
-        m_jEnter2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
+        m_jEnter2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/apply.png"))); // NOI18N
+        m_jEnter2.setMaximumSize(new java.awt.Dimension(50, 26));
+        m_jEnter2.setMinimumSize(new java.awt.Dimension(50, 26));
         m_jEnter2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jEnter2ActionPerformed(evt);
@@ -261,13 +260,15 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         });
 
         m_jSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
+        m_jSearch.setMaximumSize(new java.awt.Dimension(50, 26));
+        m_jSearch.setMinimumSize(new java.awt.Dimension(50, 26));
         m_jSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jSearchActionPerformed(evt);
             }
         });
 
-        m_jEnter1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/button_ok.png"))); // NOI18N
+        m_jEnter1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/apply.png"))); // NOI18N
         m_jEnter1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jEnter1ActionPerformed(evt);
@@ -301,9 +302,9 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
                     .addComponent(m_jProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
-                    .addComponent(m_jEnter2, 0, 0, Short.MAX_VALUE)
-                    .addComponent(m_jEnter1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE))
+                    .addComponent(m_jSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(m_jEnter2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(m_jEnter1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -315,15 +316,15 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
                         .addComponent(jLabel2)
                         .addComponent(jLabel3)
                         .addComponent(m_jReference, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(m_jEnter1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(m_jEnter1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(m_jBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(m_jEnter2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(m_jEnter2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jSearch)
+                    .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(m_jProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
@@ -347,7 +348,7 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
                 .addComponent(m_jProductLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -367,7 +368,7 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jSearchActionPerformed
-        assignProduct(JAuxiliarFinder.showMessage(this, m_dlSales));
+        assignProduct(JProductFinder.showMessage(this, m_dlSales, true));
 }//GEN-LAST:event_m_jSearchActionPerformed
 
     private void m_jReferenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jReferenceActionPerformed
