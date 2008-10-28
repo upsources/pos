@@ -153,12 +153,37 @@ public class SimpleReceipt extends javax.swing.JPanel {
             // inc the line
             ticket.getLine(i).setMultiply(ticket.getLine(i).getMultiply() + line.getMultiply());
             ticketlines.setTicketLine(i, ticket.getLine(i));  
-            printTotals();
+            printTotals();  
         } else {
             ticket.addLine(line);
             ticketlines.addTicketLine(line);
             printTotals();
         }
+    }
+    
+    public JTicketLines getJticketLine(){
+        return this.ticketlines;
+    }
+    
+    public int countNumberAuxiliar(){
+        int i = ticketlines.getSelectedIndex();
+        int max = ticket.getLinesCount();
+        int aux = 0;
+        
+        if (i>=0){
+            if ((!ticket.getLine(i).isProductCom()) && (max-i>1)){
+                for (int j = i+1; j < max; j++) {
+                    if (ticket.getLine(j).isProductCom()) {
+                        aux++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+            return aux;
+        }
+        return aux;
     }
     
     /** This method is called from within the constructor to

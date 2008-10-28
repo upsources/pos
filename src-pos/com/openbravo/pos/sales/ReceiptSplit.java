@@ -60,7 +60,7 @@ public class ReceiptSplit extends javax.swing.JDialog {
         jPanel5.add(receiptone, BorderLayout.CENTER);
         
         receipttwo = new SimpleReceipt(ticketline, dlSales, dlCustomers, taxeslogic);
-        jPanel3.add(receipttwo, BorderLayout.CENTER);  
+        jPanel3.add(receipttwo, BorderLayout.CENTER);
     }
     
     public static ReceiptSplit getDialog(Component parent, String ticketline, DataLogicSales dlSales, DataLogicCustomers dlCustomers, TaxesLogic taxeslogic) {
@@ -248,39 +248,89 @@ public class ReceiptSplit extends javax.swing.JDialog {
     }//GEN-LAST:event_m_jButtonCancelActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        TicketLineInfo line = receiptone.getSelectedLine();
-        if (line != null) {
-            receipttwo.addSelectedLine(line);
-        }       
+        int numAux = receiptone.countNumberAuxiliar();
+        int ini = receiptone.getJticketLine().getSelectedIndex();
+        
+        for (int i = ini; i <= ini+numAux; i++) {
+            TicketLineInfo line = receiptone.getSelectedLine();
+            if (line != null){
+                receipttwo.addSelectedLine(line);
+            }
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        TicketLineInfo line;
+        int numAux = receiptone.countNumberAuxiliar();
+        int ini = receiptone.getJticketLine().getSelectedIndex();
 
-        TicketLineInfo line = receiptone.getSelectedLineUnit();
-        if (line != null) {
+        if (numAux!=0){
+            line = receiptone.getSelectedLineUnit();
             receipttwo.addSelectedLine(line);
-        }    
-        
+            
+            int a = receiptone.countNumberAuxiliar();
+            if (a != 0){
+                receiptone.getJticketLine().selectionDown();
+            }
+            
+            ini = receiptone.getJticketLine().getSelectedIndex();
+            for (int i = ini+1; i <= ini+numAux; i++) {
+                line = receiptone.getSelectedLine();
+                if (line != null){
+                    receipttwo.addSelectedLine(line);
+                }
+            }    
+        }
+        else {
+            line = receiptone.getSelectedLineUnit();
+            receipttwo.addSelectedLine(line);
+        }
+ 
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        TicketLineInfo line = receipttwo.getSelectedLineUnit();
-        if (line != null) {
+        TicketLineInfo line;
+        int numAux = receipttwo.countNumberAuxiliar();
+        int ini = receipttwo.getJticketLine().getSelectedIndex();
+
+        if (numAux!=0){            
+            line = receipttwo.getSelectedLineUnit();
             receiptone.addSelectedLine(line);
-        }   
-        
+            
+            int a = receipttwo.countNumberAuxiliar();
+            if (a != 0){
+                receipttwo.getJticketLine().selectionDown();
+            }
+            
+            ini = receipttwo.getJticketLine().getSelectedIndex();
+            for (int i = ini+1; i <= ini+numAux; i++) {
+                line = receipttwo.getSelectedLine();
+                if (line != null){
+                    receiptone.addSelectedLine(line);
+                }
+            }    
+        }
+        else {
+            line = receipttwo.getSelectedLineUnit();
+            receiptone.addSelectedLine(line);
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        TicketLineInfo line = receipttwo.getSelectedLine();
-        if (line != null) {
-            receiptone.addSelectedLine(line);
-        }   
+        int numAux = receipttwo.countNumberAuxiliar();
+        int ini = receipttwo.getJticketLine().getSelectedIndex();
         
+        for (int i = ini; i <= ini+numAux; i++) {
+            TicketLineInfo line = receipttwo.getSelectedLine();
+            if (line != null){
+                receiptone.addSelectedLine(line);
+            }
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
     
     
