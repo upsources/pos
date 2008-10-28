@@ -27,7 +27,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <EmptySpace pref="14" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -60,17 +60,15 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jtxtDbURL" max="32767" attributes="1"/>
-                              <Component id="jtxtDbDriverLib" alignment="0" pref="328" max="32767" attributes="1"/>
+                              <Component id="jtxtDbURL" min="-2" pref="328" max="-2" attributes="1"/>
+                              <Component id="jtxtDbDriverLib" alignment="0" min="-2" pref="328" max="-2" attributes="1"/>
                               <Component id="jtxtDbDriver" min="-2" pref="165" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jbtnDbDriverLib" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jtxtDbPassword" alignment="0" max="32767" attributes="1"/>
-                          <Component id="jtxtDbUser" alignment="0" pref="165" max="32767" attributes="1"/>
-                      </Group>
+                      <Component id="jtxtDbPassword" alignment="0" min="-2" pref="165" max="-2" attributes="1"/>
+                      <Component id="jtxtDbUser" alignment="0" min="-2" pref="165" max="-2" attributes="1"/>
                   </Group>
                   <EmptySpace pref="131" max="32767" attributes="0"/>
               </Group>

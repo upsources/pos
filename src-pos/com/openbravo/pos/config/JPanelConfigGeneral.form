@@ -27,7 +27,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel13" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -53,69 +53,73 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jtxtMachineHostname" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jtxtMachineHostname" min="-2" pref="165" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel6" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachineScreenmode" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboMachineScreenmode" min="-2" pref="165" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel16" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboTicketsBag" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboTicketsBag" min="-2" pref="165" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel15" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachineDisplay" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboMachineDisplay" min="-2" pref="165" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="m_jDisplayParams" pref="299" max="32767" attributes="0"/>
+                          <Component id="m_jDisplayParams" pref="484" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboLAF" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboLAF" min="-2" pref="165" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel7" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachinePrinter" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboMachinePrinter" min="-2" pref="165" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="m_jPrinterParams1" pref="299" max="32767" attributes="0"/>
+                          <Component id="m_jPrinterParams1" pref="484" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel18" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachinePrinter2" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboMachinePrinter2" min="-2" pref="165" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="m_jPrinterParams2" pref="299" max="32767" attributes="0"/>
+                          <Component id="m_jPrinterParams2" pref="484" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel19" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachinePrinter3" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboMachinePrinter3" min="-2" pref="165" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="m_jPrinterParams3" pref="299" max="32767" attributes="0"/>
+                          <Component id="m_jPrinterParams3" pref="484" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel25" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachineScale" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="jcboMachineScale" min="-2" pref="165" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="m_jScaleParams" pref="299" max="32767" attributes="0"/>
+                          <Component id="m_jScaleParams" pref="484" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel26" min="-2" pref="130" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel26" min="-2" pref="130" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jcboMachineScanner" min="-2" pref="165" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel1" min="-2" pref="130" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cboPrinters" min="-2" pref="165" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jcboMachineScanner" min="-2" pref="180" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="m_jScannerParams" pref="299" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" pref="130" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="cboPrinters" min="-2" pref="180" max="-2" attributes="0"/>
+                          <Component id="m_jScannerParams" pref="484" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -133,72 +137,72 @@
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcboLAF" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jcboLAF" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcboMachineScreenmode" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jcboMachineScreenmode" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcboTicketsBag" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jcboTicketsBag" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jcboMachineDisplay" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jcboMachineDisplay" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="m_jDisplayParams" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="m_jDisplayParams" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jcboMachinePrinter" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jcboMachinePrinter" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="m_jPrinterParams1" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="m_jPrinterParams1" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jcboMachinePrinter2" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jcboMachinePrinter2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="m_jPrinterParams2" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="m_jPrinterParams2" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jcboMachinePrinter3" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jcboMachinePrinter3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="m_jPrinterParams3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="m_jPrinterParams3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jcboMachineScale" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jcboMachineScale" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="m_jScaleParams" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="m_jScaleParams" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcboMachineScanner" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboMachineScanner" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cboPrinters" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="cboPrinters" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="m_jScannerParams" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="m_jScannerParams" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -279,14 +283,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblConnDisplay" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblConnDisplay" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboConnDisplay" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblDisplayPort" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblDisplayPort" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboSerialDisplay" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -294,9 +298,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcboConnDisplay" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboConnDisplay" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblDisplayPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcboSerialDisplay" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboSerialDisplay" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblConnDisplay" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
@@ -340,10 +344,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel20" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jLabel20" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jtxtJPOSName" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace pref="75" max="32767" attributes="0"/>
+                          <EmptySpace pref="270" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -410,14 +414,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblConnPrinter" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblConnPrinter" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboConnPrinter" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblPrinterPort" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblPrinterPort" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboSerialPrinter" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -425,9 +429,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcboConnPrinter" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboConnPrinter" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblPrinterPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcboSerialPrinter" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboSerialPrinter" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblConnPrinter" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="195" max="-2" attributes="0"/>
@@ -471,14 +475,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel24" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jLabel24" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jtxtJPOSPrinter" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel21" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jLabel21" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jtxtJPOSDrawer" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -563,14 +567,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblConnPrinter2" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblConnPrinter2" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboConnPrinter2" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblPrinterPort2" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblPrinterPort2" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboSerialPrinter2" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -578,9 +582,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcboConnPrinter2" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboConnPrinter2" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblPrinterPort2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcboSerialPrinter2" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboSerialPrinter2" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblConnPrinter2" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
@@ -624,14 +628,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel27" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jLabel27" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jtxtJPOSPrinter2" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel22" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jLabel22" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jtxtJPOSDrawer2" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -735,14 +739,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblConnPrinter3" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblConnPrinter3" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboConnPrinter3" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblPrinterPort3" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblPrinterPort3" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboSerialPrinter3" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -750,9 +754,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcboConnPrinter3" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboConnPrinter3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblPrinterPort3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcboSerialPrinter3" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboSerialPrinter3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblConnPrinter3" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
@@ -803,7 +807,7 @@
                           <Component id="jLabel23" min="-2" pref="110" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jtxtJPOSDrawer3" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="36" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -869,10 +873,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblPrinterPort4" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblPrinterPort4" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboSerialScale" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace pref="75" max="32767" attributes="0"/>
+                          <EmptySpace pref="270" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -880,7 +884,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcboSerialScale" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboSerialScale" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblPrinterPort4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
@@ -930,10 +934,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jlblPrinterPort5" min="-2" pref="110" max="-2" attributes="0"/>
+                          <Component id="jlblPrinterPort5" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jcboSerialScanner" min="-2" pref="90" max="-2" attributes="0"/>
-                          <EmptySpace pref="75" max="32767" attributes="0"/>
+                          <EmptySpace pref="270" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -941,7 +945,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcboSerialScanner" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                              <Component id="jcboSerialScanner" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jlblPrinterPort5" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="235" max="-2" attributes="0"/>

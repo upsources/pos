@@ -20,6 +20,8 @@
 
 -- v2.20 - v2.30
 
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('30', 'Printer.PartialCash', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash.png});
+
 -- final script
 
 DELETE FROM SHAREDTICKETS;

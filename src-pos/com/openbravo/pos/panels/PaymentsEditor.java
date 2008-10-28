@@ -17,6 +17,7 @@
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.panels;
+
 import java.awt.Component;
 import java.util.UUID;
 import com.openbravo.basic.BasicException;
@@ -54,9 +55,13 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         m_ReasonModel.add(new PaymentReasonPositive("cashin", AppLocal.getIntString("transpayment.cashin")));
         m_ReasonModel.add(new PaymentReasonNegative("cashout", AppLocal.getIntString("transpayment.cashout")));              
         m_jreason.setModel(m_ReasonModel);
+        
+//        jAmmount.addEditorKeys(m_jKeys);
 
         m_jreason.addActionListener(dirty);
         m_jtotal.getDocument().addDocumentListener(dirty);
+//        jAmmount.addPropertyChangeListener("Text", dirty);
+        
 
         writeValueEOF();
     }
@@ -76,7 +81,7 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         datenew = null;
         setReasonTotal(null, null);
         m_jreason.setEnabled(true);
-        m_jtotal.setEnabled(true);
+        m_jtotal.setEnabled(true);    
     }
     
     public void writeValueDelete(Object value) {
@@ -197,32 +202,66 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         m_jreason = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        m_jtotal = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        m_jtotal = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        m_jKeys = new com.openbravo.editor.JEditorKeys();
 
-        setLayout(null);
-        add(m_jreason);
-        m_jreason.setBounds(160, 30, 200, 20);
+        setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(AppLocal.getIntString("label.paymentreason")); // NOI18N
-        add(jLabel2);
-        jLabel2.setBounds(10, 30, 150, 15);
-
-        m_jtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        add(m_jtotal);
-        m_jtotal.setBounds(160, 60, 70, 19);
+        jLabel5.setText(AppLocal.getIntString("label.paymentreason")); // NOI18N
 
         jLabel3.setText(AppLocal.getIntString("label.paymenttotal")); // NOI18N
-        add(jLabel3);
-        jLabel3.setBounds(10, 60, 150, 15);
+
+        m_jtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(m_jtotal)
+                    .addComponent(m_jreason, 0, 200, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(m_jtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(326, Short.MAX_VALUE))
+        );
+
+        add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(m_jKeys, java.awt.BorderLayout.NORTH);
+
+        add(jPanel2, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JComboBox m_jreason;
     private javax.swing.JTextField m_jtotal;
     // End of variables declaration//GEN-END:variables

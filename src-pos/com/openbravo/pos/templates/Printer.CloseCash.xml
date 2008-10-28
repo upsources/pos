@@ -24,8 +24,8 @@
         <image>Printer.Ticket.Logo</image>
 
         <line></line>
-        <line>
-            <text align ="center" length="42" bold="true">Close cash</text>            
+        <line size="1">
+            <text align ="center" length="42" bold="true">Close cash report</text>            
         </line>
         <line></line>
         
