@@ -37,7 +37,6 @@ public class JProductFinder extends javax.swing.JDialog {
 
     private ProductInfoExt m_ReturnProduct;
     private ListProvider lpr;
-    private static boolean isAuxiliar;
     
     /** Creates new form JProductFinder */
     private JProductFinder(java.awt.Frame parent, boolean modal) {
@@ -48,7 +47,7 @@ public class JProductFinder extends javax.swing.JDialog {
         super(parent, modal);
     }    
     
-    private ProductInfoExt init(DataLogicSales dlSales) {
+    private ProductInfoExt init(DataLogicSales dlSales, boolean isAuxiliar) {
         
         initComponents();
         
@@ -58,10 +57,11 @@ public class JProductFinder extends javax.swing.JDialog {
         ProductFilterSales jproductfilter = new ProductFilterSales(dlSales, m_jKeys);
         jproductfilter.activate();
         m_jProductSelect.add(jproductfilter, BorderLayout.CENTER);
-        if(isAuxiliar)
+        if (isAuxiliar) {
             lpr = new ListProviderCreator(dlSales.getAuxiliarListForFilter(), jproductfilter);
-        else
+        } else {
             lpr = new ListProviderCreator(dlSales.getProductList(), jproductfilter);
+        }
        
         jListProducts.setCellRenderer(new ProductRenderer());
         
@@ -87,20 +87,11 @@ public class JProductFinder extends javax.swing.JDialog {
     }    
     
     public static ProductInfoExt showMessage(Component parent, DataLogicSales dlSales) {
-        JProductFinder.isAuxiliar = false;
-        Window window = getWindow(parent);
-        
-        JProductFinder myMsg;
-        if (window instanceof Frame) { 
-            myMsg = new JProductFinder((Frame) window, true);
-        } else {
-            myMsg = new JProductFinder((Dialog) window, true);
-        }
-        return myMsg.init(dlSales);
+        return showMessage(parent, dlSales, false);
     }
 
     public static ProductInfoExt showMessage(Component parent, DataLogicSales dlSales, boolean isAuxiliar) {
-        JProductFinder.isAuxiliar = true;
+
         Window window = getWindow(parent);
 
         JProductFinder myMsg;
@@ -109,7 +100,7 @@ public class JProductFinder extends javax.swing.JDialog {
         } else {
             myMsg = new JProductFinder((Dialog) window, true);
         }
-        return myMsg.init(dlSales);
+        return myMsg.init(dlSales, isAuxiliar);
     }
     
     private static class MyListData extends javax.swing.AbstractListModel {
