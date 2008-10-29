@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.sales;
 
@@ -153,7 +153,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
             // inc the line
             ticket.getLine(i).setMultiply(ticket.getLine(i).getMultiply() + line.getMultiply());
             ticketlines.setTicketLine(i, ticket.getLine(i));  
-            printTotals();  
+            printTotals();
         } else {
             ticket.addLine(line);
             ticketlines.addTicketLine(line);
@@ -161,6 +161,18 @@ public class SimpleReceipt extends javax.swing.JPanel {
         }
     }
     
+    public boolean sameProduct(TicketLineInfo line){
+        int i = ticketlines.getSelectedIndex();
+        boolean b;
+        
+        b = (i >= 0 
+                && ticket.getLine(i).getProductID() != null && line.getProductID() != null && ticket.getLine(i).getProductID().equals(line.getProductID())
+                && ticket.getLine(i).getTaxInfo().getId().equals(line.getTaxInfo().getId())
+                && ticket.getLine(i).getPrice() == line.getPrice()) ? true : false;
+            
+        return b;
+    }
+       
     public JTicketLines getJticketLine(){
         return this.ticketlines;
     }
@@ -186,6 +198,29 @@ public class SimpleReceipt extends javax.swing.JPanel {
         return aux;
     }
     
+    public int findAuxiliarParent(){
+        int i = ticketlines.getSelectedIndex();
+        int parentIndex = i;
+        
+        if (i>=0){
+            if (ticket.getLine(i).isProductCom()){
+                for (int j = i-1; j >= 0 ; j--) {
+                    if (!ticket.getLine(j).isProductCom()) {
+                        parentIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
+        return parentIndex;
+    }
+    
+    public void addLineAfterSelectedLine(TicketLineInfo line){
+        ticket.insertLine(ticketlines.getSelectedIndex()+1, line);
+        ticketlines.insertTicketLine(ticketlines.getSelectedIndex()+1, line);
+        printTotals();
+    }
+   
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

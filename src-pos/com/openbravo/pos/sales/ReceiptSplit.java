@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.sales;
 
@@ -248,86 +248,147 @@ public class ReceiptSplit extends javax.swing.JDialog {
     }//GEN-LAST:event_m_jButtonCancelActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        boolean b = false;
+        boolean b2 = false;
+        
+        int ini = receiptone.findAuxiliarParent();
+        if (ini>=0){
+            receiptone.getJticketLine().setSelectedIndex(ini);
+            b = receipttwo.sameProduct(receiptone.getTicket().getLine(receiptone.getJticketLine().getSelectedIndex()));
+            b2 = receipttwo.sameProduct(receiptone.getTicket().getLine(ini));
+        }
+        
         int numAux = receiptone.countNumberAuxiliar();
-        int ini = receiptone.getJticketLine().getSelectedIndex();
         
         for (int i = ini; i <= ini+numAux; i++) {
             TicketLineInfo line = receiptone.getSelectedLine();
-            if (line != null){
-                receipttwo.addSelectedLine(line);
+            if (line != null){                
+                if ((numAux!=0) && (line.isProductCom()) && (b || b2)){
+                        receipttwo.addLineAfterSelectedLine(line);
+                }
+                else {
+                    receipttwo.addSelectedLine(line);
+                }
             }
         }
-        
+            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        
         TicketLineInfo line;
-        int numAux = receiptone.countNumberAuxiliar();
-        int ini = receiptone.getJticketLine().getSelectedIndex();
+        boolean b = false;
+        boolean b2 = false;
+        
+        int ini = receiptone.findAuxiliarParent();
+        if (ini>=0) {
+            b = receipttwo.sameProduct(receiptone.getTicket().getLine(receiptone.getJticketLine().getSelectedIndex()));
+            b2 = receipttwo.sameProduct(receiptone.getTicket().getLine(ini));
+        }
+        
+        if (ini != -1){
+            receiptone.getJticketLine().setSelectedIndex(ini);
+            int numAux = receiptone.countNumberAuxiliar();
 
-        if (numAux!=0){
-            line = receiptone.getSelectedLineUnit();
-            receipttwo.addSelectedLine(line);
-            
-            int a = receiptone.countNumberAuxiliar();
-            if (a != 0){
-                receiptone.getJticketLine().selectionDown();
-            }
-            
-            ini = receiptone.getJticketLine().getSelectedIndex();
-            for (int i = ini+1; i <= ini+numAux; i++) {
-                line = receiptone.getSelectedLine();
-                if (line != null){
-                    receipttwo.addSelectedLine(line);
+            if (numAux!=0){            
+                line = receiptone.getSelectedLineUnit();
+                receipttwo.addSelectedLine(line);
+
+                int a = receiptone.countNumberAuxiliar();
+                if (a != 0){
+                    receiptone.getJticketLine().selectionDown();
                 }
-            }    
+                
+                ini = receiptone.getJticketLine().getSelectedIndex();
+                for (int i = ini+1; i <= ini+numAux; i++) {
+                    line = receiptone.getSelectedLine();
+                    if (line != null){
+                        if ((line.isProductCom()) && (b || b2)){
+                            receipttwo.addLineAfterSelectedLine(line);
+                        }
+                        else {
+                            receipttwo.addSelectedLine(line);
+                        }
+                    }
+                }    
+            }
+            else {
+                line = receiptone.getSelectedLineUnit();
+                receipttwo.addSelectedLine(line);
+            }
         }
-        else {
-            line = receiptone.getSelectedLineUnit();
-            receipttwo.addSelectedLine(line);
-        }
- 
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+      
         TicketLineInfo line;
-        int numAux = receipttwo.countNumberAuxiliar();
-        int ini = receipttwo.getJticketLine().getSelectedIndex();
+        boolean b = false;
+        boolean b2 = false;
+        
+        int ini = receipttwo.findAuxiliarParent();
+        if (ini>=0) {
+            b = receiptone.sameProduct(receipttwo.getTicket().getLine(receipttwo.getJticketLine().getSelectedIndex()));
+            b2 = receiptone.sameProduct(receipttwo.getTicket().getLine(ini));
+        }
+        
+        if (ini != -1){
+            receipttwo.getJticketLine().setSelectedIndex(ini);
+            int numAux = receipttwo.countNumberAuxiliar();
 
-        if (numAux!=0){            
-            line = receipttwo.getSelectedLineUnit();
-            receiptone.addSelectedLine(line);
-            
-            int a = receipttwo.countNumberAuxiliar();
-            if (a != 0){
-                receipttwo.getJticketLine().selectionDown();
-            }
-            
-            ini = receipttwo.getJticketLine().getSelectedIndex();
-            for (int i = ini+1; i <= ini+numAux; i++) {
-                line = receipttwo.getSelectedLine();
-                if (line != null){
-                    receiptone.addSelectedLine(line);
+            if (numAux!=0){            
+                line = receipttwo.getSelectedLineUnit();
+                receiptone.addSelectedLine(line);
+
+                int a = receipttwo.countNumberAuxiliar();
+                if (a != 0){
+                    receipttwo.getJticketLine().selectionDown();
                 }
-            }    
+                
+                ini = receipttwo.getJticketLine().getSelectedIndex();
+                for (int i = ini+1; i <= ini+numAux; i++) {
+                    line = receipttwo.getSelectedLine();
+                    if (line != null){
+                        if ((line.isProductCom()) && (b || b2)){
+                            receiptone.addLineAfterSelectedLine(line);
+                        }
+                        else {
+                            receiptone.addSelectedLine(line);
+                        }
+                    }
+                }    
+            }
+            else {
+                line = receipttwo.getSelectedLineUnit();
+                receiptone.addSelectedLine(line);
+            }
         }
-        else {
-            line = receipttwo.getSelectedLineUnit();
-            receiptone.addSelectedLine(line);
-        }
-
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+        
+        boolean b = false;
+        boolean b2 = false;
+        
+        int ini = receipttwo.findAuxiliarParent();
+        if (ini>=0){
+            receipttwo.getJticketLine().setSelectedIndex(ini);
+            b = receiptone.sameProduct(receipttwo.getTicket().getLine(receipttwo.getJticketLine().getSelectedIndex()));
+            b2 = receiptone.sameProduct(receipttwo.getTicket().getLine(ini));
+        }
+        
         int numAux = receipttwo.countNumberAuxiliar();
-        int ini = receipttwo.getJticketLine().getSelectedIndex();
         
         for (int i = ini; i <= ini+numAux; i++) {
             TicketLineInfo line = receipttwo.getSelectedLine();
-            if (line != null){
-                receiptone.addSelectedLine(line);
+            if (line != null){                
+                if ((numAux!=0) && (line.isProductCom()) && (b || b2)){
+                        receiptone.addLineAfterSelectedLine(line);
+                }
+                else {
+                    receiptone.addSelectedLine(line);
+                }
             }
         }
 
