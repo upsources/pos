@@ -240,7 +240,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     protected abstract Component getSouthComponent();
      
     public void setActiveTicket(TicketInfo oTicket, Object oTicketExt) {
-        
+       
         m_oTicket = oTicket;
         m_oTicketExt = oTicketExt;
         
@@ -271,7 +271,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             cl.show(this, "null");  
 
         } else {    
-            
+            m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo());
             // Refresh ticket taxes
             for (TicketLineInfo line : m_oTicket.getLines()) {
                 line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getCustomer()));
@@ -1547,7 +1547,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }//GEN-LAST:event_m_jDeleteActionPerformed
 
     private void m_jUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jUpActionPerformed
-
+        
         m_ticketlines.selectionUp();
 
     }//GEN-LAST:event_m_jUpActionPerformed
