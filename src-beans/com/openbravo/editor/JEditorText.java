@@ -20,7 +20,6 @@ package com.openbravo.editor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Icon;
 import javax.swing.Timer;
 import com.openbravo.basic.BasicException;
 
@@ -121,11 +120,7 @@ public abstract class JEditorText extends JEditorAbstract {
             return appendChar2Value(getKeyChar());
         }        
     }
-    
-//    protected final int getMode() {
-//        return EditorKeys.MODE_STRING;
-//    }
-    
+      
     protected final int getAlignment() {
         return javax.swing.SwingConstants.LEFT;
     }
@@ -180,6 +175,7 @@ public abstract class JEditorText extends JEditorAbstract {
             }
         } else if (c == '\u007f') {
             // Los hemos borrado todos.
+            m_iMode = getStartMode(); //MODE_Abc1;
             m_svalue = null;
             m_iTicks = 0;
             m_cLastChar = '\u0000';    
@@ -216,6 +212,7 @@ public abstract class JEditorText extends JEditorAbstract {
             }
         } else if (c == '\u007f') {
             // Los hemos borrado todos.
+            m_iMode = getStartMode(); //MODE_Abc1;
             m_svalue = null;
             m_iTicks = 0;
             m_cLastChar = '\u0000';           
@@ -300,7 +297,7 @@ public abstract class JEditorText extends JEditorAbstract {
     private class TimerAction implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             if (m_cLastChar != '\u0000') {
-                // Este m\u00c3\u00a9todo realmente no modifica la propiedad "Text"
+                // This method does not modify the "Text" property.
                 char ckey = getKeyChar();
                 m_svalue = appendChar2Value(ckey);
                 acceptKeyChar(ckey);
