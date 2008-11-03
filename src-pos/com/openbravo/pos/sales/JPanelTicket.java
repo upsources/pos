@@ -244,6 +244,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_oTicket = oTicket;
         m_oTicketExt = oTicketExt;
         
+        // Asign preeliminary properties to the receipt
+        m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo());
+        m_oTicket.setActiveCash(m_App.getActiveCashIndex());
+        m_oTicket.setDate(new Date()); // Set the edition date.     
+        
         executeEvent(m_oTicket, m_oTicketExt, "ticket.show");
         
         refreshTicket();               
@@ -271,7 +276,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             cl.show(this, "null");  
 
         } else {    
-            m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo());
+            
             // Refresh ticket taxes
             for (TicketLineInfo line : m_oTicket.getLines()) {
                 line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getCustomer()));
