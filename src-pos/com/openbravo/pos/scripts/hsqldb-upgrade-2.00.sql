@@ -144,7 +144,7 @@ UPDATE PEOPLE SET CARD = NULL WHERE CARD = '';
 
 -- v2.20 - v2.30
 
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('30', 'Printer.PartialCash', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash.png});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('30', 'Printer.PartialCash', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash.xml});
 
 -- final script
 
