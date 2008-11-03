@@ -117,8 +117,6 @@ public class JPanelButtons extends javax.swing.JPanel {
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
             if ("button".equals(qName)){
                 
-                // The template resource
-                String stemplate = attributes.getValue("template");
                 
                 // The button title text
                 String titlekey = attributes.getValue("titlekey");
@@ -130,15 +128,30 @@ public class JPanelButtons extends javax.swing.JPanel {
                         : AppLocal.getIntString(titlekey);
                 
                 // adding the button to the panel
-                add(new JButtonFunc(
-                        attributes.getValue("key"), 
+                JButton btn = new JButtonFunc(attributes.getValue("key"), 
                         attributes.getValue("image"), 
-                        title,  
-                        stemplate == null
-                            ? panelticket.getResourceAsXML(attributes.getValue("code"))
-                            : "sales.printTicket(\"" + stemplate + "\");"));
+                        title);
+                
+                 // The template resource or the code resource
+                final String template = attributes.getValue("template");
+                if (template == null) {
+                    final String code = attributes.getValue("code");
+                    btn.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            panelticket.evalScriptAndRefresh(code);
+                        }
+                    });
+                } else {
+                    btn.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            panelticket.printTicket(template);
+                        }
+                    });     
+                }
+                add(btn);
+                
             } else if ("event".equals(qName)) {
-                events.put(attributes.getValue("key"), panelticket.getResourceAsXML(attributes.getValue("code")));
+                events.put(attributes.getValue("key"), attributes.getValue("code"));
             } else {
                 String value = attributes.getValue("value");
                 if (value != null) {                  
@@ -153,24 +166,16 @@ public class JPanelButtons extends javax.swing.JPanel {
     }  
         
     private class JButtonFunc extends JButton {
-        private String m_sCode;
-        
-        public JButtonFunc(String sKey, String sImage, String title, String sCode) {
+       
+        public JButtonFunc(String sKey, String sImage, String title) {
             
-            m_sCode = sCode;
             setName(sKey);
             setText(title);
             setIcon(new ImageIcon(tnbmacro.getThumbNail(panelticket.getResourceAsImage(sImage))));
             setFocusPainted(false);
             setFocusable(false);
             setRequestFocusEnabled(false);
-            setMargin(new Insets(8, 14, 8, 14));
-  
-            addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    panelticket.evalScriptAndRefresh(m_sCode);
-                }
-            });
+            setMargin(new Insets(8, 14, 8, 14));  
         }         
     }
     

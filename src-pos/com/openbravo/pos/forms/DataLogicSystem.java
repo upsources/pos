@@ -28,6 +28,8 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.*;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.util.ThumbNailBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.ImageIcon;
 
 /**
@@ -55,6 +57,8 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
 
     protected SentenceFind m_activecash;
     protected SentenceExec m_insertcash;
+    
+    private Map<String, byte[]> resourcescache;
     
     /** Creates a new instance of DataLogicSystem */
     public DataLogicSystem() {            
@@ -113,8 +117,9 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         m_locationfind = new StaticSentence(s
                 , "SELECT NAME FROM LOCATIONS WHERE ID = ?"
                 , SerializerWriteString.INSTANCE
-                , SerializerReadString.INSTANCE);        
+                , SerializerReadString.INSTANCE);   
         
+        resetResourcesCache();        
     }
 
 
@@ -153,27 +158,37 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         m_changepassword.exec(userdata);
     }
     
-    private final byte[] getResource(String sName) {
+    public final void resetResourcesCache() {
+        resourcescache = new HashMap<String, byte[]>();      
+    }
+    
+    private final byte[] getResource(String name) {
 
         byte[] resource;
         
-        // Primero trato de obtenerlo de la tabla de recursos
-        try {
-            resource = (byte[]) m_resourcebytes.find(sName);
-        } catch (BasicException e) {
-            resource = null;
+        resource = resourcescache.get(name);
+        
+        if (resource == null) {       
+            // Primero trato de obtenerlo de la tabla de recursos
+            try {
+                resource = (byte[]) m_resourcebytes.find(name);
+                resourcescache.put(name, resource);
+            } catch (BasicException e) {
+                resource = null;
+            }
         }
         
         return resource;
     }
     
-    public final void setResource(String sName, int iType, byte[] data) {
+    public final void setResource(String name, int type, byte[] data) {
         
-        Object[] value = new Object[] {UUID.randomUUID().toString(), sName, new Integer(iType), data};
+        Object[] value = new Object[] {UUID.randomUUID().toString(), name, new Integer(type), data};
         try {
             if (m_resourcebytesupdate.exec(value) == 0) {
                 m_resourcebytesinsert.exec(value);
             }
+            resourcescache.put(name, data);
         } catch (BasicException e) {
         }
     }

@@ -862,7 +862,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                                 msg.show(this);
                             }
 
-                            executeEvent(ticket, ticketext, "ticket.close");
+                            executeEvent(ticket, ticketext, "ticket.close", new ScriptArg("print", paymentdialog.isPrintSelected()));
 
                             // Print receipt.
                             printTicket(paymentdialog.isPrintSelected()
@@ -975,11 +975,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }    
     
     
-    private Object evalScript(ScriptObject scr, String code, ScriptArg... args) {
+    private Object evalScript(ScriptObject scr, String resource, ScriptArg... args) {
         
          try {
             scr.setSelectedIndex(m_ticketlines.getSelectedIndex());
-            return scr.evalScript(code, args);                
+            return scr.evalScript(dlSystem.getResourceAsXML(resource), args);                
         } catch (ScriptException e) {
             MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotexecute"), e);
             msg.show(this);
@@ -987,29 +987,33 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         } 
     }
         
-    public void evalScriptAndRefresh(String code, ScriptArg... args) {
+    public void evalScriptAndRefresh(String resource, ScriptArg... args) {
 
-        if (code == null) {
+        if (resource == null) {
             MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotexecute"));
             msg.show(this);            
         } else {
             ScriptObject scr = new ScriptObject(m_oTicket, m_oTicketExt);
             scr.setSelectedIndex(m_ticketlines.getSelectedIndex());
-            evalScript(scr, code, args);   
+            evalScript(scr, resource, args);   
             refreshTicket();
             setSelectedIndex(scr.getSelectedIndex());
         }
-    }   
+    }  
+    
+    public void printTicket(String resource) {
+        printTicket(resource, m_oTicket, m_oTicketExt);
+    }
     
     private Object executeEventAndRefresh(String eventkey, ScriptArg ... args) {
         
-        String code = m_jbtnconfig.getEvent(eventkey);
-        if (code == null) {
+        String resource = m_jbtnconfig.getEvent(eventkey);
+        if (resource == null) {
             return null;
         } else {
             ScriptObject scr = new ScriptObject(m_oTicket, m_oTicketExt);
             scr.setSelectedIndex(m_ticketlines.getSelectedIndex());
-            Object result = evalScript(scr, code, args);   
+            Object result = evalScript(scr, resource, args);   
             refreshTicket();
             setSelectedIndex(scr.getSelectedIndex());
             return result;
@@ -1018,12 +1022,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
    
     private Object executeEvent(TicketInfo ticket, Object ticketext, String eventkey, ScriptArg ... args) {
         
-        String code = m_jbtnconfig.getEvent(eventkey);
-        if (code == null) {
+        String resource = dlSystem.getResourceAsXML(m_jbtnconfig.getEvent(eventkey));
+        if (resource == null) {
             return null;
         } else {
             ScriptObject scr = new ScriptObject(ticket, ticketext);
-            return evalScript(scr, m_jbtnconfig.getEvent(eventkey), args);
+            return evalScript(scr, resource, args);
         }
     }
     
