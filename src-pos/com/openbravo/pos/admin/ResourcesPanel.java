@@ -46,6 +46,17 @@ public class ResourcesPanel extends JPanelTable {
         jeditor = new ResourcesView(dirty);           
     }    
     
+    @Override
+    public boolean deactivate() {
+        if (super.deactivate()) {
+            DataLogicSystem dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");            
+            dlSystem.resetResourcesCache();
+            return true;
+        } else {
+            return false;
+        }    
+    }
+    
     public ListProvider getListProvider() {
         return new ListProviderCreator(tresources);
     }
