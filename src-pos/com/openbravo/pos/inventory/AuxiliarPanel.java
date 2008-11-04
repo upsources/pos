@@ -55,7 +55,7 @@ public class AuxiliarPanel extends JPanelTable{
         filter.init(app);
         tAuxiliar = dlSales.getTableAuxiliar();
         jeditor = new AuxiliarEditor(app, dirty, filter);
-        filter.forwardEditor(jeditor);     
+        filter.forwardEditor(jeditor);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class AuxiliarPanel extends JPanelTable{
 
     @Override
     public ListProvider getListProvider() {
-        return  new ListProviderCreator(dlSales.getAuxiliarList(), filter);
+        return new ListProviderCreator(dlSales.getAuxiliarList(), filter);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class AuxiliarPanel extends JPanelTable{
 
     @Override
     public ListCellRenderer getListCellRenderer() {
-        return new ListCellRendererBasic(tAuxiliar.getRenderStringBasic(new int[]{0}));
+        return new ListCellRendererBasic(tAuxiliar.getRenderStringBasic(new int[]{0, 1}));
     }
 
     @Override

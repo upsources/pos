@@ -46,6 +46,7 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
     private SentenceList auxSent;
     private ComboBoxValModel auxModel;
     DataLogicSales m_dlSales;
+    private AuxiliarPanel m_panel;
 
     /** Creates new form AuxiliarEditor */
     public AuxiliarEditor(AppView app, DirtyManager dirty, AuxiliarFilter filter) {
@@ -62,7 +63,7 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
     @Override
     public void refresh() {
-        m_jProductLabel.setText(m_filter.getM_product().getName());   
+        m_jProductLabel.setText(m_filter.getM_product().getName());
     }
 
     @Override
@@ -91,7 +92,7 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         getM_jReference().setText(Formats.STRING.formatValue(object[0]));
         this.refresh();
         m_jBarcode.setText(getBarcodeByReference(Formats.STRING.formatValue(object[0])));
-        m_jProduct.setText(Formats.STRING.formatValue(object[1]));
+        m_jProduct.setText(getNameById(Formats.STRING.formatValue(object[1])));
 
         m_jBarcode.setEnabled(true);
         m_jProduct.setEnabled(true);
@@ -112,8 +113,8 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
     @Override
     public Object createValue() throws BasicException {
         return  new Object[] {
-            m_filter.getM_product().getReference(),
-            getM_jReference().getText()
+            m_filter.getM_product().getID(),
+            m_auxiliar.getID()
         };
     }
 
@@ -186,6 +187,24 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
             } else {
                 // Se anade directamente una unidad con el precio y todo
                 return oProduct.getCode();
+            }
+        } catch (BasicException eData) {
+            assignProduct(null);
+            MessageInf msg = new MessageInf(eData);
+            msg.show(this);
+        }
+        return null;
+    }
+
+    private String getNameById(String id){
+     try {
+            ProductInfoExt oProduct = m_dlSales.getProductInfoByReference(getM_jReference().getText());
+            if (oProduct == null) {
+                assignProduct(null);
+                Toolkit.getDefaultToolkit().beep();
+            } else {
+                // Se anade directamente una unidad con el precio y todo
+                return oProduct.getName();
             }
         } catch (BasicException eData) {
             assignProduct(null);

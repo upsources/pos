@@ -163,6 +163,9 @@
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="m_jSearchPropertyChange"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

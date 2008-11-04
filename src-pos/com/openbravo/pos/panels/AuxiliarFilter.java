@@ -46,7 +46,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
 
     /** Creates new form AuxiliarFilter */
     public AuxiliarFilter() {
-        initComponents();   
+        initComponents();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     public void addActionListener(ActionListener l){
         m_jReference1.addActionListener(l);      
         Enter1.addActionListener(l);
-        Enter2.addActionListener(l);   
+        Enter2.addActionListener(l);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     @Override
     public Object createValue() throws BasicException {
         return new Object[] {
-            m_jReference1.getText(),
+            m_product.getID()
         };
     }
 
@@ -100,8 +100,8 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
                 m_jBarcode1.setText(getM_product().getCode());
                 m_jReference1.setText(getM_product().getReference());
 
-            }
-            m_jEditor.refresh();
+            }            
+        m_jEditor.refresh();
         }
     }
 
@@ -208,6 +208,11 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
         m_jSearch.setEditable(false);
         m_jSearch.setFocusable(false);
         m_jSearch.setRequestFocusEnabled(false);
+        m_jSearch.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                m_jSearchPropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -277,7 +282,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     }//GEN-LAST:event_m_jReference1ActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        assignProduct(JProductFinder.showMessage(this, m_dlSales));
+        assignProduct(JProductFinder.showMessage(this, m_dlSales));       
 }//GEN-LAST:event_searchActionPerformed
 
     private void Enter2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enter2ActionPerformed
@@ -292,6 +297,9 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
         this.assignProductByCode();
     }//GEN-LAST:event_m_jBarcode1ActionPerformed
 
+    private void m_jSearchPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_m_jSearchPropertyChange
+
+    }//GEN-LAST:event_m_jSearchPropertyChange
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Enter1;
