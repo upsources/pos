@@ -134,7 +134,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     //Auxiliars list
     public final SentenceList getAuxiliarList() {
         return new StaticSentence(s
-            , "SELECT P.REFERENCE, P.NAME, P.CODE FROM PRODUCTS_COM COM, PRODUCTS P WHERE COM.PRODUCT = ? AND COM.PRODUCT2 = P.REFERENCE"
+            , "SELECT P.REFERENCE, P.NAME, P.CODE FROM PRODUCTS_COM COM, PRODUCTS P WHERE COM.PRODUCT = ? AND COM.PRODUCT2 = P.ID"
             , new SerializerWriteBasic(new Datas[] {Datas.STRING})
             , new SerializerReadBasic(new Datas[] { Datas.STRING, Datas.STRING, Datas.STRING}));
     }
