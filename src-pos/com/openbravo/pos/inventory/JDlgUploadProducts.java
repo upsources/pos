@@ -161,7 +161,7 @@ public class JDlgUploadProducts extends javax.swing.JDialog {
                 m_scanner.sendProduct(
                         (String) myprod[2], // nombre
                         (String) myprod[1], // codigo de barras
-                        (Double) myprod[5]
+                        (Double) myprod[7]
                         ); // precio de compra                
             }
             m_scanner.stopUploadProduct();
