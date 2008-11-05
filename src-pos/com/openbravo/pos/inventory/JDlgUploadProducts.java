@@ -146,7 +146,7 @@ public class JDlgUploadProducts extends javax.swing.JDialog {
         
         // Ponemos el estado de leyendo productos
         String stext = jLabel1.getText();
-        jLabel1.setText("Subiendo productos. Espere un momento.");
+        jLabel1.setText(AppLocal.getIntString("label.uploadingproducts"));
         jcmdOK.setEnabled(false);
         jcmdCancel.setEnabled(false);          
                 
