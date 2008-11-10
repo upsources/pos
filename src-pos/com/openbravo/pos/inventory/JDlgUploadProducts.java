@@ -158,11 +158,11 @@ public class JDlgUploadProducts extends javax.swing.JDialog {
             ListModel l = m_bd.getListModel();
             for (int i = 0; i < l.getSize(); i++) {
                 Object[] myprod = (Object[]) l.getElementAt(i);
-                m_scanner.sendProduct(
-                        (String) myprod[2], // nombre
-                        (String) myprod[1], // codigo de barras
-                        (Double) myprod[7]
-                        ); // precio de compra                
+                m_scanner.sendProduct( 
+                    (String) myprod[3], // name
+                    (String) myprod[2], // barcode
+                    (Double) myprod[6]  // buy price
+                );           
             }
             m_scanner.stopUploadProduct();
             MessageInf msg = new MessageInf(MessageInf.SGN_SUCCESS, AppLocal.getIntString("message.scannerok"));
