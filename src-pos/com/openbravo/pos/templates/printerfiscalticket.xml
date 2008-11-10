@@ -23,10 +23,21 @@
 
     <fiscalreceipt>
         #foreach ($ticketline in $ticket.getLines())
+
+            <!-- setting $vatinfo to the values contained in the fiscal printer vat table-->
+            #if (${ticketline.getTaxInfo().getRate()}==0.04)
+                    #set ($vatinfo ="1")
+            #elseif	(${ticketline.getTaxInfo().getRate()}==0.1)
+                    #set ($vatinfo ="2")	
+            #elseif (${ticketline.getTaxInfo().getRate()}==0.2)
+                    #set ($vatinfo ="3")
+            #else #set ($vatinfo ="1")
+            #end
+
              #if ($ticketline.isProductCom()) 
-                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">*${ticketline.printName()}</line>
+                 <line price="${ticketline.getValue()}" units="${ticketline.getMultiply()}" tax="${vatinfo}">*${ticketline.printName()}</line>
              #else
-                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">${ticketline.printName()}</line>
+                 <line price="${ticketline.getValue()}" units="${ticketline.getMultiply()}" tax="${vatinfo}">${ticketline.printName()}</line>
              #end
         #end
 

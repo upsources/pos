@@ -39,7 +39,7 @@ public class DeviceFiscalPrinterNull implements DeviceFiscalPrinter {
     }
     public void endReceipt() {
     }
-    public void printLine(String sproduct, double dprice, double dunits) {
+    public void printLine(String sproduct, double dprice, double dunits, int taxinfo) {
     }
     public void printMessage(String smessage) {
     }

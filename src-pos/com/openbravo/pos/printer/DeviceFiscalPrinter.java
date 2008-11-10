@@ -27,7 +27,7 @@ public interface DeviceFiscalPrinter {
     
     public void beginReceipt();
     public void endReceipt();
-    public void printLine(String sproduct, double dprice, double dunits);
+    public void printLine(String sproduct, double dprice, double dunits, int taxinfo);
     public void printMessage(String smessage);
     public void printTotal(String sPayment, double dpaid);
     

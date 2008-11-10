@@ -74,9 +74,9 @@ public class DeviceFiscalPrinterJavaPOS extends javax.swing.JPanel implements De
         }        
     }
     
-    public void printLine(String sproduct, double dprice, double dunits) {
+    public void printLine(String sproduct, double dprice, double dunits, int taxinfo) {
         try {
-            m_fiscal.printRecItem(sproduct, roundFiscal(dprice * dunits), 0, 0, roundFiscal(dprice), "");
+            m_fiscal.printRecItem(sproduct, roundFiscal(dprice * dunits), (int)(dunits * 1000), taxinfo, roundFiscal(dprice), "");
         } catch (JposException e) {
         }             
     }

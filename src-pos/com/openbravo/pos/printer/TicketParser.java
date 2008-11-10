@@ -51,6 +51,7 @@ public class TicketParser extends DefaultHandler {
     
     private double m_dValue1;
     private double m_dValue2;
+    private int attribute3;
     
     private int m_iOutputType;
     private static final int OUTPUT_NONE = 0;
@@ -195,6 +196,8 @@ public class TicketParser extends DefaultHandler {
                 text = new StringBuffer();   
                 m_dValue1 = parseDouble(attributes.getValue("price"));
                 m_dValue2 = parseDouble(attributes.getValue("units"), 1.0);
+                attribute3 = parseInt(attributes.getValue("tax"));
+                
             } else if ("message".equals(qName)) {
                 text = new StringBuffer();               
             } else if ("total".equals(qName)) {
@@ -306,7 +309,7 @@ public class TicketParser extends DefaultHandler {
                 m_printer.getFiscalPrinter().endReceipt();
                 m_iOutputType = OUTPUT_NONE;
             } else if ("line".equals(qName)) {
-                m_printer.getFiscalPrinter().printLine(text.toString(), m_dValue1, m_dValue2);
+                m_printer.getFiscalPrinter().printLine(text.toString(), m_dValue1, m_dValue2, attribute3);
                 text = null;               
             } else if ("message".equals(qName)) {
                 m_printer.getFiscalPrinter().printMessage(text.toString());
