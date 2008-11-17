@@ -97,8 +97,7 @@ public class ReceiptSplit extends javax.swing.JDialog {
         
         setVisible(true);    
         return accepted;
-    }
-    
+    }    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -115,10 +114,10 @@ public class ReceiptSplit extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jBtnToRightAll = new javax.swing.JButton();
+        jBtnToRightOne = new javax.swing.JButton();
+        jBtnToLeftOne = new javax.swing.JButton();
+        jBtnToLeftAll = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -162,64 +161,64 @@ public class ReceiptSplit extends javax.swing.JDialog {
 
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/2rightarrow.png"))); // NOI18N
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
-        jButton1.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jButton1.setRequestFocusEnabled(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBtnToRightAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/2rightarrow.png"))); // NOI18N
+        jBtnToRightAll.setFocusPainted(false);
+        jBtnToRightAll.setFocusable(false);
+        jBtnToRightAll.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jBtnToRightAll.setRequestFocusEnabled(false);
+        jBtnToRightAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBtnToRightAllActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
-        jPanel4.add(jButton1, gridBagConstraints);
+        jPanel4.add(jBtnToRightAll, gridBagConstraints);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1rightarrow.png"))); // NOI18N
-        jButton5.setFocusPainted(false);
-        jButton5.setFocusable(false);
-        jButton5.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jButton5.setRequestFocusEnabled(false);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jBtnToRightOne.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1rightarrow.png"))); // NOI18N
+        jBtnToRightOne.setFocusPainted(false);
+        jBtnToRightOne.setFocusable(false);
+        jBtnToRightOne.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jBtnToRightOne.setRequestFocusEnabled(false);
+        jBtnToRightOne.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jBtnToRightOneActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanel4.add(jButton5, gridBagConstraints);
+        jPanel4.add(jBtnToRightOne, gridBagConstraints);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1leftarrow.png"))); // NOI18N
-        jButton2.setFocusPainted(false);
-        jButton2.setFocusable(false);
-        jButton2.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jButton2.setRequestFocusEnabled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jBtnToLeftOne.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1leftarrow.png"))); // NOI18N
+        jBtnToLeftOne.setFocusPainted(false);
+        jBtnToLeftOne.setFocusable(false);
+        jBtnToLeftOne.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jBtnToLeftOne.setRequestFocusEnabled(false);
+        jBtnToLeftOne.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jBtnToLeftOneActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanel4.add(jButton2, gridBagConstraints);
+        jPanel4.add(jBtnToLeftOne, gridBagConstraints);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/2leftarrow.png"))); // NOI18N
-        jButton3.setFocusPainted(false);
-        jButton3.setFocusable(false);
-        jButton3.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jButton3.setRequestFocusEnabled(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jBtnToLeftAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/2leftarrow.png"))); // NOI18N
+        jBtnToLeftAll.setFocusPainted(false);
+        jBtnToLeftAll.setFocusable(false);
+        jBtnToLeftAll.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jBtnToLeftAll.setRequestFocusEnabled(false);
+        jBtnToLeftAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jBtnToLeftAllActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanel4.add(jButton3, gridBagConstraints);
+        jPanel4.add(jBtnToLeftAll, gridBagConstraints);
 
         jPanel1.add(jPanel4);
 
@@ -247,159 +246,48 @@ public class ReceiptSplit extends javax.swing.JDialog {
         
     }//GEN-LAST:event_m_jButtonCancelActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        boolean b = false;
-        boolean b2 = false;
-        
-        int ini = receiptone.findAuxiliarParent();
-        if (ini>=0){
-            receiptone.getJticketLine().setSelectedIndex(ini);
-            b = receipttwo.sameProduct(receiptone.getTicket().getLine(receiptone.getJticketLine().getSelectedIndex()));
-            b2 = receipttwo.sameProduct(receiptone.getTicket().getLine(ini));
-        }
-        
-        int numAux = receiptone.countNumberAuxiliar();
-        
-        for (int i = ini; i <= ini+numAux; i++) {
-            TicketLineInfo line = receiptone.getSelectedLine();
-            if (line != null){                
-                if ((numAux!=0) && (line.isProductCom()) && (b || b2)){
-                        receipttwo.addLineAfterSelectedLine(line);
-                }
-                else {
-                    receipttwo.addSelectedLine(line);
-                }
-            }
+    private void jBtnToRightAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnToRightAllActionPerformed
+       
+        TicketLineInfo[] lines = receiptone.getSelectedLines();
+        if (lines != null) {
+            receipttwo.addSelectedLines(lines);
         }
             
-    }//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_jBtnToRightAllActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jBtnToRightOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnToRightOneActionPerformed
         
-        TicketLineInfo line;
-        boolean b = false;
-        boolean b2 = false;
-        
-        int ini = receiptone.findAuxiliarParent();
-        if (ini>=0) {
-            b = receipttwo.sameProduct(receiptone.getTicket().getLine(receiptone.getJticketLine().getSelectedIndex()));
-            b2 = receipttwo.sameProduct(receiptone.getTicket().getLine(ini));
-        }
-        
-        if (ini != -1){
-            receiptone.getJticketLine().setSelectedIndex(ini);
-            int numAux = receiptone.countNumberAuxiliar();
-
-            if (numAux!=0){            
-                line = receiptone.getSelectedLineUnit();
-                receipttwo.addSelectedLine(line);
-
-                int a = receiptone.countNumberAuxiliar();
-                if (a != 0){
-                    receiptone.getJticketLine().selectionDown();
-                }
-                
-                ini = receiptone.getJticketLine().getSelectedIndex();
-                for (int i = ini+1; i <= ini+numAux; i++) {
-                    line = receiptone.getSelectedLine();
-                    if (line != null){
-                        if ((line.isProductCom()) && (b || b2)){
-                            receipttwo.addLineAfterSelectedLine(line);
-                        }
-                        else {
-                            receipttwo.addSelectedLine(line);
-                        }
-                    }
-                }    
-            }
-            else {
-                line = receiptone.getSelectedLineUnit();
-                receipttwo.addSelectedLine(line);
-            }
+        TicketLineInfo[] lines = receiptone.getSelectedLinesUnit();
+        if (lines != null) {
+            receipttwo.addSelectedLines(lines);
         }
 
-    }//GEN-LAST:event_jButton5ActionPerformed
+}//GEN-LAST:event_jBtnToRightOneActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jBtnToLeftOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnToLeftOneActionPerformed
       
-        TicketLineInfo line;
-        boolean b = false;
-        boolean b2 = false;
-        
-        int ini = receipttwo.findAuxiliarParent();
-        if (ini>=0) {
-            b = receiptone.sameProduct(receipttwo.getTicket().getLine(receipttwo.getJticketLine().getSelectedIndex()));
-            b2 = receiptone.sameProduct(receipttwo.getTicket().getLine(ini));
-        }
-        
-        if (ini != -1){
-            receipttwo.getJticketLine().setSelectedIndex(ini);
-            int numAux = receipttwo.countNumberAuxiliar();
-
-            if (numAux!=0){            
-                line = receipttwo.getSelectedLineUnit();
-                receiptone.addSelectedLine(line);
-
-                int a = receipttwo.countNumberAuxiliar();
-                if (a != 0){
-                    receipttwo.getJticketLine().selectionDown();
-                }
-                
-                ini = receipttwo.getJticketLine().getSelectedIndex();
-                for (int i = ini+1; i <= ini+numAux; i++) {
-                    line = receipttwo.getSelectedLine();
-                    if (line != null){
-                        if ((line.isProductCom()) && (b || b2)){
-                            receiptone.addLineAfterSelectedLine(line);
-                        }
-                        else {
-                            receiptone.addSelectedLine(line);
-                        }
-                    }
-                }    
-            }
-            else {
-                line = receipttwo.getSelectedLineUnit();
-                receiptone.addSelectedLine(line);
-            }
+        TicketLineInfo[] lines = receipttwo.getSelectedLinesUnit();
+        if (lines != null) {
+            receiptone.addSelectedLines(lines);
         }
        
-    }//GEN-LAST:event_jButton2ActionPerformed
+}//GEN-LAST:event_jBtnToLeftOneActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        boolean b = false;
-        boolean b2 = false;
-        
-        int ini = receipttwo.findAuxiliarParent();
-        if (ini>=0){
-            receipttwo.getJticketLine().setSelectedIndex(ini);
-            b = receiptone.sameProduct(receipttwo.getTicket().getLine(receipttwo.getJticketLine().getSelectedIndex()));
-            b2 = receiptone.sameProduct(receipttwo.getTicket().getLine(ini));
-        }
-        
-        int numAux = receipttwo.countNumberAuxiliar();
-        
-        for (int i = ini; i <= ini+numAux; i++) {
-            TicketLineInfo line = receipttwo.getSelectedLine();
-            if (line != null){                
-                if ((numAux!=0) && (line.isProductCom()) && (b || b2)){
-                        receiptone.addLineAfterSelectedLine(line);
-                }
-                else {
-                    receiptone.addSelectedLine(line);
-                }
-            }
+    private void jBtnToLeftAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnToLeftAllActionPerformed
+       
+        TicketLineInfo[] lines = receipttwo.getSelectedLines();
+        if (lines != null) {
+            receiptone.addSelectedLines(lines);
         }
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+}//GEN-LAST:event_jBtnToLeftAllActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jBtnToLeftAll;
+    private javax.swing.JButton jBtnToLeftOne;
+    private javax.swing.JButton jBtnToRightAll;
+    private javax.swing.JButton jBtnToRightOne;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
