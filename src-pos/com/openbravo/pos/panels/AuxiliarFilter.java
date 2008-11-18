@@ -26,13 +26,14 @@ import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.inventory.AuxiliarEditor;
 import com.openbravo.pos.reports.ReportEditorCreator;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import java.awt.Component;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.EventListener;
+import javax.swing.event.EventListenerList;
 
 /**
  *
@@ -40,9 +41,10 @@ import java.awt.event.ActionListener;
  */
 public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCreator{
 
-    private ProductInfoExt m_product;
+    private ProductInfoExt product;
     private DataLogicSales m_dlSales;
-    private AuxiliarEditor m_jEditor;
+    
+    protected EventListenerList listeners = new EventListenerList();
 
     /** Creates new form AuxiliarFilter */
     public AuxiliarFilter() {
@@ -52,12 +54,14 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     @Override
     public void init(AppView app) {   
          m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-         m_jReference1.setText("");
-         m_product = new ProductInfoExt();
     }
 
     @Override
     public void activate() throws BasicException {
+        product = null;
+        m_jSearch.setText(null);
+        m_jBarcode1.setText(null);
+        m_jReference1.setText(null);        
     }
 
     @Override
@@ -66,86 +70,83 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     }
 
     public void addActionListener(ActionListener l){
-        m_jReference1.addActionListener(l);      
-        Enter1.addActionListener(l);
-        Enter2.addActionListener(l);
+        listeners.add(ActionListener.class, l);
     }
-
+    
+    public void removeActionListener(ActionListener l) {
+        listeners.remove(ActionListener.class, l);
+    }
+    
     @Override
     public Component getComponent() {
         return this;
     }
 
-    public void forwardEditor(AuxiliarEditor editor){
-        m_jEditor = editor;
-    }
-
     @Override
     public Object createValue() throws BasicException {
-        return new Object[] {
-            m_product.getID()
-        };
+        return product == null ? null : product.getID();
+    }
+    
+    public ProductInfoExt getProductInfoExt() {
+        return product;
     }
 
     private void assignProduct(ProductInfoExt prod) {
 
-        if (m_jSearch.isEnabled()) {
-            if (prod == null) {
-                m_jSearch.setText(null);
-                m_jBarcode1.setText(null);
-                m_jReference1.setText(null);
-            } else {
-                m_product = prod;
-                m_jSearch.setText(getM_product().toString());
-                m_jBarcode1.setText(getM_product().getCode());
-                m_jReference1.setText(getM_product().getReference());
-
-            }            
-        m_jEditor.refresh();
-        }
+        product = prod;
+        if (product == null) {
+            m_jSearch.setText(null);
+            m_jBarcode1.setText(null);
+            m_jReference1.setText(null);
+        } else {
+            m_jSearch.setText(product.getReference() + " - " + product.getName());
+            m_jBarcode1.setText(product.getCode());
+            m_jReference1.setText(product.getReference());
+        } 
+        
+        fireSelectedProduct();
     }
+    
+    
+    
+    protected void fireSelectedProduct() {
+        EventListener[] l = listeners.getListeners(ActionListener.class);
+        ActionEvent e = null;
+        for (int i = 0; i < l.length; i++) {
+            if (e == null) {
+                e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "SELECTED");
+            }
+            ((ActionListener) l[i]).actionPerformed(e);	       
+        }
+    }     
 
     private void assignProductByCode() {
         try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByCode(m_jBarcode1.getText());
-            if (oProduct == null) {
-                assignProduct(null);
+            ProductInfoExt prod = m_dlSales.getProductInfoByCode(m_jBarcode1.getText());
+            if (prod == null) {
                 Toolkit.getDefaultToolkit().beep();
-            } else {
-               // Se anade directamente una unidad con el precio y todo
-                    assignProduct(oProduct);
             }
+            assignProduct(prod);
         } catch (BasicException eData) {
-            assignProduct(null);
             MessageInf msg = new MessageInf(eData);
             msg.show(this);
+            assignProduct(null);
         }
     }
 
     private void assignProductByReference() {
         try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByReference(m_jReference1.getText());
-            if (oProduct == null) {
-                assignProduct(null);
+            ProductInfoExt prod = m_dlSales.getProductInfoByReference(m_jReference1.getText());
+            if (prod == null) {
                 Toolkit.getDefaultToolkit().beep();
-            } else {
-                // Se anade directamente una unidad con el precio y todo
-                assignProduct(oProduct);
             }
+            assignProduct(prod);
         } catch (BasicException eData) {
-            assignProduct(null);
             MessageInf msg = new MessageInf(eData);
             msg.show(this);
+            assignProduct(null);
         }
     }
-
-    /**
-     * @return the m_product
-     */
-    public ProductInfoExt getM_product() {
-        return m_product;
-    }
-
    
     /** This method is called from within the constructor to
      * initialize the form.
@@ -156,27 +157,33 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         m_jReference1 = new javax.swing.JTextField();
+        Enter1 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         m_jBarcode1 = new javax.swing.JTextField();
         Enter2 = new javax.swing.JButton();
-        search = new javax.swing.JButton();
-        Enter1 = new javax.swing.JButton();
         m_jSearch = new javax.swing.JTextField();
+        search = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("By product"));
 
         jLabel6.setText(AppLocal.getIntString("label.prodref")); // NOI18N
-
-        jLabel7.setText(AppLocal.getIntString("label.prodbarcode")); // NOI18N
 
         m_jReference1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jReference1ActionPerformed(evt);
             }
         });
+
+        Enter1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/apply.png"))); // NOI18N
+        Enter1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Enter1ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText(AppLocal.getIntString("label.prodbarcode")); // NOI18N
 
         m_jBarcode1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,6 +198,10 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
             }
         });
 
+        m_jSearch.setEditable(false);
+        m_jSearch.setFocusable(false);
+        m_jSearch.setRequestFocusEnabled(false);
+
         search.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
         search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -198,82 +209,52 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
             }
         });
 
-        Enter1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/apply.png"))); // NOI18N
-        Enter1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Enter1ActionPerformed(evt);
-            }
-        });
-
-        m_jSearch.setEditable(false);
-        m_jSearch.setFocusable(false);
-        m_jSearch.setRequestFocusEnabled(false);
-        m_jSearch.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                m_jSearchPropertyChange(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(m_jReference1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                            .addComponent(m_jBarcode1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)))
-                    .addComponent(m_jSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Enter2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Enter1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(152, 152, 152))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6)
-                        .addComponent(m_jReference1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Enter1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(Enter2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(m_jBarcode1)
-                            .addComponent(jLabel7))
-                        .addGap(13, 13, 13)))
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(search))
-                .addGap(32, 32, 32))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(371, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jReference1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Enter1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jBarcode1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Enter2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(search)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(m_jReference1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Enter1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(m_jBarcode1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(search)
+                            .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(Enter2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -282,7 +263,9 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
     }//GEN-LAST:event_m_jReference1ActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        assignProduct(JProductFinder.showMessage(this, m_dlSales));       
+        
+        assignProduct(JProductFinder.showMessage(this, m_dlSales, JProductFinder.PRODUCT_NORMAL));       
+        
 }//GEN-LAST:event_searchActionPerformed
 
     private void Enter2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enter2ActionPerformed
@@ -297,16 +280,11 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
         this.assignProductByCode();
     }//GEN-LAST:event_m_jBarcode1ActionPerformed
 
-    private void m_jSearchPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_m_jSearchPropertyChange
-
-    }//GEN-LAST:event_m_jSearchPropertyChange
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Enter1;
     private javax.swing.JButton Enter2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField m_jBarcode1;
     private javax.swing.JTextField m_jReference1;
     private javax.swing.JTextField m_jSearch;

@@ -69,7 +69,7 @@ public abstract class JPanelTable extends JPanel implements JPanelView, BeanFact
         return this;
     }
     
-    private void startNavigation() {
+    protected void startNavigation() {
         
         if (bd == null) {
             

@@ -45,6 +45,8 @@ public class BrowsableEditableData {
     private int m_iIndex;
     private boolean m_bIsAdjusting;
     
+    private boolean iseditable = true;
+    
     /** Creates a new instance of BrowsableEditableData */
     public BrowsableEditableData(BrowsableData bd, EditorRecord ed, DirtyManager dirty) {
         m_bd = bd;
@@ -144,20 +146,25 @@ public class BrowsableEditableData {
         m_bIsAdjusting = false;
     }
     
+    
     public boolean canLoadData() {
         return m_bd.canLoadData();
     }
     
+    public void setEditable(boolean value) {
+        iseditable = value;
+    }
+    
     public boolean canInsertData() {
-        return m_bd.canInsertData();          
+        return iseditable && m_bd.canInsertData();          
     }
     
     public boolean canDeleteData() {
-        return m_bd.canDeleteData();      
+        return iseditable && m_bd.canDeleteData();      
     }
     
     public boolean canUpdateData() {
-        return m_bd.canUpdateData();      
+        return iseditable && m_bd.canUpdateData();      
     }
         
     public void refreshCurrent() {
@@ -282,26 +289,31 @@ public class BrowsableEditableData {
         // primero persistimos
         saveData();
         
-        // Y nos ponemos en estado de insert
-        m_iState = ST_INSERT;
-        m_editorrecord.writeValueInsert();
-        m_Dirty.setDirty(false);
-        fireStateUpdate(); // ?
+        if (canInsertData()) {       
+            // Y nos ponemos en estado de insert
+            m_iState = ST_INSERT;
+            m_editorrecord.writeValueInsert();
+            m_Dirty.setDirty(false);
+            fireStateUpdate(); // ?
+        }
     }
     
     public final void actionDelete() throws BasicException {
         // primero persistimos
         saveData();
         
-        // Y nos ponemos en estado de delete
-        Object obj = getCurrentElement();
-        int iIndex = getIndex();
-        int iCount = m_bd.getSize();
-        if (iIndex >= 0 && iIndex < iCount) {
-            m_iState = ST_DELETE;
-            m_editorrecord.writeValueDelete(obj);
-            m_Dirty.setDirty(true);
-            fireStateUpdate(); // ?
+        if (canDeleteData()) {
+        
+            // Y nos ponemos en estado de delete
+            Object obj = getCurrentElement();
+            int iIndex = getIndex();
+            int iCount = m_bd.getSize();
+            if (iIndex >= 0 && iIndex < iCount) {
+                m_iState = ST_DELETE;
+                m_editorrecord.writeValueDelete(obj);
+                m_Dirty.setDirty(true);
+                fireStateUpdate(); // ?
+            }
         }
     }   
     

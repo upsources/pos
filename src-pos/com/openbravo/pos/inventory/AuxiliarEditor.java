@@ -19,21 +19,18 @@
 package com.openbravo.pos.inventory;
 
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.gui.MessageInf;
-import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.panels.AuxiliarFilter;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import java.awt.Component;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.panels.JProductFinder;
 import java.awt.Toolkit;
-
+import java.util.UUID;
 
 /**
  *
@@ -41,80 +38,126 @@ import java.awt.Toolkit;
  */
 public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
-    private ProductInfoExt m_auxiliar;
-    private AuxiliarFilter m_filter;
-    private SentenceList auxSent;
-    private ComboBoxValModel auxModel;
-    DataLogicSales m_dlSales;
-    private AuxiliarPanel m_panel;
+    private DataLogicSales m_dlSales;
+    
+    private Object id;
+    private Object product;
+    private Object product2;
+    private Object name;
+    
+    private Object insertproduct;
 
     /** Creates new form AuxiliarEditor */
-    public AuxiliarEditor(AppView app, DirtyManager dirty, AuxiliarFilter filter) {
-        m_filter = filter;
+    public AuxiliarEditor(AppView app, DirtyManager dirty) {
+
         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
 
         initComponents();
      
         m_jProduct.getDocument().addDocumentListener(dirty);
     }
-
-    public void activate() throws BasicException{
+    
+    public void setInsertProduct(ProductInfoExt prod) {
+        
+        if (prod == null) {
+            insertproduct = null;
+        } else {
+            insertproduct = prod.getID();
+        }
     }
 
     @Override
     public void refresh() {
-        m_jProductLabel.setText(m_filter.getM_product().getName());
     }
 
     @Override
     public void writeValueEOF() {
+        
+        id = null;
+        product = null;
+        product2 = null;
+        name = null;
+        m_jReference.setText(null);
         m_jBarcode.setText(null);
-        getM_jReference().setText(null);
         m_jProduct.setText(null);
 
+        m_jReference.setEnabled(false);
         m_jBarcode.setEnabled(false);
         m_jProduct.setEnabled(false);
+        m_jEnter1.setEnabled(false);
+        m_jEnter2.setEnabled(false);
+        m_jSearch.setEnabled(false);
     }
 
     @Override
     public void writeValueInsert() {
+        
+        id = null;
+        product = null;
+        product2 = null;
+        name = null;
+        m_jReference.setText(null);
         m_jBarcode.setText(null);
-        getM_jReference().setText(null);
         m_jProduct.setText(null);
 
+        m_jReference.setEnabled(true);
         m_jBarcode.setEnabled(true);
         m_jProduct.setEnabled(true);
+        m_jEnter1.setEnabled(true);
+        m_jEnter2.setEnabled(true);
+        m_jSearch.setEnabled(true);
     }
 
     @Override
     public void writeValueEdit(Object value) {
-        Object[] object = (Object[]) value;
-        getM_jReference().setText(Formats.STRING.formatValue(object[0]));
-        this.refresh();
-        m_jBarcode.setText(getBarcodeByReference(Formats.STRING.formatValue(object[0])));
-        m_jProduct.setText(getNameById(Formats.STRING.formatValue(object[1])));
+        Object[] obj = (Object[]) value;
+        
+        id = obj[0];
+        product = obj[1];
+        product2 = obj[2];
+        name = obj[5];
+        m_jReference.setText(Formats.STRING.formatValue(obj[3]));
+        m_jBarcode.setText(Formats.STRING.formatValue(obj[4]));
+        m_jProduct.setText(Formats.STRING.formatValue(obj[3]) + " - " + Formats.STRING.formatValue(obj[5]));        
 
+        m_jReference.setEnabled(true);
         m_jBarcode.setEnabled(true);
         m_jProduct.setEnabled(true);
+        m_jEnter1.setEnabled(true);
+        m_jEnter2.setEnabled(true);
+        m_jSearch.setEnabled(true);
     }
 
     @Override
     public void writeValueDelete(Object value) {
-        Object[] object = (Object[]) value;
+        Object[] obj = (Object[]) value;
+        
+        id = obj[0];
+        product = obj[1];
+        product2 = obj[2];
+        name = obj[5];
+        m_jReference.setText(Formats.STRING.formatValue(obj[3]));
+        m_jBarcode.setText(Formats.STRING.formatValue(obj[4]));
+        m_jProduct.setText(Formats.STRING.formatValue(obj[3]) + " - " + Formats.STRING.formatValue(obj[5]));        
 
-        m_jBarcode.setText(null);
-        getM_jReference().setText(null);
-        m_jProduct.setText(null);
-
+        
+        m_jReference.setEnabled(false);
         m_jBarcode.setEnabled(false);
         m_jProduct.setEnabled(false);
+        m_jEnter1.setEnabled(false);
+        m_jEnter2.setEnabled(false);
+        m_jSearch.setEnabled(false);       
     }
 
     @Override
     public Object createValue() throws BasicException {
-        return  new Object[] {
-            m_filter.getM_product().getID(),
-            m_auxiliar.getID()
+        return new Object[] {
+            id == null ? UUID.randomUUID().toString() : id, 
+            product == null ? insertproduct : product, 
+            product2,
+            m_jReference.getText(),
+            m_jBarcode.getText(),
+            name,
         };
     }
 
@@ -127,15 +170,17 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
         if (m_jSearch.isEnabled()) {
             if (prod == null) {
-                m_jProduct.setText(null);
+                product2 = null;
+                m_jReference.setText(null);
                 m_jBarcode.setText(null);
-                getM_jReference().setText(null);
+                m_jProduct.setText(null);
+                name = null;
             } else {
-                m_auxiliar = prod;
-                m_jProduct.setText(m_auxiliar.getName());
-                m_jBarcode.setText(m_auxiliar.getCode());
-                getM_jReference().setText(m_auxiliar.getReference());
-
+                product2 = prod.getID();
+                m_jReference.setText(prod.getReference());
+                m_jBarcode.setText(prod.getCode());
+                m_jProduct.setText(prod.getReference() + " - " + prod.getName());
+                name = prod.getName();
             }
         }
 
@@ -143,15 +188,10 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
     private void assignProductByCode() {
         try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByCode(m_jBarcode.getText());
-            if (oProduct == null) {
-                assignProduct(null);
-                Toolkit.getDefaultToolkit().beep();
-            } else {
-               // Se anade directamente una unidad con el precio y todo
-                    assignProduct(oProduct);
-
-
+            ProductInfoExt prod = m_dlSales.getProductInfoByCode(m_jBarcode.getText());
+            assignProduct(prod);
+            if (prod == null) {
+                Toolkit.getDefaultToolkit().beep();       
             }
         } catch (BasicException eData) {
             assignProduct(null);
@@ -163,13 +203,10 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
     private void assignProductByReference() {
         try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByReference(getM_jReference().getText());
-            if (oProduct == null) {
-                assignProduct(null);
-                Toolkit.getDefaultToolkit().beep();
-            } else {
-                // Se anade directamente una unidad con el precio y todo
-                assignProduct(oProduct);
+            ProductInfoExt prod = m_dlSales.getProductInfoByReference(m_jReference.getText());
+            assignProduct(prod);
+            if (prod == null) {
+                Toolkit.getDefaultToolkit().beep();       
             }
         } catch (BasicException eData) {
             assignProduct(null);
@@ -177,50 +214,6 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
             msg.show(this);
         }
     }
-
-    private String getBarcodeByReference(String ref){
-        try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByReference(getM_jReference().getText());
-            if (oProduct == null) {
-                assignProduct(null);
-                Toolkit.getDefaultToolkit().beep();
-            } else {
-                // Se anade directamente una unidad con el precio y todo
-                return oProduct.getCode();
-            }
-        } catch (BasicException eData) {
-            assignProduct(null);
-            MessageInf msg = new MessageInf(eData);
-            msg.show(this);
-        }
-        return null;
-    }
-
-    private String getNameById(String id){
-     try {
-            ProductInfoExt oProduct = m_dlSales.getProductInfoByReference(getM_jReference().getText());
-            if (oProduct == null) {
-                assignProduct(null);
-                Toolkit.getDefaultToolkit().beep();
-            } else {
-                // Se anade directamente una unidad con el precio y todo
-                return oProduct.getName();
-            }
-        } catch (BasicException eData) {
-            assignProduct(null);
-            MessageInf msg = new MessageInf(eData);
-            msg.show(this);
-        }
-        return null;
-    }
-
-    /**
-     * @return the m_jReference
-     */
-    public javax.swing.JTextField getM_jReference() {
-        return m_jReference;
-    }
-
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -231,59 +224,20 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        m_jProductLabel = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         m_jReference = new javax.swing.JTextField();
-        m_jBarcode = new javax.swing.JTextField();
+        m_jEnter1 = new javax.swing.JButton();
         m_jEnter2 = new javax.swing.JButton();
         m_jSearch = new javax.swing.JButton();
-        m_jEnter1 = new javax.swing.JButton();
         m_jProduct = new javax.swing.JTextField();
-
-        m_jProductLabel.setFont(new java.awt.Font("SansSerif", 3, 18)); // NOI18N
-        m_jProductLabel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                m_jProductLabelPropertyChange(evt);
-            }
-        });
-
-        jLabel2.setText(AppLocal.getIntString("label.stockproduct")); // NOI18N
+        m_jBarcode = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         jLabel3.setText(AppLocal.getIntString("label.prodref")); // NOI18N
-
-        jLabel4.setText(AppLocal.getIntString("label.prodbarcode")); // NOI18N
 
         m_jReference.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jReferenceActionPerformed(evt);
-            }
-        });
-
-        m_jBarcode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jBarcodeActionPerformed(evt);
-            }
-        });
-
-        m_jEnter2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/apply.png"))); // NOI18N
-        m_jEnter2.setMaximumSize(new java.awt.Dimension(50, 26));
-        m_jEnter2.setMinimumSize(new java.awt.Dimension(50, 26));
-        m_jEnter2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jEnter2ActionPerformed(evt);
-            }
-        });
-
-        m_jSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
-        m_jSearch.setMaximumSize(new java.awt.Dimension(50, 26));
-        m_jSearch.setMinimumSize(new java.awt.Dimension(50, 26));
-        m_jSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jSearchActionPerformed(evt);
             }
         });
 
@@ -294,6 +248,20 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
             }
         });
 
+        m_jEnter2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/apply.png"))); // NOI18N
+        m_jEnter2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jEnter2ActionPerformed(evt);
+            }
+        });
+
+        m_jSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
+        m_jSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jSearchActionPerformed(evt);
+            }
+        });
+
         m_jProduct.setEditable(false);
         m_jProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -301,102 +269,73 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(126, 126, 126)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(m_jReference)
-                            .addComponent(m_jBarcode, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))
-                    .addComponent(m_jProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(m_jEnter2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(m_jEnter1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(m_jReference, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(m_jEnter1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(m_jBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(m_jEnter2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(m_jProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
-        );
+        m_jBarcode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jBarcodeActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(m_jProductLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(m_jProductLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(192, Short.MAX_VALUE))
-        );
+        jLabel4.setText(AppLocal.getIntString("label.prodbarcode")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(682, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(m_jReference, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(m_jBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(m_jEnter2)
+                            .addComponent(m_jEnter1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(m_jProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(m_jSearch)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_jEnter1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(m_jReference, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(m_jBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(m_jEnter2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_jSearch)
+                    .addComponent(m_jProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jSearchActionPerformed
-        assignProduct(JProductFinder.showMessage(this, m_dlSales, true));
+        
+        assignProduct(JProductFinder.showMessage(this, m_dlSales, JProductFinder.PRODUCT_AUXILIAR));
+        
 }//GEN-LAST:event_m_jSearchActionPerformed
 
     private void m_jReferenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jReferenceActionPerformed
         this.assignProductByReference();
     }//GEN-LAST:event_m_jReferenceActionPerformed
-
-    private void m_jProductLabelPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_m_jProductLabelPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_m_jProductLabelPropertyChange
 
     private void m_jEnter2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jEnter2ActionPerformed
         this.assignProductByCode();
@@ -418,16 +357,12 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField m_jBarcode;
     private javax.swing.JButton m_jEnter1;
     private javax.swing.JButton m_jEnter2;
     private javax.swing.JTextField m_jProduct;
-    private javax.swing.JLabel m_jProductLabel;
     private javax.swing.JTextField m_jReference;
     private javax.swing.JButton m_jSearch;
     // End of variables declaration//GEN-END:variables

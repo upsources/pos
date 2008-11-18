@@ -21,16 +21,21 @@ package com.openbravo.pos.inventory;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
-import com.openbravo.data.loader.TableDefinition;
+import com.openbravo.data.loader.ComparatorCreatorBasic;
+import com.openbravo.data.loader.Datas;
+import com.openbravo.data.loader.RenderStringBasic;
 import com.openbravo.data.loader.Vectorer;
+import com.openbravo.data.loader.VectorerBasic;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
+import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.JPanelTable;
 import com.openbravo.pos.panels.AuxiliarFilter;
+import com.openbravo.pos.ticket.ProductInfoExt;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,29 +45,37 @@ import javax.swing.ListCellRenderer;
  *
  * @author jaroslawwozniak
  */
-public class AuxiliarPanel extends JPanelTable{
+public class AuxiliarPanel extends JPanelTable {
 
     private AuxiliarEditor jeditor;
-    private TableDefinition tAuxiliar;
     private DataLogicSales dlSales;
     private AuxiliarFilter filter;
     private ListProviderCreator lpr;
+    private SaveProvider spr;
 
     protected void init() {
-        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");             
+        
+        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");    
+        
         filter = new AuxiliarFilter();
-        filter.addActionListener(new ReloadActionListener());
         filter.init(app);
-        tAuxiliar = dlSales.getTableAuxiliar();
-        jeditor = new AuxiliarEditor(app, dirty, filter);
-        filter.forwardEditor(jeditor);
+        filter.addActionListener(new ReloadActionListener());
+      
+        lpr = new ListProviderCreator(dlSales.getAuxiliarList(), filter);     
+        spr = new SaveProvider(dlSales.getAuxiliarUpdate()
+                              , dlSales.getAuxiliarInsert()
+                              , dlSales.getAuxiliarDelete());
+        
+        jeditor = new AuxiliarEditor(app, dirty);
     }
 
     @Override
     public void activate() throws BasicException {
-        jeditor.activate();
         filter.activate();
-        super.activate();
+        
+        //super.activate();
+        startNavigation();
+        reload(filter);
     }
 
     @Override
@@ -72,14 +85,12 @@ public class AuxiliarPanel extends JPanelTable{
 
     @Override
     public ListProvider getListProvider() {
-        return new ListProviderCreator(dlSales.getAuxiliarList(), filter);
+        return lpr;
     }
 
     @Override
     public SaveProvider getSaveProvider() {
-        return new SaveProvider(dlSales.getAuxiliarInsert()
-                            , dlSales.getAuxiliarInsert()
-                            , dlSales.getAuxiliarDelete());
+        return spr;
     }
 
     @Override
@@ -89,17 +100,26 @@ public class AuxiliarPanel extends JPanelTable{
 
     @Override
     public Vectorer getVectorer() {
-        return tAuxiliar.getVectorerBasic(new int[]{1});
+        return new VectorerBasic(
+                new String[] {"ID", "PRODUCT1", "PRODUCT2", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname")},
+                new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING}, 
+                new int[]{3, 4, 5}); 
     }
 
     @Override
     public ComparatorCreator getComparatorCreator() {
-        return tAuxiliar.getComparatorCreator(new int[] {1});
+        return new ComparatorCreatorBasic(
+                new String[] {"ID", "PRODUCT1", "PRODUCT2", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname")},
+                new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}, 
+                new int[]{3, 4, 5});
     }
 
     @Override
     public ListCellRenderer getListCellRenderer() {
-        return new ListCellRendererBasic(tAuxiliar.getRenderStringBasic(new int[]{0, 1}));
+        return new ListCellRendererBasic(new RenderStringBasic(
+                new Formats[] {Formats.STRING,Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING},
+                new int[]{3, 5}));
+
     }
 
     @Override
@@ -107,16 +127,20 @@ public class AuxiliarPanel extends JPanelTable{
         return filter.getComponent();
     }
 
+    private void reload(AuxiliarFilter filter) throws BasicException {
+        ProductInfoExt prod = filter.getProductInfoExt();
+        bd.setEditable(prod != null);
+        bd.actionLoad();
+        jeditor.setInsertProduct(prod);        
+    }
+            
     private class ReloadActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                AuxiliarPanel.this.bd.actionLoad();
+                reload((AuxiliarFilter) e.getSource());
             } catch (BasicException w) {
             }
         }
-    }
-
-    public void refresh(){
     }
 }

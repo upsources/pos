@@ -38,6 +38,10 @@ public class JProductFinder extends javax.swing.JDialog {
     private ProductInfoExt m_ReturnProduct;
     private ListProvider lpr;
     
+    public final static int PRODUCT_ALL = 0;
+    public final static int PRODUCT_NORMAL = 1;
+    public final static int PRODUCT_AUXILIAR = 2;
+    
     /** Creates new form JProductFinder */
     private JProductFinder(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -47,7 +51,7 @@ public class JProductFinder extends javax.swing.JDialog {
         super(parent, modal);
     }    
     
-    private ProductInfoExt init(DataLogicSales dlSales, boolean isAuxiliar) {
+    private ProductInfoExt init(DataLogicSales dlSales, int productsType) {
         
         initComponents();
         
@@ -57,10 +61,17 @@ public class JProductFinder extends javax.swing.JDialog {
         ProductFilterSales jproductfilter = new ProductFilterSales(dlSales, m_jKeys);
         jproductfilter.activate();
         m_jProductSelect.add(jproductfilter, BorderLayout.CENTER);
-        if (isAuxiliar) {
-            lpr = new ListProviderCreator(dlSales.getAuxiliarListForFilter(), jproductfilter);
-        } else {
-            lpr = new ListProviderCreator(dlSales.getProductList(), jproductfilter);
+        switch (productsType) {
+            case PRODUCT_NORMAL:
+                lpr = new ListProviderCreator(dlSales.getProductListNormal(), jproductfilter);
+                break;
+            case PRODUCT_AUXILIAR:               
+                lpr = new ListProviderCreator(dlSales.getProductListAuxiliar(), jproductfilter);
+                break;
+            default: // PRODUCT_ALL
+                lpr = new ListProviderCreator(dlSales.getProductList(), jproductfilter);
+                break;
+                
         }
        
         jListProducts.setCellRenderer(new ProductRenderer());
@@ -87,10 +98,10 @@ public class JProductFinder extends javax.swing.JDialog {
     }    
     
     public static ProductInfoExt showMessage(Component parent, DataLogicSales dlSales) {
-        return showMessage(parent, dlSales, false);
+        return showMessage(parent, dlSales, PRODUCT_ALL);
     }
 
-    public static ProductInfoExt showMessage(Component parent, DataLogicSales dlSales, boolean isAuxiliar) {
+    public static ProductInfoExt showMessage(Component parent, DataLogicSales dlSales, int productsType) {
 
         Window window = getWindow(parent);
 
@@ -100,7 +111,7 @@ public class JProductFinder extends javax.swing.JDialog {
         } else {
             myMsg = new JProductFinder((Dialog) window, true);
         }
-        return myMsg.init(dlSales, isAuxiliar);
+        return myMsg.init(dlSales, productsType);
     }
     
     private static class MyListData extends javax.swing.AbstractListModel {

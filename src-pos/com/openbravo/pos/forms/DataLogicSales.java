@@ -61,7 +61,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         stockdiaryDatas = new Datas[] {Datas.STRING, Datas.TIMESTAMP, Datas.INT, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE};
         paymenttabledatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.TIMESTAMP, Datas.STRING, Datas.STRING, Datas.DOUBLE};
         stockdatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.DOUBLE};
-        auxiliarDatas = new Datas[] {Datas.STRING, Datas.STRING};
+        auxiliarDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING};
     }
 
     public void init(Session s){
@@ -120,7 +120,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).list(id);
     }
-
+  
     // Products list
     public final SentenceList getProductList() {
         return new StaticSentence(s
@@ -130,17 +130,29 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerReadClass(ProductInfoExt.class));
     }
-
+    
+    // Products list
+    public final SentenceList getProductListNormal() {
+        return new StaticSentence(s
+            , new QBFBuilder(
+              "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE P.ISCOM = 0 AND ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , new SerializerReadClass(ProductInfoExt.class));
+    }
+   
     //Auxiliars list
     public final SentenceList getAuxiliarList() {
         return new StaticSentence(s
-            , "SELECT P.REFERENCE, P.NAME, P.CODE FROM PRODUCTS_COM COM, PRODUCTS P WHERE COM.PRODUCT = ? AND COM.PRODUCT2 = P.ID"
-            , new SerializerWriteBasic(new Datas[] {Datas.STRING})
-            , new SerializerReadBasic(new Datas[] { Datas.STRING, Datas.STRING, Datas.STRING}));
+            , "SELECT COM.ID, COM.PRODUCT, COM.PRODUCT2, P.REFERENCE, P.CODE, P.NAME" +
+              " FROM PRODUCTS_COM COM, PRODUCTS P" +
+              " WHERE COM.PRODUCT2 = P.ID AND COM.PRODUCT = ?"
+            , SerializerWriteString.INSTANCE
+            , new SerializerReadBasic(new Datas[] { Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}));
     }
-
+    
     //Auxiliar list for a filter
-    public final SentenceList getAuxiliarListForFilter() {
+    public final SentenceList getProductListAuxiliar() {
          return new StaticSentence(s
             , new QBFBuilder(
               "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
@@ -484,12 +496,27 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {  
                return new PreparedSentence(s
-                        , "INSERT INTO PRODUCTS_COM VALUES (?, ?)"
-                        , new SerializerWriteBasicExt(auxiliarDatas, new int[] {0, 1})).exec(params);
+                        , "INSERT INTO PRODUCTS_COM(ID, PRODUCT, PRODUCT2) VALUES (?, ?, ?)"
+                        , new SerializerWriteBasicExt(auxiliarDatas, new int[] {0, 1, 2})).exec(params);
             }
         };
     }
-
+    
+    /**
+     * A method to create a query for inserting into PRODUCTS_COM a product and its auxiliar
+     *
+     * @return SentenceExec a query for updating data into PRODUCTS_COM
+     */
+    public final SentenceExec getAuxiliarUpdate() {
+        return new SentenceExecTransaction(s) {
+            public int execInTransaction(Object params) throws BasicException {  
+               return new PreparedSentence(s
+                        , "UPDATE PRODUCTS_COM SET PRODUCT = ?, PRODUCT2 = ? WHERE ID = ?"
+                        , new SerializerWriteBasicExt(auxiliarDatas, new int[] {1, 2, 0})).exec(params);
+            }
+        };
+    }
+    
     /**
      * A method to create a query for deleting from PRODUCTS_COM a product with its auxiliar
      *
@@ -499,7 +526,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {
                 return new PreparedSentence(s
-                    , "DELETE FROM PRODUCTS_COM WHERE PRODUCT2 = ?"
+                    , "DELETE FROM PRODUCTS_COM WHERE ID = ?"
                     , new SerializerWriteBasicExt(auxiliarDatas, new int[] {0})).exec(params);
             }
         };
@@ -627,21 +654,6 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new String[] {"ID", AppLocal.getIntString("Label.Name"), AppLocal.getIntString("label.taxcategory"), AppLocal.getIntString("label.custtaxcategory"), AppLocal.getIntString("label.taxparent"), AppLocal.getIntString("label.dutyrate"), AppLocal.getIntString("label.cascade"), AppLocal.getIntString("label.order")}
             , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.DOUBLE, Datas.BOOLEAN, Datas.INT}
             , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.PERCENT, Formats.BOOLEAN, Formats.INT}
-            , new int[] {0}
-        );
-    }
-
-    /**
-     *
-     * @return TableDefinition of PRODUCTS_COM - Auxiliars
-     */
-    public final TableDefinition getTableAuxiliar() {
-        return new TableDefinition(s
-            , "PRODUCTS_COM"
-            , new String[] {"PRODUCT", "PRODUCT2"}
-            , new String[] {"ID", "Auxiliar Reference"}
-            , new Datas[] {Datas.STRING, Datas.STRING}
-            , new Formats[] {Formats.STRING, Formats.STRING}
             , new int[] {0}
         );
     }
