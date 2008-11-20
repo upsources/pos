@@ -30,7 +30,8 @@ import com.openbravo.data.loader.SerializableRead;
  *
  */
 public class LocationInfo implements SerializableRead, IKeyed {
-
+    
+    private static final long serialVersionUID = 9032683595230L;
     private String m_sID;
     private String m_sName;
     private String m_sAddress;

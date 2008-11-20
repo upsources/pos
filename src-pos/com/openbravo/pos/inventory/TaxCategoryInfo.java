@@ -32,7 +32,8 @@ import java.io.Serializable;
  * @version 
  */
 public class TaxCategoryInfo implements SerializableRead, SerializableWrite, Serializable, IKeyed {
-
+    
+    private static final long serialVersionUID = 8959679342805L;
     private String m_sID;
     private String m_sName;
     

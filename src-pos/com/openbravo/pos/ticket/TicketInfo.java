@@ -15,7 +15,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 package com.openbravo.pos.ticket;
 
 import java.util.*;
@@ -35,9 +34,9 @@ import com.openbravo.pos.util.RoundUtils;
  * @author adrianromero
  */
 public class TicketInfo implements SerializableRead, Externalizable {
- 
+
+    private static final long serialVersionUID = 2765650091387265178L;
     private static DateFormat m_dateformat = new SimpleDateFormat("hh:mm");
- 
     private String m_sId;
     private int m_iTicketId;
     private java.util.Date m_dDate;
@@ -46,10 +45,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private CustomerInfoExt m_Customer;
     private String m_sActiveCash;
     private List<TicketLineInfo> m_aLines;
-    
-    private List<PaymentInfo> payments; 
+    private List<PaymentInfo> payments;
     private List<TicketTaxInfo> taxes;
-  
+
     /** Creates new TicketModel */
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
@@ -60,20 +58,21 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_Customer = null;
         m_sActiveCash = null;
         m_aLines = new ArrayList<TicketLineInfo>(); // vacio de lineas
-        
-        payments = new ArrayList<PaymentInfo>();        
+
+        payments = new ArrayList<PaymentInfo>();
         taxes = null;
     }
-    public void writeExternal(ObjectOutput out) throws IOException  {
+
+    public void writeExternal(ObjectOutput out) throws IOException {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         out.writeObject(m_sId);
-        out.writeInt(m_iTicketId);    
+        out.writeInt(m_iTicketId);
         out.writeObject(m_Customer);
         out.writeObject(m_dDate);
         out.writeObject(attributes);
         out.writeObject(m_aLines);
-    }   
-    
+    }
+
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         m_sId = (String) in.readObject();
@@ -84,11 +83,11 @@ public class TicketInfo implements SerializableRead, Externalizable {
         m_aLines = (List<TicketLineInfo>) in.readObject();
         m_User = null;
         m_sActiveCash = null;
-        
-        payments = new ArrayList<PaymentInfo>();        
+
+        payments = new ArrayList<PaymentInfo>();
         taxes = null;
     }
-    
+
     public void readValues(DataRead dr) throws BasicException {
         m_sId = dr.getString(1);
         m_iTicketId = dr.getInt(2).intValue();
@@ -100,62 +99,63 @@ public class TicketInfo implements SerializableRead, Externalizable {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
         } catch (IOException e) {
-        } 
-        m_User = new UserInfo(dr.getString(6), dr.getString(7)); 
-        m_Customer = new CustomerInfoExt(dr.getString(8));        
+        }
+        m_User = new UserInfo(dr.getString(6), dr.getString(7));
+        m_Customer = new CustomerInfoExt(dr.getString(8));
         m_aLines = new ArrayList<TicketLineInfo>();
-        
-        payments = new ArrayList<PaymentInfo>(); 
+
+        payments = new ArrayList<PaymentInfo>();
         taxes = null;
     }
-    
+
     public TicketInfo copyTicket() {
         TicketInfo t = new TicketInfo();
 
         t.m_iTicketId = m_iTicketId;
         t.m_dDate = m_dDate;
         t.m_sActiveCash = m_sActiveCash;
-        t.attributes = (Properties) attributes.clone(); 
+        t.attributes = (Properties) attributes.clone();
         t.m_User = m_User;
         t.m_Customer = m_Customer;
-        
-        t.m_aLines = new ArrayList<TicketLineInfo>(); 
+
+        t.m_aLines = new ArrayList<TicketLineInfo>();
         for (TicketLineInfo l : m_aLines) {
             t.m_aLines.add(l.copyTicketLine());
         }
         t.refreshLines();
-        
-        t.payments = new LinkedList<PaymentInfo>(); 
+
+        t.payments = new LinkedList<PaymentInfo>();
         for (PaymentInfo p : payments) {
             t.payments.add(p.copyPayment());
         }
-        
+
         // taxes are not copied, must be calculated again.
-        
+
         return t;
     }
-    
+
     public String getId() {
         return m_sId;
     }
-    
-    public int getTicketId(){
+
+    public int getTicketId() {
         return m_iTicketId;
     }
+
     public void setTicketId(int iTicketId) {
         m_iTicketId = iTicketId;
-        // refreshLines();
-    }   
-    
+    // refreshLines();
+    }
+
     public String getName(Object info) {
-        
+
         StringBuffer name = new StringBuffer();
-        
+
         if (getCustomerId() != null) {
             name.append(m_Customer.toString());
             name.append(" - ");
         }
-        
+
         if (info == null) {
             if (m_iTicketId == 0) {
                 name.append("(" + m_dateformat.format(m_dDate) + " " + Long.toString(m_dDate.getTime() % 1000) + ")");
@@ -165,33 +165,38 @@ public class TicketInfo implements SerializableRead, Externalizable {
         } else {
             name.append(info.toString());
         }
-        
+
         return name.toString();
     }
-    
+
     public String getName() {
         return getName(null);
     }
-    
+
     public java.util.Date getDate() {
         return m_dDate;
     }
-    public void setDate(java.util.Date dDate) { 
+
+    public void setDate(java.util.Date dDate) {
         m_dDate = dDate;
     }
+
     public UserInfo getUser() {
         return m_User;
-    }    
-    public void setUser(UserInfo value) {        
+    }
+
+    public void setUser(UserInfo value) {
         m_User = value;
-    }   
-    
+    }
+
     public CustomerInfoExt getCustomer() {
         return m_Customer;
     }
+
     public void setCustomer(CustomerInfoExt value) {
         m_Customer = value;
     }
+
     public String getCustomerId() {
         if (m_Customer == null) {
             return null;
@@ -199,184 +204,185 @@ public class TicketInfo implements SerializableRead, Externalizable {
             return m_Customer.getId();
         }
     }
-    
-    public void setActiveCash(String value) {     
+
+    public void setActiveCash(String value) {
         m_sActiveCash = value;
-    }    
+    }
+
     public String getActiveCash() {
         return m_sActiveCash;
     }
-    
+
     public String getProperty(String key) {
         return attributes.getProperty(key);
     }
-    
+
     public String getProperty(String key, String defaultvalue) {
         return attributes.getProperty(key, defaultvalue);
     }
-    
+
     public void setProperty(String key, String value) {
         attributes.setProperty(key, value);
     }
-    
+
     public Properties getProperties() {
         return attributes;
     }
-    
-    public TicketLineInfo getLine(int index){
+
+    public TicketLineInfo getLine(int index) {
         return m_aLines.get(index);
     }
-    
+
     public void addLine(TicketLineInfo oLine) {
 
-       oLine.setTicket(m_sId, m_aLines.size());
-       m_aLines.add(oLine);
+        oLine.setTicket(m_sId, m_aLines.size());
+        m_aLines.add(oLine);
     }
-    
+
     public void insertLine(int index, TicketLineInfo oLine) {
         m_aLines.add(index, oLine);
-        refreshLines();        
+        refreshLines();
     }
-    
+
     public void setLine(int index, TicketLineInfo oLine) {
         oLine.setTicket(m_sId, index);
-        m_aLines.set(index, oLine);     
+        m_aLines.set(index, oLine);
     }
-    
+
     public void removeLine(int index) {
         m_aLines.remove(index);
-        refreshLines();        
+        refreshLines();
     }
-    
-    private void refreshLines() {         
+
+    private void refreshLines() {
         for (int i = 0; i < m_aLines.size(); i++) {
             getLine(i).setTicket(m_sId, i);
-        } 
+        }
     }
-    
+
     public int getLinesCount() {
         return m_aLines.size();
     }
-    
+
     public double getArticlesCount() {
         double dArticles = 0.0;
         TicketLineInfo oLine;
-            
+
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
             dArticles += oLine.getMultiply();
         }
-        
+
         return dArticles;
     }
-    
+
     public double getSubTotal() {
         double sum = 0.0;
         for (TicketLineInfo line : m_aLines) {
             sum += line.getSubValue();
-        }        
+        }
         return sum;
     }
-    
+
     public double getTax() {
 
         double sum = 0.0;
         if (hasTaxesCalculated()) {
             for (TicketTaxInfo tax : taxes) {
                 sum += tax.getTax(); // Taxes are already rounded...
-            }            
-        } else {                   
+            }
+        } else {
             for (TicketLineInfo line : m_aLines) {
-                sum += RoundUtils.round(line.getTax()); 
-            }        
-        }        
+                sum += RoundUtils.round(line.getTax());
+            }
+        }
         return sum;
     }
-    
-    public double getTotal() { 
-        
+
+    public double getTotal() {
+
         return getSubTotal() + getTax();
     }
-    
+
     public double getTotalPaid() {
-        
+
         double sum = 0.0;
         for (PaymentInfo p : payments) {
             if (!"debtpaid".equals(p.getName())) {
                 sum += p.getTotal();
-            }                    
+            }
         }
         return sum;
     }
-    
+
     public List<TicketLineInfo> getLines() {
         return m_aLines;
-    }    
-    
+    }
+
     public void setLines(List<TicketLineInfo> l) {
         m_aLines = l;
     }
-    
+
     public List<PaymentInfo> getPayments() {
         return payments;
     }
-    
+
     public void setPayments(List<PaymentInfo> l) {
         payments = l;
     }
-    
+
     public void resetPayments() {
         payments = new ArrayList<PaymentInfo>();
     }
-    
+
     public List<TicketTaxInfo> getTaxes() {
-        return taxes;        
+        return taxes;
     }
-    
+
     public boolean hasTaxesCalculated() {
         return taxes != null;
     }
-    
+
     public void setTaxes(List<TicketTaxInfo> l) {
         taxes = l;
     }
-    
+
     public void resetTaxes() {
         taxes = null;
     }
-    
+
     public TicketTaxInfo getTaxLine(TaxInfo tax) {
-      
-        for (TicketTaxInfo taxline : taxes) {            
+
+        for (TicketTaxInfo taxline : taxes) {
             if (tax.getId().equals(taxline.getTaxInfo().getId())) {
                 return taxline;
             }
         }
-        
+
         return new TicketTaxInfo(tax);
     }
-    
+
     public TicketTaxInfo[] getTaxLines() {
-        
+
         Map<String, TicketTaxInfo> m = new HashMap<String, TicketTaxInfo>();
-        
-        TicketLineInfo oLine;            
+
+        TicketLineInfo oLine;
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
-            
+
             TicketTaxInfo t = m.get(oLine.getTaxInfo().getId());
             if (t == null) {
                 t = new TicketTaxInfo(oLine.getTaxInfo());
                 m.put(t.getTaxInfo().getId(), t);
-            }            
+            }
             t.add(oLine.getSubValue());
-        }        
-        
+        }
+
         // return dSuma;       
         Collection<TicketTaxInfo> avalues = m.values();
         return avalues.toArray(new TicketTaxInfo[avalues.size()]);
     }
-    
+
     public String printId() {
         if (m_iTicketId > 0) {
             // valid ticket id
@@ -385,28 +391,35 @@ public class TicketInfo implements SerializableRead, Externalizable {
             return "";
         }
     }
+
     public String printDate() {
         return Formats.TIMESTAMP.formatValue(m_dDate);
     }
+
     public String printUser() {
         return m_User == null ? "" : m_User.getName();
     }
+
     public String printCustomer() {
         return m_Customer == null ? "" : m_Customer.getName();
     }
+
     public String printArticlesCount() {
         return Formats.DOUBLE.formatValue(new Double(getArticlesCount()));
     }
-    
+
     public String printSubTotal() {
         return Formats.CURRENCY.formatValue(new Double(getSubTotal()));
     }
+
     public String printTax() {
         return Formats.CURRENCY.formatValue(new Double(getTax()));
-    }    
+    }
+
     public String printTotal() {
         return Formats.CURRENCY.formatValue(new Double(getTotal()));
     }
+
     public String printTotalPaid() {
         return Formats.CURRENCY.formatValue(new Double(getTotalPaid()));
     }

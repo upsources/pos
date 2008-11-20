@@ -30,6 +30,7 @@ import com.openbravo.basic.BasicException;
 
 public class Place implements SerializableRead, java.io.Serializable {
     
+    private static final long serialVersionUID = 8652254694281L;
     private static final Icon ICO_OCU = new ImageIcon(Place.class.getResource("/com/openbravo/images/edit_group.png"));
     private static final Icon ICO_FRE = new NullIcon(22, 22);
     

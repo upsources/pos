@@ -26,6 +26,7 @@ import java.io.Serializable;
  */
 public class CustomerInfo implements Serializable {
     
+    private static final long serialVersionUID = 9083257536541L;
     protected String id;
     protected String searchkey;
     protected String taxid;

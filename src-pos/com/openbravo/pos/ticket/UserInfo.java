@@ -15,7 +15,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 package com.openbravo.pos.ticket;
 
 import java.io.Serializable;
@@ -25,21 +24,22 @@ import java.io.Serializable;
  * @author adrianromero
  */
 public class UserInfo implements Serializable {
-    
+
+    private static final long serialVersionUID = 7537578737839L;
     private String m_sId;
     private String m_sName;
-    
+
     /** Creates a new instance of UserInfoBasic */
     public UserInfo(String id, String name) {
         m_sId = id;
-        m_sName = name;    
+        m_sName = name;
     }
-    
+
     public String getId() {
         return m_sId;
-    }    
-    
+    }
+
     public String getName() {
         return m_sName;
-    }        
+    }
 }

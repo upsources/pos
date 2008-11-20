@@ -15,7 +15,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 package com.openbravo.pos.ticket;
 
 import java.awt.image.*;
@@ -34,36 +33,38 @@ import com.openbravo.data.loader.ImageUtils;
  */
 public class CategoryInfo implements SerializableRead, SerializableWrite, IKeyed {
 
+    private static final long serialVersionUID = 8612449444103L;
     private String m_sID;
     private String m_sName;
     private BufferedImage m_Image;
-    
+
     /** Creates new CategoryInfo */
     public CategoryInfo() {
         m_sID = null;
         m_sName = null;
         m_Image = null;
     }
-    
+
     public Object getKey() {
         return m_sID;
     }
+
     public void readValues(DataRead dr) throws BasicException {
         m_sID = dr.getString(1);
         m_sName = dr.getString(2);
         m_Image = ImageUtils.readImage(dr.getBytes(3));
     }
-    
+
     public void writeValues(DataWrite dp) throws BasicException {
         dp.setString(1, m_sID);
         dp.setString(2, m_sName);
-        dp.setBytes(3, ImageUtils.writeImage(m_Image));        
+        dp.setBytes(3, ImageUtils.writeImage(m_Image));
     }
-    
+
     public void setID(String sID) {
         m_sID = sID;
     }
-    
+
     public String getID() {
         return m_sID;
     }
@@ -71,19 +72,20 @@ public class CategoryInfo implements SerializableRead, SerializableWrite, IKeyed
     public String getName() {
         return m_sName;
     }
-    
+
     public void setName(String sName) {
         m_sName = sName;
     }
-    
+
     public BufferedImage getImage() {
         return m_Image;
     }
-    
+
     public void setImage(BufferedImage img) {
         m_Image = img;
-    }    
-    public String toString(){
+    }
+
+    public String toString() {
         return m_sName;
     }
 }

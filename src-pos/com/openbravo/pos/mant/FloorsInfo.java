@@ -30,7 +30,8 @@ import com.openbravo.data.loader.SerializableRead;
  *
  */
 public class FloorsInfo implements SerializableRead, IKeyed {
-
+    
+    private static final long serialVersionUID = 8906929819402L;
     private String m_sID;
     private String m_sName;
     

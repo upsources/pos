@@ -25,6 +25,7 @@ import com.openbravo.format.Formats;
 
 public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  {
     
+    private static final long serialVersionUID = 8865238639097L;
     private double m_dTicket;
     private String m_sName;
     

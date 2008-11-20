@@ -29,7 +29,8 @@ import com.openbravo.data.loader.IKeyed;
  * @author adrianromero
  */
 public class TaxInfo implements SerializableRead, Serializable, IKeyed {
-
+    
+    private static final long serialVersionUID = -2705212098856473043L;
     private String id;
     private String name;
     private String taxcategoryid;

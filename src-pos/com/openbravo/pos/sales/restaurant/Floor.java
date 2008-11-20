@@ -36,6 +36,7 @@ import java.awt.ComponentOrientation;
 
 public class Floor implements SerializableRead {
     
+    private static final long serialVersionUID = 8694154682897L;
     private String m_sID;
     private String m_sName;
     private Container m_container;

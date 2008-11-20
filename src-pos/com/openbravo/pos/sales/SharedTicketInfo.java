@@ -30,6 +30,7 @@ import com.openbravo.data.loader.SerializableWrite;
  */
 public class SharedTicketInfo implements SerializableRead, SerializableWrite {
     
+    private static final long serialVersionUID = 7640633837719L;
     private String id;
     private String name;
     
