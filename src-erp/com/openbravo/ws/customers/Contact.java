@@ -4,52 +4,44 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
-
 package com.openbravo.ws.customers;
 
-public class Contact  implements java.io.Serializable {
+public class Contact implements java.io.Serializable {
+
+    private static final long serialVersionUID = 9809905717175L;
     private java.lang.String businessPartnerId;
-
     private java.lang.String clientId;
-
     private java.lang.String email;
-
     private java.lang.String fax;
-
     private java.lang.String firstName;
-
     private java.lang.String id;
-
     private java.lang.String lastName;
-
     private java.lang.String phone;
-
     private java.lang.String phone2;
 
     public Contact() {
     }
 
     public Contact(
-           java.lang.String businessPartnerId,
-           java.lang.String clientId,
-           java.lang.String email,
-           java.lang.String fax,
-           java.lang.String firstName,
-           java.lang.String id,
-           java.lang.String lastName,
-           java.lang.String phone,
-           java.lang.String phone2) {
-           this.businessPartnerId = businessPartnerId;
-           this.clientId = clientId;
-           this.email = email;
-           this.fax = fax;
-           this.firstName = firstName;
-           this.id = id;
-           this.lastName = lastName;
-           this.phone = phone;
-           this.phone2 = phone2;
+            java.lang.String businessPartnerId,
+            java.lang.String clientId,
+            java.lang.String email,
+            java.lang.String fax,
+            java.lang.String firstName,
+            java.lang.String id,
+            java.lang.String lastName,
+            java.lang.String phone,
+            java.lang.String phone2) {
+        this.businessPartnerId = businessPartnerId;
+        this.clientId = clientId;
+        this.email = email;
+        this.fax = fax;
+        this.firstName = firstName;
+        this.id = id;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.phone2 = phone2;
     }
-
 
     /**
      * Gets the businessPartnerId value for this Contact.
@@ -60,7 +52,6 @@ public class Contact  implements java.io.Serializable {
         return businessPartnerId;
     }
 
-
     /**
      * Sets the businessPartnerId value for this Contact.
      * 
@@ -69,7 +60,6 @@ public class Contact  implements java.io.Serializable {
     public void setBusinessPartnerId(java.lang.String businessPartnerId) {
         this.businessPartnerId = businessPartnerId;
     }
-
 
     /**
      * Gets the clientId value for this Contact.
@@ -80,7 +70,6 @@ public class Contact  implements java.io.Serializable {
         return clientId;
     }
 
-
     /**
      * Sets the clientId value for this Contact.
      * 
@@ -89,7 +78,6 @@ public class Contact  implements java.io.Serializable {
     public void setClientId(java.lang.String clientId) {
         this.clientId = clientId;
     }
-
 
     /**
      * Gets the email value for this Contact.
@@ -100,7 +88,6 @@ public class Contact  implements java.io.Serializable {
         return email;
     }
 
-
     /**
      * Sets the email value for this Contact.
      * 
@@ -109,7 +96,6 @@ public class Contact  implements java.io.Serializable {
     public void setEmail(java.lang.String email) {
         this.email = email;
     }
-
 
     /**
      * Gets the fax value for this Contact.
@@ -120,7 +106,6 @@ public class Contact  implements java.io.Serializable {
         return fax;
     }
 
-
     /**
      * Sets the fax value for this Contact.
      * 
@@ -129,7 +114,6 @@ public class Contact  implements java.io.Serializable {
     public void setFax(java.lang.String fax) {
         this.fax = fax;
     }
-
 
     /**
      * Gets the firstName value for this Contact.
@@ -140,7 +124,6 @@ public class Contact  implements java.io.Serializable {
         return firstName;
     }
 
-
     /**
      * Sets the firstName value for this Contact.
      * 
@@ -149,7 +132,6 @@ public class Contact  implements java.io.Serializable {
     public void setFirstName(java.lang.String firstName) {
         this.firstName = firstName;
     }
-
 
     /**
      * Gets the id value for this Contact.
@@ -160,7 +142,6 @@ public class Contact  implements java.io.Serializable {
         return id;
     }
 
-
     /**
      * Sets the id value for this Contact.
      * 
@@ -169,7 +150,6 @@ public class Contact  implements java.io.Serializable {
     public void setId(java.lang.String id) {
         this.id = id;
     }
-
 
     /**
      * Gets the lastName value for this Contact.
@@ -180,7 +160,6 @@ public class Contact  implements java.io.Serializable {
         return lastName;
     }
 
-
     /**
      * Sets the lastName value for this Contact.
      * 
@@ -189,7 +168,6 @@ public class Contact  implements java.io.Serializable {
     public void setLastName(java.lang.String lastName) {
         this.lastName = lastName;
     }
-
 
     /**
      * Gets the phone value for this Contact.
@@ -200,7 +178,6 @@ public class Contact  implements java.io.Serializable {
         return phone;
     }
 
-
     /**
      * Sets the phone value for this Contact.
      * 
@@ -209,7 +186,6 @@ public class Contact  implements java.io.Serializable {
     public void setPhone(java.lang.String phone) {
         this.phone = phone;
     }
-
 
     /**
      * Gets the phone2 value for this Contact.
@@ -220,7 +196,6 @@ public class Contact  implements java.io.Serializable {
         return phone2;
     }
 
-
     /**
      * Sets the phone2 value for this Contact.
      * 
@@ -229,51 +204,57 @@ public class Contact  implements java.io.Serializable {
     public void setPhone2(java.lang.String phone2) {
         this.phone2 = phone2;
     }
-
     private java.lang.Object __equalsCalc = null;
+
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Contact)) return false;
+        if (!(obj instanceof Contact)) {
+            return false;
+        }
         Contact other = (Contact) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            ((this.businessPartnerId==null && other.getBusinessPartnerId()==null) || 
-             (this.businessPartnerId!=null &&
-              this.businessPartnerId.equals(other.getBusinessPartnerId()))) &&
-            ((this.clientId==null && other.getClientId()==null) || 
-             (this.clientId!=null &&
-              this.clientId.equals(other.getClientId()))) &&
-            ((this.email==null && other.getEmail()==null) || 
-             (this.email!=null &&
-              this.email.equals(other.getEmail()))) &&
-            ((this.fax==null && other.getFax()==null) || 
-             (this.fax!=null &&
-              this.fax.equals(other.getFax()))) &&
-            ((this.firstName==null && other.getFirstName()==null) || 
-             (this.firstName!=null &&
-              this.firstName.equals(other.getFirstName()))) &&
-            ((this.id==null && other.getId()==null) || 
-             (this.id!=null &&
-              this.id.equals(other.getId()))) &&
-            ((this.lastName==null && other.getLastName()==null) || 
-             (this.lastName!=null &&
-              this.lastName.equals(other.getLastName()))) &&
-            ((this.phone==null && other.getPhone()==null) || 
-             (this.phone!=null &&
-              this.phone.equals(other.getPhone()))) &&
-            ((this.phone2==null && other.getPhone2()==null) || 
-             (this.phone2!=null &&
-              this.phone2.equals(other.getPhone2())));
+        _equals = true &&
+                ((this.businessPartnerId == null && other.getBusinessPartnerId() == null) ||
+                (this.businessPartnerId != null &&
+                this.businessPartnerId.equals(other.getBusinessPartnerId()))) &&
+                ((this.clientId == null && other.getClientId() == null) ||
+                (this.clientId != null &&
+                this.clientId.equals(other.getClientId()))) &&
+                ((this.email == null && other.getEmail() == null) ||
+                (this.email != null &&
+                this.email.equals(other.getEmail()))) &&
+                ((this.fax == null && other.getFax() == null) ||
+                (this.fax != null &&
+                this.fax.equals(other.getFax()))) &&
+                ((this.firstName == null && other.getFirstName() == null) ||
+                (this.firstName != null &&
+                this.firstName.equals(other.getFirstName()))) &&
+                ((this.id == null && other.getId() == null) ||
+                (this.id != null &&
+                this.id.equals(other.getId()))) &&
+                ((this.lastName == null && other.getLastName() == null) ||
+                (this.lastName != null &&
+                this.lastName.equals(other.getLastName()))) &&
+                ((this.phone == null && other.getPhone() == null) ||
+                (this.phone != null &&
+                this.phone.equals(other.getPhone()))) &&
+                ((this.phone2 == null && other.getPhone2() == null) ||
+                (this.phone2 != null &&
+                this.phone2.equals(other.getPhone2())));
         __equalsCalc = null;
         return _equals;
     }
-
     private boolean __hashCodeCalc = false;
+
     public synchronized int hashCode() {
         if (__hashCodeCalc) {
             return 0;
@@ -309,11 +290,10 @@ public class Contact  implements java.io.Serializable {
         }
         __hashCodeCalc = false;
         return _hashCode;
-    }
-
-    // Type metadata
+    }    // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Contact.class, true);
+            new org.apache.axis.description.TypeDesc(Contact.class, true);
+    
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("/services/WebService", "Contact"));
@@ -384,24 +364,21 @@ public class Contact  implements java.io.Serializable {
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanSerializer(
+                _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanDeserializer(
+                _javaType, _xmlType, typeDesc);
     }
-
 }

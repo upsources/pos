@@ -4,41 +4,41 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
-
 package com.openbravo.ws.externalsales;
 
-public class ProductPlus  extends com.openbravo.ws.externalsales.Product  implements java.io.Serializable {
+public class ProductPlus extends com.openbravo.ws.externalsales.Product implements java.io.Serializable {
+
+    private static final long serialVersionUID = 9203746223092L;
     private double qtyonhand;
 
     public ProductPlus() {
     }
 
     public ProductPlus(
-           com.openbravo.ws.externalsales.Category category,
-           java.lang.String description,
-           java.lang.String ean,
-           java.lang.String id,
-           java.lang.String imageUrl,
-           double listPrice,
-           java.lang.String name,
-           java.lang.String number,
-           double purchasePrice,
-           com.openbravo.ws.externalsales.Tax tax,
-           double qtyonhand) {
+            com.openbravo.ws.externalsales.Category category,
+            java.lang.String description,
+            java.lang.String ean,
+            java.lang.String id,
+            java.lang.String imageUrl,
+            double listPrice,
+            java.lang.String name,
+            java.lang.String number,
+            double purchasePrice,
+            com.openbravo.ws.externalsales.Tax tax,
+            double qtyonhand) {
         super(
-            category,
-            description,
-            ean,
-            id,
-            imageUrl,
-            listPrice,
-            name,
-            number,
-            purchasePrice,
-            tax);
+                category,
+                description,
+                ean,
+                id,
+                imageUrl,
+                listPrice,
+                name,
+                number,
+                purchasePrice,
+                tax);
         this.qtyonhand = qtyonhand;
     }
-
 
     /**
      * Gets the qtyonhand value for this ProductPlus.
@@ -49,7 +49,6 @@ public class ProductPlus  extends com.openbravo.ws.externalsales.Product  implem
         return qtyonhand;
     }
 
-
     /**
      * Sets the qtyonhand value for this ProductPlus.
      * 
@@ -58,25 +57,31 @@ public class ProductPlus  extends com.openbravo.ws.externalsales.Product  implem
     public void setQtyonhand(double qtyonhand) {
         this.qtyonhand = qtyonhand;
     }
-
     private java.lang.Object __equalsCalc = null;
+
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof ProductPlus)) return false;
+        if (!(obj instanceof ProductPlus)) {
+            return false;
+        }
         ProductPlus other = (ProductPlus) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = super.equals(obj) && 
-            this.qtyonhand == other.getQtyonhand();
+        _equals = super.equals(obj) &&
+                this.qtyonhand == other.getQtyonhand();
         __equalsCalc = null;
         return _equals;
     }
-
     private boolean __hashCodeCalc = false;
+
     public synchronized int hashCode() {
         if (__hashCodeCalc) {
             return 0;
@@ -86,11 +91,10 @@ public class ProductPlus  extends com.openbravo.ws.externalsales.Product  implem
         _hashCode += new Double(getQtyonhand()).hashCode();
         __hashCodeCalc = false;
         return _hashCode;
-    }
-
-    // Type metadata
+    }    // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(ProductPlus.class, true);
+            new org.apache.axis.description.TypeDesc(ProductPlus.class, true);
+    
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "ProductPlus"));
@@ -113,24 +117,21 @@ public class ProductPlus  extends com.openbravo.ws.externalsales.Product  implem
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanSerializer(
+                _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanDeserializer(
+                _javaType, _xmlType, typeDesc);
     }
-
 }

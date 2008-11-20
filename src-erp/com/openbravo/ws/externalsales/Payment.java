@@ -4,24 +4,23 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
-
 package com.openbravo.ws.externalsales;
 
-public class Payment  implements java.io.Serializable {
-    private double amount;
+public class Payment implements java.io.Serializable {
 
-    private java.lang.String paymentType;
+    private static final long serialVersionUID = 9273872175133L;
+    private double amount;
+    private String paymentType;
 
     public Payment() {
     }
 
     public Payment(
-           double amount,
-           java.lang.String paymentType) {
-           this.amount = amount;
-           this.paymentType = paymentType;
+            double amount,
+            java.lang.String paymentType) {
+        this.amount = amount;
+        this.paymentType = paymentType;
     }
-
 
     /**
      * Gets the amount value for this Payment.
@@ -32,7 +31,6 @@ public class Payment  implements java.io.Serializable {
         return amount;
     }
 
-
     /**
      * Sets the amount value for this Payment.
      * 
@@ -41,7 +39,6 @@ public class Payment  implements java.io.Serializable {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
 
     /**
      * Gets the paymentType value for this Payment.
@@ -52,7 +49,6 @@ public class Payment  implements java.io.Serializable {
         return paymentType;
     }
 
-
     /**
      * Sets the paymentType value for this Payment.
      * 
@@ -61,28 +57,34 @@ public class Payment  implements java.io.Serializable {
     public void setPaymentType(java.lang.String paymentType) {
         this.paymentType = paymentType;
     }
-
     private java.lang.Object __equalsCalc = null;
+
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Payment)) return false;
+        if (!(obj instanceof Payment)) {
+            return false;
+        }
         Payment other = (Payment) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            this.amount == other.getAmount() &&
-            ((this.paymentType==null && other.getPaymentType()==null) || 
-             (this.paymentType!=null &&
-              this.paymentType.equals(other.getPaymentType())));
+        _equals = true &&
+                this.amount == other.getAmount() &&
+                ((this.paymentType == null && other.getPaymentType() == null) ||
+                (this.paymentType != null &&
+                this.paymentType.equals(other.getPaymentType())));
         __equalsCalc = null;
         return _equals;
     }
-
     private boolean __hashCodeCalc = false;
+
     public synchronized int hashCode() {
         if (__hashCodeCalc) {
             return 0;
@@ -95,11 +97,10 @@ public class Payment  implements java.io.Serializable {
         }
         __hashCodeCalc = false;
         return _hashCode;
-    }
-
-    // Type metadata
+    }    // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Payment.class, true);
+            new org.apache.axis.description.TypeDesc(Payment.class, true);
+    
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Payment"));
@@ -128,24 +129,21 @@ public class Payment  implements java.io.Serializable {
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanSerializer(
+                _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanDeserializer(
+                _javaType, _xmlType, typeDesc);
     }
-
 }

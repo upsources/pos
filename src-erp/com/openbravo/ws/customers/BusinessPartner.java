@@ -4,56 +4,47 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
-
 package com.openbravo.ws.customers;
 
-public class BusinessPartner  implements java.io.Serializable {
+public class BusinessPartner implements java.io.Serializable {
+
+    private static final long serialVersionUID = 7460326872588L;
     private java.lang.String clientId;
-
     private java.lang.Boolean complete;
-
     private com.openbravo.ws.customers.Contact[] contacts;
-
     private java.lang.Boolean customer;
-
     private java.lang.String description;
-
     private java.lang.String id;
-
     private com.openbravo.ws.customers.Location[] locations;
-
     private java.lang.String name;
-
     private java.lang.String searchKey;
-
     private java.lang.Boolean vendor;
 
     public BusinessPartner() {
     }
 
     public BusinessPartner(
-           java.lang.String clientId,
-           java.lang.Boolean complete,
-           com.openbravo.ws.customers.Contact[] contacts,
-           java.lang.Boolean customer,
-           java.lang.String description,
-           java.lang.String id,
-           com.openbravo.ws.customers.Location[] locations,
-           java.lang.String name,
-           java.lang.String searchKey,
-           java.lang.Boolean vendor) {
-           this.clientId = clientId;
-           this.complete = complete;
-           this.contacts = contacts;
-           this.customer = customer;
-           this.description = description;
-           this.id = id;
-           this.locations = locations;
-           this.name = name;
-           this.searchKey = searchKey;
-           this.vendor = vendor;
+            java.lang.String clientId,
+            java.lang.Boolean complete,
+            com.openbravo.ws.customers.Contact[] contacts,
+            java.lang.Boolean customer,
+            java.lang.String description,
+            java.lang.String id,
+            com.openbravo.ws.customers.Location[] locations,
+            java.lang.String name,
+            java.lang.String searchKey,
+            java.lang.Boolean vendor) {
+        this.clientId = clientId;
+        this.complete = complete;
+        this.contacts = contacts;
+        this.customer = customer;
+        this.description = description;
+        this.id = id;
+        this.locations = locations;
+        this.name = name;
+        this.searchKey = searchKey;
+        this.vendor = vendor;
     }
-
 
     /**
      * Gets the clientId value for this BusinessPartner.
@@ -64,7 +55,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return clientId;
     }
 
-
     /**
      * Sets the clientId value for this BusinessPartner.
      * 
@@ -73,7 +63,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setClientId(java.lang.String clientId) {
         this.clientId = clientId;
     }
-
 
     /**
      * Gets the complete value for this BusinessPartner.
@@ -84,7 +73,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return complete;
     }
 
-
     /**
      * Sets the complete value for this BusinessPartner.
      * 
@@ -93,7 +81,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setComplete(java.lang.Boolean complete) {
         this.complete = complete;
     }
-
 
     /**
      * Gets the contacts value for this BusinessPartner.
@@ -104,7 +91,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return contacts;
     }
 
-
     /**
      * Sets the contacts value for this BusinessPartner.
      * 
@@ -113,7 +99,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setContacts(com.openbravo.ws.customers.Contact[] contacts) {
         this.contacts = contacts;
     }
-
 
     /**
      * Gets the customer value for this BusinessPartner.
@@ -124,7 +109,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return customer;
     }
 
-
     /**
      * Sets the customer value for this BusinessPartner.
      * 
@@ -133,7 +117,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setCustomer(java.lang.Boolean customer) {
         this.customer = customer;
     }
-
 
     /**
      * Gets the description value for this BusinessPartner.
@@ -144,7 +127,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return description;
     }
 
-
     /**
      * Sets the description value for this BusinessPartner.
      * 
@@ -153,7 +135,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setDescription(java.lang.String description) {
         this.description = description;
     }
-
 
     /**
      * Gets the id value for this BusinessPartner.
@@ -164,7 +145,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return id;
     }
 
-
     /**
      * Sets the id value for this BusinessPartner.
      * 
@@ -173,7 +153,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setId(java.lang.String id) {
         this.id = id;
     }
-
 
     /**
      * Gets the locations value for this BusinessPartner.
@@ -184,7 +163,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return locations;
     }
 
-
     /**
      * Sets the locations value for this BusinessPartner.
      * 
@@ -193,7 +171,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setLocations(com.openbravo.ws.customers.Location[] locations) {
         this.locations = locations;
     }
-
 
     /**
      * Gets the name value for this BusinessPartner.
@@ -204,7 +181,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return name;
     }
 
-
     /**
      * Sets the name value for this BusinessPartner.
      * 
@@ -213,7 +189,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setName(java.lang.String name) {
         this.name = name;
     }
-
 
     /**
      * Gets the searchKey value for this BusinessPartner.
@@ -224,7 +199,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return searchKey;
     }
 
-
     /**
      * Sets the searchKey value for this BusinessPartner.
      * 
@@ -233,7 +207,6 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setSearchKey(java.lang.String searchKey) {
         this.searchKey = searchKey;
     }
-
 
     /**
      * Gets the vendor value for this BusinessPartner.
@@ -244,7 +217,6 @@ public class BusinessPartner  implements java.io.Serializable {
         return vendor;
     }
 
-
     /**
      * Sets the vendor value for this BusinessPartner.
      * 
@@ -253,54 +225,60 @@ public class BusinessPartner  implements java.io.Serializable {
     public void setVendor(java.lang.Boolean vendor) {
         this.vendor = vendor;
     }
-
     private java.lang.Object __equalsCalc = null;
+
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof BusinessPartner)) return false;
+        if (!(obj instanceof BusinessPartner)) {
+            return false;
+        }
         BusinessPartner other = (BusinessPartner) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            ((this.clientId==null && other.getClientId()==null) || 
-             (this.clientId!=null &&
-              this.clientId.equals(other.getClientId()))) &&
-            ((this.complete==null && other.getComplete()==null) || 
-             (this.complete!=null &&
-              this.complete.equals(other.getComplete()))) &&
-            ((this.contacts==null && other.getContacts()==null) || 
-             (this.contacts!=null &&
-              java.util.Arrays.equals(this.contacts, other.getContacts()))) &&
-            ((this.customer==null && other.getCustomer()==null) || 
-             (this.customer!=null &&
-              this.customer.equals(other.getCustomer()))) &&
-            ((this.description==null && other.getDescription()==null) || 
-             (this.description!=null &&
-              this.description.equals(other.getDescription()))) &&
-            ((this.id==null && other.getId()==null) || 
-             (this.id!=null &&
-              this.id.equals(other.getId()))) &&
-            ((this.locations==null && other.getLocations()==null) || 
-             (this.locations!=null &&
-              java.util.Arrays.equals(this.locations, other.getLocations()))) &&
-            ((this.name==null && other.getName()==null) || 
-             (this.name!=null &&
-              this.name.equals(other.getName()))) &&
-            ((this.searchKey==null && other.getSearchKey()==null) || 
-             (this.searchKey!=null &&
-              this.searchKey.equals(other.getSearchKey()))) &&
-            ((this.vendor==null && other.getVendor()==null) || 
-             (this.vendor!=null &&
-              this.vendor.equals(other.getVendor())));
+        _equals = true &&
+                ((this.clientId == null && other.getClientId() == null) ||
+                (this.clientId != null &&
+                this.clientId.equals(other.getClientId()))) &&
+                ((this.complete == null && other.getComplete() == null) ||
+                (this.complete != null &&
+                this.complete.equals(other.getComplete()))) &&
+                ((this.contacts == null && other.getContacts() == null) ||
+                (this.contacts != null &&
+                java.util.Arrays.equals(this.contacts, other.getContacts()))) &&
+                ((this.customer == null && other.getCustomer() == null) ||
+                (this.customer != null &&
+                this.customer.equals(other.getCustomer()))) &&
+                ((this.description == null && other.getDescription() == null) ||
+                (this.description != null &&
+                this.description.equals(other.getDescription()))) &&
+                ((this.id == null && other.getId() == null) ||
+                (this.id != null &&
+                this.id.equals(other.getId()))) &&
+                ((this.locations == null && other.getLocations() == null) ||
+                (this.locations != null &&
+                java.util.Arrays.equals(this.locations, other.getLocations()))) &&
+                ((this.name == null && other.getName() == null) ||
+                (this.name != null &&
+                this.name.equals(other.getName()))) &&
+                ((this.searchKey == null && other.getSearchKey() == null) ||
+                (this.searchKey != null &&
+                this.searchKey.equals(other.getSearchKey()))) &&
+                ((this.vendor == null && other.getVendor() == null) ||
+                (this.vendor != null &&
+                this.vendor.equals(other.getVendor())));
         __equalsCalc = null;
         return _equals;
     }
-
     private boolean __hashCodeCalc = false;
+
     public synchronized int hashCode() {
         if (__hashCodeCalc) {
             return 0;
@@ -314,12 +292,12 @@ public class BusinessPartner  implements java.io.Serializable {
             _hashCode += getComplete().hashCode();
         }
         if (getContacts() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getContacts());
-                 i++) {
+            for (int i = 0;
+                    i < java.lang.reflect.Array.getLength(getContacts());
+                    i++) {
                 java.lang.Object obj = java.lang.reflect.Array.get(getContacts(), i);
                 if (obj != null &&
-                    !obj.getClass().isArray()) {
+                        !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();
                 }
             }
@@ -334,12 +312,12 @@ public class BusinessPartner  implements java.io.Serializable {
             _hashCode += getId().hashCode();
         }
         if (getLocations() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getLocations());
-                 i++) {
+            for (int i = 0;
+                    i < java.lang.reflect.Array.getLength(getLocations());
+                    i++) {
                 java.lang.Object obj = java.lang.reflect.Array.get(getLocations(), i);
                 if (obj != null &&
-                    !obj.getClass().isArray()) {
+                        !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();
                 }
             }
@@ -355,11 +333,10 @@ public class BusinessPartner  implements java.io.Serializable {
         }
         __hashCodeCalc = false;
         return _hashCode;
-    }
-
-    // Type metadata
+    }    // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(BusinessPartner.class, true);
+            new org.apache.axis.description.TypeDesc(BusinessPartner.class, true);
+    
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("/services/WebService", "BusinessPartner"));
@@ -436,24 +413,21 @@ public class BusinessPartner  implements java.io.Serializable {
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanSerializer(
+                _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanDeserializer(
+                _javaType, _xmlType, typeDesc);
     }
-
 }

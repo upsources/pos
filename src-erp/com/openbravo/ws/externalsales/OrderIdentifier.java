@@ -4,24 +4,23 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
-
 package com.openbravo.ws.externalsales;
 
-public class OrderIdentifier  implements java.io.Serializable {
-    private java.util.Calendar dateNew;
+public class OrderIdentifier implements java.io.Serializable {
 
+    private static final long serialVersionUID = 9341677250499L;
+    private java.util.Calendar dateNew;
     private java.lang.String documentNo;
 
     public OrderIdentifier() {
     }
 
     public OrderIdentifier(
-           java.util.Calendar dateNew,
-           java.lang.String documentNo) {
-           this.dateNew = dateNew;
-           this.documentNo = documentNo;
+            java.util.Calendar dateNew,
+            java.lang.String documentNo) {
+        this.dateNew = dateNew;
+        this.documentNo = documentNo;
     }
-
 
     /**
      * Gets the dateNew value for this OrderIdentifier.
@@ -32,7 +31,6 @@ public class OrderIdentifier  implements java.io.Serializable {
         return dateNew;
     }
 
-
     /**
      * Sets the dateNew value for this OrderIdentifier.
      * 
@@ -41,7 +39,6 @@ public class OrderIdentifier  implements java.io.Serializable {
     public void setDateNew(java.util.Calendar dateNew) {
         this.dateNew = dateNew;
     }
-
 
     /**
      * Gets the documentNo value for this OrderIdentifier.
@@ -52,7 +49,6 @@ public class OrderIdentifier  implements java.io.Serializable {
         return documentNo;
     }
 
-
     /**
      * Sets the documentNo value for this OrderIdentifier.
      * 
@@ -61,30 +57,36 @@ public class OrderIdentifier  implements java.io.Serializable {
     public void setDocumentNo(java.lang.String documentNo) {
         this.documentNo = documentNo;
     }
-
     private java.lang.Object __equalsCalc = null;
+
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof OrderIdentifier)) return false;
+        if (!(obj instanceof OrderIdentifier)) {
+            return false;
+        }
         OrderIdentifier other = (OrderIdentifier) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            ((this.dateNew==null && other.getDateNew()==null) || 
-             (this.dateNew!=null &&
-              this.dateNew.equals(other.getDateNew()))) &&
-            ((this.documentNo==null && other.getDocumentNo()==null) || 
-             (this.documentNo!=null &&
-              this.documentNo.equals(other.getDocumentNo())));
+        _equals = true &&
+                ((this.dateNew == null && other.getDateNew() == null) ||
+                (this.dateNew != null &&
+                this.dateNew.equals(other.getDateNew()))) &&
+                ((this.documentNo == null && other.getDocumentNo() == null) ||
+                (this.documentNo != null &&
+                this.documentNo.equals(other.getDocumentNo())));
         __equalsCalc = null;
         return _equals;
     }
-
     private boolean __hashCodeCalc = false;
+
     public synchronized int hashCode() {
         if (__hashCodeCalc) {
             return 0;
@@ -99,11 +101,10 @@ public class OrderIdentifier  implements java.io.Serializable {
         }
         __hashCodeCalc = false;
         return _hashCode;
-    }
-
-    // Type metadata
+    }    // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(OrderIdentifier.class, true);
+            new org.apache.axis.description.TypeDesc(OrderIdentifier.class, true);
+    
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "OrderIdentifier"));
@@ -132,24 +133,21 @@ public class OrderIdentifier  implements java.io.Serializable {
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanSerializer(
+                _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanDeserializer(
+                _javaType, _xmlType, typeDesc);
     }
-
 }

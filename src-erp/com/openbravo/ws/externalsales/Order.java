@@ -4,36 +4,32 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
-
 package com.openbravo.ws.externalsales;
 
-public class Order  implements java.io.Serializable {
+public class Order implements java.io.Serializable {
+
+    private static final long serialVersionUID = 9384737214755L;
     private com.openbravo.ws.externalsales.BPartner businessPartner;
-
     private com.openbravo.ws.externalsales.OrderLine[] lines;
-
     private com.openbravo.ws.externalsales.OrderIdentifier orderId;
-
     private com.openbravo.ws.externalsales.Payment[] payment;
-
     private int state;
 
     public Order() {
     }
 
     public Order(
-           com.openbravo.ws.externalsales.BPartner businessPartner,
-           com.openbravo.ws.externalsales.OrderLine[] lines,
-           com.openbravo.ws.externalsales.OrderIdentifier orderId,
-           com.openbravo.ws.externalsales.Payment[] payment,
-           int state) {
-           this.businessPartner = businessPartner;
-           this.lines = lines;
-           this.orderId = orderId;
-           this.payment = payment;
-           this.state = state;
+            com.openbravo.ws.externalsales.BPartner businessPartner,
+            com.openbravo.ws.externalsales.OrderLine[] lines,
+            com.openbravo.ws.externalsales.OrderIdentifier orderId,
+            com.openbravo.ws.externalsales.Payment[] payment,
+            int state) {
+        this.businessPartner = businessPartner;
+        this.lines = lines;
+        this.orderId = orderId;
+        this.payment = payment;
+        this.state = state;
     }
-
 
     /**
      * Gets the businessPartner value for this Order.
@@ -44,7 +40,6 @@ public class Order  implements java.io.Serializable {
         return businessPartner;
     }
 
-
     /**
      * Sets the businessPartner value for this Order.
      * 
@@ -53,7 +48,6 @@ public class Order  implements java.io.Serializable {
     public void setBusinessPartner(com.openbravo.ws.externalsales.BPartner businessPartner) {
         this.businessPartner = businessPartner;
     }
-
 
     /**
      * Gets the lines value for this Order.
@@ -64,7 +58,6 @@ public class Order  implements java.io.Serializable {
         return lines;
     }
 
-
     /**
      * Sets the lines value for this Order.
      * 
@@ -73,7 +66,6 @@ public class Order  implements java.io.Serializable {
     public void setLines(com.openbravo.ws.externalsales.OrderLine[] lines) {
         this.lines = lines;
     }
-
 
     /**
      * Gets the orderId value for this Order.
@@ -84,7 +76,6 @@ public class Order  implements java.io.Serializable {
         return orderId;
     }
 
-
     /**
      * Sets the orderId value for this Order.
      * 
@@ -93,7 +84,6 @@ public class Order  implements java.io.Serializable {
     public void setOrderId(com.openbravo.ws.externalsales.OrderIdentifier orderId) {
         this.orderId = orderId;
     }
-
 
     /**
      * Gets the payment value for this Order.
@@ -104,7 +94,6 @@ public class Order  implements java.io.Serializable {
         return payment;
     }
 
-
     /**
      * Sets the payment value for this Order.
      * 
@@ -113,7 +102,6 @@ public class Order  implements java.io.Serializable {
     public void setPayment(com.openbravo.ws.externalsales.Payment[] payment) {
         this.payment = payment;
     }
-
 
     /**
      * Gets the state value for this Order.
@@ -124,7 +112,6 @@ public class Order  implements java.io.Serializable {
         return state;
     }
 
-
     /**
      * Sets the state value for this Order.
      * 
@@ -133,37 +120,43 @@ public class Order  implements java.io.Serializable {
     public void setState(int state) {
         this.state = state;
     }
-
     private java.lang.Object __equalsCalc = null;
+
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Order)) return false;
+        if (!(obj instanceof Order)) {
+            return false;
+        }
         Order other = (Order) obj;
-        if (obj == null) return false;
-        if (this == obj) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
         if (__equalsCalc != null) {
             return (__equalsCalc == obj);
         }
         __equalsCalc = obj;
         boolean _equals;
-        _equals = true && 
-            ((this.businessPartner==null && other.getBusinessPartner()==null) || 
-             (this.businessPartner!=null &&
-              this.businessPartner.equals(other.getBusinessPartner()))) &&
-            ((this.lines==null && other.getLines()==null) || 
-             (this.lines!=null &&
-              java.util.Arrays.equals(this.lines, other.getLines()))) &&
-            ((this.orderId==null && other.getOrderId()==null) || 
-             (this.orderId!=null &&
-              this.orderId.equals(other.getOrderId()))) &&
-            ((this.payment==null && other.getPayment()==null) || 
-             (this.payment!=null &&
-              java.util.Arrays.equals(this.payment, other.getPayment()))) &&
-            this.state == other.getState();
+        _equals = true &&
+                ((this.businessPartner == null && other.getBusinessPartner() == null) ||
+                (this.businessPartner != null &&
+                this.businessPartner.equals(other.getBusinessPartner()))) &&
+                ((this.lines == null && other.getLines() == null) ||
+                (this.lines != null &&
+                java.util.Arrays.equals(this.lines, other.getLines()))) &&
+                ((this.orderId == null && other.getOrderId() == null) ||
+                (this.orderId != null &&
+                this.orderId.equals(other.getOrderId()))) &&
+                ((this.payment == null && other.getPayment() == null) ||
+                (this.payment != null &&
+                java.util.Arrays.equals(this.payment, other.getPayment()))) &&
+                this.state == other.getState();
         __equalsCalc = null;
         return _equals;
     }
-
     private boolean __hashCodeCalc = false;
+
     public synchronized int hashCode() {
         if (__hashCodeCalc) {
             return 0;
@@ -174,12 +167,12 @@ public class Order  implements java.io.Serializable {
             _hashCode += getBusinessPartner().hashCode();
         }
         if (getLines() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getLines());
-                 i++) {
+            for (int i = 0;
+                    i < java.lang.reflect.Array.getLength(getLines());
+                    i++) {
                 java.lang.Object obj = java.lang.reflect.Array.get(getLines(), i);
                 if (obj != null &&
-                    !obj.getClass().isArray()) {
+                        !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();
                 }
             }
@@ -188,12 +181,12 @@ public class Order  implements java.io.Serializable {
             _hashCode += getOrderId().hashCode();
         }
         if (getPayment() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(getPayment());
-                 i++) {
+            for (int i = 0;
+                    i < java.lang.reflect.Array.getLength(getPayment());
+                    i++) {
                 java.lang.Object obj = java.lang.reflect.Array.get(getPayment(), i);
                 if (obj != null &&
-                    !obj.getClass().isArray()) {
+                        !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();
                 }
             }
@@ -201,11 +194,10 @@ public class Order  implements java.io.Serializable {
         _hashCode += getState();
         __hashCodeCalc = false;
         return _hashCode;
-    }
-
-    // Type metadata
+    }    // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Order.class, true);
+            new org.apache.axis.description.TypeDesc(Order.class, true);
+    
 
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("/services/ExternalSales", "Order"));
@@ -252,24 +244,21 @@ public class Order  implements java.io.Serializable {
      * Get Custom Serializer
      */
     public static org.apache.axis.encoding.Serializer getSerializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanSerializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanSerializer(
+                _javaType, _xmlType, typeDesc);
     }
 
     /**
      * Get Custom Deserializer
      */
     public static org.apache.axis.encoding.Deserializer getDeserializer(
-           java.lang.String mechType, 
-           java.lang.Class _javaType,  
-           javax.xml.namespace.QName _xmlType) {
-        return 
-          new  org.apache.axis.encoding.ser.BeanDeserializer(
-            _javaType, _xmlType, typeDesc);
+            java.lang.String mechType,
+            java.lang.Class _javaType,
+            javax.xml.namespace.QName _xmlType) {
+        return new org.apache.axis.encoding.ser.BeanDeserializer(
+                _javaType, _xmlType, typeDesc);
     }
-
 }
