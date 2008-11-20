@@ -24,64 +24,92 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
 import javax.swing.JComponent;
 import com.openbravo.pos.printer.DevicePrinter;
-import com.openbravo.pos.printer.ticket.BasicTicket;
+import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import com.openbravo.pos.util.ReportUtils;
 import javax.print.PrintService;
 
+/**
+ *
+ * @author jaroslawwozniak
+ */
 public class DevicePrinterPrinter implements DevicePrinter {
     
     private String m_sName;
-    private BasicTicket m_ticketcurrent;
+    private BasicTicketForPrinter m_ticketcurrent;
     private PrintService printservice;
-    
+
     /** Creates a new instance of DevicePrinterPrinter */
     public DevicePrinterPrinter(String printername) {
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
         printservice = ReportUtils.getPrintService(printername);
+      
     }
     
+    @Override
     public String getPrinterName() {
         return m_sName;
     }
+    @Override
     public String getPrinterDescription() {
         return null;
     }
+    @Override
     public JComponent getPrinterComponent() {
         return null;
     }
+    @Override
     public void reset() {
         m_ticketcurrent = null;
     }
     
-    // INTERFAZ PRINTER 2
+    @Override
     public void beginReceipt() {
-        m_ticketcurrent = new BasicTicket();
+        m_ticketcurrent = new BasicTicketForPrinter();
     }
+    @Override
     public void printImage(BufferedImage image) {
         m_ticketcurrent.printImage(image);
     }
+
+    @Override
     public void printBarCode(String type, String position, String code) {
         m_ticketcurrent.printBarCode(type, position, code);
     }
+    @Override
     public void beginLine(int iTextSize) {
-        m_ticketcurrent.beginLine(iTextSize);
+  
+             m_ticketcurrent.beginLine(0);
+
+       // }
     }
+    @Override
     public void printText(int iStyle, String sText) {
         m_ticketcurrent.printText(iStyle, sText);
     }
+    @Override
     public void endLine() {
         m_ticketcurrent.endLine();
     }
+    @Override
     public void endReceipt() {
 
         try {
             // Print
-            PrinterJob printJob = PrinterJob.getPrinterJob();
+           PrinterJob printJob = PrinterJob.getPrinterJob();
             printJob.setPrintable(new PrintableTicket(m_ticketcurrent));
-            printJob.setJobName(AppLocal.APP_NAME + " - Document");                    
+            //PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+         //   aset.add(OrientationRequested.PORTRAIT);
+         //   aset.add(new Copies(1));
+         //   aset.add(new JobName("My job", null));
+//           aset.add(MediaSize.ISO.A4);
+       // PageFormat format = printJob.pageDialog(printJob.defaultPage());
+            printJob.setJobName(AppLocal.APP_NAME + " - Document");
             printJob.setPrintService(printservice);
-            printJob.print();
+        //   printJob.s
+            //printJob.printDialog();
+         //    if (printJob.printDialog())
+                printJob.print();
         } catch (Exception ex) {
             ex.printStackTrace();
         }   
@@ -92,5 +120,5 @@ public class DevicePrinterPrinter implements DevicePrinter {
     public void openDrawer() {
         // Una simulacion
         Toolkit.getDefaultToolkit().beep();
-    }   
+    }  
 }

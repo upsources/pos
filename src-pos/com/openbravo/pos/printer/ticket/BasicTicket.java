@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 public class BasicTicket implements PrintItem {
     
-    private java.util.List<PrintItem> m_aCommands;  
-    private PrintItemLine pil; 
-    private int m_iBodyHeight;
+    protected java.util.List<PrintItem> m_aCommands;
+    protected PrintItemLine pil;
+    protected int m_iBodyHeight;
     
     /** Creates a new instance of AbstractTicket */
     public BasicTicket() {
@@ -75,5 +75,27 @@ public class BasicTicket implements PrintItem {
             m_iBodyHeight += pil.getHeight(); 
             pil = null;
         }
-    }    
+    }
+
+    public void draw(Graphics2D g2d, int x, int y, int width, int start, int lines){
+        int currenty = y;
+        for(int i = start; i < lines; i++ ){
+            m_aCommands.get(i).draw(g2d, x, currenty, width);
+            currenty += m_aCommands.get(i).getHeight();
+        }
+    }
+
+    public int getHeightOfCommands(int line){
+               
+          return  m_aCommands.get(line).getHeight();
+       
+    }
+
+    public ArrayList getCommand(){
+        return (ArrayList) m_aCommands;
+    }
+
+    public int getTheLastIndex(){
+        return m_aCommands.size();
+    }
 }

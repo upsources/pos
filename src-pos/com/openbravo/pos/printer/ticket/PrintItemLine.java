@@ -27,14 +27,14 @@ import javax.swing.JLabel;
 
 public class PrintItemLine implements PrintItem {
     
-    private static final Font BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
-    private static final int FONTHEIGHT = 17; //
-    private static final int FONTWIDTH = 7; //
+    protected static  Font BASEFONT = new Font("Monospaced", Font.PLAIN, 10);
+    protected static  int FONTHEIGHT = 14; //
+    protected static  int FONTWIDTH = 7; //
     
-    private int m_itextsize;
-    private List<StyledText> m_atext;
+    protected int m_itextsize;
+    protected  List<StyledText> m_atext;
     
-    private JLabel label;
+    protected  JLabel label;
     
     /** Creates a new instance of PrinterItemLine */
     public PrintItemLine(int itextsize) {
@@ -74,7 +74,7 @@ public class PrintItemLine implements PrintItem {
         return FONTHEIGHT * MyPrinterState.getLineMult(m_itextsize);
     }    
     
-    private static class StyledText {
+    protected static class StyledText {
         
         public StyledText(int style, String text) {
             this.style = style;
