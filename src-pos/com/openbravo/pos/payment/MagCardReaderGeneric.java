@@ -18,6 +18,8 @@
 
 package com.openbravo.pos.payment;
 
+import com.openbravo.pos.util.LuhnAlgorithm;
+import com.openbravo.pos.util.StringUtils;
 import java.util.*;
 
 public class MagCardReaderGeneric implements MagCardReader {
@@ -163,35 +165,11 @@ public class MagCardReaderGeneric implements MagCardReader {
     }
     
     private boolean checkCardNumber(String sNumber) {
-        
-        if (sNumber == null || (sNumber.length() != 16 && sNumber.length() != 15)) {
-            return false;
-        }
-        
-        for (int i = 0; i < 16; i++) {
-            char c = sNumber.charAt(i);
-            if (c != '0' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5' && c != '6' && c != '7' && c != '8' && c != '9') {
-                return false;
-            }
-        }
-        
-        return true;
+        return LuhnAlgorithm.checkCC(sNumber);
     }
     
     private boolean checkExpDate(String sDate) {
-        
-        if (sDate == null || sDate.length() != 4) {
-            return false;
-        }
-        
-        for (int i = 0; i < 4; i++) {
-            char c = sDate.charAt(i);
-            if (c != '0' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5' && c != '6' && c != '7' && c != '8' && c != '9') {
-                return false;
-            }
-        }
-        
-        return true;
+        return ( sDate.length()==4 && StringUtils.isNumber(sDate.trim()) );
     }
     
     private String formatHolderName(String sName) {

@@ -22,6 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import com.openbravo.pos.forms.AppLocal;
+import com.openbravo.pos.util.LuhnAlgorithm;
 
 /**
  *
@@ -75,7 +76,7 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
     }
     
     public PaymentInfoMagcard getPaymentInfoMagcard() {
-
+        
         if (m_dTotal > 0.0) {
             return new PaymentInfoMagcard(
                     m_jHolderName.getText(),
@@ -110,7 +111,7 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
         return !(m_jHolderName.getText() == null || m_jHolderName.getText().equals(""));
     }
     private boolean isValidCardNumber() {
-        return !(m_jCardNumber.getText() == null || m_jCardNumber.getText().length() != 16);
+        return (LuhnAlgorithm.checkCC(m_jCardNumber.getText()) && m_jCardNumber.getText().length()>13 && m_jCardNumber.getText().length()<20);
     }
     private boolean isValidExpirationDate() {
         return !(m_jExpirationDate.getText() == null || m_jExpirationDate.getText().length() != 4);
