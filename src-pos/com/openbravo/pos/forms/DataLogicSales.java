@@ -218,11 +218,15 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             != null;
     }
 
-    public final TicketInfo loadTicket(Integer ticketid) throws BasicException {
+    public final TicketInfo loadTicket(final int tickettype, final int ticketid) throws BasicException {
         TicketInfo ticket = (TicketInfo) new PreparedSentence(s
-                , "SELECT T.ID, T.TICKETID, R.DATENEW, R.MONEY, R.ATTRIBUTES, P.ID, P.NAME, T.CUSTOMER FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETID = ?"
-                , SerializerWriteInteger.INSTANCE
-                , new SerializerReadClass(TicketInfo.class)).find(ticketid);
+                , "SELECT T.ID, T.TICKETTYPE, T.TICKETID, R.DATENEW, R.MONEY, R.ATTRIBUTES, P.ID, P.NAME, T.CUSTOMER FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID WHERE T.TICKETTYPE = ? AND T.TICKETID = ?"
+                , SerializerWriteParams.INSTANCE
+                , new SerializerReadClass(TicketInfo.class))
+                .find(new DataParams() { public void writeValues() throws BasicException {
+                    setInt(1, tickettype);
+                    setInt(2, ticketid);
+                }});
         if (ticket != null) {
 
             String customerid = ticket.getCustomerId();
@@ -250,7 +254,19 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
 
                 // Set Receipt Id
                 if (ticket.getTicketId() == 0) {
-                    ticket.setTicketId(getNextTicketIndex().intValue());
+                    switch (ticket.getTicketType()) {
+                        case TicketInfo.RECEIPT_NORMAL:
+                            ticket.setTicketId(getNextTicketIndex().intValue());
+                            break;
+                        case TicketInfo.RECEIPT_REFUND:
+                            ticket.setTicketId(getNextTicketRefundIndex().intValue());
+                            break;
+                        case TicketInfo.RECEIPT_PAYMENT:
+                            ticket.setTicketId(getNextTicketPaymentIndex().intValue());
+                            break;
+                        default:
+                            throw new BasicException();
+                    }
                 }
 
                 // new receipt
@@ -272,13 +288,14 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
 
                 // new ticket
                 new PreparedSentence(s
-                    , "INSERT INTO TICKETS (ID, TICKETID, PERSON, CUSTOMER) VALUES (?, ?, ?, ?)"
+                    , "INSERT INTO TICKETS (ID, TICKETTYPE, TICKETID, PERSON, CUSTOMER) VALUES (?, ?, ?, ?, ?)"
                     , SerializerWriteParams.INSTANCE
                     ).exec(new DataParams() { public void writeValues() throws BasicException {
                         setString(1, ticket.getId());
-                        setInt(2, ticket.getTicketId());
-                        setString(3, ticket.getUser().getId());
-                        setString(4, ticket.getCustomerId());
+                        setInt(2, ticket.getTicketType());
+                        setInt(3, ticket.getTicketId());
+                        setString(4, ticket.getUser().getId());
+                        setString(5, ticket.getCustomerId());
                     }});
 
                 SentenceExec ticketlineinsert = new PreparedSentence(s
@@ -409,6 +426,10 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     }
 
     public abstract Integer getNextTicketIndex() throws BasicException;
+
+    public abstract Integer getNextTicketRefundIndex() throws BasicException;
+    
+    public abstract Integer getNextTicketPaymentIndex() throws BasicException;
 
     public abstract SentenceList getProductCatQBF();
 

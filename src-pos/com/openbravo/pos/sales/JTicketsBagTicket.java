@@ -144,7 +144,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         
         try {
             Integer ticketid = m_jTicketEditor.getValueInteger();
-            TicketInfo ticket = m_dlSales.loadTicket(ticketid);
+            TicketInfo ticket = m_dlSales.loadTicket(TicketInfo.RECEIPT_NORMAL, ticketid);
             if (ticket == null) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.notexiststicket"));
                 msg.show(this);
@@ -167,11 +167,14 @@ public class JTicketsBagTicket extends JTicketsBag {
         // imprimo m_ticket
         
         try {
-            m_jEdit.setEnabled(m_ticket != null && m_dlSales.isCashActive(m_ticket.getActiveCash()));
+            m_jEdit.setEnabled(
+                    m_ticket != null
+                    && (m_ticket.getTicketType() == TicketInfo.RECEIPT_NORMAL || m_ticket.getTicketType() == TicketInfo.RECEIPT_REFUND)
+                    && m_dlSales.isCashActive(m_ticket.getActiveCash()));
         } catch (BasicException e) {
             m_jEdit.setEnabled(false);
         }
-        m_jRefund.setEnabled(m_ticket != null && m_ticket.getSubTotal() > 0.0);
+        m_jRefund.setEnabled(m_ticket != null && m_ticket.getTicketType() == TicketInfo.RECEIPT_NORMAL);
         m_jPrint.setEnabled(m_ticket != null);
         
         // Este deviceticket solo tiene una impresora, la de pantalla
@@ -367,6 +370,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_panelticketedit.showRefundLines(aRefundLines);
         
         TicketInfo refundticket = new TicketInfo();
+        refundticket.setTicketType(TicketInfo.RECEIPT_REFUND);
         refundticket.setCustomer(m_ticket.getCustomer());
         m_panelticketedit.setActiveTicket(refundticket, null);      
         

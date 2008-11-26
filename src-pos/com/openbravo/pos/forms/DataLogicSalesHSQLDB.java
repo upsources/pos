@@ -51,4 +51,10 @@ public class DataLogicSalesHSQLDB extends DataLogicSales {
     public final Integer getNextTicketIndex() throws BasicException {
         return (Integer) new StaticSentence(s, "CALL NEXT VALUE FOR TICKETSNUM", null, SerializerReadInteger.INSTANCE).find();
     }
+    public final Integer getNextTicketRefundIndex() throws BasicException {
+        return (Integer) new StaticSentence(s, "CALL NEXT VALUE FOR TICKETSNUM_REFUND", null, SerializerReadInteger.INSTANCE).find();
+    }
+    public final Integer getNextTicketPaymentIndex() throws BasicException {
+        return (Integer) new StaticSentence(s, "CALL NEXT VALUE FOR TICKETSNUM_PAYMENT", null, SerializerReadInteger.INSTANCE).find();
+    }
 }

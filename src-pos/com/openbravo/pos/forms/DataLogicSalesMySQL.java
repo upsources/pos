@@ -51,5 +51,11 @@ public class DataLogicSalesMySQL extends DataLogicSales {
 
     public final Integer getNextTicketIndex() throws BasicException {
         return (Integer) new SequenceForMySQL(s, "TICKETSNUM", SerializerReadInteger.INSTANCE).find();
-    }  
+    }
+    public final Integer getNextTicketRefundIndex() throws BasicException {
+        return (Integer) new SequenceForMySQL(s, "TICKETSNUM_REFUND", SerializerReadInteger.INSTANCE).find();
+    }
+    public final Integer getNextTicketPaymentIndex() throws BasicException {
+        return (Integer) new SequenceForMySQL(s, "TICKETSNUM_PAYMENT", SerializerReadInteger.INSTANCE).find();
+    }
 }

@@ -499,6 +499,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
             // Save the ticket
             TicketInfo ticket = new TicketInfo();
+            ticket.setTicketType(TicketInfo.RECEIPT_PAYMENT);
 
             List<PaymentInfo> payments = paymentdialog.getSelectedPayments();
 

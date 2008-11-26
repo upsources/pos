@@ -53,7 +53,13 @@ public class DataLogicSalesOracle extends DataLogicSales {
   
     public final Integer getNextTicketIndex() throws BasicException {
         return (Integer) new StaticSentence(s, "SELECT TICKETSNUM.NEXTVAL FROM DUAL", null, SerializerReadInteger.INSTANCE).find();
-    }   
+    }
+    public final Integer getNextTicketRefundIndex() throws BasicException {
+        return (Integer) new StaticSentence(s, "SELECT TICKETSNUM_REFUND.NEXTVAL FROM DUAL", null, SerializerReadInteger.INSTANCE).find();
+    }
+    public final Integer getNextTicketPaymentIndex() throws BasicException {
+        return (Integer) new StaticSentence(s, "SELECT TICKETSNUM_PAYMENT.NEXTVAL FROM DUAL", null, SerializerReadInteger.INSTANCE).find();
+    }
     
     @Override
     public CustomerInfoExt findCustomerExt(String card) throws BasicException {

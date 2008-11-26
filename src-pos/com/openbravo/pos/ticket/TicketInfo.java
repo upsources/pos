@@ -35,9 +35,16 @@ import com.openbravo.pos.util.RoundUtils;
  */
 public class TicketInfo implements SerializableRead, Externalizable {
 
-    private static final long serialVersionUID = 2765650091387265178L;
+    private static final long serialVersionUID = 2765650092387265178L;
+
+    public static final int RECEIPT_NORMAL = 0;
+    public static final int RECEIPT_REFUND = 1;
+    public static final int RECEIPT_PAYMENT = 2;
+
     private static DateFormat m_dateformat = new SimpleDateFormat("hh:mm");
+
     private String m_sId;
+    private int tickettype;
     private int m_iTicketId;
     private java.util.Date m_dDate;
     private Properties attributes;
@@ -51,6 +58,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     /** Creates new TicketModel */
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
+        tickettype = RECEIPT_NORMAL;
         m_iTicketId = 0; // incrementamos
         m_dDate = new Date();
         attributes = new Properties();
@@ -66,6 +74,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void writeExternal(ObjectOutput out) throws IOException {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         out.writeObject(m_sId);
+        out.writeInt(tickettype);
         out.writeInt(m_iTicketId);
         out.writeObject(m_Customer);
         out.writeObject(m_dDate);
@@ -76,6 +85,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         // esto es solo para serializar tickets que no estan en la bolsa de tickets pendientes
         m_sId = (String) in.readObject();
+        tickettype = in.readInt();
         m_iTicketId = in.readInt();
         m_Customer = (CustomerInfoExt) in.readObject();
         m_dDate = (Date) in.readObject();
@@ -90,18 +100,19 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
     public void readValues(DataRead dr) throws BasicException {
         m_sId = dr.getString(1);
-        m_iTicketId = dr.getInt(2).intValue();
-        m_dDate = dr.getTimestamp(3);
-        m_sActiveCash = dr.getString(4);
+        tickettype = dr.getInt(2).intValue();
+        m_iTicketId = dr.getInt(3).intValue();
+        m_dDate = dr.getTimestamp(4);
+        m_sActiveCash = dr.getString(5);
         try {
-            byte[] img = dr.getBytes(5);
+            byte[] img = dr.getBytes(6);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
         } catch (IOException e) {
         }
-        m_User = new UserInfo(dr.getString(6), dr.getString(7));
-        m_Customer = new CustomerInfoExt(dr.getString(8));
+        m_User = new UserInfo(dr.getString(7), dr.getString(8));
+        m_Customer = new CustomerInfoExt(dr.getString(9));
         m_aLines = new ArrayList<TicketLineInfo>();
 
         payments = new ArrayList<PaymentInfo>();
@@ -111,6 +122,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public TicketInfo copyTicket() {
         TicketInfo t = new TicketInfo();
 
+        t.tickettype = tickettype;
         t.m_iTicketId = m_iTicketId;
         t.m_dDate = m_dDate;
         t.m_sActiveCash = m_sActiveCash;
@@ -136,6 +148,14 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
     public String getId() {
         return m_sId;
+    }
+
+    public int getTicketType() {
+        return tickettype;
+    }
+
+    public void setTicketType(int tickettype) {
+        this.tickettype = tickettype;
     }
 
     public int getTicketId() {
