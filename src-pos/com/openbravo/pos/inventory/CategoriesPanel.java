@@ -19,7 +19,6 @@
 package com.openbravo.pos.inventory;
 
 import javax.swing.ListCellRenderer;
-import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.pos.forms.AppLocal;

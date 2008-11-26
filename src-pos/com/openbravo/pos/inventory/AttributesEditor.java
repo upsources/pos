@@ -18,61 +18,63 @@
 
 package com.openbravo.pos.inventory;
 
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.user.DirtyManager;
+import com.openbravo.data.user.EditorRecord;
+import com.openbravo.format.Formats;
+import com.openbravo.pos.forms.AppLocal;
 import java.awt.Component;
 import java.util.UUID;
-import javax.swing.*;
 
-import com.openbravo.format.Formats;
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.EditorRecord;
-import com.openbravo.data.user.DirtyManager;
-import com.openbravo.pos.forms.AppLocal;
+/**
+ *
+ * @author  adrian
+ */
+public class AttributesEditor extends javax.swing.JPanel implements EditorRecord {
 
-public class TaxCategoriesEditor extends JPanel implements EditorRecord {
-    
-    private Object m_oId;
-    
-    /** Creates new form taxEditor */
-    public TaxCategoriesEditor(DirtyManager dirty) {
+    private Object id;
+        
+    /** Creates new form AttributesEditor */
+    public AttributesEditor(DirtyManager dirty) {
         initComponents();
-
+        
         m_jName.getDocument().addDocumentListener(dirty);
         
         writeValueEOF();
     }
     public void writeValueEOF() {
-        m_oId = null;
+        id = null;
         m_jName.setText(null);
         m_jName.setEnabled(false);
     }
     public void writeValueInsert() {
-        m_oId = null;
+        id = null;
         m_jName.setText(null);
         m_jName.setEnabled(true);
     }
     public void writeValueDelete(Object value) {
 
-        Object[] taxcustcat = (Object[]) value;
-        m_oId = taxcustcat[0];
-        m_jName.setText(Formats.STRING.formatValue(taxcustcat[1]));
+        Object[] attr = (Object[]) value;
+        id = attr[0];
+        m_jName.setText(Formats.STRING.formatValue(attr[1]));
         m_jName.setEnabled(false);
     }    
     public void writeValueEdit(Object value) {
 
-        Object[] taxcustcat = (Object[]) value;
-        m_oId = taxcustcat[0];
-        m_jName.setText(Formats.STRING.formatValue(taxcustcat[1]));
+        Object[] attr = (Object[]) value;
+        id = attr[0];
+        m_jName.setText(Formats.STRING.formatValue(attr[1]));
         m_jName.setEnabled(true);
     }
 
     public Object createValue() throws BasicException {
         
-        Object[] taxcustcat = new Object[2];
+        Object[] attr = new Object[2];
 
-        taxcustcat[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
-        taxcustcat[1] = m_jName.getText();
+        attr[0] = id == null ? UUID.randomUUID().toString() : id;
+        attr[1] = m_jName.getText();
 
-        return taxcustcat;
+        return attr;
     }    
      
     public Component getComponent() {
@@ -81,7 +83,7 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
     
     public void refresh() {
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -100,6 +102,7 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 316, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -109,6 +112,7 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 42, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

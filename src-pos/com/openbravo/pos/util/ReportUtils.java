@@ -54,8 +54,7 @@ public class ReportUtils {
                 }
                 return PrintServiceLookup.lookupDefaultPrintService();       
             }                
-        }      
-            
+        }                 
     }
     
     public static String[] getPrintNames() {

@@ -35,6 +35,11 @@ public class ListProviderCreator implements ListProvider {
         this.prov = prov;
         params = null;
     }
+    
+    public ListProviderCreator(SentenceList sent) {
+        this(sent, null);
+    }
+    
     public ListProviderCreator(TableDefinition table) {        
         this(table.getListSentence(), null);
     }

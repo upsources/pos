@@ -20,9 +20,8 @@ package com.openbravo.pos.panels;
 
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
-import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.SerializerWrite;
-import com.openbravo.data.loader.SerializerWriteBasic;
+import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
@@ -38,8 +37,9 @@ import javax.swing.event.EventListenerList;
 /**
  *
  * @author jaroslawwozniak
+ * @author adrianromero
  */
-public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCreator{
+public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCreator {
 
     private ProductInfoExt product;
     private DataLogicSales m_dlSales;
@@ -66,7 +66,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
 
     @Override
     public SerializerWrite getSerializerWrite() {
-        return new SerializerWriteBasic(new Datas[] {Datas.STRING});
+        return SerializerWriteString.INSTANCE;
     }
 
     public void addActionListener(ActionListener l){

@@ -140,16 +140,6 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerReadClass(ProductInfoExt.class));
     }
-   
-    //Auxiliars list
-    public final SentenceList getAuxiliarList() {
-        return new StaticSentence(s
-            , "SELECT COM.ID, COM.PRODUCT, COM.PRODUCT2, P.REFERENCE, P.CODE, P.NAME" +
-              " FROM PRODUCTS_COM COM, PRODUCTS P" +
-              " WHERE COM.PRODUCT2 = P.ID AND COM.PRODUCT = ?"
-            , SerializerWriteString.INSTANCE
-            , new SerializerReadBasic(new Datas[] { Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}));
-    }
     
     //Auxiliar list for a filter
     public final SentenceList getProductListAuxiliar() {
@@ -485,51 +475,6 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
                 , "UPDATE CUSTOMERS SET CURDEBT = ?, CURDATE = ? WHERE ID = ?"
                 , SerializerWriteParams.INSTANCE);
-    }
-
-    /**
-     * A method to create a query for inserting into PRODUCTS_COM a product and its auxiliar
-     *
-     * @return SentenceExec a query for inserting data into PRODUCTS_COM
-     */
-    public final SentenceExec getAuxiliarInsert() {
-        return new SentenceExecTransaction(s) {
-            public int execInTransaction(Object params) throws BasicException {  
-               return new PreparedSentence(s
-                        , "INSERT INTO PRODUCTS_COM(ID, PRODUCT, PRODUCT2) VALUES (?, ?, ?)"
-                        , new SerializerWriteBasicExt(auxiliarDatas, new int[] {0, 1, 2})).exec(params);
-            }
-        };
-    }
-    
-    /**
-     * A method to create a query for inserting into PRODUCTS_COM a product and its auxiliar
-     *
-     * @return SentenceExec a query for updating data into PRODUCTS_COM
-     */
-    public final SentenceExec getAuxiliarUpdate() {
-        return new SentenceExecTransaction(s) {
-            public int execInTransaction(Object params) throws BasicException {  
-               return new PreparedSentence(s
-                        , "UPDATE PRODUCTS_COM SET PRODUCT = ?, PRODUCT2 = ? WHERE ID = ?"
-                        , new SerializerWriteBasicExt(auxiliarDatas, new int[] {1, 2, 0})).exec(params);
-            }
-        };
-    }
-    
-    /**
-     * A method to create a query for deleting from PRODUCTS_COM a product with its auxiliar
-     *
-     * @return SentenceExec a query for deleting data from PRODUCTS_COM
-     */
-    public final SentenceExec getAuxiliarDelete() {
-        return new SentenceExecTransaction(s) {
-            public int execInTransaction(Object params) throws BasicException {
-                return new PreparedSentence(s
-                    , "DELETE FROM PRODUCTS_COM WHERE ID = ?"
-                    , new SerializerWriteBasicExt(auxiliarDatas, new int[] {0})).exec(params);
-            }
-        };
     }
 
     public final SentenceExec getStockDiaryInsert() {

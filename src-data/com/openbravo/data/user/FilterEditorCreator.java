@@ -16,20 +16,14 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-package com.openbravo.pos.reports;
+package com.openbravo.data.user;
 
-import com.openbravo.basic.BasicException;
-import com.openbravo.data.user.FilterEditorCreator;
-import com.openbravo.pos.forms.AppView;
-import java.awt.Component;
+import com.openbravo.data.loader.SerializerWrite;
 
 /**
  *
- * @author adrianromero
+ * @author adrian
  */
-public interface ReportEditorCreator extends FilterEditorCreator {
-    
-    public void init(AppView app);
-    public void activate() throws BasicException;
-    public Component getComponent();
+public interface FilterEditorCreator extends EditorCreator {
+    public SerializerWrite getSerializerWrite();    
 }

@@ -19,54 +19,59 @@
 package com.openbravo.pos.inventory;
 
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.gui.ListCellRendererBasic;
-import com.openbravo.data.loader.ComparatorCreator;
-import com.openbravo.data.loader.ComparatorCreatorBasic;
 import com.openbravo.data.loader.Datas;
-import com.openbravo.data.loader.RenderStringBasic;
-import com.openbravo.data.loader.Vectorer;
-import com.openbravo.data.loader.VectorerBasic;
+import com.openbravo.data.model.Column;
+import com.openbravo.data.model.Field;
+import com.openbravo.data.model.PrimaryKey;
+import com.openbravo.data.model.Row;
+import com.openbravo.data.model.Table;
 import com.openbravo.data.user.EditorRecord;
-import com.openbravo.data.user.ListProvider;
-import com.openbravo.data.user.ListProviderCreator;
-import com.openbravo.data.user.SaveProvider;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.DataLogicSales;
-import com.openbravo.pos.panels.JPanelTable;
 import com.openbravo.pos.panels.AuxiliarFilter;
+import com.openbravo.pos.panels.JPanelTable2;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ListCellRenderer;
 
 /**
  *
  * @author jaroslawwozniak
+ * @author adrianromero
  */
-public class AuxiliarPanel extends JPanelTable {
+public class AuxiliarPanel extends JPanelTable2 {
 
-    private AuxiliarEditor jeditor;
-    private DataLogicSales dlSales;
+    private AuxiliarEditor editor;
     private AuxiliarFilter filter;
-    private ListProviderCreator lpr;
-    private SaveProvider spr;
 
-    protected void init() {
-        
-        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");    
+    protected void init() {  
         
         filter = new AuxiliarFilter();
         filter.init(app);
         filter.addActionListener(new ReloadActionListener());
-      
-        lpr = new ListProviderCreator(dlSales.getAuxiliarList(), filter);     
-        spr = new SaveProvider(dlSales.getAuxiliarUpdate()
-                              , dlSales.getAuxiliarInsert()
-                              , dlSales.getAuxiliarDelete());
         
-        jeditor = new AuxiliarEditor(app, dirty);
+        row = new Row(
+                new Field("ID", Datas.STRING, Formats.STRING),
+                new Field("PRODUCT1", Datas.STRING, Formats.STRING),
+                new Field("PRODUCT2", Datas.STRING, Formats.STRING),
+                new Field(AppLocal.getIntString("label.prodref"), Datas.STRING, Formats.STRING, true, true, true),
+                new Field(AppLocal.getIntString("label.prodbarcode"), Datas.STRING, Formats.STRING, false, true, true),
+                new Field(AppLocal.getIntString("label.prodname"), Datas.STRING, Formats.STRING, true, true, true)
+        );        
+        Table table = new Table(
+                "PRODUCTS_COM",
+                new PrimaryKey("ID"),
+                new Column("PRODUCT"),
+                new Column("PRODUCT2"));
+         
+        lpr = row.getListProvider(app.getSession(), 
+                "SELECT COM.ID, COM.PRODUCT, COM.PRODUCT2, P.REFERENCE, P.CODE, P.NAME " +
+                "FROM PRODUCTS_COM COM, PRODUCTS P " +
+                "WHERE COM.PRODUCT2 = P.ID AND COM.PRODUCT = ?", filter);
+        spr = row.getSaveProvider(app.getSession(), table);              
+        
+        editor = new AuxiliarEditor(app, dirty);
     }
 
     @Override
@@ -79,59 +84,23 @@ public class AuxiliarPanel extends JPanelTable {
     }
 
     @Override
-    public EditorRecord getEditor() {
-        return jeditor;
-    }
-
-    @Override
-    public ListProvider getListProvider() {
-        return lpr;
-    }
-
-    @Override
-    public SaveProvider getSaveProvider() {
-        return spr;
-    }
-
-    @Override
-    public String getTitle() {
-        return AppLocal.getIntString("Menu.Auxiliar");
-    }
-
-    @Override
-    public Vectorer getVectorer() {
-        return new VectorerBasic(
-                new String[] {"ID", "PRODUCT1", "PRODUCT2", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname")},
-                new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING}, 
-                new int[]{3, 4, 5}); 
-    }
-
-    @Override
-    public ComparatorCreator getComparatorCreator() {
-        return new ComparatorCreatorBasic(
-                new String[] {"ID", "PRODUCT1", "PRODUCT2", AppLocal.getIntString("label.prodref"), AppLocal.getIntString("label.prodbarcode"), AppLocal.getIntString("label.prodname")},
-                new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}, 
-                new int[]{3, 4, 5});
-    }
-
-    @Override
-    public ListCellRenderer getListCellRenderer() {
-        return new ListCellRendererBasic(new RenderStringBasic(
-                new Formats[] {Formats.STRING,Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING},
-                new int[]{3, 5}));
-
-    }
-
-    @Override
     public Component getFilter(){
         return filter.getComponent();
     }
-
+    
+    public EditorRecord getEditor() {
+        return editor;
+    }  
+    
+    public String getTitle() {
+        return AppLocal.getIntString("Menu.Auxiliar");
+    } 
+    
     private void reload(AuxiliarFilter filter) throws BasicException {
         ProductInfoExt prod = filter.getProductInfoExt();
         bd.setEditable(prod != null);
         bd.actionLoad();
-        jeditor.setInsertProduct(prod);        
+        editor.setInsertProduct(prod);        
     }
             
     private class ReloadActionListener implements ActionListener {
