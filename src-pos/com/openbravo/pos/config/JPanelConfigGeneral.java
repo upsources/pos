@@ -236,6 +236,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboSerialScanner.addItem("/dev/ttyS3");
 
         // Printers
+        cboPrinters.addItem("(Default)");
+        cboPrinters.addItem("(Show dialog)");
         String[] printernames = ReportUtils.getPrintNames();
         for (String name : printernames) {
             cboPrinters.addItem(name);
@@ -347,7 +349,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         cboPrinters.setSelectedItem(config.getProperty("machine.printername"));
         //is receipt printer
-        m_ReceiptPrinter.setSelected(config.getProperty("machine.printer.receipt").equals("true"));
+        m_ReceiptPrinter.setSelected("true".equals(config.getProperty("machine.printer.receipt")));
 
         dirty.setDirty(false);
     }
@@ -1088,13 +1090,13 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
                             .addComponent(jLabel26)
                             .addComponent(jcboMachineScanner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1))
+                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(cboPrinters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addComponent(m_jScannerParams, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(m_ReceiptPrinter)
-                            .addComponent(cboPrinters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(m_ReceiptPrinter)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1112,7 +1114,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

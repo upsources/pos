@@ -178,9 +178,14 @@ public class JRPrinterAWT300 implements Printable
 		printJob.setPageable(book);
 		try
 		{
-
-                    printJob.setPrintService(service);
-                    printJob.print();
+                    if (service == null) {
+                        if (printJob.printDialog()) {
+                            printJob.print();
+                        }
+                    } else {
+                        printJob.setPrintService(service);
+                        printJob.print();
+                    }
 		}
 		catch (Exception ex)
 		{

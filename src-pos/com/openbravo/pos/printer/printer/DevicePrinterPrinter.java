@@ -138,10 +138,16 @@ public class DevicePrinterPrinter implements DevicePrinter {
             } else {
                 aset.add(MediaSizeName.ISO_A4);
             }
+            
             //set the printer
-            printJob.setPrintService(printservice);
-            //print with the attributes
-            printJob.print(aset);
+            if (printservice == null) {
+                if (printJob.printDialog(aset)) {
+                    printJob.print();     
+                }
+            } else {
+                printJob.setPrintService(printservice);
+                printJob.print(aset);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

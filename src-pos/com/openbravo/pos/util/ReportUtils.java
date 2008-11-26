@@ -36,17 +36,26 @@ public class ReportUtils {
         
         // Initalize print service
         
-        if (printername != null) {
-            PrintService[] pservices = 
-                    PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE , null);
-            for (PrintService s : pservices) {    
-                if (printername.equals(s.getName())) {
-                    return s;
+        if (printername == null) {
+            return PrintServiceLookup.lookupDefaultPrintService();       
+        } else {
+            
+            if ("(Show dialog)".equals(printername)) {
+                return null; // null means "you have to show the print dialog"
+            } else if ("(Default)".equals(printername)) {
+                return PrintServiceLookup.lookupDefaultPrintService(); 
+            } else {
+                PrintService[] pservices = 
+                        PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE , null);
+                for (PrintService s : pservices) {    
+                    if (printername.equals(s.getName())) {
+                        return s;
+                    }
                 }
-            }
-        }
-        
-        return PrintServiceLookup.lookupDefaultPrintService();           
+                return PrintServiceLookup.lookupDefaultPrintService();       
+            }                
+        }      
+            
     }
     
     public static String[] getPrintNames() {
