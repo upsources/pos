@@ -15,7 +15,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 package com.openbravo.pos.printer.ticket;
 
 import java.awt.Graphics2D;
@@ -23,79 +22,61 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class BasicTicket implements PrintItem {
-    
+
     protected java.util.List<PrintItem> m_aCommands;
     protected PrintItemLine pil;
     protected int m_iBodyHeight;
-    
+
     /** Creates a new instance of AbstractTicket */
     public BasicTicket() {
         m_aCommands = new ArrayList<PrintItem>();
         pil = null;
         m_iBodyHeight = 0;
     }
-    
+
     public int getHeight() {
         return m_iBodyHeight;
     }
-    
+
     public void draw(Graphics2D g2d, int x, int y, int width) {
-        
+
         int currenty = y;
         for (PrintItem pi : m_aCommands) {
             pi.draw(g2d, x, currenty, width);
-            currenty += pi.getHeight(); 
-        }      
+            currenty += pi.getHeight();
+        }
     }
-    
+
     // INTERFAZ PRINTER 2
     public void printImage(BufferedImage image) {
-        
+
         PrintItem pi = new PrintItemImage(image);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }
+
     public void printBarCode(String type, String position, String code) {
 
         PrintItem pi = new PrintItemBarcode(type, position, code);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }
+
     public void beginLine(int iTextSize) {
         pil = new PrintItemLine(iTextSize);
     }
+
     public void printText(int iStyle, String sText) {
         if (pil != null) {
             pil.addText(iStyle, sText);
         }
-    }    
+    }
+
     public void endLine() {
         if (pil != null) {
             m_aCommands.add(pil);
-            m_iBodyHeight += pil.getHeight(); 
+            m_iBodyHeight += pil.getHeight();
             pil = null;
         }
-    }
-
-    public void draw(Graphics2D g2d, int x, int y, int width, int start, int lines){
-        int currenty = y;
-        for(int i = start; i < lines; i++ ){
-            m_aCommands.get(i).draw(g2d, x, currenty, width);
-            currenty += m_aCommands.get(i).getHeight();
-        }
-    }
-
-    public int getHeightOfCommands(int line){
-               
-          return  m_aCommands.get(line).getHeight();
-       
-    }
-
-    public ArrayList getCommand(){
-        return (ArrayList) m_aCommands;
-    }
-
-    public int getTheLastIndex(){
-        return m_aCommands.size();
     }
 }

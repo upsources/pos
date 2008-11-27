@@ -18,6 +18,9 @@
 
 package com.openbravo.pos.printer.ticket;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+
 /**
  *
  * @author jaroslawwozniak
@@ -34,5 +37,29 @@ public class BasicTicketForPrinter extends BasicTicket {
     public void beginLine(int iTextSize) {
         pil = new PrintItemLineForPrinter(iTextSize);
     }
+
+
+    public void draw(Graphics2D g2d, int x, int y, int width, int start, int lines) {
+        int currenty = y;
+        for (int i = start; i < lines; i++) {
+            m_aCommands.get(i).draw(g2d, x, currenty, width);
+            currenty += m_aCommands.get(i).getHeight();
+        }
+    }
+
+    public int getHeightOfCommands(int line) {
+
+        return m_aCommands.get(line).getHeight();
+
+    }
+
+    public ArrayList getCommand() {
+        return (ArrayList) m_aCommands;
+    }
+
+    public int getTheLastIndex() {
+        return m_aCommands.size();
+    }
+
    
 }
