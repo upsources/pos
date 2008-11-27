@@ -20,6 +20,7 @@ package com.openbravo.pos.printer.printer;
 import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -34,9 +35,9 @@ import java.util.ArrayList;
 public class PrintableTicket implements Printable {
 
     /*how many columns in the ticket? */
-    private static final int COLUMNS = 42;
+    private static final int COLUMNS = 30;
     /*the width of a line dependent on No. of columns */
-    private static final int LINEWIDTH = COLUMNS * 7;
+    private static final int LINEWIDTH = COLUMNS * 5;
     private boolean flag;
     /*a ticket */
     private BasicTicketForPrinter basict;
@@ -98,7 +99,7 @@ public class PrintableTicket implements Printable {
             return Printable.NO_SUCH_PAGE;
         }
         //exists so draw the ticket
-        basict.draw((Graphics2D) g, (int) pf.getImageableX(), (int) pf.getImageableY(), LINEWIDTH, (Integer) startLine.get(pi), (Integer) endLine.get(pi));
+        basict.draw( (Graphics2D)g, (int) pf.getImageableX(), (int) pf.getImageableY(), LINEWIDTH, (Integer) startLine.get(pi), (Integer) endLine.get(pi));
 
         return Printable.PAGE_EXISTS;
     }

@@ -20,17 +20,18 @@ package com.openbravo.pos.printer.printer;
 import com.openbravo.pos.forms.AppLocal;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.print.PrinterJob;
 import javax.swing.JComponent;
 import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import com.openbravo.pos.util.ReportUtils;
+import java.awt.print.PrinterJob;
 import javax.print.PrintService;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.Size2DSyntax;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.JobName;
+import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.MediaSize;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.OrientationRequested;
@@ -57,6 +58,9 @@ public class DevicePrinterPrinter implements DevicePrinter {
     private String isReceiptPrinter;
     /*1 point = 1/72 inch = 0.000352777m */
     private static double point = 0.000352777;
+    /*paper size*/
+    private static int widthOfPaper = 72;
+    private static int heightOfPaper = 80;
 
     /** Creates a new instance of DevicePrinterPrinter
      * @param printername - name of printer that will be called in the system
@@ -133,20 +137,21 @@ public class DevicePrinterPrinter implements DevicePrinter {
             aset.add(new JobName(AppLocal.APP_NAME + " - Document", null));
             //is a receipt printer
             if (isReceiptPrinter.equals("true")) {
-                MediaSize myISO = new MediaSize(78, getHeightForReceiptPrinters() + 10, Size2DSyntax.MM, MediaSizeName.NA_LEGAL);
+                MediaSize myISO = new MediaSize(widthOfPaper, heightOfPaper, Size2DSyntax.MM, MediaSizeName.NA_LEGAL);
                 aset.add(MediaSizeName.NA_LEGAL);
             } else {
                 aset.add(MediaSizeName.ISO_A4);
             }
-            
+            //printable area
+            //aset.add(new MediaPrintableArea(0, 0, 80, getHeightForReceiptPrinters(), MediaPrintableArea.MM));
             //set the printer
             if (printservice == null) {
                 if (printJob.printDialog(aset)) {
-                    printJob.print();     
+                    printJob.print();
                 }
             } else {
-                printJob.setPrintService(printservice);
-                printJob.print(aset);
+                 printJob.setPrintService(printservice);
+                    printJob.print(aset);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -166,6 +171,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
      * 
      * @return lenght of a ticket in mm
      */
+    @Deprecated
     private int getHeightForReceiptPrinters() {
 
         int height = 0;
@@ -176,6 +182,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
             height += m_ticketcurrent.getHeightOfCommands(line);
             line++;
         }
+        System.out.println(height + " " +changePointsforMM(height));
         return changePointsforMM(height);
     }
 
@@ -184,6 +191,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
      * 
      * @param height - height in points
      */
+    @Deprecated
     private int changePointsforMM(int height) {
 
         return (int) (height * point * 1000);

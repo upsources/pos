@@ -32,7 +32,7 @@ public class PrintItemLineForPrinter extends PrintItemLine {
         super(itextsize);
         BASEFONT = new Font("Monospaced", Font.PLAIN, 8);
         FONTHEIGHT = 12;
-        FONTWIDTH = 5;
+        FONTWIDTH = 4;
     }
 
 }
