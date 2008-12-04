@@ -137,11 +137,13 @@ public class DeviceTicket {
                 } else if ("tmu220".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesTMU220(), new UnicodeTranslatorInt()));
                 } else if ("star".equals(sPrinterType)) {
-                    addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesStar(), new UnicodeTranslatorInt()));
+                    addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesStar(), new UnicodeTranslatorStar()));
                 } else if ("ithaca".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesIthaca(), new UnicodeTranslatorInt()));
                 } else if ("surepos".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesSurePOS(), new UnicodeTranslatorSurePOS()));
+                } else if ("plain".equals(sPrinterType)) {
+                    addPrinter(sPrinterIndex, new DevicePrinterPlain(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2)));
                 } else if ("javapos".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterJavaPOS(sPrinterParam1, sPrinterParam2));
                 }
@@ -253,5 +255,34 @@ public class DeviceTicket {
 
     public static String alignCenter(String sLine) {
         return alignCenter(sLine, 42);
+    }
+
+    public static final byte[] transNumber(String sCad) {
+
+        if (sCad == null) {
+            return null;
+        } else {
+            byte bAux[] = new byte[sCad.length()];
+            for( int i = 0; i < sCad.length(); i++) {
+                bAux[i] = transNumberChar(sCad.charAt(i));
+            }
+            return bAux;
+        }
+    }
+
+    public static byte transNumberChar(char sChar) {
+        switch (sChar) {
+        case '0' : return 0x30;
+        case '1' : return 0x31;
+        case '2' : return 0x32;
+        case '3' : return 0x33;
+        case '4' : return 0x34;
+        case '5' : return 0x35;
+        case '6' : return 0x36;
+        case '7' : return 0x37;
+        case '8' : return 0x38;
+        case '9' : return 0x39;
+        default: return 0x30;
+        }
     }
 }

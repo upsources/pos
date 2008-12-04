@@ -35,13 +35,13 @@
         <image>Printer.Ticket.Logo</image>
         <line></line>
         <line>
-            <text align="center" length="42">Receipt sample.</text>
+            <text align="center" length="42">Openbravo POS is a point of sale</text>
         </line>
         <line>
-            <text align="center" length="42">You can change this template</text>
+            <text align="center" length="42">designed for touch screens</text>
         </line>
         <line>
-            <text align="center" length="42">in the resources panel</text>
+            <text align="center" length="42">Copyright 2007-2008 Openbravo, S. L.</text>
         </line>
         <line></line>
 

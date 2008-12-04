@@ -18,13 +18,20 @@
 
 package com.openbravo.pos.printer.escpos;
 
+import com.openbravo.pos.printer.DevicePrinter;
+import com.openbravo.pos.printer.DeviceTicket;
 import java.awt.image.BufferedImage;
 
 public abstract class Codes {
-    
+
+    private static final int IMAGE_WIDTH = 192;
+
+
     /** Creates a new instance of Codes */
     public Codes() {
     }
+
+    public abstract byte[] getInitSequence();
     
     public abstract byte[] getSize0();
     public abstract byte[] getSize1();
@@ -35,12 +42,35 @@ public abstract class Codes {
     public abstract byte[] getCutReceipt();   
     public abstract byte[] getNewLine();    
     public abstract byte[] getImageHeader();
+
+    public void printBarcode(PrinterWritter out, String type, String position, String code) {
+
+        if (DevicePrinter.BARCODE_EAN13.equals(type)) {
+
+            out.write(getNewLine());
+
+            out.write(ESCPOS.BAR_HEIGHT);
+            if (DevicePrinter.POSITION_NONE.equals(position)) {
+                out.write(ESCPOS.BAR_POSITIONNONE);
+            } else {
+                out.write(ESCPOS.BAR_POSITIONDOWN);
+            }
+            out.write(ESCPOS.BAR_HRIFONT1);
+            out.write(ESCPOS.BAR_CODE02);
+            out.write(DeviceTicket.transNumber(DeviceTicket.alignBarCode(code,13).substring(0,12)));
+            out.write(new byte[] { 0x00 });
+
+            out.write(getNewLine());
+        }
+    }
    
-    public byte[] transImage(BufferedImage oImage) {
-                        
+    public byte[] transImage(BufferedImage image) {
+        
+            CenteredImage centeredimage = new CenteredImage(image, IMAGE_WIDTH);
+
         // Imprimo los par\u00e1metros en cu\u00e1druple
-        int iWidth = (oImage.getWidth() + 7) / 8; // n\u00famero de bytes
-        int iHeight = oImage.getHeight();
+        int iWidth = (centeredimage.getWidth() + 7) / 8; // n\u00famero de bytes
+        int iHeight = centeredimage.getHeight();
         
         // Array de datos
         byte[] bData = new byte[getImageHeader().length + 4 + iWidth * iHeight];
@@ -59,23 +89,13 @@ public abstract class Codes {
         // Raw data
         int iRGB;
         int p;
-        for (int i = 0; i < oImage.getHeight(); i++) {
-            for (int j = 0; j < oImage.getWidth(); j = j + 8) {                
+        for (int i = 0; i < centeredimage.getHeight(); i++) {
+            for (int j = 0; j < centeredimage.getWidth(); j = j + 8) {
                 p = 0x00;
                 for (int d = 0; d < 8; d ++) {
                     p = p << 1;
-                    if (j + d < oImage.getWidth()){
-                        iRGB = oImage.getRGB(j + d, i);
-                        // La condici\u00f3n es que no imprima lo claro 
-                        // y que s\u00ed imprima lo oscuro.
-                        
-                        int gray = (int)(0.30 * ((iRGB >> 16) & 0xff) + 
-                                         0.59 * ((iRGB >> 8) & 0xff) + 
-                                         0.11 * (iRGB & 0xff));
-                        
-                        if (gray < 128) {
-                            p = p | 0x01;
-                        }
+                    if (centeredimage.isBlack(j + d, i)) {
+                        p = p | 0x01;
                     }
                 }
                 
@@ -83,5 +103,40 @@ public abstract class Codes {
             }
         }        
         return bData;
-    }    
+    }
+
+    protected class CenteredImage {
+
+        private BufferedImage image;
+        private int width;
+
+        public CenteredImage(BufferedImage image, int width) {
+            this.image = image;
+            this.width = width;
+        }
+
+        public int getHeight() {
+            return image.getHeight();
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public boolean isBlack(int x, int y) {
+
+            int centeredx = x + (image.getWidth() - width) / 2;
+            if (centeredx < 0 || centeredx >= image.getWidth() || y < 0 || y >= image.getHeight()) {
+                return false;
+            } else {
+                int rgb = image.getRGB(centeredx, y);
+
+                int gray = (int)(0.30 * ((rgb >> 16) & 0xff) +
+                                 0.59 * ((rgb >> 8) & 0xff) +
+                                 0.11 * (rgb & 0xff));
+
+                return gray < 128;
+            }
+        }
+    }
 }

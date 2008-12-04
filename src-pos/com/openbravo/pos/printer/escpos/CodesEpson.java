@@ -20,6 +20,8 @@ package com.openbravo.pos.printer.escpos;
 
 public class CodesEpson extends Codes {
     
+    private static final byte[] INITSEQUENCE = {};
+
     private static final byte[] CHAR_SIZE_0 = {0x1D, 0x21, 0x00};
     private static final byte[] CHAR_SIZE_1 = {0x1D, 0x21, 0x01};
     private static final byte[] CHAR_SIZE_2 = {0x1D, 0x21, 0x30};
@@ -33,6 +35,8 @@ public class CodesEpson extends Codes {
     /** Creates a new instance of CodesEpson */
     public CodesEpson() {
     }
+
+    public byte[] getInitSequence() { return INITSEQUENCE; }
      
     public byte[] getSize0() { return CHAR_SIZE_0; }
     public byte[] getSize1() { return CHAR_SIZE_1; }

@@ -28,9 +28,6 @@ public class PrinterWritterFile extends PrinterWritter {
     public PrinterWritterFile(String sFilePrinter) {
         m_sFilePrinter = sFilePrinter;
         m_out = null;
-        
-        write(ESCPOS.INIT); // Arrancamos la impresora
-        flush();
     }  
     
     protected void daemonWrite(byte[] data) {

@@ -21,7 +21,9 @@ package com.openbravo.pos.printer.escpos;
 import java.awt.image.BufferedImage;
 
 public class CodesTMU220 extends Codes {
-    
+
+    private static final byte[] INITSEQUENCE = {};
+
     public static final byte[] CHAR_SIZE_0 = {0x1B, 0x21, 0x01}; // This sets 7x9 font 
     public static final byte[] CHAR_SIZE_1 = {0x1B, 0x21, 0x11}; // This sets double hight 7x9 font 
     public static final byte[] CHAR_SIZE_2 = {0x1B, 0x21, 0x21}; // This sets 7x9 double width font 
@@ -35,6 +37,8 @@ public class CodesTMU220 extends Codes {
     /** Creates a new instance of CodesTMU220 */
     public CodesTMU220() {
     }
+
+    public byte[] getInitSequence() { return INITSEQUENCE; }
      
     public byte[] getSize0() { return CHAR_SIZE_0; }
     public byte[] getSize1() { return CHAR_SIZE_1; }

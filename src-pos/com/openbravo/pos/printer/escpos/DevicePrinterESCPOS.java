@@ -43,8 +43,11 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
 
         // Inicializamos la impresora
         m_CommOutputPrinter.init(ESCPOS.INIT);
+
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER); // A la impresora
-        m_CommOutputPrinter.write(m_trans.getCodeTable());        
+        m_CommOutputPrinter.init(m_codes.getInitSequence());
+        m_CommOutputPrinter.write(m_trans.getCodeTable());
+
         m_CommOutputPrinter.flush();  
     }
    
@@ -72,24 +75,7 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
     public void printBarCode(String type, String position, String code) {
         
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);        
-
-        if (DevicePrinter.BARCODE_EAN13.equals(type)) {
-            m_CommOutputPrinter.write(m_codes.getNewLine());
-
-            m_CommOutputPrinter.write(ESCPOS.BAR_HEIGHT);
-            if (DevicePrinter.POSITION_NONE.equals(position)) {                
-                m_CommOutputPrinter.write(ESCPOS.BAR_POSITIONNONE);
-            } else {
-                m_CommOutputPrinter.write(ESCPOS.BAR_POSITIONDOWN);
-            }           
-            m_CommOutputPrinter.write(ESCPOS.BAR_HRIFONT1);
-            m_CommOutputPrinter.write(ESCPOS.BAR_CODE02);
-            m_CommOutputPrinter.write(m_trans.transNumber(DeviceTicket.alignBarCode(code,13).substring(0,12)));
-            m_CommOutputPrinter.write(new byte[] { 0x00 });
-
-            m_CommOutputPrinter.write(m_codes.getNewLine());
-
-        }
+        m_codes.printBarcode(m_CommOutputPrinter, type, position, code);
     }
     
     public void beginLine(int iTextSize) {

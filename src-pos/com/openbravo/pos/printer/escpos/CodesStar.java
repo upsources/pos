@@ -18,10 +18,14 @@
 
 package com.openbravo.pos.printer.escpos;
 
+import com.openbravo.pos.printer.DevicePrinter;
+import com.openbravo.pos.printer.DeviceTicket;
 import java.awt.image.BufferedImage;
 
 public class CodesStar extends Codes {
-    
+
+    public static final byte[] INITSEQUENCE = {0x1B, 0x7A, 0x01};
+
     private static final byte[] CHAR_SIZE_0 = {0x1B, 0x69, 0x00, 0x00};
     private static final byte[] CHAR_SIZE_1 = {0x1B, 0x69, 0x01, 0x00};
     private static final byte[] CHAR_SIZE_2 = {0x1B, 0x69, 0x00, 0x01};
@@ -29,12 +33,18 @@ public class CodesStar extends Codes {
     
     private static final byte[] OPEN_DRAWER = {0x1C};    
     private static final byte[] PARTIAL_CUT = {0x1B, 0x64, 0x30};
+    private static final byte[] IMAGE_BEGIN = {0x1B, 0x30};
+    private static final byte[] IMAGE_END = {0x1B, 0x7A, 0x01};
     private static final byte[] IMAGE_HEADER = {0x1B, 0x4B};
     private static final byte[] NEW_LINE = {0x0D, 0x0A}; // Print and carriage return
+
+    private static final int IMAGE_WIDTH = 192;
     
     /** Creates a new instance of CodesStar */
     public CodesStar() {
     }
+
+    public byte[] getInitSequence() { return INITSEQUENCE; }
      
     public byte[] getSize0() { return CHAR_SIZE_0; }
     public byte[] getSize1() { return CHAR_SIZE_1; }
@@ -47,23 +57,29 @@ public class CodesStar extends Codes {
     public byte[] getImageHeader() { return IMAGE_HEADER; }     
     
     @Override
-    public byte[] transImage(BufferedImage oImage) {
+    public byte[] transImage(BufferedImage image) {
+
+        CenteredImage centeredimage = new CenteredImage(image, IMAGE_WIDTH);
                         
-        // Imprimo los par\u00e1metros en cu\u00e1druple
-        int iWidth = oImage.getWidth();
-        int iHeight = (oImage.getHeight() + 7) / 8; // n\u00famero de bytes
+        int iWidth = centeredimage.getWidth();
+        int iHeight = (centeredimage.getHeight() + 7) / 8; //
         
         // Array de datos
-        byte[] bData = new byte[(getImageHeader().length + 2 + iWidth + getNewLine().length) * iHeight];
+        byte[] bData = new byte[
+                IMAGE_BEGIN.length +
+                (getImageHeader().length + 2 + iWidth + getNewLine().length) * iHeight +
+                IMAGE_END.length];
         
         // Comando de impresion de imagen
         
         int index = 0;
 
+        System.arraycopy(IMAGE_BEGIN, 0, bData, index, IMAGE_BEGIN.length);
+        index += IMAGE_BEGIN.length;
+
         // Raw data
-        int iRGB;
         int p;
-        for (int i = 0; i < oImage.getHeight(); i += 8) {
+        for (int i = 0; i < centeredimage.getHeight(); i += 8) {
             System.arraycopy(getImageHeader(), 0, bData, index, getImageHeader().length);
             index += getImageHeader().length;
             
@@ -71,29 +87,50 @@ public class CodesStar extends Codes {
             bData[index ++] = (byte) (iWidth % 256);
             bData[index ++] = (byte) (iWidth / 256);           
             
-            for (int j = 0; j < oImage.getWidth(); j++) {                
+            for (int j = 0; j < centeredimage.getWidth(); j++) {
                 p = 0x00;
                 for (int d = 0; d < 8; d ++) {
                     p = p << 1;
-                    if (i + d < oImage.getHeight()){
-                        iRGB = oImage.getRGB(j, i + d);
-                        
-                        int gray = (int)(0.30 * ((iRGB >> 16) & 0xff) + 
-                                         0.59 * ((iRGB >> 8) & 0xff) + 
-                                         0.11 * (iRGB & 0xff));
-                        
-                        if (gray < 128) {
-                            p = p | 0x01;
-                        }
+                   if (centeredimage.isBlack(j, i + d)) {
+                        p = p | 0x01;
                     }
                 }
                 
                 bData[index ++] = (byte) p;
             }
-            System.arraycopy(getNewLine(), 0, bData, index, getImageHeader().length);
-            index += getImageHeader().length;
+            System.arraycopy(getNewLine(), 0, bData, index, getNewLine().length);
+            index += getNewLine().length;
         
-        }        
+        }
+
+        System.arraycopy(IMAGE_END, 0, bData, index, IMAGE_END.length);
+        index += IMAGE_END.length;
+
         return bData;
-    }     
+    }
+
+    @Override
+    public void printBarcode(PrinterWritter out, String type, String position, String code) {
+
+        if (DevicePrinter.BARCODE_EAN13.equals(type)) {
+
+            // out.write(getNewLine());
+
+            out.write(new byte[] {0x1B, 0x1D, 0x61, 0x01}); // Align center
+
+            out.write(new byte[] {0x1B, 0x62, 0x03});
+            if (DevicePrinter.POSITION_NONE.equals(position)) {
+                out.write(new byte[]{0x01});
+            } else {
+                out.write(new byte[]{0x02});
+            }
+            out.write(new byte[]{0x02}); // dots
+            out.write(new byte[]{0x50}); // height
+            out.write(DeviceTicket.transNumber(DeviceTicket.alignBarCode(code,13).substring(0,12)));
+            out.write(new byte[] { 0x1E }); // end char
+
+            out.write(new byte[] {0x1B, 0x1D, 0x61, 0x00}); // Align left
+
+        }
+    }
 }
