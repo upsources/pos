@@ -15,6 +15,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 package com.openbravo.pos.printer.printer;
 
 import com.openbravo.pos.forms.AppLocal;
@@ -26,15 +27,6 @@ import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import com.openbravo.pos.util.ReportUtils;
 import java.awt.print.PrinterJob;
 import javax.print.PrintService;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.Size2DSyntax;
-import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.JobName;
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.print.attribute.standard.MediaSize;
-import javax.print.attribute.standard.MediaSizeName;
-import javax.print.attribute.standard.OrientationRequested;
 
 /**
  *Class DevicePrinterPrinter is responsible for printing tickets using system <br>
@@ -54,23 +46,17 @@ public class DevicePrinterPrinter implements DevicePrinter {
     private BasicTicketForPrinter m_ticketcurrent;
     /*system printer*/
     private PrintService printservice;
-    /*if the printer is a receìpt printer the value is "true" otherwise "false"*/
-    private String isReceiptPrinter;
-    /*1 point = 1/72 inch = 0.000352777m */
-    private static double point = 0.000352777;
-    /*paper size*/
-    private static int widthOfPaper = 72;
-    private static int heightOfPaper = 80;
+    private PrinterBook printerBook;
 
     /** Creates a new instance of DevicePrinterPrinter
      * @param printername - name of printer that will be called in the system
      * @param isReceiptPrinter - string with boolean values if the printer is a receipt
      */
     public DevicePrinterPrinter(String printername, String isReceiptPrinter) {
-        this.isReceiptPrinter = isReceiptPrinter;
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
         printservice = ReportUtils.getPrintService(printername);
+        printerBook = new PrinterBook(isReceiptPrinter);
     }
 
     @Override
@@ -110,7 +96,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
 
     @Override
     public void beginLine(int iTextSize) {
-        m_ticketcurrent.beginLine(0);
+        m_ticketcurrent.beginLine(iTextSize);
     }
 
     @Override
@@ -129,29 +115,18 @@ public class DevicePrinterPrinter implements DevicePrinter {
         try {
             //get the printer
             PrinterJob printJob = PrinterJob.getPrinterJob();
-            printJob.setPrintable(new PrintableTicket(m_ticketcurrent));
-            //add print requests
-            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-            aset.add(OrientationRequested.PORTRAIT);
-            aset.add(new Copies(1));
-            aset.add(new JobName(AppLocal.APP_NAME + " - Document", null));
-            //is a receipt printer
-            if (isReceiptPrinter.equals("true")) {
-                MediaSize myISO = new MediaSize(widthOfPaper, heightOfPaper, Size2DSyntax.MM, MediaSizeName.NA_LEGAL);
-                aset.add(MediaSizeName.NA_LEGAL);
-            } else {
-                aset.add(MediaSizeName.ISO_A4);
-            }
-            //printable area
-            //aset.add(new MediaPrintableArea(0, 0, 80, getHeightForReceiptPrinters(), MediaPrintableArea.MM));
+            printJob.setJobName(AppLocal.APP_NAME + " - Document");
+            printerBook.countLinesOnPage(m_ticketcurrent);
+            printJob.setPageable(printerBook.getBook());
+
             //set the printer
             if (printservice == null) {
-                if (printJob.printDialog(aset)) {
+                if (printJob.printDialog()) {
                     printJob.print();
                 }
             } else {
-                 printJob.setPrintService(printservice);
-                    printJob.print(aset);
+                printJob.setPrintService(printservice);
+                printJob.print();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -164,36 +139,5 @@ public class DevicePrinterPrinter implements DevicePrinter {
     public void openDrawer() {
         // Una simulacion
         Toolkit.getDefaultToolkit().beep();
-    }
-
-    /**
-     * Getter that gives back lenght of a ticket
-     * 
-     * @return lenght of a ticket in mm
-     */
-    @Deprecated
-    private int getHeightForReceiptPrinters() {
-
-        int height = 0;
-        int line = 0;
-        //checks if the line is the last in a ticket
-        while (m_ticketcurrent.getTheLastIndex() > line) {
-            //add height of a line to total height
-            height += m_ticketcurrent.getHeightOfCommands(line);
-            line++;
-        }
-        System.out.println(height + " " +changePointsforMM(height));
-        return changePointsforMM(height);
-    }
-
-    /**
-     * Method that changes points for milimeters. 
-     * 
-     * @param height - height in points
-     */
-    @Deprecated
-    private int changePointsforMM(int height) {
-
-        return (int) (height * point * 1000);
     }
 }

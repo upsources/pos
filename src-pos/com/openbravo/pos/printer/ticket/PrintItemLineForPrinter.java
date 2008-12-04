@@ -19,20 +19,35 @@
 package com.openbravo.pos.printer.ticket;
 
 import java.awt.Font;
+import java.awt.Graphics2D;
 
 /**
  *
  * @author jaroslawwozniak
  */
 public class PrintItemLineForPrinter extends PrintItemLine {
-    
-      
+
     /** Creates a new instance of PrinterItemLine */
     public PrintItemLineForPrinter(int itextsize) {
         super(itextsize);
-        BASEFONT = new Font("Monospaced", Font.PLAIN, 8);
+        BASEFONT = new Font("Monospaced", Font.PLAIN, 7);
         FONTHEIGHT = 12;
         FONTWIDTH = 4;
     }
 
+    public void draw(Graphics2D g, int x, int y, int width) {
+        //  m_itextsize
+        MyPrinterState ps = new MyPrinterState(m_itextsize);
+        int left = x;
+        for (int i = 0; i < m_atext.size(); i++) {
+            StyledText t = m_atext.get(i);
+            /*AttributedString text = new AttributedString (t.text);
+            text = ps.changeSize(m_itextsize, text);
+            text = ps.changeStyle(t.style, text);
+             */
+            g.setFont(ps.getFont(BASEFONT, t.style));
+            g.drawString(t.text, left, y);
+            left += FONTWIDTH * t.text.length();
+        }
+    }
 }
