@@ -22,8 +22,7 @@
 
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('30', 'Printer.PartialCash', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash.xml});
 
--- Charset, collation, engine modification (solve Openbravo POS 2.10 problems)
--- UTF-8 Unicode, utf8_general_ci, InnoDB
+-- Charset (UTF-8 Unicode), collation (utf8_general_ci), engine (InnoDB) modification
 ALTER TABLE APPLICATIONS ENGINE=InnoDB;
 ALTER TABLE CATEGORIES ENGINE=InnoDB;
 ALTER TABLE CLOSEDCASH ENGINE=InnoDB;
