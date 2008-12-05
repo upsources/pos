@@ -24,13 +24,20 @@ import java.awt.image.BufferedImage;
 
 public class CodesStar extends Codes {
 
+    // set line interspacing to 4mm
     public static final byte[] INITSEQUENCE = {0x1B, 0x7A, 0x01};
 
     private static final byte[] CHAR_SIZE_0 = {0x1B, 0x69, 0x00, 0x00};
     private static final byte[] CHAR_SIZE_1 = {0x1B, 0x69, 0x01, 0x00};
     private static final byte[] CHAR_SIZE_2 = {0x1B, 0x69, 0x00, 0x01};
     private static final byte[] CHAR_SIZE_3 = {0x1B, 0x69, 0x01, 0x01};
-    
+
+    private static final byte[] BOLD_SET = {0x1B, 0x45};
+    private static final byte[] BOLD_RESET = {0x1B, 0x46};
+
+    private static final byte[] UNDERLINE_SET = {0x1B, 0x2D, 0x01};
+    private static final byte[] UNDERLINE_RESET = {0x1B, 0x2D, 0x00};
+
     private static final byte[] OPEN_DRAWER = {0x1C};    
     private static final byte[] PARTIAL_CUT = {0x1B, 0x64, 0x30};
     private static final byte[] IMAGE_BEGIN = {0x1B, 0x30};
@@ -50,6 +57,11 @@ public class CodesStar extends Codes {
     public byte[] getSize1() { return CHAR_SIZE_1; }
     public byte[] getSize2() { return CHAR_SIZE_2; }
     public byte[] getSize3() { return CHAR_SIZE_3; }
+
+    public byte[] getBoldSet() { return BOLD_SET; }
+    public byte[] getBoldReset() { return BOLD_RESET; }
+    public byte[] getUnderlineSet() { return UNDERLINE_SET; }
+    public byte[] getUnderlineReset() { return UNDERLINE_RESET; }
     
     public byte[] getOpenDrawer() { return OPEN_DRAWER; }    
     public byte[] getCutReceipt() { return PARTIAL_CUT; }   

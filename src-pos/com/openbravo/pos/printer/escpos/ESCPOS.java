@@ -34,13 +34,7 @@ public class ESCPOS {
     public static final byte[] CHAR_FONT_1 = {0x1B, 0x4D, 0x01};
     public static final byte[] CHAR_FONT_2 = {0x1B, 0x4D, 0x30};
     public static final byte[] CHAR_FONT_3 = {0x1B, 0x4D, 0x31};
-    
-    public static final byte[] BOLD_SET = {0x1B, 0x45, 0x01};
-    public static final byte[] BOLD_RESET = {0x1B, 0x45, 0x00};
-
-    public static final byte[] UNDERLINE_SET = {0x1B, 0x2D, 0x01};
-    public static final byte[] UNDERLINE_RESET = {0x1B, 0x2D, 0x00};
-    
+        
     public static final byte[] BAR_HEIGHT = {0x1D, 0x68, 0x40};
     public static final byte[] BAR_POSITIONDOWN = {0x1D, 0x48, 0x02};
     public static final byte[] BAR_POSITIONNONE = {0x1D, 0x48, 0x00};

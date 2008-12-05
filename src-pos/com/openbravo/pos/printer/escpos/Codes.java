@@ -37,6 +37,11 @@ public abstract class Codes {
     public abstract byte[] getSize1();
     public abstract byte[] getSize2();
     public abstract byte[] getSize3();
+
+    public abstract byte[] getBoldSet();
+    public abstract byte[] getBoldReset();
+    public abstract byte[] getUnderlineSet();
+    public abstract byte[] getUnderlineReset();
     
     public abstract byte[] getOpenDrawer();    
     public abstract byte[] getCutReceipt();   

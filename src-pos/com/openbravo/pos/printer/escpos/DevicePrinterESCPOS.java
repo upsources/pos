@@ -100,18 +100,18 @@ public class DevicePrinterESCPOS implements DevicePrinter  {
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);   
 
         if ((iStyle & DevicePrinter.STYLE_BOLD) != 0) {
-            m_CommOutputPrinter.write(ESCPOS.BOLD_SET);
+            m_CommOutputPrinter.write(m_codes.getBoldSet());
         }
         if ((iStyle & DevicePrinter.STYLE_UNDERLINE) != 0) {
-            m_CommOutputPrinter.write(ESCPOS.UNDERLINE_SET);
+            m_CommOutputPrinter.write(m_codes.getUnderlineSet());
         }
         m_CommOutputPrinter.write(m_trans.transString(sText));
-        if ((iStyle & DevicePrinter.STYLE_BOLD) != 0) {
-            m_CommOutputPrinter.write(ESCPOS.BOLD_RESET);
-        }
         if ((iStyle & DevicePrinter.STYLE_UNDERLINE) != 0) {
-            m_CommOutputPrinter.write(ESCPOS.UNDERLINE_RESET);
-        }        
+            m_CommOutputPrinter.write(m_codes.getUnderlineReset());
+        }
+        if ((iStyle & DevicePrinter.STYLE_BOLD) != 0) {
+            m_CommOutputPrinter.write(m_codes.getBoldReset());
+        }     
     }
     public void endLine() {
         m_CommOutputPrinter.write(ESCPOS.SELECT_PRINTER);   
