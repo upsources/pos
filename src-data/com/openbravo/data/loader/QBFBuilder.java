@@ -32,29 +32,29 @@ public class QBFBuilder implements ISQLBuilderStatic {
     
     private String[] m_asFindFields;    
     
-    /** Creates a new instance of QBFBuilder */
-    public QBFBuilder(TableDefinition tb, String[] asFindFields) {
-        
-        StringBuffer sent = new StringBuffer();
-        sent.append("select ");
-
-        for (int i = 0; i < tb.getFields().length; i ++) {
-            if (i > 0) {
-                sent.append(", ");
-            }
-            sent.append(tb.getFields()[i]);
-        }        
-        
-        sent.append(" from ");        
-        sent.append(tb.getTableName());
-        
-        m_sSentNullFilter = sent.toString();
-        sent.append(" where ");
-        m_sSentBeginPart = sent.toString();
-        m_sSentEndPart = "";
-
-        m_asFindFields = asFindFields;
-    }
+//    /** Creates a new instance of QBFBuilder */
+//    public QBFBuilder(TableDefinition tb, String[] asFindFields) {
+//
+//        StringBuffer sent = new StringBuffer();
+//        sent.append("select ");
+//
+//        for (int i = 0; i < tb.getFields().length; i ++) {
+//            if (i > 0) {
+//                sent.append(", ");
+//            }
+//            sent.append(tb.getFields()[i]);
+//        }
+//
+//        sent.append(" from ");
+//        sent.append(tb.getTableName());
+//
+//        m_sSentNullFilter = sent.toString();
+//        sent.append(" where ");
+//        m_sSentBeginPart = sent.toString();
+//        m_sSentEndPart = "";
+//
+//        m_asFindFields = asFindFields;
+//    }
     public QBFBuilder(String sSentence, String[] asFindFields) {
         int iPos = sSentence.indexOf("?(QBF_FILTER)");
         if (iPos < 0) {
@@ -72,7 +72,7 @@ public class QBFBuilder implements ISQLBuilderStatic {
     public String getSQL(SerializerWrite sw, Object params) throws BasicException {
         
         QBFParameter mydw = new QBFParameter(m_asFindFields);
-        if (params == null) {
+        if (sw == null || params == null) {
             return m_sSentNullFilter;
         } else {
             sw.writeValues(mydw, params);

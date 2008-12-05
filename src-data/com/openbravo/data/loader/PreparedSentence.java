@@ -129,7 +129,7 @@ public class PreparedSentence extends JDBCSentence {
         try {
             m_Stmt = m_s.getConnection().prepareStatement(m_sentence);
  
-            if (params != null) {
+            if (m_SerWrite != null) {
                 // si m_SerWrite fuera null deberiamos cascar.
                 m_SerWrite.writeValues(new PreparedSentencePars(m_Stmt), params);
             }

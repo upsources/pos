@@ -24,11 +24,13 @@ import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.QBFBuilder;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SerializerReadBasic;
+import com.openbravo.data.loader.SerializerReadClass;
 import com.openbravo.data.loader.SerializerReadInteger;
 import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.ticket.ProductInfoExt;
 
 /**
  *
@@ -70,5 +72,27 @@ public class DataLogicSalesOracle extends DataLogicSales {
                   " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = 1"
                 , SerializerWriteString.INSTANCE
                 , new CustomerExtRead()).find(card);        
-    }    
+    }
+
+    // Products list
+    @Override
+    public final SentenceList getProductListNormal() {
+        return new StaticSentence(s
+            , new QBFBuilder(
+              "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE P.ISCOM = 0 AND ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , new SerializerReadClass(ProductInfoExt.class));
+    }
+
+    //Auxiliar list for a filter
+    @Override
+    public final SentenceList getProductListAuxiliar() {
+         return new StaticSentence(s
+            , new QBFBuilder(
+              "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, TC.ID, TC.NAME, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXCATEGORIES TC ON P.TAXCAT = TC.ID WHERE P.ISCOM = 1 AND ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , new SerializerReadClass(ProductInfoExt.class));
+    }
 }
