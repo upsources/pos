@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.printer.ticket;
 
+import com.openbravo.pos.printer.printer.DevicePrinterPrinter;
 import com.openbravo.pos.printer.printer.PrinterBook;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -29,8 +30,11 @@ import org.krysalis.barcode4j.output.java2d.Java2DCanvasProvider;
  */
 public class PrintItemBarcodeForPrinter extends PrintItemBarcode {
 
-    public PrintItemBarcodeForPrinter(String type, String position, String code) {
+    private boolean receiptPrinter;
+
+    public PrintItemBarcodeForPrinter(String type, String position, String code, boolean receiptPrinter) {
         super(type, position, code);
+        this.receiptPrinter = receiptPrinter;
         m_barcode.setBarHeight(20.0);
     }
 
@@ -40,7 +44,7 @@ public class PrintItemBarcodeForPrinter extends PrintItemBarcode {
             Graphics2D g2d = (Graphics2D) g;
 
             AffineTransform oldt = g2d.getTransform();
-            if (PrinterBook.isReceiptPrinter) {
+            if (receiptPrinter) {
                 g2d.translate((width - m_iWidth) / 2 - 10, y + 10);
             } else {
                 g2d.translate(72 + (width - m_iWidth) / 2 - 10, y + 10);

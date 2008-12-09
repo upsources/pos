@@ -31,18 +31,15 @@ import java.util.List;
  */
 public class PrinterBook {
 
-    private BasicTicketForPrinter ticket;
     private PageFormat pageFormat;
-    private boolean flag;
+    DevicePrinterPrinter printer;
     /*current line ang page */
     private int line,  page;
     /*Array lists for start and end line */
     private List startLine,  endLine;
-    private String receiptPrinter;
-    public static boolean isReceiptPrinter;
 
-    public PrinterBook(String receiptPrinter) {
-        this.receiptPrinter = receiptPrinter;
+    public PrinterBook(DevicePrinterPrinter printer) {
+        this.printer = printer;
         pageFormat = new PageFormat();
         setPageFormatForPage();
         startLine = new ArrayList();
@@ -51,8 +48,8 @@ public class PrinterBook {
         endLine = new ArrayList();
     }
 
-    public Book getBook() {
-
+    public Book getBook(BasicTicketForPrinter ticket) {
+        countLinesOnPage(ticket);
         Book book = new Book();
         int i = 0;
         while (i <= page) {
@@ -62,8 +59,8 @@ public class PrinterBook {
         return book;
     }
 
-    public void countLinesOnPage(BasicTicketForPrinter ticket) {
-        this.ticket = ticket;
+    private void countLinesOnPage(BasicTicketForPrinter ticket) {
+        boolean flag = false;
         //a variable for the index of next line
         int temp = 0;
         //loop goes if until the last line in a ticket
@@ -97,12 +94,10 @@ public class PrinterBook {
     private Paper getPaperForPage() {
 
         Paper paper = new Paper();
-        if (receiptPrinter.equals("true")) {
-            isReceiptPrinter = true;
+        if (printer.isReceiptPrinter()) {
             paper.setSize(226, 226);
             paper.setImageableArea(10, 10, 194, 210);
         } else {
-            isReceiptPrinter = false;
             paper.setSize(595, 841);
             paper.setImageableArea(72, 72, 451, 597);
         }

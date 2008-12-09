@@ -38,8 +38,8 @@ public class BasicTicketForPrinter extends BasicTicket {
         pil = new PrintItemLineForPrinter(iTextSize);
     }
 
-    public void printBarCode(String type, String position, String code) {
-        PrintItem pi = new PrintItemBarcodeForPrinter(type, position, code);
+    public void printBarCode(String type, String position, String code, boolean isReceiptPrinter) {
+        PrintItem pi = new PrintItemBarcodeForPrinter(type, position, code, isReceiptPrinter);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }
@@ -59,10 +59,9 @@ public class BasicTicketForPrinter extends BasicTicket {
         }
     }
 
-    @Override
-    public void printImage(BufferedImage image) {
+    public void printImage(BufferedImage image, boolean isReceiptPrinter) {
 
-        PrintItem pi = new PrintItemImageForPrinter(image);
+        PrintItem pi = new PrintItemImageForPrinter(image, isReceiptPrinter);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }

@@ -47,16 +47,22 @@ public class DevicePrinterPrinter implements DevicePrinter {
     /*system printer*/
     private PrintService printservice;
     private PrinterBook printerBook;
+    private boolean receiptPrinter;
 
     /** Creates a new instance of DevicePrinterPrinter
      * @param printername - name of printer that will be called in the system
      * @param isReceiptPrinter - string with boolean values if the printer is a receipt
      */
     public DevicePrinterPrinter(String printername, String isReceiptPrinter) {
+        this.receiptPrinter = Boolean.valueOf(isReceiptPrinter);
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
         printservice = ReportUtils.getPrintService(printername);
-        printerBook = new PrinterBook(isReceiptPrinter);
+        printerBook = new PrinterBook(this);
+    }
+
+    public boolean isReceiptPrinter(){
+        return receiptPrinter;
     }
 
     @Override
@@ -86,12 +92,12 @@ public class DevicePrinterPrinter implements DevicePrinter {
 
     @Override
     public void printImage(BufferedImage image) {
-        m_ticketcurrent.printImage(image);
+        m_ticketcurrent.printImage(image, isReceiptPrinter());
     }
 
     @Override
     public void printBarCode(String type, String position, String code) {
-        m_ticketcurrent.printBarCode(type, position, code);
+        m_ticketcurrent.printBarCode(type, position, code, isReceiptPrinter());
     }
 
     @Override
@@ -116,8 +122,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
             //get the printer
             PrinterJob printJob = PrinterJob.getPrinterJob();
             printJob.setJobName(AppLocal.APP_NAME + " - Document");
-            printerBook.countLinesOnPage(m_ticketcurrent);
-            printJob.setPageable(printerBook.getBook());
+            printJob.setPageable(printerBook.getBook(m_ticketcurrent));
 
             //set the printer
             if (printservice == null) {

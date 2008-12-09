@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.printer.ticket;
 
+import com.openbravo.pos.printer.printer.DevicePrinterPrinter;
 import com.openbravo.pos.printer.printer.PrinterBook;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -34,15 +35,17 @@ public class PrintItemImageForPrinter extends PrintItemImage {
     private final int V_GAP = 10;
     /*Guter*/
     private final int H_GAP = 10;
+    private boolean receiptPrinter;
 
-    public PrintItemImageForPrinter(BufferedImage image) {
+    public PrintItemImageForPrinter(BufferedImage image, boolean receiptPrinter) {
         super(image);
+        this.receiptPrinter = receiptPrinter;
         imageWidthForPrinter = (int) (image.getWidth() / (3.0 / 2));
         imageHeightForPrinter = (int) (image.getHeight() / (3.0 / 2));
     }
 
     public void draw(Graphics2D g, int x, int y, int width) {
-        if (PrinterBook.isReceiptPrinter) {
+        if (receiptPrinter) {
             g.drawImage(image, (width - imageWidthForPrinter) / 2 - H_GAP, y, imageWidthForPrinter, imageHeightForPrinter, null);
         } else {
             g.drawImage(image, 72 + (width - imageWidthForPrinter) / 2 - H_GAP, y, imageWidthForPrinter, imageHeightForPrinter, null);
