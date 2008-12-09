@@ -27,19 +27,19 @@
 	<queryString><![CDATA[SELECT 
 CLOSEDCASH.HOST,
 CLOSEDCASH.MONEY,
-CLOSEDCASH.DATESTART, 
+CLOSEDCASH.DATEEND,
 PRODUCTS.REFERENCE,
 PRODUCTS.NAME,
 SUM(PRODUCTSOUT.UNITS) AS UNITS,
 SUM(PRODUCTSOUT.UNITS * PRODUCTSOUT.PRICE) AS TOTAL 
 FROM CLOSEDCASH, TICKETS, PRODUCTSOUT LEFT OUTER JOIN PRODUCTS ON PRODUCTSOUT.PRODUCT = PRODUCTS.REFERENCE 
 WHERE CLOSEDCASH.MONEY = TICKETS.MONEY AND TICKETS.TICKETID = PRODUCTSOUT.TICKETID 
-GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATESTART, PRODUCTS.REFERENCE, PRODUCTS.NAME
-ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryString>
+GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATEEND, PRODUCTS.REFERENCE, PRODUCTS.NAME
+ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATEEND]]></queryString>
 
 	<field name="HOST" class="java.lang.String"/>
 	<field name="MONEY" class="java.lang.String"/>
-	<field name="DATESTART" class="java.util.Date"/>
+	<field name="DATEEND" class="java.util.Date"/>
 	<field name="REFERENCE" class="java.lang.String"/>
 	<field name="NAME" class="java.lang.String"/>
 	<field name="UNITS" class="java.lang.Double"/>
@@ -472,7 +472,7 @@ ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATESTART]]></queryStri
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Dialog" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.TIMESTAMP.formatValue($F{DATESTART})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.openbravo.format.Formats.TIMESTAMP.formatValue($F{DATEEND})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
