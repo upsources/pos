@@ -52,11 +52,14 @@ public class JRootFrame extends javax.swing.JFrame implements AppMessage {
         m_rootapp = new JRootApp();
         
         if (m_rootapp.initApp(m_props)) {
-            
-            // Register the running application
-            try {
-                m_instmanager = new InstanceManager(this);
-            } catch (Exception e) {
+
+
+            if ("true".equals(props.getProperty("machine.uniqueinstance"))) {
+                // Register the running application
+                try {
+                    m_instmanager = new InstanceManager(this);
+                } catch (Exception e) {
+                }
             }
         
             // Show the application

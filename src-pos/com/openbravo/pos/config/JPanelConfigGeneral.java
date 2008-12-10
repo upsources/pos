@@ -40,6 +40,9 @@ import org.jvnet.substance.skin.SubstanceSkin;
 public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConfig {
 
     private DirtyManager dirty = new DirtyManager();
+    
+    // Properties with no GUI
+    private String uniqueinstance;
 
     /** Creates new form JPanelConfigGeneral */
     public JPanelConfigGeneral() {
@@ -257,6 +260,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
     public void loadProperties(AppConfig config) {
 
+        uniqueinstance = config.getProperty("machine.uniqueinstance");
+
         jtxtMachineHostname.setText(config.getProperty("machine.hostname"));
 
         String lafclass = config.getProperty("swing.defaultlaf");
@@ -358,6 +363,8 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     }
 
     public void saveProperties(AppConfig config) {
+
+        config.setProperty("machine.uniqueinstance", uniqueinstance);
 
         config.setProperty("machine.hostname", jtxtMachineHostname.getText());
 
