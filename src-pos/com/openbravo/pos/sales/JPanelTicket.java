@@ -183,7 +183,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }
 
     public void activate() throws BasicException {
-        
+
         paymentdialogreceipt = JPaymentSelectReceipt.getDialog(this);
         paymentdialogreceipt.init(m_App);
         paymentdialogrefund = JPaymentSelectRefund.getDialog(this); 
@@ -821,7 +821,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     }
     
     private boolean closeTicket(TicketInfo ticket, Object ticketext) {
-        
+    
         boolean resultok = false;
         
         if (m_App.getAppUserView().getUser().hasPermission("sales.Total")) {  
@@ -829,23 +829,27 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             try {
                 // reset the payment info
                 taxeslogic.calculateTaxes(ticket);
-                ticket.resetPayments();
-
+                if (ticket.getTotal()>=0.0){
+                    ticket.resetPayments(); //Only reset if is sale
+                }
+                
                 if (executeEvent(ticket, ticketext, "ticket.total") == null) {
 
                     // Muestro el total
                     printTicket("Printer.TicketTotal", ticket, ticketext);
-
-
+                    
+                    
                     // Select the Payments information
                     JPaymentSelect paymentdialog = ticket.getTicketType() == TicketInfo.RECEIPT_NORMAL
                             ? paymentdialogreceipt
                             : paymentdialogrefund;
                     paymentdialog.setPrintSelected("true".equals(m_jbtnconfig.getProperty("printselected", "true")));
 
+                    paymentdialog.setTransactionID(ticket.getTransactionID());
+
                     if (paymentdialog.showDialog(ticket.getTotal(), ticket.getCustomer())) {
 
-                        // assign the payments selected and calculate taxes.                    
+                        // assign the payments selected and calculate taxes.         
                         ticket.setPayments(paymentdialog.getSelectedPayments());
 
                         // Asigno los valores definitivos del ticket...

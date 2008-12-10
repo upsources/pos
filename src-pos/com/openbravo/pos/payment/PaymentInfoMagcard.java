@@ -32,7 +32,8 @@ public class PaymentInfoMagcard extends PaymentInfo {
     protected String m_sTransactionID;
     
     protected String m_sAuthorization;    
-    protected String m_sMessage;
+    protected String m_sErrorMessage;
+    protected String m_sReturnMessage;
     
     /** Creates a new instance of PaymentInfoMagcard */
     public PaymentInfoMagcard(String sHolderName, String sCardNumber, String sExpirationDate, String track1, String track2, String track3, String sTransactionID, double dTotal) {
@@ -47,7 +48,8 @@ public class PaymentInfoMagcard extends PaymentInfo {
         m_dTotal = dTotal;
         
         m_sAuthorization = null;
-        m_sMessage = null;
+        m_sErrorMessage = null;
+        m_sReturnMessage = null;
     }
     
     /** Creates a new instance of PaymentInfoMagcard */
@@ -58,7 +60,7 @@ public class PaymentInfoMagcard extends PaymentInfo {
     public PaymentInfo copyPayment(){
         PaymentInfoMagcard p = new PaymentInfoMagcard(m_sHolderName, m_sCardNumber, m_sExpirationDate, track1, track2, track3, m_sTransactionID, m_dTotal);
         p.m_sAuthorization = m_sAuthorization;
-        p.m_sMessage = m_sMessage;
+        p.m_sErrorMessage = m_sErrorMessage;
         return p;
     }    
     
@@ -99,17 +101,27 @@ public class PaymentInfoMagcard extends PaymentInfo {
     }
 
     public String getMessage() {
-        return m_sMessage;
+        return m_sErrorMessage;
     }
     
-    public void paymentError(String sMessage) {
+    public void paymentError(String sMessage, String moreInfo) {
         m_sAuthorization = null;
-        m_sMessage = sMessage;
+        m_sErrorMessage = sMessage + "\n" + moreInfo;
     }    
     
-    public void paymentOK(String sAuthorization) {
+    public void setReturnMessage(String returnMessage){
+        m_sReturnMessage = returnMessage;
+    }
+    
+    public String getReturnMessage(){
+        return m_sReturnMessage;
+    }
+    
+    public void paymentOK(String sAuthorization, String sTransactionId, String sReturnMessage) {
         m_sAuthorization = sAuthorization;
-        m_sMessage = null;
+        m_sTransactionID = sTransactionId;
+        m_sReturnMessage = sReturnMessage;
+        m_sErrorMessage = null;
     }  
 
     public String printCardNumber() {

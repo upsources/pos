@@ -372,6 +372,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         TicketInfo refundticket = new TicketInfo();
         refundticket.setTicketType(TicketInfo.RECEIPT_REFUND);
         refundticket.setCustomer(m_ticket.getCustomer());
+        refundticket.setPayments(m_ticket.getPayments());
         m_panelticketedit.setActiveTicket(refundticket, null);      
         
     }//GEN-LAST:event_m_jRefundActionPerformed

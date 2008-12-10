@@ -21,7 +21,6 @@ package com.openbravo.pos.payment;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
-import com.openbravo.pos.util.StringUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
@@ -56,9 +55,8 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
         }
     }
     
-    public void activate(CustomerInfoExt customerext, double dTotal) {
-        
-        transaction = StringUtils.getCardNumber(); // Integer.toString(m_ticket.getId());   
+    public void activate(CustomerInfoExt customerext, double dTotal, String transID) {   
+        this.transaction = transID;
 
         if (m_cardpanel == null) {
             jlblMessage.setText(AppLocal.getIntString("message.nopaymentgateway"));  
@@ -74,7 +72,7 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
         jlblMessage.setText(null);
 
         PaymentInfoMagcard payinfo = m_cardpanel.getPaymentInfoMagcard();
-        
+
         m_paymentgateway.execute(payinfo);
         if (payinfo.isPaymentOK()) {
             return payinfo;
@@ -85,6 +83,10 @@ public class JPaymentMagcard extends javax.swing.JPanel implements JPaymentInter
     }  
     public Component getComponent() {
         return this;
+    }
+    
+    public void setTransaction(String transid){
+        transaction = transid;
     }
     
     /** This method is called from within the constructor to

@@ -35,5 +35,8 @@ public class PaymentInfoFree extends PaymentInfo {
     }   
     public double getTotal() {
         return m_dTotal;
-    }       
+    }
+    public String getTransactionID(){
+        return "no ID";
+    }
 }

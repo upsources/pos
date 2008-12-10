@@ -161,7 +161,7 @@ public class AppConfig implements AppProperties {
         m_propsconfig.setProperty("payment.magcardreader", "Not defined");
         m_propsconfig.setProperty("payment.testmode", "false");
         m_propsconfig.setProperty("payment.commerceid", "");
-        m_propsconfig.setProperty("payment.commercepassword", "");
+        m_propsconfig.setProperty("payment.commercepassword", "password");
         
         m_propsconfig.setProperty("machine.printername", "(Default)");
     }

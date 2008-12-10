@@ -52,7 +52,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private DataLogicSystem dlSystem;
     
     private Map<String, JPaymentInterface> payments = new HashMap<String, JPaymentInterface>();
-
+    private String m_sTransactionID;
+    
     
     /** Creates new form JPaymentSelect */
     protected JPaymentSelect(java.awt.Frame parent, boolean modal, ComponentOrientation o) {
@@ -104,7 +105,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
         
         addTabs();
-        
+
         if (m_jTabPayment.getTabCount() == 0) {
             // No payment panels available            
             m_aPaymentInfo.add(getDefaultPayment(total));
@@ -259,7 +260,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jRemaininglEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal - m_aPaymentInfo.getTotal())));
         m_jButtonRemove.setEnabled(!m_aPaymentInfo.isEmpty());
         m_jTabPayment.setSelectedIndex(0); // selecciono el primero
-        ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(customerext, m_dTotal - m_aPaymentInfo.getTotal());
+        ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(customerext, m_dTotal - m_aPaymentInfo.getTotal(), m_sTransactionID);
     }
     
     protected static Window getWindow(Component parent) {
@@ -276,7 +277,11 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         
         setStatusPanel(isPositive, isComplete);
     }
-     
+    
+    public void setTransactionID(String tID){
+        this.m_sTransactionID = tID;
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -430,15 +435,15 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     }//GEN-LAST:event_m_jButtonAddActionPerformed
 
     private void m_jTabPaymentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_m_jTabPaymentStateChanged
-        
+
         if (m_jTabPayment.getSelectedComponent() != null) {
-            ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(customerext, m_dTotal - m_aPaymentInfo.getTotal());
+            ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(customerext, m_dTotal - m_aPaymentInfo.getTotal(), m_sTransactionID);
         }
         
     }//GEN-LAST:event_m_jTabPaymentStateChanged
 
     private void m_jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonOKActionPerformed
-
+        
         PaymentInfo returnPayment = ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).executePayment();
         if (returnPayment != null) {
             m_aPaymentInfo.add(returnPayment);

@@ -29,13 +29,21 @@ public class PaymentGatewayFac {
     public static PaymentGateway getPaymentGateway(AppProperties props) {
         
         String sReader = props.getProperty("payment.gateway");
-        
+
         if ("external".equals(sReader)) {
             return new PaymentGatewayExt();
-        } else if ("SECPay".equals(sReader)) {
-            return new PaymentGatewaySECPay(props);
+        } else if ("PayPoint / SecPay".equals(sReader)) {
+            return new PaymentGatewayPayPoint(props);
         } else if ("AuthorizeNet".equals(sReader)) {
             return new PaymentGatewayAuthorizeNet(props);
+        } /*else if ("La Caixa (Spain)".equals(sReader)) {
+            return new PaymentGatewayCaixa(props);
+        }*/ else if ("Cyberauthorize".equals(sReader)) {
+            return new PaymentGatewayCyberauthorize(props);
+        } /*else if ("Firs Data / LinkPoint / YourPay".equals(sReader)) {
+            return new PaymentGatewayLinkPoint(props);
+        }*/ else if ("PaymentsGateway.net".equals(sReader)) {
+            return new PaymentGatewayPGNET(props);
         } else {
             return null;
         }

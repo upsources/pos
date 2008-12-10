@@ -32,7 +32,7 @@ public class JPaymentFree extends javax.swing.JPanel implements JPaymentInterfac
         m_notifier = notifier;
         initComponents();
     }
-    public void activate(CustomerInfoExt customerext, double dTotal) {
+    public void activate(CustomerInfoExt customerext, double dTotal, String transID) {
         
         m_dTotal = dTotal;
         

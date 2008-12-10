@@ -44,6 +44,9 @@ public class PaymentInfoCash extends PaymentInfo {
     public double getPaid() {
         return m_dPaid;
     }
+    public String getTransactionID(){
+        return "no ID";
+    }
     
     public String printPaid() {
         return Formats.CURRENCY.formatValue(new Double(m_dPaid));

@@ -27,7 +27,10 @@ import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.payment.PaymentInfoMagcard;
+import com.openbravo.pos.payment.PaymentInfoTicket;
 import com.openbravo.pos.util.RoundUtils;
+import com.openbravo.pos.util.StringUtils;
 
 /**
  *
@@ -54,6 +57,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private List<TicketLineInfo> m_aLines;
     private List<PaymentInfo> payments;
     private List<TicketTaxInfo> taxes;
+    private String m_sResponse;
 
     /** Creates new TicketModel */
     public TicketInfo() {
@@ -69,6 +73,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
         payments = new ArrayList<PaymentInfo>();
         taxes = null;
+        m_sResponse = null;
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
@@ -223,6 +228,18 @@ public class TicketInfo implements SerializableRead, Externalizable {
         } else {
             return m_Customer.getId();
         }
+    }
+    
+    public String getTransactionID(){
+        return (getPayments().size()>0)
+            ? ( getPayments().get(getPayments().size()-1) ).getTransactionID()
+            : StringUtils.getCardNumber(); //random transaction ID
+    }
+    
+    public String getReturnMessage(){
+        return ( (getPayments().get(getPayments().size()-1)) instanceof PaymentInfoMagcard )
+            ? ((PaymentInfoMagcard)(getPayments().get(getPayments().size()-1))).getReturnMessage()
+            : "OK";
     }
 
     public void setActiveCash(String value) {
