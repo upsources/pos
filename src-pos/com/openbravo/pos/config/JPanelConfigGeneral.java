@@ -966,7 +966,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
 
         m_jScannerParams.add(jPanel19, "comm");
 
-        m_ReceiptPrinter.setText("Receipt printer");
+        m_ReceiptPrinter.setText(AppLocal.getIntString("label.receiptprinter")); // NOI18N
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
