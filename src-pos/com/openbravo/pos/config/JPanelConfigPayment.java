@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.config;
 
@@ -32,33 +32,33 @@ import java.util.Map;
 /**
  *
  * @author adrianromero
+ * @author Mikel Irurita
  */
 public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConfig {
 
     private DirtyManager dirty = new DirtyManager();
-    private Map paymentsName = new HashMap();
+    private Map<String, PaymentConfiguration> paymentsName = new HashMap<String, PaymentConfiguration>();
     private PaymentConfiguration pc;
     
     /** Creates new form JPanelConfigPayment */
     public JPanelConfigPayment() {
         
         initComponents();
-        initializePaymentsName();
-        
+                
         // dirty manager
         jcboCardReader.addActionListener(dirty);
         jcboPaymentGateway.addActionListener(dirty);
         jchkPaymentTest.addActionListener(dirty);
         
-        // Payment Provider
-        jcboPaymentGateway.addItem("Not defined");
-        jcboPaymentGateway.addItem("external");
-        jcboPaymentGateway.addItem("PayPoint / SecPay");
-        jcboPaymentGateway.addItem("AuthorizeNet");
-        jcboPaymentGateway.addItem("Cyberauthorize");
-        //jcboPaymentGateway.addItem("Firs Data / LinkPoint / YourPay");
-        jcboPaymentGateway.addItem("PaymentsGateway.net");
-        //jcboPaymentGateway.addItem("La Caixa (Spain)");
+        // Payment Provider                
+        initPayments("Not defined", new ConfigPaymentPanelGeneric());
+        initPayments("external", new ConfigPaymentPanelGeneric());
+        initPayments("PayPoint / SecPay", new ConfigPaymentPanelGeneric());
+        initPayments("AuthorizeNet", new ConfigPaymentPanelGeneric());
+        initPayments("Cyberauthorize", new ConfigPaymentPanelGeneric());
+        //initPayments("Firs Data / LinkPoint / YourPay", new ConfigPaymentPanelLinkPoint());
+        initPayments("PaymentsGateway.net", new ConfigPaymentPanelGeneric());
+        //initPayments("La Caixa (Spain)", new ConfigPaymentPanelCaixa());
         
         // Lector de tarjetas.
         jcboCardReader.addItem("Not defined");
@@ -76,7 +76,7 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
     }
    
     public void loadProperties(AppConfig config) {
-        
+
         jcboCardReader.setSelectedItem(config.getProperty("payment.magcardreader"));
         jcboPaymentGateway.setSelectedItem(config.getProperty("payment.gateway"));
         jchkPaymentTest.setSelected(Boolean.valueOf(config.getProperty("payment.testmode")).booleanValue());       
@@ -93,15 +93,9 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
         dirty.setDirty(false);
     }
     
-    public void initializePaymentsName(){
-        paymentsName.put("Not defined", new ConfigPaymentPanelGeneric());
-        paymentsName.put("external", new ConfigPaymentPanelGeneric());
-        paymentsName.put("PayPoint / SecPay", new ConfigPaymentPanelGeneric());
-        paymentsName.put("AuthorizeNet", new ConfigPaymentPanelGeneric());
-        paymentsName.put("Cyberauthorize", new ConfigPaymentPanelGeneric());
-        paymentsName.put("Firs Data / LinkPoint / YourPay", new ConfigPaymentPanelLinkPoint());
-        paymentsName.put("PaymentsGateway.net", new ConfigPaymentPanelGeneric());
-        paymentsName.put("La Caixa (Spain)", new ConfigPaymentPanelCaixa());
+    private void initPayments(String name, PaymentConfiguration pc) {
+        jcboPaymentGateway.addItem(name);
+        paymentsName.put(name, pc);
     }
      
     private String comboValue(Object value) {
@@ -195,11 +189,14 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
     }// </editor-fold>//GEN-END:initComponents
 
 private void jcboPaymentGatewayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboPaymentGatewayActionPerformed
-    pc = (PaymentConfiguration)paymentsName.get(comboValue(jcboPaymentGateway.getSelectedItem()));
-    jPanel2.removeAll();
-    jPanel2.add(pc.getComponent());
-    jPanel2.revalidate();
-    jPanel2.repaint();
+    pc = paymentsName.get(comboValue(jcboPaymentGateway.getSelectedItem()));
+
+    if (pc != null) {
+        jPanel2.removeAll();
+        jPanel2.add(pc.getComponent());
+        jPanel2.revalidate();
+        jPanel2.repaint(); 
+    }
 }//GEN-LAST:event_jcboPaymentGatewayActionPerformed
     
     

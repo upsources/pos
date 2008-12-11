@@ -31,7 +31,7 @@
                   <Component id="jtxtCommerceID" min="-2" pref="180" max="-2" attributes="0"/>
                   <Component id="jtxtCommercePwd" min="-2" pref="180" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="285" max="32767" attributes="0"/>
+              <EmptySpace pref="317" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

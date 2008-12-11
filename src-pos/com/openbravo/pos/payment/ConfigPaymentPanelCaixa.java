@@ -1,8 +1,20 @@
-/*
- * ConfigPaymentPanelCaixa.java
- *
- * Created on 9 de diciembre de 2008, 13:09
- */
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2008 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.payment;
 
@@ -29,17 +41,20 @@ public class ConfigPaymentPanelCaixa extends javax.swing.JPanel implements Payme
     
     @Override
     public void loadProperties(AppConfig config) {
-        jtxtCommerceCode.setText(config.getProperty("payment.commerceid"));
-        AltEncrypter cypher = new AltEncrypter("cypherkey");
-        if (config.getProperty("payment.terminal") != null) {
+        
+        String sCommerceID = config.getProperty("payment.commerceid");
+        String sCommerceTerminal = config.getProperty("payment.terminal");
+        String sCommerceSign = config.getProperty("payment.commercesign");
+        String sCommerceSHA = config.getProperty("payment.SHA");
+        
+        if (sCommerceID!=null && sCommerceTerminal!=null && sCommerceSign!=null && sCommerceSHA!=null && sCommerceSign.startsWith("crypt:")) {
+            jtxtCommerceCode.setText(config.getProperty("payment.commerceid"));
+            AltEncrypter cypher = new AltEncrypter("cypherkey");
             jtxtCommerceTerminal.setText(comboValue(config.getProperty("payment.terminal")));
-        }
-        if (config.getProperty("payment.commercesign") != null) {
             jtxtCommerceSign.setText(cypher.decrypt(config.getProperty("payment.commercesign").substring(6)));
-        }
-        if (config.getProperty("payment.SHA") != null) {
             jCheckBox1.setSelected(Boolean.valueOf(config.getProperty("payment.SHA")).booleanValue());
-        }      
+        }
+     
     }
     
     @Override
