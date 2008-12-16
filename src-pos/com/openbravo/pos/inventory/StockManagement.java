@@ -127,7 +127,7 @@ public class StockManagement extends JPanel implements JPanelView {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                m_jcodebar.requestFocus();
+                jTextField1.requestFocus();
             }
         });        
     }   
@@ -263,11 +263,17 @@ public class StockManagement extends JPanel implements JPanelView {
             } else {
                 saveData();
             }
-        } else {
-            m_jcodebar.setText(m_jcodebar.getText() + cTrans);
+        } else if (Character.isDigit(cTrans)) {
+            if (m_jcodebar.getText() == null) {
+                m_jcodebar.setText("" + cTrans);
+            } else {
+                m_jcodebar.setText(m_jcodebar.getText() + cTrans);
+            }
             if (NUMBER_STATE != DECIMAL) {
                 NUMBER_STATE = ACTIVE;
             }   
+        } else {
+            Toolkit.getDefaultToolkit().beep();
         }
     }
     
@@ -369,8 +375,9 @@ public class StockManagement extends JPanel implements JPanelView {
         jPanel2 = new javax.swing.JPanel();
         jNumberKeys = new com.openbravo.beans.JNumberKeys();
         jPanel4 = new javax.swing.JPanel();
-        m_jcodebar = new javax.swing.JTextField();
         m_jEnter = new javax.swing.JButton();
+        m_jcodebar = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         btnDownloadProducts = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -405,18 +412,6 @@ public class StockManagement extends JPanel implements JPanelView {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        m_jcodebar.setPreferredSize(new java.awt.Dimension(110, 19));
-        m_jcodebar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jcodebarActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanel4.add(m_jcodebar, gridBagConstraints);
-
         m_jEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/barcode.png"))); // NOI18N
         m_jEnter.setFocusPainted(false);
         m_jEnter.setFocusable(false);
@@ -427,11 +422,44 @@ public class StockManagement extends JPanel implements JPanelView {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jPanel4.add(m_jEnter, gridBagConstraints);
+
+        m_jcodebar.setBackground(java.awt.Color.white);
+        m_jcodebar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jcodebar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+        m_jcodebar.setOpaque(true);
+        m_jcodebar.setPreferredSize(new java.awt.Dimension(135, 30));
+        m_jcodebar.setRequestFocusEnabled(false);
+        m_jcodebar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                m_jcodebarMouseClicked(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel4.add(m_jcodebar, gridBagConstraints);
+
+        jTextField1.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        jTextField1.setForeground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        jTextField1.setCaretColor(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        jTextField1.setPreferredSize(new java.awt.Dimension(1, 1));
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel4.add(jTextField1, gridBagConstraints);
 
         jPanel2.add(jPanel4);
 
@@ -595,13 +623,6 @@ public class StockManagement extends JPanel implements JPanelView {
         
     }//GEN-LAST:event_m_jEnterActionPerformed
 
-    private void m_jcodebarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jcodebarActionPerformed
-        
-        incProductByCode(m_jcodebar.getText());
-        m_jcodebar.setText(null);
-        
-    }//GEN-LAST:event_m_jcodebarActionPerformed
-
     private void m_jbtndateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jbtndateActionPerformed
         
         Date date;
@@ -622,9 +643,20 @@ public class StockManagement extends JPanel implements JPanelView {
         
     }//GEN-LAST:event_jNumberKeysKeyPerformed
 
+private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+    jTextField1.setText(null);
+    stateTransition(evt.getKeyChar());
+}//GEN-LAST:event_jTextField1KeyTyped
 
-    
-    
+private void m_jcodebarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_m_jcodebarMouseClicked
+    java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                jTextField1.requestFocus();
+            }
+    });
+}//GEN-LAST:event_m_jcodebarMouseClicked
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDownloadProducts;
     private javax.swing.JPanel catcontainer;
@@ -639,6 +671,7 @@ public class StockManagement extends JPanel implements JPanelView {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton m_jDelete;
     private javax.swing.JButton m_jDown;
     private javax.swing.JButton m_jEnter;
@@ -646,7 +679,7 @@ public class StockManagement extends JPanel implements JPanelView {
     private javax.swing.JComboBox m_jLocationDes;
     private javax.swing.JButton m_jUp;
     private javax.swing.JButton m_jbtndate;
-    private javax.swing.JTextField m_jcodebar;
+    private javax.swing.JLabel m_jcodebar;
     private javax.swing.JTextField m_jdate;
     private javax.swing.JComboBox m_jreason;
     // End of variables declaration//GEN-END:variables

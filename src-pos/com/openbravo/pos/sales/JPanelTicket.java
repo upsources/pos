@@ -753,7 +753,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     //If it's a refund - button means one unit more
                     if (m_oTicket.getTicketType() == TicketInfo.RECEIPT_REFUND){
                         newline.setMultiply(newline.getMultiply() + 1.0);
-                        paintTicketLine(i, newline); 
+                        if (newline.getMultiply() >= 0) {
+                            removeTicketLine(i);
+                        } else {
+                            paintTicketLine(i, newline);
+                        }
                     } else {
                         // substract one unit to the selected line
                         newline.setMultiply(newline.getMultiply() - 1.0);
@@ -796,11 +800,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 } else {
                     double dPor = getPorValue();
                     TicketLineInfo newline = new TicketLineInfo(m_oTicket.getLine(i));
-                    if (m_oTicket.getTicketType() == TicketInfo.RECEIPT_REFUND) {
-                        newline.setMultiply(dPor);
-                        newline.setPrice(Math.abs(newline.getPrice()));
-                        paintTicketLine(i, newline);
-                    } else {
+                    if (m_oTicket.getTicketType() == TicketInfo.RECEIPT_NORMAL) {
                         newline.setMultiply(dPor);
                         newline.setPrice(-Math.abs(newline.getPrice()));
                         paintTicketLine(i, newline);
