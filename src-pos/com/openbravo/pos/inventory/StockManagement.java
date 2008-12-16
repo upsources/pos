@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.inventory;
 
@@ -59,6 +59,12 @@ public class StockManagement extends JPanel implements JPanelView {
     private ComboBoxValModel m_LocationsModelDes;     
     
     private JInventoryLines m_invlines;
+    
+    private int NUMBER_STATE = 0;
+    private int MULTIPLY = 0;
+    private static int DEFAULT = 0;
+    private static int ACTIVE = 1;
+    private static int DECIMAL = 2;
     
     /** Creates new form StockManagement */
     public StockManagement(AppView app) {
@@ -196,7 +202,7 @@ public class StockManagement extends JPanel implements JPanelView {
         if (i >= 0 ) {
             InventoryLine inv = m_invlines.getLine(i);
             double dunits = inv.getMultiply() + dUnits;
-            if (dunits == 0.0) {
+            if (dunits <= 0.0) {
                 deleteLine(i);
             } else {            
                 inv.setMultiply(inv.getMultiply() + dUnits);
@@ -205,26 +211,51 @@ public class StockManagement extends JPanel implements JPanelView {
         }
     }
     
+    private void setUnits(double dUnits) {
+        int i  = m_invlines.getSelectedRow();
+        if (i >= 0 ) {
+            InventoryLine inv = m_invlines.getLine(i);         
+            inv.setMultiply(dUnits);
+            m_invlines.setLine(i, inv);
+        }
+    }
+    
     private void stateTransition(char cTrans) {
-        
         if (cTrans == '\u007f') { 
             m_jcodebar.setText(null);
+            NUMBER_STATE = DEFAULT;
+        } else if (cTrans == '*') {
+            MULTIPLY = ACTIVE;
         } else if (cTrans == '+') {
-            if (m_jcodebar.getText() == null || m_jcodebar.getText().equals("")) {
-                // anadimos una unidad 
-                addUnits(1.0);
-            } else {
-                addUnits(Double.parseDouble(m_jcodebar.getText()));
+            if (MULTIPLY != DEFAULT && NUMBER_STATE != DEFAULT) {
+                setUnits(Double.parseDouble(m_jcodebar.getText()));
                 m_jcodebar.setText(null);
+            } else {
+                if (m_jcodebar.getText() == null || m_jcodebar.getText().equals("")) {
+                    addUnits(1.0);
+                } else {
+                    addUnits(Double.parseDouble(m_jcodebar.getText()));
+                    m_jcodebar.setText(null);
+                }
             }
+            NUMBER_STATE = DEFAULT;
+            MULTIPLY = DEFAULT;
         } else if (cTrans == '-') {
             if (m_jcodebar.getText() == null || m_jcodebar.getText().equals("")) {
-                // anadimos una unidad 
                 addUnits(-1.0);
             } else {
                 addUnits(-Double.parseDouble(m_jcodebar.getText()));
-                m_jcodebar.setText(null);                
+                m_jcodebar.setText(null);
             }
+            NUMBER_STATE = DEFAULT;
+            MULTIPLY = DEFAULT;
+        } else if (cTrans == '.') {
+            if (m_jcodebar.getText() == null || m_jcodebar.getText().equals("")) {
+                m_jcodebar.setText("0.");
+            } else if (NUMBER_STATE != DECIMAL){
+                m_jcodebar.setText(m_jcodebar.getText() + cTrans);
+            }
+            NUMBER_STATE = DECIMAL;
         } else if (cTrans == ' ' || cTrans == '=') {
             if (m_invlines.getCount() == 0) {
                 // No podemos grabar, no hay ningun registro.
@@ -234,6 +265,9 @@ public class StockManagement extends JPanel implements JPanelView {
             }
         } else {
             m_jcodebar.setText(m_jcodebar.getText() + cTrans);
+            if (NUMBER_STATE != DECIMAL) {
+                NUMBER_STATE = ACTIVE;
+            }   
         }
     }
     
