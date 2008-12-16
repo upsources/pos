@@ -330,7 +330,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                         setString(3, p.getName());
                         setDouble(4, p.getTotal());
                         setString(5, ticket.getTransactionID());
-                        setString(6, ticket.getReturnMessage());
+                        setBytes(6, (byte[]) Formats.BYTEA.parseValue(ticket.getReturnMessage()));
                     }});
 
                     if ("debt".equals(p.getName()) || "debtpaid".equals(p.getName())) {
