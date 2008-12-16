@@ -39,13 +39,6 @@ public class ConfigPaymentPanelGeneric extends javax.swing.JPanel implements Pay
         return this;
     }
     
-    public JPanel getEmptyComponent(){
-        removeAll();
-        revalidate();
-        repaint();
-        return this;
-    }
-    
     @Override
     public void loadProperties(AppConfig config) {
         String sCommerceID = config.getProperty("payment.commerceid");

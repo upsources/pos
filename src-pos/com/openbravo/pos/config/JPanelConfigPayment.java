@@ -23,6 +23,7 @@ import java.awt.Component;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.payment.ConfigPaymentPanelCaixa;
+import com.openbravo.pos.payment.ConfigPaymentPanelEmpty;
 import com.openbravo.pos.payment.ConfigPaymentPanelGeneric;
 import com.openbravo.pos.payment.ConfigPaymentPanelLinkPoint;
 import com.openbravo.pos.payment.PaymentConfiguration;
@@ -51,8 +52,8 @@ public class JPanelConfigPayment extends javax.swing.JPanel implements PanelConf
         jchkPaymentTest.addActionListener(dirty);
         
         // Payment Provider                
-        initPayments("Not defined", new ConfigPaymentPanelGeneric());
-        initPayments("external", new ConfigPaymentPanelGeneric());
+        initPayments("Not defined", new ConfigPaymentPanelEmpty());
+        initPayments("external", new ConfigPaymentPanelEmpty());
         initPayments("PayPoint / SecPay", new ConfigPaymentPanelGeneric());
         initPayments("AuthorizeNet", new ConfigPaymentPanelGeneric());
         initPayments("Cyberauthorize", new ConfigPaymentPanelGeneric());
