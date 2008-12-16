@@ -277,6 +277,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             // Muestro el panel de nulos.
             cl.show(this, "null");  
+            resetSouthComponent();
 
         } else {
             if (m_oTicket.getTicketType() == TicketInfo.RECEIPT_REFUND) {
@@ -304,6 +305,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             // Muestro el panel de tickets.
             cl.show(this, "ticket");  
+            resetSouthComponent();
             
             // activo el tecleador...
             m_jKeyFactory.setText(null);       
