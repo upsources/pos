@@ -72,6 +72,9 @@ public class JPanelTicketEdits extends JPanelTicket {
         m_catandlines.addActionListener(new CatalogListener());
         return m_catandlines;
     } 
+
+    protected void resetSouthComponent() {
+    }
     
     private class CatalogListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {

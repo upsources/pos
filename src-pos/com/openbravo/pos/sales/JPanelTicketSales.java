@@ -59,6 +59,10 @@ public class JPanelTicketSales extends JPanelTicket {
                 Integer.parseInt(m_jbtnconfig.getProperty("cat-height", "245"))));
         return m_cat.getComponent();
     }
+
+    protected void resetSouthComponent() {
+        m_cat.showCatalogPanel(null);
+    }
     
     protected JTicketsBag getJTicketsBag() {
         return JTicketsBag.createTicketsBag(m_App.getProperties().getProperty("machine.ticketsbag"), m_App, this);

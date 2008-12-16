@@ -238,6 +238,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     protected abstract JTicketsBag getJTicketsBag();
     protected abstract Component getSouthComponent();
+    protected abstract void resetSouthComponent();
      
     public void setActiveTicket(TicketInfo oTicket, Object oTicketExt) {
        
