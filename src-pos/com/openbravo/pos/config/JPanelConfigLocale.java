@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -20,10 +20,13 @@ package com.openbravo.pos.config;
 
 import com.openbravo.data.user.DirtyManager;
 import java.awt.Component;
-import java.util.Arrays;
 import java.util.Locale;
 import com.openbravo.pos.forms.AppConfig;
 import com.openbravo.pos.forms.AppLocal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -34,7 +37,7 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
     private DirtyManager dirty = new DirtyManager();
     
     private final static String DEFAULT_VALUE = "(Default)";
-    
+
     /** Creates new form JPanelConfigLocale */
     public JPanelConfigLocale() {
         
@@ -49,12 +52,16 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
         jcboTime.addActionListener(dirty);
         jcboDatetime.addActionListener(dirty);
         
-        Locale[] availablelocales = Locale.getAvailableLocales();
-        Arrays.sort(availablelocales, new LocaleComparator());
+        List<Locale> availablelocales = new ArrayList<Locale>();
+        availablelocales.addAll(Arrays.asList(Locale.getAvailableLocales())); // Available java locales
+        addLocale(availablelocales, new Locale("eu", "ES", "")); // Basque
+        addLocale(availablelocales, new Locale("gl", "ES", "")); // Gallegan
+        
+        Collections.sort(availablelocales, new LocaleComparator());
         
         jcboLocale.addItem(new LocaleInfo (null));
-        for (int i = 0 ; i < availablelocales.length; i++) {
-            jcboLocale.addItem(new LocaleInfo(availablelocales[i]));
+        for (Locale l : availablelocales) {
+            jcboLocale.addItem(new LocaleInfo(l));
         }
         
         jcboInteger.addItem(DEFAULT_VALUE);
@@ -79,6 +86,12 @@ public class JPanelConfigLocale extends javax.swing.JPanel implements PanelConfi
         
         jcboDatetime.addItem(DEFAULT_VALUE);
                
+    }
+
+    private void addLocale(List<Locale> ll, Locale l) {
+        if (!ll.contains(l)) {
+            ll.add(l);
+        }
     }
     
     public boolean hasChanged() {

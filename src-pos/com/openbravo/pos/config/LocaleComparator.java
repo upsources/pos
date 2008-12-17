@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -32,6 +32,6 @@ public class LocaleComparator implements Comparator<Locale> {
     }
     
     public int compare(Locale o1, Locale o2) {
-        return o1.toString().compareTo(o2.toString());
+        return o1.getDisplayName().compareTo(o2.getDisplayName());
     }
 }
