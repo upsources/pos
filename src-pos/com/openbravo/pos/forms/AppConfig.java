@@ -75,7 +75,11 @@ public class AppConfig implements AppProperties {
     }
     
     public void setProperty(String sKey, String sValue) {
-        m_propsconfig.setProperty(sKey, sValue);
+        if (sValue == null) {
+            m_propsconfig.remove(sKey);
+        } else {
+            m_propsconfig.setProperty(sKey, sValue);
+        }
     }
     
     private String getLocalHostName() {
