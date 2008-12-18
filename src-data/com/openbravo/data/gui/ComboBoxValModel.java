@@ -65,6 +65,14 @@ public class ComboBoxValModel extends AbstractListModel implements ComboBoxModel
             return m_keygetter.getKey(m_selected);  // Si casca, excepcion parriba
         }
     }
+
+    public String getSelectedText() {
+        if (m_selected == null) {
+            return null;
+        } else {
+            return m_selected.toString();
+        }
+    }
     
     public void setSelectedKey(Object aKey) {
         setSelectedItem(getElementByKey(aKey));

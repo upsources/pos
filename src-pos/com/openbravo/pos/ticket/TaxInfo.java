@@ -14,21 +14,18 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.ticket;
 
 import java.io.Serializable;
-import com.openbravo.data.loader.DataRead;
-import com.openbravo.data.loader.SerializableRead;
-import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.IKeyed;
 
 /**
  *
  * @author adrianromero
  */
-public class TaxInfo implements SerializableRead, Serializable, IKeyed {
+public class TaxInfo implements Serializable, IKeyed {
     
     private static final long serialVersionUID = -2705212098856473043L;
     private String id;
@@ -40,19 +37,6 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
     private double rate;
     private boolean cascade;
     private Integer order;
-    
-    /** Creates new TaxInfo */
-    public TaxInfo() {
-        id = null;
-        name = null;
-        taxcategoryid = null;
-        taxcustcategoryid = null;
-        parentid = null;
-        
-        rate = 0.0;         
-        cascade = false;
-        order = null;
-    }
     
     /** Creates new TaxInfo */
     public TaxInfo(String id, String name, String taxcategoryid, String taxcustcategoryid, String parentid, double rate, boolean cascade, Integer order) {
@@ -70,17 +54,6 @@ public class TaxInfo implements SerializableRead, Serializable, IKeyed {
     public Object getKey() {
         return id;
     }
-    public void readValues(DataRead dr) throws BasicException {
-        id = dr.getString(1);
-        name = dr.getString(2);
-        taxcategoryid = dr.getString(3);
-        taxcustcategoryid = dr.getString(4);
-        parentid = dr.getString(5);
-        
-        rate = dr.getDouble(6).doubleValue();
-        cascade = dr.getBoolean(7).booleanValue();
-        order = dr.getInt(8);
-    }   
     
     public void setID(String value) {
         id = value;

@@ -86,25 +86,23 @@ public class ProductsSync implements ProcessAction {
                 for (Product product : products) {
                     
                     // Synchonization of taxcategories
-                    TaxCategoryInfo tc = new TaxCategoryInfo();
-                    tc.setID(product.getTax().getId());
-                    tc.setName(product.getTax().getName());                     
+                    TaxCategoryInfo tc = new TaxCategoryInfo(product.getTax().getId(), product.getTax().getName());
                     dlintegration.syncTaxCategory(tc);
                     
                     // Synchonization of taxes
-                    TaxInfo t = new TaxInfo();
-                    t.setID(product.getTax().getId());
-                    t.setName(product.getTax().getName());
-                    t.setTaxCategoryID(tc.getID());
-                    t.setRate(product.getTax().getPercentage() / 100);   
-                    t.setCascade(false);
+                    TaxInfo t = new TaxInfo(
+                            product.getTax().getId(),
+                            product.getTax().getName(),
+                            tc.getID(),
+                            null,
+                            null,
+                            product.getTax().getPercentage() / 100,
+                            false,
+                            0);
                     dlintegration.syncTax(t);
                    
                     // Synchonization of categories
-                    CategoryInfo c = new CategoryInfo();
-                    c.setID(product.getCategory().getId());
-                    c.setName(product.getCategory().getName());
-                    c.setImage(null);                        
+                    CategoryInfo c = new CategoryInfo(product.getCategory().getId(), product.getCategory().getName(), null);
                     dlintegration.syncCategory(c);
 
                     // Synchonization of products
@@ -118,7 +116,7 @@ public class ProductsSync implements ProcessAction {
                     p.setPriceBuy(product.getPurchasePrice());
                     p.setPriceSell(product.getListPrice());
                     p.setCategoryID(c.getID());
-                    p.setTaxCategoryInfo(tc);
+                    p.setTaxCategoryID(tc.getID());
                     p.setImage(ImageUtils.readImage(product.getImageUrl()));
                     dlintegration.syncProduct(p);  
                     

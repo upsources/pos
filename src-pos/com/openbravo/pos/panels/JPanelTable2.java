@@ -27,7 +27,7 @@ import javax.swing.ListCellRenderer;
 
 /**
  *
- * @author adrian
+ * @author adrianromero
  */
 public abstract class JPanelTable2 extends JPanelTable {
    
@@ -36,27 +36,27 @@ public abstract class JPanelTable2 extends JPanelTable {
     protected SaveProvider spr;   
     
     @Override
-    public ListProvider getListProvider() {
+    public final ListProvider getListProvider() {
         return lpr;
     }
 
     @Override
-    public SaveProvider getSaveProvider() {
+    public final SaveProvider getSaveProvider() {
         return spr;
     }
     
     @Override
-    public Vectorer getVectorer() {
+    public final Vectorer getVectorer() {
         return row.getVectorer();
     }
     
     @Override
-    public ComparatorCreator getComparatorCreator() {
+    public final ComparatorCreator getComparatorCreator() {
         return row.getComparatorCreator();
     }
     
     @Override
-    public ListCellRenderer getListCellRenderer() {
+    public final ListCellRenderer getListCellRenderer() {
         return row.getListCellRenderer();
     } 
 }

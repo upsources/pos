@@ -66,11 +66,9 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         }
     }
 
-    @Override
     public void refresh() {
     }
 
-    @Override
     public void writeValueEOF() {
         
         id = null;
@@ -89,7 +87,6 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         m_jSearch.setEnabled(false);
     }
 
-    @Override
     public void writeValueInsert() {
         
         id = null;
@@ -108,7 +105,6 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         m_jSearch.setEnabled(true);
     }
 
-    @Override
     public void writeValueEdit(Object value) {
         Object[] obj = (Object[]) value;
         
@@ -128,7 +124,6 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         m_jSearch.setEnabled(true);
     }
 
-    @Override
     public void writeValueDelete(Object value) {
         Object[] obj = (Object[]) value;
         
@@ -149,7 +144,6 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         m_jSearch.setEnabled(false);       
     }
 
-    @Override
     public Object createValue() throws BasicException {
         return new Object[] {
             id == null ? UUID.randomUUID().toString() : id, 
@@ -161,7 +155,6 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
         };
     }
 
-    @Override
     public Component getComponent() {
         return this;
     }

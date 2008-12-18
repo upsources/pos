@@ -23,6 +23,7 @@ import com.openbravo.data.gui.ListCellRendererBasic;
 import com.openbravo.data.loader.ComparatorCreator;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.DataWrite;
+import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.IRenderString;
 import com.openbravo.data.loader.PreparedSentence;
 import com.openbravo.data.loader.SentenceExec;
@@ -145,6 +146,18 @@ public class Row {
                 }            
             }
         );        
+    }
+
+    public Datas[] getDatas() {
+        Datas[] d = new Datas[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            d[i] = fields[i].getData();
+        }
+        return d;
+    }
+
+    public SerializerRead getSerializerRead() {
+        return new RowSerializerRead();
     }
     
     private class RowSerializerRead implements SerializerRead {

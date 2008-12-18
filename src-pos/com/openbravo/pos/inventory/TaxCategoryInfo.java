@@ -14,15 +14,10 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.inventory;
 
-import com.openbravo.data.loader.DataRead;
-import com.openbravo.data.loader.SerializableRead;
-import com.openbravo.data.loader.DataWrite;
-import com.openbravo.data.loader.SerializableWrite;
-import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.IKeyed;
 import java.io.Serializable;
 
@@ -31,18 +26,12 @@ import java.io.Serializable;
  * @author  adrianromero
  * @version 
  */
-public class TaxCategoryInfo implements SerializableRead, SerializableWrite, Serializable, IKeyed {
+public class TaxCategoryInfo implements Serializable, IKeyed {
     
     private static final long serialVersionUID = 8959679342805L;
     private String m_sID;
     private String m_sName;
-    
-    /** Creates new CategoryInfo */
-    public TaxCategoryInfo() {
-        m_sID = null;
-        m_sName = null;
-    }
-    
+       
     public TaxCategoryInfo(String sID, String sName) {
         m_sID = sID;
         m_sName = sName;      
@@ -50,15 +39,6 @@ public class TaxCategoryInfo implements SerializableRead, SerializableWrite, Ser
     
     public Object getKey() {
         return m_sID;
-    }
-    public void readValues(DataRead dr) throws BasicException {
-        m_sID = dr.getString(1);
-        m_sName = dr.getString(2);
-    }
-    
-    public void writeValues(DataWrite dp) throws BasicException {
-        dp.setString(1, m_sID);
-        dp.setString(2, m_sName);     
     }
     
     public void setID(String sID) {

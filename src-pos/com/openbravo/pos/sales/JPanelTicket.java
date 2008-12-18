@@ -304,7 +304,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             stateToZero();
             
             // Muestro el panel de tickets.
-            cl.show(this, "ticket");  
+            cl.show(this, "ticket");
             resetSouthComponent();
             
             // activo el tecleador...
@@ -349,7 +349,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void addTicketLine(ProductInfoExt oProduct, double dMul, double dPrice) {   
         
-        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryInfo(), m_oTicket.getCustomer());
+        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
         
         addTicketLine(new TicketLineInfo(oProduct, dMul, dPrice, tax, (java.util.Properties) (oProduct.getProperties().clone())));
     }
@@ -426,16 +426,16 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         oProduct.setReference(null);
         oProduct.setCode(null);
         oProduct.setName("");
-        oProduct.setTaxCategoryInfo((TaxCategoryInfo) taxcategoriesmodel.getSelectedItem());
+        oProduct.setTaxCategoryID(((TaxCategoryInfo) taxcategoriesmodel.getSelectedItem()).getID());
         
-        oProduct.setPriceSell(includeTaxes(oProduct.getTaxCategoryInfo(), getInputValue()));  
+        oProduct.setPriceSell(includeTaxes(oProduct.getTaxCategoryID(), getInputValue()));
         
         return oProduct;
     }
     
-    private double includeTaxes(TaxCategoryInfo tc, double dValue) {
+    private double includeTaxes(String tcid, double dValue) {
         if (m_jaddtax.isSelected()) {
-            TaxInfo tax = taxeslogic.getTaxInfo(tc, m_oTicket.getCustomer());
+            TaxInfo tax = taxeslogic.getTaxInfo(tcid, m_oTicket.getCustomer());
             double dTaxRate = tax == null ? 0.0 : tax.getRate();           
             return dValue / (1.0 + dTaxRate);      
         } else {
@@ -503,7 +503,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 // Se anade directamente una unidad con el precio y todo
                 if (m_jaddtax.isSelected()) {
                     // debemos quitarle los impuestos ya que el precio es con iva incluido...
-                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryInfo(), m_oTicket.getCustomer());                   
+                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
                     addTicketLine(oProduct, 1.0, dPriceSell / (1.0 + tax.getRate()));
                 } else {
                     addTicketLine(oProduct, 1.0, dPriceSell);
@@ -580,9 +580,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     oProduct.setCode(sCode);
                     oProduct.setName("Ticket " + sCode.substring(3, 7));
                     oProduct.setPriceSell(Double.parseDouble(sCode.substring(7, 12)) / 100);   
-                    oProduct.setTaxCategoryInfo((TaxCategoryInfo) taxcategoriesmodel.getSelectedItem());
+                    oProduct.setTaxCategoryID(((TaxCategoryInfo) taxcategoriesmodel.getSelectedItem()).getID());
                     // Se anade directamente una unidad con el precio y todo
-                    addTicketLine(oProduct, 1.0, includeTaxes(oProduct.getTaxCategoryInfo(), oProduct.getPriceSell()));
+                    addTicketLine(oProduct, 1.0, includeTaxes(oProduct.getTaxCategoryID(), oProduct.getPriceSell()));
                 } else if (sCode.length() == 13 && sCode.startsWith("210")) {
                     // barcode of a weigth product
                     incProductByCodePrice(sCode.substring(0, 7), Double.parseDouble(sCode.substring(7, 12)) / 100);
@@ -1184,6 +1184,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jDelete = new javax.swing.JButton();
         m_jList = new javax.swing.JButton();
         m_jEditLine = new javax.swing.JButton();
+        jEditAttributes = new javax.swing.JButton();
         m_jPanelCentral = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         m_jPanTotals = new javax.swing.JPanel();
@@ -1341,6 +1342,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
         jPanel2.add(m_jEditLine);
+
+        jEditAttributes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/colorize.png"))); // NOI18N
+        jEditAttributes.setEnabled(false);
+        jEditAttributes.setFocusPainted(false);
+        jEditAttributes.setFocusable(false);
+        jEditAttributes.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jEditAttributes.setRequestFocusEnabled(false);
+        jEditAttributes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jEditAttributesActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jEditAttributes);
 
         jPanel5.add(jPanel2, java.awt.BorderLayout.NORTH);
 
@@ -1652,11 +1666,26 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
 }//GEN-LAST:event_btnSplitActionPerformed
 
+    private void jEditAttributesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditAttributesActionPerformed
+
+//        int i = m_ticketlines.getSelectedIndex();
+//        if (i < 0){
+//            Toolkit.getDefaultToolkit().beep(); // no line selected
+//        } else {
+//            JProductAttEdit attedit = JProductAttEdit.getAttributesEditor(this);
+//
+//            attedit.editAttributes("");
+//            attedit.setVisible(true);
+//        }
+        
+}//GEN-LAST:event_jEditAttributesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnSplit;
     private javax.swing.JPanel catcontainer;
+    private javax.swing.JButton jEditAttributes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

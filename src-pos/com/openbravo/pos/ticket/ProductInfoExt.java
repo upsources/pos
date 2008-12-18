@@ -14,51 +14,155 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.ticket;
 
-import java.io.*;
 import java.awt.image.BufferedImage;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.ImageUtils;
-import com.openbravo.pos.inventory.TaxCategoryInfo;
+import com.openbravo.data.loader.SerializerRead;
+import com.openbravo.format.Formats;
 import java.util.Properties;
 
-public class ProductInfoExt extends ProductInfo {
-    
+/**
+ *
+ * @author adrianromero
+ *
+ */
+public class ProductInfoExt {
+
+    private static final long serialVersionUID = 7587696873036L;
+
+    protected String m_ID;
+    protected String m_sRef;
+    protected String m_sCode;
+    protected String m_sName;
+    protected boolean m_bCom;
+    protected boolean m_bScale;
+    protected String categoryid;
+    protected String taxcategoryid;
+    protected String attributesetid;
+    protected double m_dPriceBuy;
+    protected double m_dPriceSell;
     protected BufferedImage m_Image;
     protected Properties attributes;
     
     /** Creates new ProductInfo */
     public ProductInfoExt() {
-        super();
+        m_ID = null;
+        m_sRef = "0000";
+        m_sCode = "0000";
+        m_sName = null;
+        m_bCom = false;
+        m_bScale = false;
+        categoryid = null;
+        taxcategoryid = null;
+        attributesetid = null;
+        m_dPriceBuy = 0.0;
+        m_dPriceSell = 0.0;
         m_Image = null;
         attributes = new Properties();
     }
-    
-    @Override
-    public void readValues(DataRead dr) throws BasicException {
-        m_ID = dr.getString(1);
-        m_sRef = dr.getString(2);
-        m_sCode = dr.getString(3);
-        m_sName = dr.getString(4);
-        m_bCom = dr.getBoolean(5).booleanValue();
-        m_bScale = dr.getBoolean(6).booleanValue();
-        m_dPriceBuy = dr.getDouble(7).doubleValue();
-        m_dPriceSell = dr.getDouble(8).doubleValue();
-        taxcategory = new TaxCategoryInfo(dr.getString(9), dr.getString(10));      
-        m_sCategoryID = dr.getString(11);
-        m_Image = ImageUtils.readImage(dr.getBytes(12));
-        attributes = new Properties();
-        try {
-            byte[] img = dr.getBytes(13);
-            if (img != null) {
-                attributes.loadFromXML(new ByteArrayInputStream(img));
-            }
-        } catch (IOException e) {
-        }        
+
+    public final String getID() {
+        return m_ID;
+    }
+
+    public final void setID(String id) {
+        m_ID = id;
+    }
+
+    public final String getReference() {
+        return m_sRef;
+    }
+
+    public final void setReference(String sRef) {
+        m_sRef = sRef;
+    }
+
+    public final String getCode() {
+        return m_sCode;
+    }
+
+    public final void setCode(String sCode) {
+        m_sCode = sCode;
+    }
+
+    public final String getName() {
+        return m_sName;
+    }
+
+    public final void setName(String sName) {
+        m_sName = sName;
+    }
+
+    public final boolean isCom() {
+        return m_bCom;
+    }
+
+    public final void setCom(boolean bValue) {
+        m_bCom = bValue;
+    }
+
+    public final boolean isScale() {
+        return m_bScale;
+    }
+
+    public final void setScale(boolean bValue) {
+        m_bScale = bValue;
+    }
+
+    public final String getCategoryID() {
+        return categoryid;
+    }
+
+    public final void setCategoryID(String sCategoryID) {
+        categoryid = sCategoryID;
+    }
+
+    public final String getTaxCategoryID() {
+        return taxcategoryid;
+    }
+
+    public final void setTaxCategoryID(String value) {
+        taxcategoryid = value;
+    }
+
+    public final String getAttributeSetID() {
+        return attributesetid;
+    }
+    public final void setAttributeSetID(String value) {
+        attributesetid = value;
+    }
+
+    public final double getPriceBuy() {
+        return m_dPriceBuy;
+    }
+
+    public final void setPriceBuy(double dPrice) {
+        m_dPriceBuy = dPrice;
+    }
+
+    public final double getPriceSell() {
+        return m_dPriceSell;
+    }
+
+    public final void setPriceSell(double dPrice) {
+        m_dPriceSell = dPrice;
+    }
+
+    public final double getPriceSellTax(TaxInfo tax) {
+        return m_dPriceSell * (1.0 + tax.getRate());
+    }
+
+    public String printPriceSell() {
+        return Formats.CURRENCY.formatValue(new Double(getPriceSell()));
+    }
+
+    public String printPriceSellTax(TaxInfo tax) {
+        return Formats.CURRENCY.formatValue(new Double(getPriceSellTax(tax)));
     }
     
     public BufferedImage getImage() {
@@ -79,5 +183,30 @@ public class ProductInfoExt extends ProductInfo {
     }
     public Properties getProperties() {
         return attributes;
+    }
+
+    public static SerializerRead getSerializerRead() {
+        return new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
+            ProductInfoExt product = new ProductInfoExt();
+            product.m_ID = dr.getString(1);
+            product.m_sRef = dr.getString(2);
+            product.m_sCode = dr.getString(3);
+            product.m_sName = dr.getString(4);
+            product.m_bCom = dr.getBoolean(5).booleanValue();
+            product.m_bScale = dr.getBoolean(6).booleanValue();
+            product.m_dPriceBuy = dr.getDouble(7).doubleValue();
+            product.m_dPriceSell = dr.getDouble(8).doubleValue();
+            product.taxcategoryid = dr.getString(9);
+            product.categoryid = dr.getString(10);
+            product.attributesetid = dr.getString(11);
+            product.m_Image = ImageUtils.readImage(dr.getBytes(12));
+            product.attributes = ImageUtils.readProperties(dr.getBytes(13));
+            return product;
+        }};
+    }
+
+    @Override
+    public final String toString() {
+        return m_sRef + " - " + m_sName;
     }
 }

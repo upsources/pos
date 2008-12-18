@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.ticket;
 
@@ -24,6 +24,11 @@ import java.awt.*;
 import com.openbravo.pos.util.ThumbNailBuilder;
 import com.openbravo.format.Formats;
 
+/**
+ *
+ * @author adrianromero
+ *
+ */
 public class ProductRenderer extends DefaultListCellRenderer {
                 
     ThumbNailBuilder tnbprod;
@@ -39,7 +44,7 @@ public class ProductRenderer extends DefaultListCellRenderer {
         
         ProductInfoExt prod = (ProductInfoExt) value;
         if (prod != null) {
-            setText("<html>" + prod.getReference() + " - " + prod.getName() + "<br>&nbsp;&nbsp;&nbsp;&nbsp;" + prod.getTaxCategoryName() + " " + Formats.CURRENCY.formatValue(new Double(prod.getPriceSell())));
+            setText("<html>" + prod.getReference() + " - " + prod.getName() + "<br>&nbsp;&nbsp;&nbsp;&nbsp;" + Formats.CURRENCY.formatValue(new Double(prod.getPriceSell())));
             Image img = tnbprod.getThumbNail(prod.getImage());
             setIcon(img == null ? null :new ImageIcon(img));
         }

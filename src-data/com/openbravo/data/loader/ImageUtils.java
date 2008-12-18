@@ -24,6 +24,7 @@ import java.awt.image.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Properties;
 
 public class ImageUtils {
     
@@ -163,6 +164,17 @@ public class ImageUtils {
                 return null;
             }
         }
+    }
+
+    public static Properties readProperties(byte b[]) {
+        Properties prop = new Properties();
+        try {
+            if (b != null) {
+                prop.loadFromXML(new ByteArrayInputStream(b));
+            }
+        } catch (IOException e) {
+        }
+        return prop;
     }
        
     public static String bytes2hex(byte[] binput) {
