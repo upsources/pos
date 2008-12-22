@@ -146,7 +146,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         
         try {
             TicketInfo ticket = (iTicketid==-1) 
-                ? m_dlSales.loadTicket( m_jTicketEditor.getValueInteger(), iTicketid)
+                ? m_dlSales.loadTicket(iTickettype,  m_jTicketEditor.getValueInteger())
                 : m_dlSales.loadTicket(iTickettype, iTicketid) ;
 
             if (ticket == null) {
@@ -350,30 +350,11 @@ public class JTicketsBagTicket extends JTicketsBag {
         buttonGroup1.add(jrbSales);
         jrbSales.setSelected(true);
         jrbSales.setText(AppLocal.getIntString("label.sales")); // NOI18N
+        jPanel1.add(jrbSales);
 
         buttonGroup1.add(jrbRefunds);
         jrbRefunds.setText(AppLocal.getIntString("label.refunds")); // NOI18N
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jrbSales)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 54, Short.MAX_VALUE)
-                .add(jrbRefunds)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(20, 20, 20)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jrbRefunds)
-                    .add(jrbSales))
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
+        jPanel1.add(jrbRefunds);
 
         jPanel3.add(jPanel1, java.awt.BorderLayout.CENTER);
 
