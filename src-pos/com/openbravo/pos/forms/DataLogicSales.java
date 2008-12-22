@@ -40,6 +40,7 @@ import com.openbravo.pos.inventory.TaxCategoryInfo;
 import com.openbravo.pos.mant.FloorsInfo;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
+import com.openbravo.pos.ticket.FindTicketsInfo;
 import com.openbravo.pos.ticket.TicketTaxInfo;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -178,7 +179,30 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
     }
-
+    
+    //Tickets and Receipt list
+    public SentenceList getTicketsList() {
+         return new StaticSentence(s
+            , new QBFBuilder(
+            "SELECT T.TICKETID, T.TICKETTYPE, R.DATENEW, P.NAME, C.NAME, PM.PAYMENT, PM.TOTAL "+ 
+            "FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PAYMENTS PM ON R.ID = PM.RECEIPT LEFT OUTER JOIN CUSTOMERS C ON C.ID = T.CUSTOMER LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID " +
+            "WHERE ?(QBF_FILTER) ORDER BY R.DATENEW, T.TICKETID", new String[] {"T.TICKETID", "T.TICKETTYPE", "PM.TOTAL", "R.DATENEW", "R.DATENEW", "P.NAME"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.INT, Datas.OBJECT, Datas.INT, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , new SerializerReadClass(FindTicketsInfo.class));
+    }
+    
+    //User list
+    public final SentenceList getUserList() {
+        return new StaticSentence(s
+            , "SELECT ID, NAME FROM PEOPLE ORDER BY NAME"
+            , null
+            , new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
+                return new TaxCategoryInfo(
+                        dr.getString(1), 
+                        dr.getString(2));
+            }});
+    }
+   
     // Listados para combo
     public final SentenceList getTaxList() {
         return new StaticSentence(s
