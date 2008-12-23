@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,10 +14,11 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.printer;
 
+import com.openbravo.data.loader.LocalRes;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import java.applet.*;
@@ -82,11 +83,11 @@ public class TicketParser extends DefaultHandler {
             m_sp.parse(new InputSource(in), this);
                         
         } catch (ParserConfigurationException ePC) {
-            throw new TicketPrinterException("Error en el analizador XML. Consulte con su administrador", ePC);
+            throw new TicketPrinterException(LocalRes.getIntString("exception.parserconfig") , ePC);
         } catch (SAXException eSAX) {
-            throw new TicketPrinterException("El archivo no es un documento XML valido. Error de analisis.", eSAX);
+            throw new TicketPrinterException(LocalRes.getIntString("exception.xmlfile") , eSAX);
         } catch (IOException eIO) {
-            throw new TicketPrinterException("Error al leer el archivo. Consulte con su administrador.", eIO);
+            throw new TicketPrinterException(LocalRes.getIntString("exception.iofile") , eIO);
         }
     }    
     

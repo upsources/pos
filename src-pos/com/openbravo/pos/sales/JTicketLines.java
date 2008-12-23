@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.data.loader.LocalRes;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -68,11 +69,11 @@ public class JTicketLines extends javax.swing.JPanel {
                 acolumns = columnshandler.getColumns();
 
             } catch (ParserConfigurationException ePC) {
-                System.out.println("Error en el analizador XML. Consulte con su administrador");
+                System.out.println(LocalRes.getIntString("exception.parserconfig"));
             } catch (SAXException eSAX) {
-                System.out.println("El archivo no es un documento XML valido. Error de analisis.");
+                System.out.println(LocalRes.getIntString("exception.xmlfile"));
             } catch (IOException eIO) {
-                System.out.println("Error al leer el archivo. Consulte con su administrador.");
+                System.out.println(LocalRes.getIntString("exception.iofile"));
             }
         }
                

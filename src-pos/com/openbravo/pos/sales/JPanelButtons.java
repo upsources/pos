@@ -14,10 +14,11 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.data.loader.LocalRes;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -75,11 +76,11 @@ public class JPanelButtons extends javax.swing.JPanel {
                 m_sp.parse(new InputSource(new StringReader(sConfigRes)), new ConfigurationHandler());
 
             } catch (ParserConfigurationException ePC) {
-                System.out.println("Error en el analizador XML. Consulte con su administrador");
+                System.out.println(LocalRes.getIntString("exception.parserconfig"));
             } catch (SAXException eSAX) {
-                System.out.println("El archivo no es un documento XML valido. Error de analisis.");
+                System.out.println(LocalRes.getIntString("exception.xmlfile"));
             } catch (IOException eIO) {
-                System.out.println("Error al leer el archivo. Consulte con su administrador.");
+                System.out.println(LocalRes.getIntString("exception.iofile"));
             }
         }     
     
