@@ -235,8 +235,14 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
             afilter[9] = null;
         } else {
             int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH) + 1;
-            int day = cal.get(Calendar.DAY_OF_MONTH);
+            
+            String month = (cal.get(Calendar.MONTH) + 1 < 10) 
+                ? "0"+(cal.get(Calendar.MONTH) + 1)
+                : Integer.toString(cal.get(Calendar.MONTH) + 1);
+            
+            String day = (cal.get(Calendar.DAY_OF_MONTH) < 10) 
+                ? "0"+cal.get(Calendar.DAY_OF_MONTH)
+                : Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
             
             if (jcboTimeFrame.getSelectedItem() == LocalRes.getIntString("combo.today")) {
                 afilter[6] = QBFCompareEnum.COMP_RE;
