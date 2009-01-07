@@ -244,7 +244,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_CategoryModel.setSelectedKey(myprod[8]);
         taxcatmodel.setSelectedKey(myprod[9]);
         attmodel.setSelectedKey(myprod[10]);
-        m_jImage.setImage((BufferedImage) myprod[1]);
+        m_jImage.setImage((BufferedImage) myprod[11]);
         m_jstockcost.setText(Formats.CURRENCY.formatValue(myprod[12]));
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[13]));
         m_jInCatalog.setSelected(((Boolean)myprod[14]).booleanValue());
