@@ -580,10 +580,10 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {
                 if (new PreparedSentence(s
-                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS + ?) WHERE LOCATION = ? AND PRODUCT = ?"
+                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS + ?) WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID = NULL"
                         , new SerializerWriteBasicExt(stockdiaryDatas, new int[] {5, 3, 4})).exec(params) == 0) {
                     new PreparedSentence(s
-                        , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, UNITS) VALUES (?, ?, ?)"
+                        , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, ATTRIBUTESETINSTANCE_ID, UNITS) VALUES (?, ?, NULL, ?)"
                         , new SerializerWriteBasicExt(stockdiaryDatas, new int[] {3, 4, 5})).exec(params);
                 }
                 return new PreparedSentence(s
@@ -597,10 +597,10 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {
                 if (new PreparedSentence(s
-                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS - ?) WHERE LOCATION = ? AND PRODUCT = ?"
+                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS - ?) WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID = NULL"
                         , new SerializerWriteBasicExt(stockdiaryDatas, new int[] {5, 3, 4})).exec(params) == 0) {
                     new PreparedSentence(s
-                        , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, UNITS) VALUES (?, ?, -(?))"
+                        , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, ATTRIBUTESETINSTANCE_ID, UNITS) VALUES (?, ?, NULL, -(?))"
                         , new SerializerWriteBasicExt(stockdiaryDatas, new int[] {3, 4, 5})).exec(params);
                 }
                 return new PreparedSentence(s
@@ -642,32 +642,6 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 , SerializerReadDouble.INSTANCE);
         Double d = (Double) p.find(new Object[]{id, warehouse});
         return d == null ? 0.0 : d.doubleValue();
-    }
-
-    public final SentenceList getProductStock() {
-        return new PreparedSentence (s
-                , "SELECT L.ID, L.NAME, ?, COALESCE(S.UNITS, 0.0), S.STOCKSECURITY, S.STOCKMAXIMUM " +
-                "FROM LOCATIONS L LEFT OUTER JOIN (" +
-                "SELECT PRODUCT, LOCATION, STOCKSECURITY, STOCKMAXIMUM, UNITS FROM STOCKCURRENT WHERE PRODUCT = ?) S " +
-                "ON L.ID = S.LOCATION"
-                , new SerializerWriteBasicExt(productsRow.getDatas(), new int[]{0, 0})
-                , new SerializerReadBasic(stockdatas));
-    }
-
-    public final SentenceExec getStockUpdate() {
-        return new SentenceExecTransaction(s) {
-            public int execInTransaction(Object params) throws BasicException {
-                if (new PreparedSentence(s
-                        , "UPDATE STOCKCURRENT SET STOCKSECURITY = ?, STOCKMAXIMUM = ? WHERE LOCATION = ? AND PRODUCT = ?"
-                        , new SerializerWriteBasicExt(stockdatas, new int[] {4, 5, 0, 2})).exec(params) == 0) {
-                    return new PreparedSentence(s
-                        , "INSERT INTO STOCKCURRENT(LOCATION, PRODUCT, UNITS, STOCKSECURITY, STOCKMAXIMUM) VALUES (?, ?, 0.0, ?, ?)"
-                        , new SerializerWriteBasicExt(stockdatas, new int[] {0, 2, 4, 5})).exec(params);
-                } else {
-                    return 1;
-                }
-            }
-        };
     }
 
     public final SentenceExec getCatalogCategoryAdd() {

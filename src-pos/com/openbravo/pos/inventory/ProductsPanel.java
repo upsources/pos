@@ -21,8 +21,6 @@ package com.openbravo.pos.inventory;
 import java.awt.Component;
 import javax.swing.JButton;
 import com.openbravo.basic.BasicException;
-import com.openbravo.data.loader.SentenceList;
-import com.openbravo.data.user.BrowsableData;
 import com.openbravo.data.user.EditorListener;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.data.user.ListProviderCreator;
@@ -39,9 +37,6 @@ import com.openbravo.pos.ticket.ProductFilter;
  *
  */
 public class ProductsPanel extends JPanelTable2 implements EditorListener {
-    
-    private SentenceList liststock;
-    private BrowsableData m_bdstock;
 
     private ProductsEditor jeditor;
     private ProductFilter jproductfilter;    
@@ -70,14 +65,6 @@ public class ProductsPanel extends JPanelTable2 implements EditorListener {
         
         // el panel del editor
         jeditor = new ProductsEditor(m_dlSales, dirty);       
-
-        liststock = m_dlSales.getProductStock();
-
-        // El editable data del stock
-        m_bdstock = new BrowsableData(null, new SaveProvider(
-                m_dlSales.getStockUpdate(),
-                null,
-                null));    
     }
     
     public EditorRecord getEditor() {
@@ -123,12 +110,5 @@ public class ProductsPanel extends JPanelTable2 implements EditorListener {
     } 
     
     public void updateValue(Object value) {
-        
-        // recargo 
-        try {
-            m_bdstock.loadList(liststock.list(value));
-        } catch (BasicException e) {
-            m_bdstock.loadList(null);
-        }
     }    
 }
