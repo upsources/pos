@@ -87,7 +87,9 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jTicketEditor.reset();
         m_jTicketEditor.activate();
         
-        m_panelticketedit.setActiveTicket(null, null); 
+        m_panelticketedit.setActiveTicket(null, null);
+
+        jrbSales.setSelected(true);
         
         m_jEdit.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.EditTicket"));
         m_jRefund.setVisible(m_App.getAppUserView().getUser().hasPermission("sales.RefundTicket"));
@@ -216,10 +218,10 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jOptions = new javax.swing.JPanel();
         m_jButtons = new javax.swing.JPanel();
         m_jTicketId = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         m_jEdit = new javax.swing.JButton();
         m_jRefund = new javax.swing.JButton();
         m_jPrint = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         m_jPanelTicket = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -245,6 +247,19 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 25));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
+        jButton2.setText(AppLocal.getIntString("label.search")); // NOI18N
+        jButton2.setFocusPainted(false);
+        jButton2.setFocusable(false);
+        jButton2.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        jButton2.setRequestFocusEnabled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        m_jButtons.add(jButton2);
 
         m_jEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/edit.png"))); // NOI18N
         m_jEdit.setText(AppLocal.getIntString("button.edit")); // NOI18N
@@ -284,16 +299,6 @@ public class JTicketsBagTicket extends JTicketsBag {
             }
         });
         m_jButtons.add(m_jPrint);
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search.png"))); // NOI18N
-        jButton2.setText(AppLocal.getIntString("label.search")); // NOI18N
-        jButton2.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        m_jButtons.add(jButton2);
 
         m_jOptions.add(m_jButtons, java.awt.BorderLayout.WEST);
 
@@ -348,12 +353,17 @@ public class JTicketsBagTicket extends JTicketsBag {
         jPanel3.add(jPanel4, java.awt.BorderLayout.NORTH);
 
         buttonGroup1.add(jrbSales);
-        jrbSales.setSelected(true);
         jrbSales.setText(AppLocal.getIntString("label.sales")); // NOI18N
+        jrbSales.setFocusPainted(false);
+        jrbSales.setFocusable(false);
+        jrbSales.setRequestFocusEnabled(false);
         jPanel1.add(jrbSales);
 
         buttonGroup1.add(jrbRefunds);
         jrbRefunds.setText(AppLocal.getIntString("label.refunds")); // NOI18N
+        jrbRefunds.setFocusPainted(false);
+        jrbRefunds.setFocusable(false);
+        jrbRefunds.setRequestFocusEnabled(false);
         jPanel1.add(jrbRefunds);
 
         jPanel3.add(jPanel1, java.awt.BorderLayout.CENTER);
