@@ -133,18 +133,20 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , SerializerWriteString.INSTANCE
             , CategoryInfo.getSerializerRead()).list(category);
     }
-    public final List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
+    public List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P, CATEGORIES C, PRODUCTS_CAT O WHERE P.CATEGORY = C.ID AND P.ID = O.PRODUCT AND P.CATEGORY = ?" +
-              "ORDER BY C.NAME, O.CATORDER, P.REFERENCE"
+              "FROM PRODUCTS P, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? " +
+              "AND P.ISCOM = FALSE " +
+              "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE
             , ProductInfoExt.getSerializerRead()).list(category);
     }
-    public final List<ProductInfoExt> getProductComments(String id) throws BasicException {
+    public List<ProductInfoExt> getProductComments(String id) throws BasicException {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P, PRODUCTS_CAT O, PRODUCTS_COM M WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND M.PRODUCT = ? " +
+              "AND P.ISCOM = TRUE " +
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE
             , ProductInfoExt.getSerializerRead()).list(id);

@@ -29,6 +29,7 @@ import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.ticket.ProductInfoExt;
+import java.util.List;
 
 /**
  *
@@ -89,8 +90,30 @@ public class DataLogicSalesOracle extends DataLogicSales {
          return new StaticSentence(s
             , new QBFBuilder(
                "SELECT ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, TAXCAT, CATEGORY, ATTRIBUTESET_ID, IMAGE, ATTRIBUTES " +
-               "FROM PRODUCTS WHERE ISCOM = 0 AND ?(QBF_FILTER) ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
+               "FROM PRODUCTS WHERE ISCOM = 1 AND ?(QBF_FILTER) ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
+    }
+
+    @Override
+    public List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
+        return new PreparedSentence(s
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? " +
+              "AND P.ISCOM = 0 " +
+              "ORDER BY O.CATORDER, P.NAME"
+            , SerializerWriteString.INSTANCE
+            , ProductInfoExt.getSerializerRead()).list(category);
+    }
+
+    @Override
+    public List<ProductInfoExt> getProductComments(String id) throws BasicException {
+        return new PreparedSentence(s
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
+              "FROM PRODUCTS P, PRODUCTS_CAT O, PRODUCTS_COM M WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND M.PRODUCT = ? " +
+              "AND P.ISCOM = 1 " +
+              "ORDER BY O.CATORDER, P.NAME"
+            , SerializerWriteString.INSTANCE
+            , ProductInfoExt.getSerializerRead()).list(id);
     }
 }

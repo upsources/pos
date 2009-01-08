@@ -58,8 +58,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     private ThumbNailBuilder tnbcat;
     
     private CategoryInfo showingcategory = null;
-    
-    private ArrayList<CategoryInfo> listOfCategories;
         
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales) {
@@ -133,7 +131,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         m_jUp.setEnabled(value);
         m_jDown.setEnabled(value);
         m_lblIndicator.setEnabled(value);
-        m_btnBack.setEnabled(value);
+        m_btnBack1.setEnabled(value);
         m_jProducts.setEnabled(value); 
         synchronized (m_jProducts.getTreeLock()) {
             int compCount = m_jProducts.getComponentCount();
@@ -173,7 +171,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
             }
             ((ActionListener) l[i]).actionPerformed(e);	       
         }
-       this.checkForAuxilar(prod);
     }   
     
     private void selectCategoryPanel(String catid) {
@@ -249,65 +246,14 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
             selectCategoryPanel(cat.getID());
         }
         showingcategory = null;
-        if(listOfCategories != null)
-            this.listOfCategories.clear();
     }
     
     private void showSubcategoryPanel(CategoryInfo category) {
-
-        if(listOfCategories == null)
-            listOfCategories = new ArrayList<CategoryInfo>();
-
         selectIndicatorPanel(new ImageIcon(tnbbutton.getThumbNail(category.getImage())), category.getName());
         selectCategoryPanel(category.getID());
-
-        if((listOfCategories.size() - 1) > 0){
-            if(listOfCategories.get(listOfCategories.size() - 1) != category)
-                listOfCategories.add(category);
-        } else
-            listOfCategories.add(category);
-    
         showingcategory = category;
     }
-
-    //it checks if a product is an auxliar and keeps track of staying in a category
-    private void checkForAuxilar(ProductInfoExt prod){
-         if(prod.isCom())
-            if((listOfCategories != null) && (listOfCategories.size() > 0) && (listOfCategories.get(listOfCategories.size() - 1) != listOfCategories.get(listOfCategories.size() - 2)))
-                this.listOfCategories.add(listOfCategories.get(listOfCategories.size() - 1));
-    }
-
-    /**
-     * A method that shows a category a level higher in a categories tree.
-     *
-     */
-    private void showParentCategory(){
-
-        int categoryOneLevelHigher = 0;
-        //gets the index of the current category from the arraylist minus one
-        if(listOfCategories != null){
-            categoryOneLevelHigher = (listOfCategories.size() - 2);
-        
-            //checks if a root category
-            if(categoryOneLevelHigher < 0){
-                this.showRootCategoriesPanel();
-            }
-            //shows the category a level higher
-            else{
-                selectIndicatorPanel(new ImageIcon(tnbbutton.getThumbNail(listOfCategories.get(categoryOneLevelHigher).getImage())), listOfCategories.get(categoryOneLevelHigher).getName());
-                selectCategoryPanel(listOfCategories.get(categoryOneLevelHigher).getID());
-
-                //removes the category that has been shown
-                //because it will not be needed any more
-                listOfCategories.remove(listOfCategories.size() - 1);
-            }
-        }
-        else{
-            this.showRootCategoriesPanel();
-        }
-       
-    }
-    
+   
     private void showProductPanel(String id) {
         
         ProductInfoExt product = m_productsset.get(id);
@@ -389,8 +335,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         }
         public void actionPerformed(ActionEvent e) {
             showSubcategoryPanel(category);
-
-           // parentCategory.add(category);
         }
     }
     
@@ -440,7 +384,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         m_lblIndicator = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        m_btnBack = new javax.swing.JButton();
         m_btnBack1 = new javax.swing.JButton();
         m_jProducts = new javax.swing.JPanel();
 
@@ -515,18 +458,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         jPanel5.setLayout(new java.awt.GridLayout(0, 1, 0, 5));
 
-        m_btnBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/3uparrow.png"))); // NOI18N
-        m_btnBack.setFocusPainted(false);
-        m_btnBack.setFocusable(false);
-        m_btnBack.setMargin(new java.awt.Insets(8, 14, 8, 14));
-        m_btnBack.setRequestFocusEnabled(false);
-        m_btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_btnBackActionPerformed(evt);
-            }
-        });
-        jPanel5.add(m_btnBack);
-
         m_btnBack1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/3uparrow2.png"))); // NOI18N
         m_btnBack1.setFocusPainted(false);
         m_btnBack1.setFocusable(false);
@@ -550,13 +481,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
         m_jProducts.setLayout(new java.awt.CardLayout());
         add(m_jProducts, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void m_btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_btnBackActionPerformed
-        
-        this.showParentCategory();
-       // showRootCategoriesPanel();
-        
-    }//GEN-LAST:event_m_btnBackActionPerformed
 
     private void m_jDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDownActionPerformed
 
@@ -610,7 +534,8 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
     private void m_btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_btnBack1ActionPerformed
 
-        this.showRootCategoriesPanel();
+        showRootCategoriesPanel();
+
     }//GEN-LAST:event_m_btnBack1ActionPerformed
 
     
@@ -621,7 +546,6 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JButton m_btnBack;
     private javax.swing.JButton m_btnBack1;
     private javax.swing.JPanel m_jCategories;
     private javax.swing.JButton m_jDown;
