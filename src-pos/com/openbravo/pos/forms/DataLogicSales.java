@@ -580,7 +580,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {
                 if (new PreparedSentence(s
-                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS + ?) WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID = NULL"
+                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS + ?) WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID IS NULL"
                         , new SerializerWriteBasicExt(stockdiaryDatas, new int[] {5, 3, 4})).exec(params) == 0) {
                     new PreparedSentence(s
                         , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, ATTRIBUTESETINSTANCE_ID, UNITS) VALUES (?, ?, NULL, ?)"
@@ -597,7 +597,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new SentenceExecTransaction(s) {
             public int execInTransaction(Object params) throws BasicException {
                 if (new PreparedSentence(s
-                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS - ?) WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID = NULL"
+                        , "UPDATE STOCKCURRENT SET UNITS = (UNITS - ?) WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID IS NULL"
                         , new SerializerWriteBasicExt(stockdiaryDatas, new int[] {5, 3, 4})).exec(params) == 0) {
                     new PreparedSentence(s
                         , "INSERT INTO STOCKCURRENT (LOCATION, PRODUCT, ATTRIBUTESETINSTANCE_ID, UNITS) VALUES (?, ?, NULL, -(?))"
@@ -636,11 +636,11 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         };
     }
 
-    public final double findProductStock(String id, String warehouse) throws BasicException {
-        PreparedSentence p = new PreparedSentence(s, "SELECT UNITS FROM STOCKCURRENT WHERE PRODUCT=? AND LOCATION=?"
-                , new SerializerWriteBasic(new Datas[]{ Datas.STRING, Datas.STRING})
+    public final double findProductStock(String warehouse, String id) throws BasicException {
+        PreparedSentence p = new PreparedSentence(s, "SELECT UNITS FROM STOCKCURRENT WHERE LOCATION = ? AND PRODUCT = ? AND ATTRIBUTESETINSTANCE_ID IS NULL"
+                , new SerializerWriteBasic(Datas.STRING, Datas.STRING)
                 , SerializerReadDouble.INSTANCE);
-        Double d = (Double) p.find(new Object[]{id, warehouse});
+        Double d = (Double) p.find(warehouse, id);
         return d == null ? 0.0 : d.doubleValue();
     }
 

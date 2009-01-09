@@ -32,6 +32,7 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
     public final int exec() throws BasicException {
         return exec(null);
     }
+
     public final int exec(Object params) throws BasicException {        
         DataResultSet SRS = openExec(params);
         if (SRS == null) {
@@ -70,6 +71,11 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
     public final Object find() throws BasicException {
         return find((SerializableWrite) null);
     }
+
+    public final Object find(Object... params) throws BasicException {
+        return find((Object) params);
+    }
+
     public final Object find(Object params) throws BasicException {
     // En caso de error o lanza un pepinazo en forma de SQLException          
         DataResultSet SRS = openExec(params);

@@ -125,7 +125,7 @@ public class ProductsSync implements ProcessAction {
                         
                         ProductPlus productplus = (ProductPlus) product;
                         
-                        double diff = productplus.getQtyonhand() - dlsales.findProductStock(p.getID(), warehouse);
+                        double diff = productplus.getQtyonhand() - dlsales.findProductStock(warehouse, p.getID());
                         
                         Object[] diary = new Object[7];
                         diary[0] = UUID.randomUUID().toString();
