@@ -1014,6 +1014,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private Object evalScript(ScriptObject scr, String resource, ScriptArg... args) {
         
+        // resource here is guaratied to be not null
          try {
             scr.setSelectedIndex(m_ticketlines.getSelectedIndex());
             return scr.evalScript(dlSystem.getResourceAsXML(resource), args);                
@@ -1059,7 +1060,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
    
     private Object executeEvent(TicketInfo ticket, Object ticketext, String eventkey, ScriptArg ... args) {
         
-        String resource = dlSystem.getResourceAsXML(m_jbtnconfig.getEvent(eventkey));
+        String resource = m_jbtnconfig.getEvent(eventkey);
         if (resource == null) {
             return null;
         } else {
@@ -1672,10 +1673,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 //        if (i < 0){
 //            Toolkit.getDefaultToolkit().beep(); // no line selected
 //        } else {
-//            JProductAttEdit attedit = JProductAttEdit.getAttributesEditor(this);
-//
-//            attedit.editAttributes("");
-//            attedit.setVisible(true);
+//            try {
+//                TicketLineInfo line = m_oTicket.getLine(i);
+//                JProductAttEdit attedit = JProductAttEdit.getAttributesEditor(this, m_App.getSession());
+//                attedit.editAttributes(line.getProductAttSetId(), null);
+//                attedit.setVisible(true);
+//            } catch (BasicException ex) {
+//                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
+//                msg.show(this);
+//            }
 //        }
         
 }//GEN-LAST:event_jEditAttributesActionPerformed
