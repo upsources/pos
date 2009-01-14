@@ -37,6 +37,7 @@ import javax.print.PrintService;
  * class PrintableTicket @see com.openbravo.pos.printer.printer.PrintableTicket
  *  
  * @author jaroslawwozniak
+ * @since 2.30
  */
 public class DevicePrinterPrinter implements DevicePrinter {
 
@@ -46,10 +47,13 @@ public class DevicePrinterPrinter implements DevicePrinter {
     private BasicTicketForPrinter m_ticketcurrent;
     /*system printer*/
     private PrintService printservice;
+    //book
     private PrinterBook printerBook;
     private boolean receiptPrinter;
 
-    /** Creates a new instance of DevicePrinterPrinter
+    /** 
+     * Creates a new instance of DevicePrinterPrinter
+     * 
      * @param printername - name of printer that will be called in the system
      * @param isReceiptPrinter - string with boolean values if the printer is a receipt
      */
@@ -61,60 +65,117 @@ public class DevicePrinterPrinter implements DevicePrinter {
         printerBook = new PrinterBook(this);
     }
 
+    /**
+     * Method that returns a boolean value if a printer is a recipt printert or not
+     *
+     * @return receiptPrinter a boolean value if a printer is a receipt printer
+     */
     public boolean isReceiptPrinter(){
         return receiptPrinter;
     }
 
+    /**
+     * Getter that returns the name of a printer
+     *
+     * @return m_sName a name of a printer
+     */
     @Override
     public String getPrinterName() {
         return m_sName;
     }
 
+    /**
+     * Getter that returns the description of a printer
+     *
+     * @return decription of a printer
+     */
     @Override
     public String getPrinterDescription() {
         return null;
     }
 
+    /**
+     * Getter that returns the printer's component
+     *
+     * @return printer's component
+     */
     @Override
     public JComponent getPrinterComponent() {
         return null;
     }
 
+    /**
+     * Method that sets the current ticket as a null
+     */
     @Override
     public void reset() {
         m_ticketcurrent = null;
     }
 
+    /**
+     * Method that is responsible for start a new ticket
+     */
     @Override
     public void beginReceipt() {
         m_ticketcurrent = new BasicTicketForPrinter();
     }
 
+    /**
+     * Method that is responsible for printing an image
+     *
+     * @param image a buffered image object
+     */
     @Override
     public void printImage(BufferedImage image) {
         m_ticketcurrent.printImage(image, isReceiptPrinter());
     }
 
+    /**
+     * Method that is responsible for printing a barcode
+     *
+     * @param type a type of a barcode
+     * @param position coordinates of a barcode on a receipt
+     * @param code the code of a productmiale
+     */
     @Override
     public void printBarCode(String type, String position, String code) {
         m_ticketcurrent.printBarCode(type, position, code, isReceiptPrinter());
     }
 
+    /**
+     * Method that is responsible for starting a new line on a receipt
+     *
+     * @param iTextSize a size of text in the line
+     */
     @Override
     public void beginLine(int iTextSize) {
         m_ticketcurrent.beginLine(iTextSize);
     }
 
+    /**
+     * Method that is responsible for printing text
+     *
+     * @param iStyle style of text
+     * @param sText text to print
+     */
     @Override
     public void printText(int iStyle, String sText) {
         m_ticketcurrent.printText(iStyle, sText);
     }
 
+    /**
+     * Method that is responsible for ending a line
+     */
     @Override
     public void endLine() {
         m_ticketcurrent.endLine();
     }
 
+    /**
+     * Method that is responsible for ending and printing a ticket<br>
+     * It manages to get a printerJob, set the name of the job, get a Book object<br>
+     * and print the receipt
+     */
     @Override
     public void endReceipt() {
 
@@ -140,6 +201,9 @@ public class DevicePrinterPrinter implements DevicePrinter {
         m_ticketcurrent = null;
     }
 
+    /**
+     * Method that is responsible for opening a drawer
+     */
     @Override
     public void openDrawer() {
         // Una simulacion

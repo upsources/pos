@@ -30,6 +30,7 @@ import java.awt.print.PrinterException;
  * for printing a ticket.
  * 
  * @author jaroslawwozniak
+ * @since 2.30
  */
 public class PrintableTicket implements Printable {
 
@@ -41,9 +42,12 @@ public class PrintableTicket implements Printable {
     private BasicTicketForPrinter basict;
     private int start,  end;
 
-    /** Creates a new instance of PrintableTicket
-     * 
-     * @param t - BasicTicketForPrinter
+    /**
+     * Creates a new instance of PrintableTicket
+     *
+     * @param t a BasicTicketForPrinter object
+     * @param start the index of a line that it will be the first
+     * @param end the index of a line that it will be the last
      */
     public PrintableTicket(BasicTicketForPrinter t, int start, int end) {
         basict = t;
@@ -54,9 +58,9 @@ public class PrintableTicket implements Printable {
     /**
      * Method print prints the ticket and is being called for each site twice.
      * For futher info look into: 
-     * @param g
-     * @param pf
-     * @param pi
+     * @param g a Graphics object
+     * @param pf a PageFormat object
+     * @param pi the current page
      * @see java.awt.print.Printable
      */
     @Override

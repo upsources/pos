@@ -26,28 +26,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class that manages everything related to a printed page. It sets the size of <br>
+ * paper and makes some counts to fill the page with lines
  *
  * @author jaroslawwozniak
+ * @since 2.30
  */
 public class PrinterBook {
 
     private PageFormat pageFormat;
-    DevicePrinterPrinter printer;
+    private DevicePrinterPrinter printer;
     /*current line ang page */
     private int line,  page;
     /*Array lists for start and end line */
     private List startLine,  endLine;
 
+    /**
+     * Creates a new instance of PrinterBook
+     *
+     * @param printer
+     */
     public PrinterBook(DevicePrinterPrinter printer) {
         this.printer = printer;
         pageFormat = new PageFormat();
         setPageFormatForPage();
-        startLine = new ArrayList();
-        //the first page will start from the first line
-        startLine.add(0, 0);
-        endLine = new ArrayList();
+        reset();
     }
 
+    /**
+     * Getter that returns a ready to print a Book object
+     *
+     * @param ticket a ticket to print
+     * @return a Book object ready to print
+     */
     public Book getBook(BasicTicketForPrinter ticket) {
         countLinesOnPage(ticket);
         Book book = new Book();
@@ -59,7 +70,13 @@ public class PrinterBook {
         return book;
     }
 
+    /**
+     * Method that counts the size of ticket and fills pages with lines
+     *
+     * @param ticket a ticket to print
+     */
     private void countLinesOnPage(BasicTicketForPrinter ticket) {
+        reset();
         boolean flag = false;
         //a variable for the index of next line
         int temp = 0;
@@ -91,6 +108,23 @@ public class PrinterBook {
         }
     }
 
+    /**
+     * Method that resets number of pages, lines and where a page finishes
+     */
+    private void reset(){
+        startLine = new ArrayList();
+        //the first page will start from the first line
+        startLine.add(0, 0);
+        endLine = new ArrayList();
+        line = 0;
+        page = 0;
+    }
+
+    /**
+     * Getter that sets a right paper and returns it
+     *
+     * @return a Papaer object
+     */
     private Paper getPaperForPage() {
 
         Paper paper = new Paper();
@@ -105,6 +139,9 @@ public class PrinterBook {
         return paper;
     }
 
+    /**
+     * Setter that sets a page format
+     */
     private void setPageFormatForPage() {
 
         pageFormat.setPaper(getPaperForPage());
