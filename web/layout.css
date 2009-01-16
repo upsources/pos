@@ -1,113 +1,129 @@
-/* 
-    Document   : layout
-    Created on : Nov 20, 2008, 10:31:08 AM
-    Author     : openbravo
-    Description:
-        Purpose of the stylesheet follows.
-*/
+  /*
+  Openbravo POS is a point of sales application designed for touch screens.
+  Copyright (C) 2007 Openbravo, S.L.
+  http://sourceforge.net/projects/openbravopos
 
-/* 
-   TODO customize this sample style
-   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
-*/
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
-body {
-        background:#fff;
-        margin-top: 4px;
-        margin-right:4px;
-        margin-bottom:4px;
-        margin-left:4px;
-        padding:20px;
-    }
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  --%>
+  */
+  /*
+  Document   : layout
+  Created on : Nov 20, 2008, 10:31:08 AM
+  Author     : jaroslawwozniak
+  Description:
+  Purpose of the stylesheet follows.
+  */
 
 
-img.button {
-        height:15px;
-        width:15px;
-        padding-left:2px;
-        border:none;
-    }
+  body {
+      background:#fff;
+      margin-top: 4px;
+      margin-right:4px;
+      margin-bottom:4px;
+      margin-left:4px;
+      padding:20px;
+  }
 
-img.logo {
-        height:45px;
-        width:183px;
-        padding-left:20px;
-        border: none;
-    }
 
-img.back {
-        height:20px;
-        padding:20px;
-        border:none;
-    }
+  img.button {
+      height:15px;
+      width:15px;
+      padding-left:2px;
+      border:none;
+  }
 
-.pad {
-        margin-left: 40px;
-        margin-top:10px;
-}
+  img.logo {
+      height:45px;
+      width:183px;
+      padding-left:20px;
+      border: none;
+  }
 
-.pad2 {
-        margin-left: 10px;
-}
+  img.back {
+      height:20px;
+      padding:20px;
+      border:none;
+  }
 
-.pad3 {
-        margin-left: 40px;
-}
+  .pad {
+      margin-left: 40px;
+      margin-top:10px;
+  }
 
-.floor {
-        width:100px;
-}
+  .pad2 {
+      margin-left: 10px;
+  }
 
-h   {
-        font:bold 20px/26px Arial;
-    }
+  .pad3 {
+      margin-left: 40px;
+  }
 
-table	{
-        border:0;
-        border-collapse:collapse;
-        border-bottom:1px solid #333;       
-    }
-th		{
-        font:bold 12px/17px Arial;
-        text-align:left;
-        padding:4px;
-        border-bottom:1px solid #333;
-    }
-th.name{
-        font:bold 12px/17px Arial;
-        padding:4px;
-        width:100px;
-}
-td	{
-        font:normal 10px/14px Arial;
-        padding:4px;
-    }
+  .floor {
+      width:100px;
+  }
 
-td.name{
-        font:normal 10px/14px Arial;
-        padding:4px;
-        width:100px;
-}
-tr.odd	{
-        background:#e1ffdb;
-    }
-tr.highlight	{
-        background:#b4f9a6;
-    }
-tr.selected		{
-        background:#51990F;
-        color:#fff;
-    }
-td+td+td {
-        text-align:right;
-    }
-div.logo {
-        height:100px;
-}
-.table {
-        overflow:auto;
-        height:150px;
-        max-height:150px;
-}
+  h   {
+      font:bold 20px/26px Arial;
+  }
+
+  table	{
+      border:0;
+      border-collapse:collapse;
+      border-bottom:1px solid #333;
+  }
+  th		{
+      font:bold 12px/17px Arial;
+      text-align:left;
+      padding:4px;
+      border-bottom:1px solid #333;
+  }
+  th.name{
+      font:bold 12px/17px Arial;
+      padding:4px;
+      width:100px;
+  }
+  td	{
+      font:normal 10px/14px Arial;
+      padding:4px;
+  }
+
+  td.name{
+      font:normal 10px/14px Arial;
+      padding:4px;
+      width:100px;
+  }
+  tr.odd	{
+      background:#e1ffdb;
+  }
+  tr.highlight	{
+      background:#b4f9a6;
+  }
+  tr.selected		{
+      background:#51990F;
+      color:#fff;
+  }
+  td+td+td {
+      text-align:right;
+  }
+  div.logo {
+      height:100px;
+  }
+  .table {
+      overflow:auto;
+      height:150px;
+      max-height:150px;
+  }
 
 
