@@ -20,14 +20,12 @@ package com.openbravo.pos.ticket;
 
 import com.openbravo.pos.pda.util.FormatUtils;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 /**
  *
  * @author jaroslawwozniak
  */
-public class ProductInfo implements Serializable{
+public class ProductInfo implements Serializable {
 
     private String id;
     private String ref;
@@ -37,11 +35,8 @@ public class ProductInfo implements Serializable{
     private boolean scale;
     private String categoryID;
     private String taxcat;
-
-
     private double priceBuy;
     private double priceSell;
-
 
     public String getTaxcat() {
         return taxcat;
@@ -119,12 +114,11 @@ public class ProductInfo implements Serializable{
         return scale;
     }
 
-    public String printPriceSell(){
+    public String printPriceSell() {
         return FormatUtils.formatCurrency(priceSell);
     }
 
     public void setScale(boolean scale) {
         this.scale = scale;
     }
-    
 }

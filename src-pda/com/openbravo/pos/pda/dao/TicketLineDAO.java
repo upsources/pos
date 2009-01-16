@@ -31,18 +31,17 @@ import java.util.List;
  * @author jaroslawwozniak
  */
 public class TicketLineDAO extends BaseJdbcDAO {
-    
-    public List<TicketLineInfo> findLinesByTicket(String ticketId){
+
+    public List<TicketLineInfo> findLinesByTicket(String ticketId) {
         TicketDAO ticketDao = new TicketDAO();
         TicketInfo ticket = ticketDao.getTicket(ticketId);
-        
+
         return ticket.getM_aLines();
-        
+
     }
- 
+
     @Override
     protected Object map2VO(ResultSet rs) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }

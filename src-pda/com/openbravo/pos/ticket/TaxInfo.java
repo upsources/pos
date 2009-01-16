@@ -15,6 +15,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
+
 package com.openbravo.pos.ticket;
 
 import java.io.Serializable;
@@ -31,7 +32,6 @@ public class TaxInfo implements Serializable {
     private String taxcategoryid;
     private String taxcustcategoryid;
     private String parentid;
-
     private double rate;
     private boolean cascade;
     private Integer order;

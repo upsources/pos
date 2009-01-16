@@ -80,9 +80,9 @@ public class LoginDAO extends BaseJdbcDAO {
         user.setPassword(rs.getString("apppassword"));
         return user;
     }
-    
+
     private static String hashString(String sPassword) {
-        
+
         if (sPassword == null || sPassword.equals("")) {
             return "empty:";
         } else {

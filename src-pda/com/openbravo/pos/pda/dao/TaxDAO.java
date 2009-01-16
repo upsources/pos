@@ -19,9 +19,6 @@
 package com.openbravo.pos.pda.dao;
 
 import com.openbravo.pos.ticket.TaxInfo;
-import com.openbravo.pos.ticket.TicketInfo;
-import java.io.BufferedInputStream;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,9 +34,8 @@ import java.util.logging.Logger;
  * @author jaroslawwozniak
  */
 public class TaxDAO extends BaseJdbcDAO implements Serializable {
-    
-    
-    public TaxInfo getTax(String id){
+
+    public TaxInfo getTax(String id) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -56,8 +52,8 @@ public class TaxDAO extends BaseJdbcDAO implements Serializable {
             //execute
             rs = ps.executeQuery();
             //transform to VO
-            list =  transformSet(rs);
-            
+            list = transformSet(rs);
+
 
         } catch (Exception ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,7 +76,4 @@ public class TaxDAO extends BaseJdbcDAO implements Serializable {
 
         return tax;
     }
-    
-  
-
 }

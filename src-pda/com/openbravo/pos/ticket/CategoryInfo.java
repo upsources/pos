@@ -18,14 +18,12 @@
 
 package com.openbravo.pos.ticket;
 
-import java.awt.image.BufferedImage;
-
 /**
  *
  * @author jaroslawwozniak
  */
 public class CategoryInfo {
-    
+
     private String id;
     private String name;
     private String parentid;
@@ -45,7 +43,6 @@ public class CategoryInfo {
     public void setParentid(String parentid) {
         this.parentid = parentid;
     }
-    
 
     public String getName() {
         return name;
@@ -54,7 +51,4 @@ public class CategoryInfo {
     public void setName(String name) {
         this.name = name;
     }
-
-    
-
 }

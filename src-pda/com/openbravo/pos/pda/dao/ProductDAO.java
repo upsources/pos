@@ -25,7 +25,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-
 /**
  *
  * @author jaroslawwozniak
@@ -71,8 +70,8 @@ public class ProductDAO extends BaseJdbcDAO {
         return vos;
 
     }
-   
-    public List<ProductInfo> findProductsByCategory(String categoryId){
+
+    public List<ProductInfo> findProductsByCategory(String categoryId) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

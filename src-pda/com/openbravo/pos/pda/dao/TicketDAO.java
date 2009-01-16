@@ -1,7 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.pda.dao;
 
@@ -72,18 +85,18 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(bytes);
             out.writeObject(ticket);
             ps.setBytes(3, bytes.toByteArray());
-         //   System.out.println(bytes.toString());
+            //   System.out.println(bytes.toString());
             //execute
             ps.executeUpdate();
-            //transform to VO
-           // System.out.println("poszlo  " + id);
-            //System.out.println(new ObjectInputStream(new BufferedInputStream(rs.getBinaryStream(1))));
+        //transform to VO
+        // System.out.println("poszlo  " + id);
+        //System.out.println(new ObjectInputStream(new BufferedInputStream(rs.getBinaryStream(1))));
         } catch (Exception ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void updateTicket(String ticketId, TicketInfo ticket){
+    public void updateTicket(String ticketId, TicketInfo ticket) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2008 Openbravo, S.L.
+//    Copyright (C) 2007 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.pda.dao;
 
@@ -29,8 +29,8 @@ import java.util.List;
  *
  * @author jaroslawwozniak
  */
-public class CategoryDAO extends BaseJdbcDAO{
-    
+public class CategoryDAO extends BaseJdbcDAO {
+
     public List<CategoryInfo> findAllCategories() {
 
         Connection con = null;
@@ -67,7 +67,7 @@ public class CategoryDAO extends BaseJdbcDAO{
         return vos;
     }
 
-     public String findFirstCategory(){
+    public String findFirstCategory() {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -108,7 +108,7 @@ public class CategoryDAO extends BaseJdbcDAO{
         category.setId(rs.getString("id"));
         category.setParentid(rs.getString("parentid"));
         category.setName(rs.getString("name"));
-        
+
         return category;
-     }
+    }
 }

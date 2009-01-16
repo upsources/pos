@@ -1,7 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 package com.openbravo.pos.pda.bo;
 
 import com.openbravo.pos.pda.dao.CategoryDAO;
@@ -23,7 +37,8 @@ import java.util.List;
 
 /**
  *
- * @author openbravo
+ * @author jaroslawwozniak
+ * @version 1.0
  */
 public class RestaurantManager {
 
@@ -60,7 +75,7 @@ public class RestaurantManager {
         return ticket.getTicket(id);
     }
 
-    public void initTicket(String id){
+    public void initTicket(String id) {
         ticket = new TicketDAO();
         ticket.initTicket(id);
     }
@@ -88,19 +103,19 @@ public class RestaurantManager {
 
         return product.findProductsByCategory(categoryId);
     }
-    
-    public List<CategoryInfo> findAllCategories(){
+
+    public List<CategoryInfo> findAllCategories() {
         category = new CategoryDAO();
-        
+
         return category.findAllCategories();
     }
 
-    public void setTableBusy(String placeId, TicketInfo ticket){
+    public void setTableBusy(String placeId, TicketInfo ticket) {
         place = new PlaceDAO();
         place.setTableBusy(placeId, ticket.getM_dDate().toString());
     }
 
-    public void addLineToTicket(String ticketId, String aCategory, String productIndex){
+    public void addLineToTicket(String ticketId, String aCategory, String productIndex) {
         lines = new TicketLineDAO();
         ticket = new TicketDAO();
         product = new ProductDAO();
@@ -108,17 +123,17 @@ public class RestaurantManager {
         tax = new TaxDAO();
         TicketInfo obj = ticket.getTicket(ticketId);
         ProductInfo productObj = null;
-        if(aCategory.equals("undefined")) {
+        if (aCategory.equals("undefined")) {
             aCategory = category.findFirstCategory();
         }
-         
+
         productObj = product.findProductsByCategory(aCategory).get(Integer.valueOf(productIndex));
         obj.addLine(new TicketLineInfo(productObj, productObj.getPriceSell(), tax.getTax(productObj.getTaxcat())));
-        
+
         ticket.updateTicket(ticketId, obj);
     }
 
-    public void updateLineFromTicket(String ticketId, TicketInfo aticket){
+    public void updateLineFromTicket(String ticketId, TicketInfo aticket) {
         ticket = new TicketDAO();
         ticket.updateTicket(ticketId, aticket);
     }

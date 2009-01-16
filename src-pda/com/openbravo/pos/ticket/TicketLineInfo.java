@@ -1,26 +1,38 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
 package com.openbravo.pos.ticket;
 
 import com.openbravo.pos.pda.util.FormatUtils;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.Properties;
 
 /**
  *
  * @author jaroslawwozniak
  */
-public class TicketLineInfo implements Serializable{
+public class TicketLineInfo implements Serializable {
 
     private static final long serialVersionUID = 6608012948284450199L;
-
     private String m_sTicket;
     private int m_iLine;
     private TaxInfo tax;
-    private double multiply;    
+    private double multiply;
     private double price;
     private String productid;
     private Properties attributes;
@@ -30,8 +42,6 @@ public class TicketLineInfo implements Serializable{
     public TicketLineInfo() {
     }
 
-    
-
     public TicketLineInfo(ProductInfo product, double price, TaxInfo tax) {
         this.product = product;
         productid = product.getId();
@@ -39,7 +49,7 @@ public class TicketLineInfo implements Serializable{
         this.price = price;
         this.tax = tax;
         attributes = new Properties();
-        
+
         m_sTicket = null;
         m_iLine = -1;
         setProperties();
@@ -110,19 +120,15 @@ public class TicketLineInfo implements Serializable{
         m_iLine = size;
     }
 
-    public double getValue(){
-        return price*multiply;
+    public double getValue() {
+        return price * multiply;
     }
 
-    public String printPrice(){
+    public String printPrice() {
         return FormatUtils.formatCurrency(price);
     }
 
-    public String printMultiply(){
+    public String printMultiply() {
         return FormatUtils.formatDouble(multiply);
     }
-
-
-
-   
 }

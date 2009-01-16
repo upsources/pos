@@ -1,37 +1,45 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.openbravo.pos.pda.struts.forms;
 
-import java.lang.Object;
-import java.lang.String;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 
 /**
  *
- * @author openbravo
+ * @author jaroslawwozniak
  */
 public class FloorForm extends org.apache.struts.action.ActionForm {
-    
-    private String floorId="";
-    private String mode="";
-    private String id="";
-    private String[] parameters =null;
+
+    private String floorId = "";
+    private String mode = "";
+    private String id = "";
+    private String[] parameters = null;
     private String lineNo = "";
-        
+
     /**
      *
      */
     public FloorForm() {
         super();
-        // TODO Auto-generated constructor stub
+    // TODO Auto-generated constructor stub
     }
 
     public String getLine() {
@@ -41,8 +49,6 @@ public class FloorForm extends org.apache.struts.action.ActionForm {
     public void setLine(String line) {
         this.lineNo = line;
     }
-
-    
 
     public String[] getParameters() {
         return parameters;
@@ -76,7 +82,6 @@ public class FloorForm extends org.apache.struts.action.ActionForm {
         this.mode = mode;
     }
 
-
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -86,8 +91,8 @@ public class FloorForm extends org.apache.struts.action.ActionForm {
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
         return null;
-            // TODO: add 'error.name.required' key to your resources
-        
-        
+    // TODO: add 'error.name.required' key to your resources
+
+
     }
 }
