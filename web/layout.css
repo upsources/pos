@@ -1,0 +1,113 @@
+/* 
+    Document   : layout
+    Created on : Nov 20, 2008, 10:31:08 AM
+    Author     : openbravo
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+body {
+        background:#fff;
+        margin-top: 4px;
+        margin-right:4px;
+        margin-bottom:4px;
+        margin-left:4px;
+        padding:20px;
+    }
+
+
+img.button {
+        height:15px;
+        width:15px;
+        padding-left:2px;
+        border:none;
+    }
+
+img.logo {
+        height:45px;
+        width:183px;
+        padding-left:20px;
+        border: none;
+    }
+
+img.back {
+        height:20px;
+        padding:20px;
+        border:none;
+    }
+
+.pad {
+        margin-left: 40px;
+        margin-top:10px;
+}
+
+.pad2 {
+        margin-left: 10px;
+}
+
+.pad3 {
+        margin-left: 40px;
+}
+
+.floor {
+        width:100px;
+}
+
+h   {
+        font:bold 20px/26px Arial;
+    }
+
+table	{
+        border:0;
+        border-collapse:collapse;
+        border-bottom:1px solid #333;       
+    }
+th		{
+        font:bold 12px/17px Arial;
+        text-align:left;
+        padding:4px;
+        border-bottom:1px solid #333;
+    }
+th.name{
+        font:bold 12px/17px Arial;
+        padding:4px;
+        width:100px;
+}
+td	{
+        font:normal 10px/14px Arial;
+        padding:4px;
+    }
+
+td.name{
+        font:normal 10px/14px Arial;
+        padding:4px;
+        width:100px;
+}
+tr.odd	{
+        background:#e1ffdb;
+    }
+tr.highlight	{
+        background:#b4f9a6;
+    }
+tr.selected		{
+        background:#51990F;
+        color:#fff;
+    }
+td+td+td {
+        text-align:right;
+    }
+div.logo {
+        height:100px;
+}
+.table {
+        overflow:auto;
+        height:150px;
+        max-height:150px;
+}
+
+
