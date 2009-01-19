@@ -115,7 +115,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public final ProductInfoExt getProductInfoByReference(String sReference) throws BasicException {
         return (ProductInfoExt) new PreparedSentence(s
             , "SELECT ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, TAXCAT, CATEGORY, ATTRIBUTESET_ID, IMAGE, ATTRIBUTES " +
-              "FROM PRODUCTS WHERE P.REFERENCE = ?"
+              "FROM PRODUCTS WHERE REFERENCE = ?"
             , SerializerWriteString.INSTANCE
             , ProductInfoExt.getSerializerRead()).find(sReference);
     }
