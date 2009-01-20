@@ -18,11 +18,8 @@
 
 package com.openbravo.pos.pda.dao;
 
-import com.openbravo.pos.ticket.StringUtils;
+import com.openbravo.pos.pda.util.StringUtils;
 import com.openbravo.pos.ticket.UserInfo;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +44,7 @@ public class LoginDAO extends BaseJdbcDAO {
             //prepare statement
             ps = con.prepareStatement(sqlStr);
             ps.setString(1, login);
-            ps.setString(2, hashString(password));
+            ps.setString(2, StringUtils.hashString(password));
             //execute
             rs = ps.executeQuery();
             //transform to VO
@@ -79,23 +76,5 @@ public class LoginDAO extends BaseJdbcDAO {
         user.setLogin(rs.getString("name"));
         user.setPassword(rs.getString("apppassword"));
         return user;
-    }
-
-    private static String hashString(String sPassword) {
-
-        if (sPassword == null || sPassword.equals("")) {
-            return "empty:";
-        } else {
-            try {
-                MessageDigest md = MessageDigest.getInstance("SHA-1");
-                md.update(sPassword.getBytes("UTF-8"));
-                byte[] res = md.digest();
-                return "sha1:" + StringUtils.byte2hex(res);
-            } catch (NoSuchAlgorithmException e) {
-                return "plain:" + sPassword;
-            } catch (UnsupportedEncodingException e) {
-                return "plain:" + sPassword;
-            }
-        }
     }
 }

@@ -18,6 +18,7 @@
 
 package com.openbravo.pos.pda.dao;
 
+import com.openbravo.pos.pda.util.PropertyUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,28 +33,17 @@ import java.util.List;
  */
 public abstract class BaseJdbcDAO {
 
-    private String driverName = "com.mysql.jdbc.Driver";
-    private String dbURL = "jdbc:mysql://localhost:3306/obpos";
-    private String dbUser = "user";
-    private String dbPassword = "user";
-
-    public BaseJdbcDAO(String driverName, String dbURL, String dbUser,
-            String dbPassword) {
-        /* this.driverName = driverName;
-        this.dbURL = dbURL;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
-         * */
-    }
-
+    private PropertyUtils properties;
+    
     public BaseJdbcDAO() {
-        // this("driverName", "dbURL", "dbUser", "dbPassword");
+        properties = new PropertyUtils();
     }
 
     protected Connection getConnection() throws Exception {
         try {
-            Class.forName(driverName);
-            return DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            Class.forName(properties.getDriverName());
+            System.out.println(properties.getDBUser() + " "+properties.getDBPassword());
+            return DriverManager.getConnection(properties.getUrl(), properties.getDBUser(), properties.getDBPassword());
         } catch (SQLException sqlex) {
             sqlex.printStackTrace();
 

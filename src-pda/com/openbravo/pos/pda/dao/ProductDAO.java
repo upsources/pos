@@ -76,7 +76,7 @@ public class ProductDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<ProductInfo> vos = null;
-        String sqlStr = "SELECT * FROM PRODUCTS WHERE CATEGORY=?";
+        String sqlStr = "SELECT * FROM PRODUCTS WHERE CATEGORY=? ";
 
         try {
             //get connection
