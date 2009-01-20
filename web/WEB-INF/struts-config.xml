@@ -20,8 +20,12 @@
         <form-bean name="addProduct" type="com.openbravo.pos.pda.struts.forms.AddedProductForm" />
         <form-bean name="modifyProduct" type="com.openbravo.pos.pda.struts.forms.FloorForm" />
         <form-bean name="AddedProductForm" type="com.openbravo.pos.pda.struts.forms.AddedProductForm"/>
-        <form-bean name="FloorForm" type="com.openbravo.pos.pda.struts.forms.FloorForm"/>
-        <form-bean name="FloorForm" type="com.openbravo.pos.pda.struts.forms.FloorForm"/>
+        <form-bean name="showFloors" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="floorId" type="java.lang.String" />
+        </form-bean>
+        <form-bean name="FloorAjax" type="org.apache.struts.action.DynaActionForm">
+            <form-property name="floorId" type="java.lang.String" />
+        </form-bean>
     </form-beans>
     <global-exceptions>
     </global-exceptions>
@@ -37,7 +41,7 @@
         <forward name="removeProduct" path="/removeProduct.do" />
     </global-forwards>
     <action-mappings>
-        <action input="/showFloors" name="FloorForm" path="/showFloors" scope="request" 
+        <action input="/showFloors" name="showFloors" path="/showFloors" scope="request"
             type="com.openbravo.pos.pda.struts.actions.FloorAction">
             <forward name="success" path="/jsp/showFloors.jsp"/>
             <forward name="failure" path="/jsp/login.jsp" />
@@ -56,7 +60,7 @@
             <forward name="success" path="/jsp/showProducts.jsp" />
             <forward name="failure" path="/jsp/login.jsp" />
         </action>
-        <action input="/jsp/showFloors.jsp" name="FloorForm" path="/floorAjaxAction" scope="request" type="com.openbravo.pos.pda.struts.actions.FloorAjaxAction">
+        <action input="/jsp/showFloors.jsp" name="FloorAjax" path="/floorAjaxAction" scope="request" type="com.openbravo.pos.pda.struts.actions.FloorAjaxAction">
             <forward name="success" path="/jsp/floorsAjax.jsp" />
         </action>
         <action input="/jsp/showProducts.jsp" name="productsBean" path="/productAjaxAction" type="com.openbravo.pos.pda.struts.actions.ProductAjaxAction" scope="request">
