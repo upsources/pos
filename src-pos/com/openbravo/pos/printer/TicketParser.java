@@ -229,7 +229,9 @@ public class TicketParser extends DefaultHandler {
                 try {
                     // BufferedImage image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(m_sText.toString()));
                     BufferedImage image = m_system.getResourceAsImage(text.toString());
-                    m_oOutputPrinter.printImage(image);
+                    if (image != null) {
+                        m_oOutputPrinter.printImage(image);
+                    }
                 } catch (Exception fnfe) {
                     //throw new ResourceNotFoundException( fnfe.getMessage() );
                 }
