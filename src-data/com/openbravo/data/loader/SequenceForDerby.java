@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -21,27 +21,30 @@ package com.openbravo.data.loader;
 import com.openbravo.basic.BasicException;
 
 
-public class SequenceForMySQL extends BaseSentence {
-    
+public class SequenceForDerby extends BaseSentence {
+
     private BaseSentence sent1;
     private BaseSentence sent2;
-    
+    private BaseSentence sent3;
+
     /** Creates a new instance of SequenceForMySQL */
-    public SequenceForMySQL(Session s, String sSeqTable) {
-        
-        sent1 = new StaticSentence(s, "UPDATE " + sSeqTable + " SET ID = LAST_INSERT_ID(ID + 1)");
-        sent2 = new StaticSentence(s, "SELECT LAST_INSERT_ID()", null, SerializerReadInteger.INSTANCE);
+    public SequenceForDerby(Session s, String sSeqTable) {
+
+        sent1 = new StaticSentence(s, "DELETE FROM  " + sSeqTable);
+        sent2 = new StaticSentence(s, "INSERT INTO " + sSeqTable + " VALUES (DEFAULT)");
+        sent3 = new StaticSentence(s, "SELECT IDENTITY_VAL_LOCAL() FROM " + sSeqTable, null, SerializerReadInteger.INSTANCE);
     }
-    
-    // Funciones de bajo nivel    
-    public DataResultSet openExec(Object params) throws BasicException {        
+
+    // Funciones de bajo nivel
+    public DataResultSet openExec(Object params) throws BasicException {
         sent1.exec();
-        return sent2.openExec(null);
-    }   
+        sent2.exec();
+        return sent3.openExec(null);
+    }
     public DataResultSet moreResults() throws BasicException {
-        return sent2.moreResults();
+        return sent3.moreResults();
     }
     public void closeExec() throws BasicException {
-        sent2.closeExec();
+        sent3.closeExec();
     }
 }

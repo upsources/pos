@@ -42,6 +42,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     private TaxInfo tax;
     private Properties attributes;
     private String productid;
+    private String attsetinstid;
 
     /** Creates new TicketLineInfo */
     public TicketLineInfo(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties props) {
@@ -74,6 +75,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             pid = product.getID();
             attributes.setProperty("product.name", product.getName());
             attributes.setProperty("product.com", product.isCom() ? "true" : "false");
+            if (product.getAttributeSetID() != null) {
+                attributes.setProperty("product.attsetid", product.getAttributeSetID());
+            }
             attributes.setProperty("product.taxcategoryid", product.getTaxCategoryID());
             if (product.getCategoryID() != null) {
                 attributes.setProperty("product.categoryid", product.getCategoryID());
@@ -93,6 +97,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     private void init(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
 
         this.productid = productid;
+        attsetinstid = null;
         multiply = dMultiply;
         price = dPrice;
         this.tax = tax;
@@ -166,6 +171,30 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
 
     public String getProductName() {
         return attributes.getProperty("product.name");
+    }
+
+    public String getProductAttSetId() {
+        return attributes.getProperty("product.attsetid");
+    }
+
+    public String getProductAttSetInstDesc() {
+        return attributes.getProperty("product.attsetdesc", "");
+    }
+
+    public void setProductAttSetInstDesc(String value) {
+        if (value == null) {
+            attributes.remove(value);
+        } else {
+            attributes.setProperty("product.attsetdesc", value);
+        }
+    }
+
+    public String getProductAttSetInstId() {
+        return attsetinstid;
+    }
+
+    public void setProductAttSetInstId(String value) {
+        attsetinstid = value;
     }
 
     public boolean isProductCom() {

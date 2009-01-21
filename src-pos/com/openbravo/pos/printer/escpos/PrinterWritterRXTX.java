@@ -38,7 +38,7 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
         m_out = null; 
     }
     
-    protected void daemonWrite(byte[] data) {
+    protected void internalWrite(byte[] data) {
         try {  
             if (m_out == null) {
                 m_PortIdPrinter = CommPortIdentifier.getPortIdentifier(m_sPortPrinter); // Tomamos el puerto                   
@@ -64,7 +64,7 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
         }      
     }
     
-    protected void daemonFlush() {
+    protected void internalFlush() {
         try {  
             if (m_out != null) {
                 m_out.flush();
@@ -74,7 +74,7 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
         }    
     }
     
-    protected void daemonClose() {
+    protected void internalClose() {
         try {  
             if (m_out != null) {
                 m_out.flush();

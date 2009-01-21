@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.mant;
 import javax.swing.ListCellRenderer;
@@ -47,7 +47,7 @@ public class JPanelPlaces extends JPanelTable {
     
     protected void init() {
         DataLogicSales dlSales = null;
-        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
         
         tplaces = new TableDefinition(app.getSession(),
             "PLACES"
@@ -68,10 +68,12 @@ public class JPanelPlaces extends JPanelTable {
         return new SaveProvider(tplaces);      
     }
     
+    @Override
     public Vectorer getVectorer() {
         return tplaces.getVectorerBasic(new int[]{1});
     }
     
+    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(tplaces.getRenderStringBasic(new int[]{1}));
     }
@@ -84,6 +86,7 @@ public class JPanelPlaces extends JPanelTable {
         return AppLocal.getIntString("Menu.Tables");
     }      
     
+    @Override
     public void activate() throws BasicException {
         jeditor.activate(); // primero activo el editor 
         super.activate();   // segundo activo el padre        

@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.sales.restaurant;
 
@@ -63,7 +63,7 @@ public class JTicketsBagRestaurantRes extends javax.swing.JPanel implements Edit
         
         m_restaurantmap = restaurantmap;
         
-        dlCustomers = (DataLogicCustomers) oApp.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");
+        dlCustomers = (DataLogicCustomers) oApp.getBean("com.openbravo.pos.customers.DataLogicCustomers");
 
         m_dcurrentday = null;
         

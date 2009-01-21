@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.data.loader;
 
@@ -30,7 +30,11 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
 
     // Funciones
     public final int exec() throws BasicException {
-        return exec(null);
+        return exec((Object) null);
+    }
+
+    public final int exec(Object... params) throws BasicException {
+        return exec((Object) params);
     }
 
     public final int exec(Object params) throws BasicException {        
@@ -43,10 +47,16 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
         closeExec();
         return iResult;
     }
+
     
     public final List list() throws BasicException {
-        return list(null);
+        return list((Object) null);
     }
+
+    public final List list(Object... params) throws BasicException {
+        return list((Object) params);
+    }
+
     public final List list(Object params) throws BasicException {
     // En caso de error o lanza un pepinazo en forma de DataException          
         DataResultSet SRS = openExec(params);
@@ -69,7 +79,7 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
     }
     
     public final Object find() throws BasicException {
-        return find((SerializableWrite) null);
+        return find((Object) null);
     }
 
     public final Object find(Object... params) throws BasicException {

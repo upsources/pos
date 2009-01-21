@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.forms;
 
@@ -65,7 +65,7 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         m_appview = appview; 
         m_appuser = appuser;
                    
-        m_dlSystem = (DataLogicSystem) m_appview.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
+        m_dlSystem = (DataLogicSystem) m_appview.getBean("com.openbravo.pos.forms.DataLogicSystem");
         
         // Cargamos los permisos del usuario
         m_appuser.fillPermissions(m_dlSystem);

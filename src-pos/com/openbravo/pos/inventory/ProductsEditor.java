@@ -128,6 +128,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_jTax.setModel(taxcatmodel);
 
         attmodel = new ComboBoxValModel(attsent.list());
+        attmodel.add(0, null);
         m_jAtt.setModel(attmodel);
     }
     

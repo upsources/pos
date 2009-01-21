@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.admin;
 
@@ -49,7 +49,7 @@ public class ResourcesPanel extends JPanelTable {
     @Override
     public boolean deactivate() {
         if (super.deactivate()) {
-            DataLogicSystem dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");            
+            DataLogicSystem dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");            
             dlSystem.resetResourcesCache();
             return true;
         } else {
@@ -65,14 +65,17 @@ public class ResourcesPanel extends JPanelTable {
         return new SaveProvider(tresources);        
     }
     
+    @Override
     public Vectorer getVectorer() {
         return tresources.getVectorerBasic(new int[] {1});
     }
     
+    @Override
     public ComparatorCreator getComparatorCreator() {
         return tresources.getComparatorCreator(new int[] {1, 2});
     }
     
+    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(tresources.getRenderStringBasic(new int[] {1}));
     }

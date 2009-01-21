@@ -48,7 +48,7 @@ public class ProductsPanel extends JPanelTable2 implements EditorListener {
     }
     
     protected void init() {   
-        m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
         
         // el panel del filtro
         jproductfilter = new ProductFilter();

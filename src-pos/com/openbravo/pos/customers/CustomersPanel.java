@@ -14,8 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  US
-
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.customers;
 
@@ -46,7 +45,7 @@ public class CustomersPanel extends JPanelTable {
     }
     
     protected void init() {        
-        DataLogicCustomers dlCustomers  = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");       
+        DataLogicCustomers dlCustomers  = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         tcustomers = dlCustomers.getTableCustomers();        
         jeditor = new CustomersView(app, dirty);    
     }

@@ -107,7 +107,7 @@ public class JRootApp extends JPanel implements AppView {
             return false;
         }
 
-        m_dlSystem = (DataLogicSystem) getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
+        m_dlSystem = (DataLogicSystem) getBean("com.openbravo.pos.forms.DataLogicSystem");
         
         // Create or upgrade the database if database version is not the expected
         String sDBVersion = readDataBaseVersion();        
@@ -120,8 +120,9 @@ public class JRootApp extends JPanel implements AppView {
                     : m_dlSystem.getInitScript() + "-upgrade-" + sDBVersion + ".sql";
 
             if (JRootApp.class.getResource(sScript) == null) {
-                // Upgrade script does not exist.
-                JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, AppLocal.getIntString("message.noupdatescript")));
+                JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_DANGER, sDBVersion == null
+                            ? AppLocal.getIntString("message.databasenotsupported", session.DB.getName()) // Create script does not exists. Database not supported
+                            : AppLocal.getIntString("message.noupdatescript"))); // Upgrade script does not exist.
                 session.close();
                 return false;
             } else {
@@ -159,7 +160,9 @@ public class JRootApp extends JPanel implements AppView {
         // creamos la caja activa si esta no existe      
         try {
             String sActiveCashIndex = m_propsdb.getProperty("activecash");
-            Object[] valcash = m_dlSystem.findActiveCash(sActiveCashIndex);
+            Object[] valcash = sActiveCashIndex == null
+                    ? null
+                    : m_dlSystem.findActiveCash(sActiveCashIndex);
             if (valcash == null || !m_props.getHost().equals(valcash[0])) {
                 // no la encuentro o no es de mi host por tanto creo una...
                 setActiveCash(UUID.randomUUID().toString(), 1, new Date(), null);
@@ -229,11 +232,7 @@ public class JRootApp extends JPanel implements AppView {
         try {
             return m_dlSystem.findVersion();
         } catch (BasicException ed) {
-            try {
-                return m_dlSystem.findLibreposVersion();
-            } catch (BasicException ed2) {
-                return null;
-            }
+            return null;
         }
     }
     

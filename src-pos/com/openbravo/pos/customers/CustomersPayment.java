@@ -14,11 +14,10 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.customers;
 
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.user.DirtyManager;
@@ -76,9 +75,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     public void init(AppView app) throws BeanFactoryException {
 
         this.app = app;
-        dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");
-        dlsales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-        dlsystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
+        dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+        dlsales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
+        dlsystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");
         ttp = new TicketParser(app.getDeviceTicket(), dlsystem);
     }
 

@@ -53,7 +53,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
 
     @Override
     public void init(AppView app) {   
-         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+         m_dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
     }
 
     @Override

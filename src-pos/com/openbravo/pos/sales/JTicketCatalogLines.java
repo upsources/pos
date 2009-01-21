@@ -39,8 +39,8 @@ public class JTicketCatalogLines extends javax.swing.JPanel {
         
         DataLogicSystem dlSystem = null;
         DataLogicSales dlSales = null;
-        dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
+        dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");
+        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
         
         initComponents();
         

@@ -49,7 +49,7 @@ import java.io.IOException;
  *
  * @author adrianromero
  */
-public abstract class DataLogicSales extends BeanFactoryDataSingle {
+public class DataLogicSales extends BeanFactoryDataSingle {
 
     protected Session s;
 
@@ -137,7 +137,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? " +
-              "AND P.ISCOM = FALSE " +
+              "AND P.ISCOM = " + s.DB.FALSE() + " " +
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE
             , ProductInfoExt.getSerializerRead()).list(category);
@@ -146,7 +146,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P, PRODUCTS_CAT O, PRODUCTS_COM M WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND M.PRODUCT = ? " +
-              "AND P.ISCOM = TRUE " +
+              "AND P.ISCOM = " + s.DB.TRUE() + " " +
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE
             , ProductInfoExt.getSerializerRead()).list(id);
@@ -167,7 +167,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new StaticSentence(s
             , new QBFBuilder(
               "SELECT ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, TAXCAT, CATEGORY, ATTRIBUTESET_ID, IMAGE, ATTRIBUTES " +
-              "FROM PRODUCTS WHERE ISCOM = FALSE AND ?(QBF_FILTER) ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
+              "FROM PRODUCTS WHERE ISCOM = " + s.DB.FALSE() + " AND ?(QBF_FILTER) ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
     }
@@ -177,7 +177,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
          return new StaticSentence(s
             , new QBFBuilder(
               "SELECT ID, REFERENCE, CODE, NAME, ISCOM, ISSCALE, PRICEBUY, PRICESELL, TAXCAT, CATEGORY, ATTRIBUTESET_ID, IMAGE, ATTRIBUTES " +
-              "FROM PRODUCTS WHERE ISCOM = TRUE AND ?(QBF_FILTER) ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
+              "FROM PRODUCTS WHERE ISCOM = " + s.DB.TRUE() + " AND ?(QBF_FILTER) ORDER BY REFERENCE", new String[] {"NAME", "PRICEBUY", "PRICESELL", "CATEGORY", "CODE"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
     }
@@ -270,7 +270,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
                 , "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, TAXCATEGORY, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT" +
                   ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX" +
                   ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY" +
-                  " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = TRUE"
+                  " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = " + s.DB.TRUE()
                 , SerializerWriteString.INSTANCE
                 , new CustomerExtRead()).find(card);
     }
@@ -503,13 +503,28 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         t.execute();
     }
 
-    public abstract Integer getNextTicketIndex() throws BasicException;
+    public final Integer getNextTicketIndex() throws BasicException {
+        return (Integer) s.DB.getSequenceSentence(s, "TICKETSNUM").find();
+    }
 
-    public abstract Integer getNextTicketRefundIndex() throws BasicException;
-    
-    public abstract Integer getNextTicketPaymentIndex() throws BasicException;
+    public final Integer getNextTicketRefundIndex() throws BasicException {
+        return (Integer) s.DB.getSequenceSentence(s, "TICKETSNUM_REFUND").find();
+    }
 
-    public abstract SentenceList getProductCatQBF();
+    public final Integer getNextTicketPaymentIndex() throws BasicException {
+        return (Integer) s.DB.getSequenceSentence(s, "TICKETSNUM_PAYMENT").find();
+    }
+
+    public final SentenceList getProductCatQBF() {
+        return new StaticSentence(s
+            , new QBFBuilder(
+                "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.CATEGORY, P.TAXCAT, P.ATTRIBUTESET_ID, P.IMAGE, P.STOCKCOST, P.STOCKVOLUME, CASE WHEN C.PRODUCT IS NULL THEN " + s.DB.FALSE() + " ELSE " + s.DB.TRUE() + " END, C.CATORDER, P.ATTRIBUTES " +
+                "FROM PRODUCTS P LEFT OUTER JOIN PRODUCTS_CAT C ON P.ID = C.PRODUCT " +
+                "WHERE ?(QBF_FILTER) " +
+                "ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
+            , productsRow.getSerializerRead());
+    }
 
     public final SentenceExec getProductCatInsert() {
         return new SentenceExecTransaction(s) {

@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.forms;
 
@@ -39,8 +39,7 @@ import javax.swing.ImageIcon;
 public class DataLogicSystem extends BeanFactoryDataSingle {
     
     protected String m_sInitScript;
-    private SentenceFind m_version;    
-    private SentenceFind m_libreposversion;    
+    private SentenceFind m_version;       
     private SentenceExec m_dummy;
     
     protected SentenceList m_peoplevisible;  
@@ -65,9 +64,10 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     }
     
     public void init(Session s){
-        
+
+        m_sInitScript = "/com/openbravo/pos/scripts/" + s.DB.getName();
+
         m_version = new PreparedSentence(s, "SELECT VERSION FROM APPLICATIONS WHERE ID = ?", SerializerWriteString.INSTANCE, SerializerReadString.INSTANCE);
-        m_libreposversion = new PreparedSentence(s, "SELECT VERSION FROM LIBREPOS", null, SerializerReadString.INSTANCE);
         m_dummy = new StaticSentence(s, "SELECT * FROM PEOPLE WHERE 1 = 0");
          
         final ThumbNailBuilder tnb = new ThumbNailBuilder(32, 32, "com/openbravo/images/yast_sysadmin.png");        
@@ -82,6 +82,16 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
                         new ImageIcon(tnb.getThumbNail(ImageUtils.readImage(dr.getBytes(6)))));                
             }
         };
+
+        m_peoplevisible = new StaticSentence(s
+            , "SELECT ID, NAME, APPPASSWORD, CARD, ROLE, IMAGE FROM PEOPLE WHERE VISIBLE = " + s.DB.TRUE()
+            , null
+            , peopleread);
+
+        m_peoplebycard = new PreparedSentence(s
+            , "SELECT ID, NAME, APPPASSWORD, CARD, ROLE, IMAGE FROM PEOPLE WHERE CARD = ? AND VISIBLE = " + s.DB.TRUE()
+            , SerializerWriteString.INSTANCE
+            , peopleread);
          
         m_resourcebytes = new PreparedSentence(s
             , "SELECT CONTENT FROM RESOURCES WHERE NAME = ?"
@@ -131,9 +141,6 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     
     public final String findVersion() throws BasicException {
         return (String) m_version.find(AppLocal.APP_ID);
-    }
-    public final String findLibreposVersion() throws BasicException {
-        return (String) m_libreposversion.find();
     }
     public final void execDummy() throws BasicException {
         m_dummy.exec();

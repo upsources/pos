@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.printer.escpos;
 
@@ -30,7 +30,7 @@ public class PrinterWritterFile extends PrinterWritter {
         m_out = null;
     }  
     
-    protected void daemonWrite(byte[] data) {
+    protected void internalWrite(byte[] data) {
         try {  
             if (m_out == null) {
                 m_out = new FileOutputStream(m_sFilePrinter);  // No poner append = true.
@@ -41,7 +41,7 @@ public class PrinterWritterFile extends PrinterWritter {
         }    
     }
     
-    protected void daemonFlush() {
+    protected void internalFlush() {
         try {  
             if (m_out != null) {
                 m_out.flush();
@@ -53,7 +53,7 @@ public class PrinterWritterFile extends PrinterWritter {
         }    
     }
     
-    protected void daemonClose() {
+    protected void internalClose() {
         try {  
             if (m_out != null) {
                 m_out.flush();

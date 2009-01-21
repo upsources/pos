@@ -19,7 +19,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.possync;
 
@@ -52,7 +52,7 @@ import com.openbravo.pos.ticket.TicketLineInfo;
  * Created on 5 de marzo de 2007, 19:56
  *
  */
-public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
+public class DataLogicIntegration extends BeanFactoryDataSingle {
     
     protected Session s;
 
@@ -64,9 +64,44 @@ public abstract class DataLogicIntegration extends BeanFactoryDataSingle {
         this.s = s;
     }
      
-    public abstract void syncCustomersBefore() throws BasicException;
-    
-    public abstract void syncCustomer(final CustomerInfoExt customer) throws BasicException;
+    public void syncCustomersBefore() throws BasicException {
+        new StaticSentence(s, "UPDATE CUSTOMERS SET VISIBLE = " + s.DB.FALSE()).exec();
+    }
+
+    public void syncCustomer(final CustomerInfoExt customer) throws BasicException {
+
+        Transaction t = new Transaction(s) {
+            public Object transact() throws BasicException {
+                // Sync the Customer in a transaction
+
+                // Try to update
+                if (new PreparedSentence(s,
+                            "UPDATE CUSTOMERS SET SEARCHKEY = ?, NAME = ?, NOTES = ?, VISIBLE = " + s.DB.TRUE() + " WHERE ID = ?",
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, customer.getSearchkey());
+                                setString(2, customer.getName());
+                                setString(3, customer.getAddress());
+                                setString(4, customer.getId());
+                            }}) == 0) {
+
+                    // If not updated, try to insert
+                    new PreparedSentence(s,
+                            "INSERT INTO CUSTOMERS(ID, SEARCHKEY, NAME, NOTES, VISIBLE) VALUES (?, ?, ?, ?, " + s.DB.TRUE() + ")",
+                            SerializerWriteParams.INSTANCE
+                            ).exec(new DataParams() { public void writeValues() throws BasicException {
+                                setString(1, customer.getId());
+                                setString(2, customer.getSearchkey());
+                                setString(3, customer.getName());
+                                setString(4, customer.getAddress());
+                            }});
+                }
+
+                return null;
+            }
+        };
+        t.execute();
+    }
         
     
     public void syncProductsBefore() throws BasicException {

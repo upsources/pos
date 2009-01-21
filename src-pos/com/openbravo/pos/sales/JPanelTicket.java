@@ -135,9 +135,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     public void init(AppView app) throws BeanFactoryException {
         
         m_App = app;
-        dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
-        dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");
-        dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");
+        dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystem");
+        dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
+        dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
                     
         // borramos el boton de bascula si no hay bascula conectada
         if (!m_App.getDeviceScale().existsScale()) {
@@ -1345,7 +1345,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel2.add(m_jEditLine);
 
         jEditAttributes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/colorize.png"))); // NOI18N
-        jEditAttributes.setEnabled(false);
         jEditAttributes.setFocusPainted(false);
         jEditAttributes.setFocusable(false);
         jEditAttributes.setMargin(new java.awt.Insets(8, 14, 8, 14));
@@ -1669,20 +1668,27 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void jEditAttributesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEditAttributesActionPerformed
 
-//        int i = m_ticketlines.getSelectedIndex();
-//        if (i < 0){
-//            Toolkit.getDefaultToolkit().beep(); // no line selected
-//        } else {
-//            try {
-//                TicketLineInfo line = m_oTicket.getLine(i);
-//                JProductAttEdit attedit = JProductAttEdit.getAttributesEditor(this, m_App.getSession());
-//                attedit.editAttributes(line.getProductAttSetId(), null);
-//                attedit.setVisible(true);
-//            } catch (BasicException ex) {
-//                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
-//                msg.show(this);
-//            }
-//        }
+        int i = m_ticketlines.getSelectedIndex();
+        if (i < 0) {
+            Toolkit.getDefaultToolkit().beep(); // no line selected
+        } else {
+            try {
+                TicketLineInfo line = m_oTicket.getLine(i);
+                JProductAttEdit attedit = JProductAttEdit.getAttributesEditor(this, m_App.getSession());
+                attedit.editAttributes(line.getProductAttSetId(), line.getProductAttSetInstId());
+                attedit.setVisible(true);
+                String id = attedit.getAttributeSetInst();
+                if (id != null) {
+                    // The user pressed OK
+                    line.setProductAttSetInstId(id);
+                    line.setProductAttSetInstDesc(attedit.getAttributeSetInstDescription());
+                    paintTicketLine(i, line);
+                }
+            } catch (BasicException ex) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
+                msg.show(this);
+            }
+        }
         
 }//GEN-LAST:event_jEditAttributesActionPerformed
 

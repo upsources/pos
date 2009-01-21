@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,18 +14,21 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
-package com.openbravo.pos.forms;
+package com.openbravo.pos.sales;
+
+import java.awt.Component;
 
 /**
  *
  * @author adrianromero
  */
-public class DataLogicSystemCreate extends BeanFactoryData {
-    
-    /** Creates a new instance of DataLogicSystemCreate */
-    public DataLogicSystemCreate() {
-    }
-    
+public interface JProductAttEditI {
+
+    public String getAttribute();
+    public String getValue();
+
+    public Component getComponent();
+    public void assignSelection();
 }

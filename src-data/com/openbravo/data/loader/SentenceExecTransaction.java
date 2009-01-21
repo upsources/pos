@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.data.loader;
 
@@ -35,8 +35,13 @@ public abstract class SentenceExecTransaction implements SentenceExec {
     }
     
     public final int exec() throws BasicException {
-        return exec(null);
+        return exec((Object) null);
     }
+
+    public final int exec(Object... params) throws BasicException {
+        return exec((Object) params);
+    }
+
     public final int exec(final Object params) throws BasicException {
         
         Transaction<Integer> t = new Transaction<Integer>(m_s) {

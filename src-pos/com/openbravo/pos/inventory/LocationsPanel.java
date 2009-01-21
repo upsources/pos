@@ -28,7 +28,6 @@ import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
 import com.openbravo.data.user.SaveProvider;
 import com.openbravo.pos.forms.AppLocal;
-import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.panels.JPanelTable;
 
@@ -46,7 +45,7 @@ public class LocationsPanel extends JPanelTable {
     }
     
     protected void init() {   
-        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSalesCreate");          
+        DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");          
         tlocations = dlSales.getTableLocations();
         jeditor = new LocationsView(dirty);
     }
@@ -59,14 +58,17 @@ public class LocationsPanel extends JPanelTable {
         return new SaveProvider(tlocations);        
     }
     
+    @Override
     public Vectorer getVectorer() {
         return tlocations.getVectorerBasic(new int[]{1, 2});
     }
     
+    @Override
     public ComparatorCreator getComparatorCreator() {
         return tlocations.getComparatorCreator(new int[] {1, 2});
     }
     
+    @Override
     public ListCellRenderer getListCellRenderer() {
         return new ListCellRendererBasic(tlocations.getRenderStringBasic(new int[]{1}));
     }

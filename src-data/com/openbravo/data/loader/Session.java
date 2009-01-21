@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.data.loader;
 
@@ -36,6 +36,8 @@ public class Session {
     
     private Connection m_c;
     private boolean m_bInTransaction;
+
+    public final SessionDB DB;
     
     /** Creates a new instance of Session */
     public Session(String url, String user, String password) throws SQLException {
@@ -47,6 +49,8 @@ public class Session {
         m_bInTransaction = false;
         
         connect(); // no lazy connection
+
+        DB = getDiff();
     }
     
     public void connect() throws SQLException {
@@ -135,13 +139,27 @@ public class Session {
             connect();
         }
     }  
-    
-    public String getDatabaseName() throws SQLException {
-        
-        return getConnection().getMetaData().getDatabaseProductName();                   
-    }
-    
+
     public String getURL() throws SQLException {
         return getConnection().getMetaData().getURL();
+    }
+
+    private SessionDB getDiff() throws SQLException {
+
+        String sdbmanager = getConnection().getMetaData().getDatabaseProductName();
+
+        if ("HSQL Database Engine".equals(sdbmanager)) {
+            return new SessionDBHSQLDB();
+        } else if ("MySQL".equals(sdbmanager)) {
+            return new SessionDBMySQL();
+        } else if ("PostgreSQL".equals(sdbmanager)) {
+            return new SessionDBPostgreSQL();
+        } else if ("Oracle".equals(sdbmanager)) {
+            return new SessionDBOracle();
+        } else if ("Apache Derby".equals(sdbmanager)) {
+            return new SessionDBDerby();
+        } else {
+            return new SessionDBGeneric(sdbmanager);
+        }
     }
 }
