@@ -46,7 +46,7 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         m_jName.setEnabled(false);
     }
     public void writeValueInsert() {
-        m_oId = null;
+        m_oId = UUID.randomUUID().toString();
         m_jName.setText(null);
         m_jName.setEnabled(true);
     }
@@ -69,7 +69,7 @@ public class TaxCategoriesEditor extends JPanel implements EditorRecord {
         
         Object[] taxcustcat = new Object[2];
 
-        taxcustcat[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
+        taxcustcat[0] = m_oId;
         taxcustcat[1] = m_jName.getText();
 
         return taxcustcat;

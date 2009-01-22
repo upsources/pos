@@ -23,10 +23,10 @@
      
     <display animation="scroll">
         <line>
-            <text align="center" length="20">Openbravo POS</text>
+            <text>Openbravo POS</text>
         </line>
         <line>
-            <text align="center" length="20">Welcome</text>
+            <text>   Welcome   </text>
         </line>
     </display>
 </output>

@@ -28,60 +28,81 @@ import java.util.UUID;
 
 /**
  *
- * @author  adrianromero
+ * @author adrian
  */
-public class AttributeSetsEditor extends javax.swing.JPanel implements EditorRecord {
+public class AttributeValuesEditor extends javax.swing.JPanel implements EditorRecord {
 
     private Object id;
+    private Object attid;
 
-    /** Creates new form AttributesEditor */
-    public AttributeSetsEditor(DirtyManager dirty) {
+    private Object insertid;
+
+    /** Creates new form AttributesValuesEditor */
+    public AttributeValuesEditor(DirtyManager dirty) {
+        
         initComponents();
 
-        m_jName.getDocument().addDocumentListener(dirty);
-
-        writeValueEOF();
+        jValue.getDocument().addDocumentListener(dirty);
     }
+
+    public void setInsertId(String insertid) {
+
+        this.insertid = insertid;
+    }
+
+    public void refresh() {
+    }
+
     public void writeValueEOF() {
-        id = null;
-        m_jName.setText(null);
-        m_jName.setEnabled(false);
-    }
-    public void writeValueInsert() {
-        id = UUID.randomUUID().toString();
-        m_jName.setText(null);
-        m_jName.setEnabled(true);
-    }
-    public void writeValueDelete(Object value) {
 
-        Object[] attrset = (Object[]) value;
-        id = attrset[0];
-        m_jName.setText(Formats.STRING.formatValue(attrset[1]));
-        m_jName.setEnabled(false);
+        id = null;
+        attid = null;
+        jValue.setText(null);
+
+        jValue.setEnabled(false);
     }
+
+    public void writeValueInsert() {
+
+        id = UUID.randomUUID().toString();
+        attid = insertid;
+        jValue.setText(null);
+
+        jValue.setEnabled(true);
+    }
+
     public void writeValueEdit(Object value) {
 
-        Object[] attrset = (Object[]) value;
-        id = attrset[0];
-        m_jName.setText(Formats.STRING.formatValue(attrset[1]));
-        m_jName.setEnabled(true);
+        Object[] obj = (Object[]) value;
+
+        id = obj[0];
+        attid = obj[1];
+        jValue.setText(Formats.STRING.formatValue(obj[2]));
+
+        jValue.setEnabled(true);
     }
 
-    public Object createValue() throws BasicException {
+    public void writeValueDelete(Object value) {
 
-        Object[] attrset = new Object[2];
+        Object[] obj = (Object[]) value;
 
-        attrset[0] = id;
-        attrset[1] = m_jName.getText();
+        id = obj[0];
+        attid = obj[1];
+        jValue.setText(Formats.STRING.formatValue(obj[2]));
 
-        return attrset;
+        jValue.setEnabled(false);
     }
 
     public Component getComponent() {
         return this;
     }
 
-    public void refresh() {
+    public Object createValue() throws BasicException {
+        return new Object[] {
+            id,
+            attid,
+            Formats.STRING.formatValue(jValue.getText())
+        };
     }
 
     /** This method is called from within the constructor to
@@ -94,9 +115,9 @@ public class AttributeSetsEditor extends javax.swing.JPanel implements EditorRec
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        m_jName = new javax.swing.JTextField();
+        jValue = new javax.swing.JTextField();
 
-        jLabel2.setText(AppLocal.getIntString("Label.Name")); // NOI18N
+        jLabel2.setText(AppLocal.getIntString("label.value")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -107,7 +128,7 @@ public class AttributeSetsEditor extends javax.swing.JPanel implements EditorRec
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jValue, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -117,7 +138,7 @@ public class AttributeSetsEditor extends javax.swing.JPanel implements EditorRec
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(m_jName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -125,7 +146,8 @@ public class AttributeSetsEditor extends javax.swing.JPanel implements EditorRec
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField m_jName;
+    private javax.swing.JTextField jValue;
     // End of variables declaration//GEN-END:variables
+
 
 }

@@ -136,7 +136,7 @@ public class StockDiaryEditor extends javax.swing.JPanel implements EditorRecord
     }
     
     public void writeValueInsert() {
-        m_sID = null;
+        m_sID = UUID.randomUUID().toString();
         m_jdate.setText(Formats.TIMESTAMP.formatValue(DateUtils.getTodayMinutes()));
         m_ReasonModel.setSelectedItem(MovementReason.IN_PURCHASE);
         m_product = null;
@@ -218,7 +218,7 @@ public class StockDiaryEditor extends javax.swing.JPanel implements EditorRecord
     
     public Object createValue() throws BasicException {
         Object[] diary = new Object[7];
-        diary[0] = m_sID == null ? UUID.randomUUID().toString() : m_sID; // si casca que suba la excepcion hacia arriba.
+        diary[0] = m_sID; // si casca que suba la excepcion hacia arriba.
         diary[1] = Formats.TIMESTAMP.parseValue(m_jdate.getText());
         diary[2] = m_ReasonModel.getSelectedKey();
         diary[3] = m_LocationsModel.getSelectedKey();

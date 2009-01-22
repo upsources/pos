@@ -48,6 +48,7 @@ import javax.swing.SwingUtilities;
 public class JProductAttEdit extends javax.swing.JDialog {
 
     private SentenceFind attsetSent;
+    private SentenceList attvaluesSent;
     private SentenceList attinstSent;
     private SentenceList attinstSent2;
     private SentenceFind attsetinstExistsSent;
@@ -92,7 +93,7 @@ public class JProductAttEdit extends javax.swing.JDialog {
                 new SerializerWriteBasic(Datas.STRING, Datas.STRING),
                 SerializerReadString.INSTANCE);
 
-        attinstSent = new PreparedSentence(s, "SELECT A.ID, A.NAME, NULL, NULL " +
+        attinstSent = new PreparedSentence(s, "SELECT A.ID, A.NAME, CAST(NULL AS CHAR), CAST(NULL AS CHAR) " +
                 "FROM ATTRIBUTEUSE AU JOIN ATTRIBUTE A ON AU.ATTRIBUTE_ID = A.ID " +
                 "WHERE AU.ATTRIBUTESET_ID = ? " +
                 "ORDER BY AU.LINENO",
@@ -108,7 +109,9 @@ public class JProductAttEdit extends javax.swing.JDialog {
             new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
                 return new AttributeInstInfo(dr.getString(1), dr.getString(2), dr.getString(3), dr.getString(4));
             }});
-
+        attvaluesSent = new PreparedSentence(s, "SELECT VALUE FROM ATTRIBUTEVALUE WHERE ATTRIBUTE_ID = ?",
+                SerializerWriteString.INSTANCE,
+                SerializerReadString.INSTANCE);
 
         getRootPane().setDefaultButton(m_jButtonOK);
     }
@@ -155,8 +158,17 @@ public class JProductAttEdit extends javax.swing.JDialog {
             itemslist = new ArrayList<JProductAttEditI>();
 
             for (AttributeInstInfo aii : attinstinfo) {
-                
-                JProductAttEditI item = new JProductAttEditItem(aii.getAttid(),  aii.getAttname(), aii.getValue(), m_jKeys);
+
+                JProductAttEditI item;
+
+                List<String> values = attvaluesSent.list(aii.getAttid());
+                if (values.isEmpty()) {
+                    // Does not exist a list of values then a textfield
+                    item = new JProductAttEditItem(aii.getAttid(),  aii.getAttname(), aii.getValue(), m_jKeys);
+                } else {
+                    // Does exist a list with the values
+                    item = new JProductAttListItem(aii.getAttid(),  aii.getAttname(), aii.getValue(), values);
+                }
 
                 itemslist.add(item);
                 jPanel2.add(item.getComponent());

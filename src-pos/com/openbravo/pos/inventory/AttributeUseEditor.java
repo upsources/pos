@@ -91,8 +91,8 @@ public class AttributeUseEditor extends javax.swing.JPanel implements EditorReco
 
     public void writeValueInsert() {
 
-        id = null;
-        attuseid = null;
+        id = UUID.randomUUID().toString();
+        attuseid = insertid;
         attributemodel.setSelectedKey(null);
         jLineno.setText(null);
 
@@ -133,8 +133,8 @@ public class AttributeUseEditor extends javax.swing.JPanel implements EditorReco
     public Object createValue() throws BasicException {
         Object[] value = new Object[5];
 
-        value[0] = id == null ? UUID.randomUUID().toString() : id;
-        value[1] = attuseid == null ? insertid : attuseid;
+        value[0] = id;
+        value[1] = attuseid;
         value[2] = attributemodel.getSelectedKey();
         value[3] = Formats.INT.parseValue(jLineno.getText());
         value[4] = attributemodel.getSelectedText();

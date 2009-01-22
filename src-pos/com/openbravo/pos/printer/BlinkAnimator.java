@@ -26,7 +26,8 @@ package com.openbravo.pos.printer;
 public class BlinkAnimator extends BaseAnimator {
     
     public BlinkAnimator(String line1, String line2) {
-        super(line1, line2);
+        baseLine1 = DeviceTicket.alignLeft(line1, 20);
+        baseLine2 = DeviceTicket.alignLeft(line2, 20);
     }
     
     public void setTiming(int i) {

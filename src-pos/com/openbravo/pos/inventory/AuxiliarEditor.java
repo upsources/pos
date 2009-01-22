@@ -89,8 +89,8 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
     public void writeValueInsert() {
         
-        id = null;
-        product = null;
+        id = UUID.randomUUID().toString();
+        product = insertproduct;
         product2 = null;
         name = null;
         m_jReference.setText(null);
@@ -146,8 +146,8 @@ public class AuxiliarEditor extends javax.swing.JPanel implements EditorRecord {
 
     public Object createValue() throws BasicException {
         return new Object[] {
-            id == null ? UUID.randomUUID().toString() : id, 
-            product == null ? insertproduct : product, 
+            id, 
+            product, 
             product2,
             m_jReference.getText(),
             m_jBarcode.getText(),

@@ -29,6 +29,11 @@ public abstract class BaseAnimator implements DisplayAnimator {
     protected String currentLine1;
     protected String currentLine2; 
     
+    public BaseAnimator() {
+        baseLine1 = null;
+        baseLine2 = null;
+    }
+
     public BaseAnimator(String line1, String line2) {
         baseLine1 = line1;
         baseLine2 = line2;

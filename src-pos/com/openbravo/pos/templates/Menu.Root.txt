@@ -39,6 +39,7 @@
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Auxiliar", "com.openbravo.pos.inventory.AuxiliarPanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Categories", "com.openbravo.pos.inventory.CategoriesPanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.Attributes", "com.openbravo.pos.inventory.AttributesPanel");
+        submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.AttributeValues", "com.openbravo.pos.inventory.AttributeValuesPanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.AttributeSets", "com.openbravo.pos.inventory.AttributeSetsPanel");
         submenu.addPanel("/com/openbravo/images/bookmark.png", "Menu.AttributeUse", "com.openbravo.pos.inventory.AttributeUsePanel");
 

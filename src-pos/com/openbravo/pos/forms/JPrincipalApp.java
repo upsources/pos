@@ -22,7 +22,10 @@ import com.openbravo.basic.BasicException;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import com.openbravo.beans.RoundedBorder;
 import com.openbravo.data.gui.MessageInf;
@@ -34,6 +37,7 @@ import com.openbravo.pos.util.Hashcypher;
 
 //import com.l2fprod.common.swing.JTaskPane;
 //import com.l2fprod.common.swing.JTaskPaneGroup;
+import com.openbravo.pos.util.StringUtils;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
@@ -105,18 +109,28 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
         showView("<NULL>");     
         
         try {
-            
-            ScriptMenu menu = new ScriptMenu();
-            
-            ScriptEngine eng = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
-            eng.put("menu", menu);
-            eng.eval(m_dlSystem.getResourceAsText("Menu.Root"));
-        
-            m_jPanelLeft.setViewportView(menu.getTaskPane());
+
+            m_jPanelLeft.setViewportView(getScriptMenu(m_dlSystem.getResourceAsText("Menu.Root")));
         } catch (ScriptException e) {
-            e.printStackTrace();
-            // Error Message 
+            Logger.getLogger(JPrincipalApp.class.getName()).log(Level.SEVERE, null, e);
+            try {
+                m_jPanelLeft.setViewportView(getScriptMenu(StringUtils.readResource("/com/openbravo/pos/templates/Menu.Root.txt")));
+            } catch (IOException ex) {
+                Logger.getLogger(JPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ScriptException es) {
+                Logger.getLogger(JPrincipalApp.class.getName()).log(Level.SEVERE, null, es);
+            }
         }               
+    }
+
+    private Component getScriptMenu(String menutext) throws ScriptException {
+
+        ScriptMenu menu = new ScriptMenu();
+
+        ScriptEngine eng = ScriptFactory.getScriptEngine(ScriptFactory.BEANSHELL);
+        eng.put("menu", menu);
+        eng.eval(menutext);
+        return menu.getTaskPane();
     }
     
     private void assignMenuButtonIcon() {

@@ -48,7 +48,7 @@ public class AttributesEditor extends javax.swing.JPanel implements EditorRecord
         m_jName.setEnabled(false);
     }
     public void writeValueInsert() {
-        id = null;
+        id = UUID.randomUUID().toString();
         m_jName.setText(null);
         m_jName.setEnabled(true);
     }
@@ -71,7 +71,7 @@ public class AttributesEditor extends javax.swing.JPanel implements EditorRecord
         
         Object[] attr = new Object[2];
 
-        attr[0] = id == null ? UUID.randomUUID().toString() : id;
+        attr[0] = id;
         attr[1] = m_jName.getText();
 
         return attr;

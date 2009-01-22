@@ -187,7 +187,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         reportlock = true;
         // Los valores
         m_jTitle.setText(AppLocal.getIntString("label.recordnew"));
-        m_id = null;
+        m_id = UUID.randomUUID().toString();
         m_jRef.setText(null);
         m_jCode.setText(null);
         m_jName.setText(null);
@@ -330,7 +330,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     public Object createValue() throws BasicException {
         
         Object[] myprod = new Object[17];
-        myprod[0] =  m_id == null ? UUID.randomUUID().toString() : m_id;
+        myprod[0] = m_id;
         myprod[1] = m_jRef.getText();
         myprod[2] = m_jCode.getText();
         myprod[3] = m_jName.getText();

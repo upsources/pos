@@ -102,7 +102,7 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         m_jCatalogAdd.setEnabled(false);
     }
     public void writeValueInsert() {
-        m_id = null;
+        m_id = UUID.randomUUID().toString();
         m_jName.setText(null);
         m_CategoryModel.setSelectedKey(null);
         m_jImage.setImage(null);
@@ -141,7 +141,7 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         
         Object[] cat = new Object[4];
 
-        cat[0] = m_id == null ? UUID.randomUUID().toString() : m_id;
+        cat[0] = m_id;
         cat[1] = m_jName.getText();
         cat[2] = m_CategoryModel.getSelectedKey();
         cat[3] = m_jImage.getImage();

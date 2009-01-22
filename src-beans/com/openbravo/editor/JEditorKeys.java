@@ -389,6 +389,11 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
         add(m_jKeyDot, gridBagConstraints);
 
         m_txtKeys.setPreferredSize(new java.awt.Dimension(0, 0));
+        m_txtKeys.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                m_txtKeysFocusLost(evt);
+            }
+        });
         m_txtKeys.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 m_txtKeysKeyTyped(evt);
@@ -423,6 +428,12 @@ public class JEditorKeys extends javax.swing.JPanel implements EditorKeys {
         }
         
     }//GEN-LAST:event_m_txtKeysKeyTyped
+
+    private void m_txtKeysFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_m_txtKeysFocusLost
+
+        setInactive(editorcurrent); 
+
+    }//GEN-LAST:event_m_txtKeysFocusLost
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

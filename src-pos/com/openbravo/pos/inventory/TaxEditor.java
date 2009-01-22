@@ -125,7 +125,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         jOrder.setEnabled(false);
     }
     public void writeValueInsert() {
-        m_oId = null;
+        m_oId = UUID.randomUUID().toString();
         m_jName.setText(null);
         taxcatmodel.setSelectedKey(null);
         taxcustcatmodel.setSelectedKey(null);
@@ -187,7 +187,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         
         Object[] tax = new Object[8];
 
-        tax[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
+        tax[0] = m_oId;
         tax[1] = m_jName.getText();
         tax[2] = taxcatmodel.getSelectedKey();
         tax[3] = taxcustcatmodel.getSelectedKey(); 

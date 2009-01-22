@@ -55,6 +55,7 @@
     <class name="com.openbravo.pos.inventory.ProductsWarehousePanel"/>    
     <class name="com.openbravo.pos.inventory.CategoriesPanel"/>
     <class name="com.openbravo.pos.inventory.AttributesPanel"/>
+    <class name="com.openbravo.pos.inventory.AttributeValuesPanel"/>
     <class name="com.openbravo.pos.inventory.AttributeSetsPanel"/>
     <class name="com.openbravo.pos.inventory.AttributeUsePanel"/>
         
