@@ -33,9 +33,19 @@
 <span id="ble">
     <logic:present name="places">
         <form action="showPlace.do" method="get">
+            <input type="hidden" name="floorId" value="javascript:getFloorId();" />
             <% ArrayList places = (ArrayList) request.getSession().getAttribute("places");%>
             <c:forEach var="place" items="${places}">
-                <br><button name="id" value="${place.id}" type="submit" class="floor">${place.name}</button>
+                <c:set var="var" value="false" />
+                <c:forEach var="busy" items="${busy}">
+                    <c:if test="${place.id == busy.id}">
+                        <button name="id" value="${place.id}" type="submit" class="busy">${place.name}</button>
+                        <c:set var="var" value="true" />
+                    </c:if>
+                </c:forEach>
+                <c:if test="${var == false}">
+                    <button name="id" value="${place.id}" type="submit" class="floor">${place.name}</button>
+                </c:if>
             </c:forEach>
         </form>
     </logic:present>

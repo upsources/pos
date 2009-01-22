@@ -107,6 +107,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
                 request.setAttribute("floorId", floorId);
+                //request.setAttribute("floorName", manager.findFloorById(floorId));
                 request.setAttribute("line", linesList.get(Integer.valueOf(index[0])));
                 request.setAttribute("lineNo", index[0]);
 
@@ -144,6 +145,17 @@ public class PlaceAction extends org.apache.struts.action.Action {
 
         }
 
+        if(floorId == null || floorId.equals("")) {
+            request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
+        } else {
+            //
+            //it must be fixed
+            //
+            //request.setAttribute("floorName", manager.findFloorById(floorId));
+            request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
+        }
+
+        
         request.setAttribute("place", place);
         request.setAttribute("floorId", floorId);
         request.setAttribute("lines", linesList);

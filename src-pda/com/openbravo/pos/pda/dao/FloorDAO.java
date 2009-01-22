@@ -67,6 +67,44 @@ public class FloorDAO extends BaseJdbcDAO {
         return vos;
     }
 
+    public Floor findFloorById(String floorId) {
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Floor vo = null;
+        String sqlStr = "select * from FLOORS where ID = ?";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1, floorId);
+            //execute
+            rs = ps.executeQuery();
+            //transform to VO
+            rs.next();
+            vo = map2VO(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                // close the resources
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
+        }
+
+        return vo;
+    }
+
     @Override
     protected Floor map2VO(ResultSet rs) throws SQLException {
 

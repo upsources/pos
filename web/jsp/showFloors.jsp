@@ -20,7 +20,7 @@
 <%-- 
     Document   : showFloors
     Created on : Nov 10, 2008, 1:24:13 PM
-    Author     : openbravo
+    Author     : jaroslawwozniak
 --%>
 
 
@@ -45,22 +45,37 @@
         <div class="pad">
 
             <form name="FloorForm" method="post">
-                <html:select property="floorId" value="name" onchange="retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');"  >
+                <html:select property="floorId" value="name" onchange="retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');saveFloorId(this.value);"  >
                     <html:options collection="floors" property="id" labelProperty="name"  />
                 </html:select>
             </form>
             <div class="pad2">
                 <span id="ble" >
                     <logic:present name="places">
-                        <form action="showPlace.do" method="post">
-                            <% ArrayList places = (ArrayList) request.getSession().getAttribute("places");%>
+                        <form action="showPlace.do" method="get">
+                            <input type="hidden" name="floorId" value="0" />
+                            <% ArrayList places = (ArrayList) request.getSession().getAttribute("places");%>                          
                             <c:forEach var="place" items="${places}">
-                                <button name="id" value="${place.id}" type="submit" class="floor">${place.name}</button>
-                            </c:forEach>
+                                <c:set var="var" value="false" />
+                                <c:forEach var="busy" items="${busy}">    
+                                    <c:if test="${place.id == busy.id}">
+                                        <button name="id" value="${place.id}" type="submit" class="busy">${place.name}</button>
+                                        <c:set var="var" value="true" />
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${var == false}">
+                                    <button name="id" value="${place.id}" type="submit" class="floor">${place.name}</button>
+                                </c:if>
+                            </c:forEach>                   
                         </form>
                     </logic:present>
                 </span>
             </div>
+        </div>
+        <div class="pad4">
+            <form action="logout.do">
+                <button type="submit">logout</button>
+            </form>
         </div>
     </body>
 

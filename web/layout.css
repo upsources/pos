@@ -22,8 +22,6 @@
   Document   : layout
   Created on : Nov 20, 2008, 10:31:08 AM
   Author     : jaroslawwozniak
-  Description:
-  Purpose of the stylesheet follows.
   */
 
 
@@ -48,12 +46,15 @@
       height:45px;
       width:183px;
       padding-left:20px;
+      padding-bottom:20px;
       border: none;
   }
 
   img.back {
       height:20px;
-      padding:20px;
+      padding-top:3px;
+      padding-left:20px;
+      padding-right:10px;
       border:none;
   }
 
@@ -70,8 +71,18 @@
       margin-left: 40px;
   }
 
+  .pad4 {
+      margin-left: 40px;
+      margin-top:40px;
+  }
+
   .floor {
       width:100px;
+  }
+
+  .busy {
+      width:100px;
+      background-color:#b4f9a6;
   }
 
   h   {

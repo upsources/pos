@@ -68,6 +68,81 @@ public class PlaceDAO extends BaseJdbcDAO {
         return vos;
     }
 
+    public List<Place> findAllBusyPlaceByFloor(String floorId) {
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Place> vos = null;
+        String sqlStr = "SELECT * FROM PLACES P, SHAREDTICKETS S WHERE FLOOR = ? AND P.ID = S.ID";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1, floorId);
+            //execute
+            rs = ps.executeQuery();
+            //transform to VO
+            vos = transformSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                // close the resources
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
+        }
+
+        return vos;
+    }
+
+    public Place findPlaceById(String placeId) {
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Place vo = null;
+        String sqlStr = "Select * from PLACES where ID = ?";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1, placeId);
+            //execute
+            rs = ps.executeQuery();
+            //transform to VO
+            rs.next();
+            vo = map2VO(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                // close the resources
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
+        }
+
+        return vo;
+    }
+
     public void setTableBusy(String placeId, String placeName) {
 
         Connection con = null;

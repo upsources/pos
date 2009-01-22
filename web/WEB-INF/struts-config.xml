@@ -39,6 +39,7 @@
         <forward name="addProduct" path="/addProduct.do" />
         <forward name="productsAjax" path="/productAjaxAction.do" />
         <forward name="removeProduct" path="/removeProduct.do" />
+        <forward name="logout" path="/logout.do" />
     </global-forwards>
     <action-mappings>
         <action input="/showFloors" name="showFloors" path="/showFloors" scope="request"
@@ -74,6 +75,9 @@
         </action>
         <action input="/" name="FloorForm" path="/dynamicFloorAction" scope="request" type="com.openbravo.pos.pda.struts.actions.DynamicFloorAction" validate="false">
             <forward name="success" path="/jsp/showPlace.jsp" />
+        </action>
+        <action path="/logout" type="com.openbravo.pos.pda.struts.actions.LogoutAction" name="logout">
+            <forward name="success" path="/jsp/login.jsp" />
         </action>
         <action path="/Welcome" forward="/jsp/login.jsp"/>
     </action-mappings>

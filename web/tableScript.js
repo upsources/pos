@@ -18,7 +18,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
    */
 
-var categoryId;
+var categoryId, floorId;
 
 function addLoadEvent(func) {
   var oldonload = window.onload;
@@ -201,6 +201,14 @@ function getIndexBackByRemoving(nr, place){
 
 function setCategoryId(id){
     categoryId = id;
+}
+
+function saveFloorId(id){
+    floorId = id;
+}
+
+function getFloorId(){
+    return floorId;
 }
 
 addLoadEvent(stripeTables);

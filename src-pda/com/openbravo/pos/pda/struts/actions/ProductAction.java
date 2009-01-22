@@ -70,6 +70,7 @@ public class ProductAction extends org.apache.struts.action.Action {
         products = manager.findProductsByCategory(manager.findAllCategories().get(0).getId());
         request.setAttribute("products", products);
         request.getSession().setAttribute("place", (String) inputFormPlace.get("place"));
+        request.setAttribute("placeName", manager.findPlaceById((String) inputFormPlace.get("place")));
         request.setAttribute("categories", categories);
         request.setAttribute("floorId", request.getAttribute("floorId"));
 

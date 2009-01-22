@@ -45,7 +45,9 @@
             <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
             <jsp:useBean id="products" type="List<ProductInfo>" scope="request" />
             <jsp:useBean id="place" type="java.lang.String" scope="request" />
-            <a href="showFloors.do?id=${place}"><img alt="back" src="images/back.png" class="back"></a><br>
+            <jsp:useBean id="floorName" type="java.lang.String" scope="request" />
+            <jsp:useBean id="floorId" type="java.lang.String" scope="request" />
+            <a href="showFloors.do?floorId=${floorId}"><img alt="back" src="images/back.png" class="back"></a><%=floorName%><br>
         </div>
         <div class="table">
             <table border="0" id="table" class="pickme">

@@ -43,9 +43,10 @@
         <script type="text/javascript" src="a.js"></script>
     </head>
     <body onload="addLoadEvent(lockRow);">
+        <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
         <div class="logo">
             <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
-            <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back"></a><br>
+                <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back"></a><%=placeName%><br>
         </div>
 
         <form action="#" method="get" >

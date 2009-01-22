@@ -57,10 +57,22 @@ public class RestaurantManager {
         return floor.findAllFloors();
     }
 
+    public String findFloorById(String floorId) {
+        floor = new FloorDAO();
+
+        return floor.findFloorById(floorId).getName();
+    }
+
     public List<Place> findAllPlaces(String floor) {
         place = new PlaceDAO();
 
         return place.findAllPlaceByFloor(floor);
+    }
+
+    public List<Place> findAllBusyTable(String floor) {
+        place = new PlaceDAO();
+
+        return place.findAllBusyPlaceByFloor(floor);
     }
 
     public String findTheFirstFloor() {
@@ -113,6 +125,12 @@ public class RestaurantManager {
     public void setTableBusy(String placeId, TicketInfo ticket) {
         place = new PlaceDAO();
         place.setTableBusy(placeId, ticket.getM_dDate().toString());
+    }
+
+    public String findPlaceById(String placeId) {
+        place = new PlaceDAO();
+
+        return place.findPlaceById(placeId).getName();
     }
 
     public void addLineToTicket(String ticketId, String aCategory, String productIndex) {

@@ -18,8 +18,8 @@
 
 package com.openbravo.pos.pda.struts.actions;
 
-import com.openbravo.pos.pda.struts.forms.FloorForm;
 import com.openbravo.pos.pda.bo.RestaurantManager;
+import com.openbravo.pos.ticket.Floor;
 import com.openbravo.pos.ticket.Place;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.DynaActionForm;
 
 /**
  *
@@ -62,13 +63,21 @@ public class FloorAjaxAction extends org.apache.struts.action.Action {
         return mapping.findForward(FAILURE);
         } 
          */
-        FloorForm formFloor = (FloorForm) form;
+        DynaActionForm aform = (DynaActionForm) form;
         RestaurantManager manager = new RestaurantManager();
+        List busyTables = new ArrayList<Floor>();
         List places = new ArrayList<Place>();
-
-        places = formFloor.getFloorId() != null ? manager.findAllPlaces((String) formFloor.getFloorId()) : manager.findAllPlaces(manager.findTheFirstFloor());
+        String floorId = (String) aform.get("floorId");
+        if(((String)aform.get("floorId")).equals("")) {
+            places = manager.findAllPlaces(manager.findTheFirstFloor());
+            busyTables = manager.findAllBusyTable(floorId);
+        } else {
+            places = manager.findAllPlaces(floorId);
+            busyTables = manager.findAllBusyTable(floorId);
+        }
         //System.out.print(places.get(0));
-        request.getSession().setAttribute("floorId", (String) formFloor.getFloorId());
+        request.setAttribute("busy", busyTables);
+        request.getSession().setAttribute("floorId", floorId);
         request.getSession().setAttribute("places", places);
         response.setContentType("text/html");
         return mapping.findForward(SUCCESS);

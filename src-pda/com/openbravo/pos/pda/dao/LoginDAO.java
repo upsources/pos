@@ -36,7 +36,7 @@ public class LoginDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         UserInfo user = null;
-        String sqlStr = "select * from PEOPLE where name = ? and (apppassword = ? || apppassword is null)";
+        String sqlStr = "SELECT NAME, APPPASSWORD FROM PEOPLE WHERE NAME = ? AND (APPPASSWORD = ? OR APPPASSWORD IS NULL)";
 
         try {
             //get connection

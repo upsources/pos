@@ -69,7 +69,7 @@ public class LoginAction extends org.apache.struts.action.Action {
         ActionMessage msg = new ActionMessage("errors.loginfailed", "login/password");
         errors.add(ActionMessages.GLOBAL_MESSAGE, msg);
         saveErrors(request, errors);
-
+        
         return mapping.findForward(FAILURE);
 
     }
