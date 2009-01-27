@@ -68,6 +68,11 @@
             <text align ="right" length="5">x${inventoryline.printMultiply()}</text>
             <text align ="right" length="10">${inventoryline.printSubValue()}</text>
         </line> 
+        #if ($ticketline.productAttSetInstId)
+        <line>
+	        <text align ="left" length="42">    ${ticketline.productAttSetInstDesc}</text>
+        </line>
+        #end
         #end
         
         <line>

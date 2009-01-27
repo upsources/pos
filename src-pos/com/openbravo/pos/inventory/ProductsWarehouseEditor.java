@@ -30,11 +30,12 @@ import com.openbravo.pos.forms.AppLocal;
  * @author adrianromero
  */
 public class ProductsWarehouseEditor extends javax.swing.JPanel implements EditorRecord {
-    
-    public Object m_id;
-    public Object m_ref;
-    public Object m_sName;
-    public Object m_sLocation;
+
+    public Object id;
+    public Object prodid;
+    public Object prodref;
+    public Object prodname;
+    public Object location;
     
     /** Creates new form ProductsWarehouseEditor */
     public ProductsWarehouseEditor(DirtyManager dirty) {
@@ -46,10 +47,11 @@ public class ProductsWarehouseEditor extends javax.swing.JPanel implements Edito
     
     public void writeValueEOF() {
         m_jTitle.setText(AppLocal.getIntString("label.recordeof"));
-        m_id = null;
-        m_ref = null;
-        m_sName = null;
-        m_sLocation = null;
+        id = null;
+        prodid = null;
+        prodref = null;
+        prodname = null;
+        location = null;
         m_jQuantity.setText(null);
         m_jMinimum.setText(null);
         m_jMaximum.setText(null);
@@ -58,10 +60,11 @@ public class ProductsWarehouseEditor extends javax.swing.JPanel implements Edito
     }
     public void writeValueInsert() {
         m_jTitle.setText(AppLocal.getIntString("label.recordnew"));
-        m_id = null;
-        m_ref = null;
-        m_sName = null;
-        m_sLocation = null;
+        id = null;
+        prodid = null;
+        prodref = null;
+        prodname = null;
+        location = null;
         m_jQuantity.setText(null);
         m_jMinimum.setText(null);
         m_jMaximum.setText(null);
@@ -70,40 +73,43 @@ public class ProductsWarehouseEditor extends javax.swing.JPanel implements Edito
     }
     public void writeValueEdit(Object value) {
         Object[] myprod = (Object[]) value;
-        m_id = myprod[0];
-        m_ref = myprod[1];
-        m_sName = myprod[2];
-        m_sLocation = myprod[3];
-        m_jTitle.setText(Formats.STRING.formatValue(myprod[1]) + " - " + Formats.STRING.formatValue(myprod[2]));
-        m_jQuantity.setText(Formats.DOUBLE.formatValue(myprod[6]));
-        m_jMinimum.setText(Formats.DOUBLE.formatValue(myprod[4]));
-        m_jMaximum.setText(Formats.DOUBLE.formatValue(myprod[5]));
+        id = myprod[0];
+        prodid = myprod[1];
+        prodref = myprod[2];
+        prodname = myprod[3];
+        location = myprod[4];
+        m_jTitle.setText(Formats.STRING.formatValue(myprod[2]) + " - " + Formats.STRING.formatValue(myprod[3]));
+        m_jQuantity.setText(Formats.DOUBLE.formatValue(myprod[7]));
+        m_jMinimum.setText(Formats.DOUBLE.formatValue(myprod[5]));
+        m_jMaximum.setText(Formats.DOUBLE.formatValue(myprod[6]));
         m_jMinimum.setEnabled(true);
         m_jMaximum.setEnabled(true);
      }
     public void writeValueDelete(Object value) {
         Object[] myprod = (Object[]) value;
-        m_id = myprod[0];
-        m_ref = myprod[1];
-        m_sName = myprod[2];
-        m_sLocation = myprod[3];
-        m_jTitle.setText(Formats.STRING.formatValue(myprod[1]) + " - " + Formats.STRING.formatValue(myprod[2]) + " " + AppLocal.getIntString("label.recorddeleted"));
-        m_jQuantity.setText(Formats.DOUBLE.formatValue(myprod[6]));
-        m_jMinimum.setText(Formats.DOUBLE.formatValue(myprod[4]));
-        m_jMaximum.setText(Formats.DOUBLE.formatValue(myprod[5]));
+        id = myprod[0];
+        prodid = myprod[1];
+        prodref = myprod[2];
+        prodname = myprod[3];
+        location = myprod[4];
+        m_jTitle.setText(Formats.STRING.formatValue(myprod[2]) + " - " + Formats.STRING.formatValue(myprod[3]));
+        m_jQuantity.setText(Formats.DOUBLE.formatValue(myprod[7]));
+        m_jMinimum.setText(Formats.DOUBLE.formatValue(myprod[5]));
+        m_jMaximum.setText(Formats.DOUBLE.formatValue(myprod[6]));
         m_jMinimum.setEnabled(false);
         m_jMaximum.setEnabled(false);
     }
     public Object createValue() throws BasicException {
-        Object[] productstock = new Object[7];
-        productstock[0] = m_id;
-        productstock[1] = m_ref;
-        productstock[2] = m_sName;
-        productstock[3] = m_sLocation;
-        productstock[4] = Formats.DOUBLE.parseValue(m_jMinimum.getText());
-        productstock[5] = Formats.DOUBLE.parseValue(m_jMaximum.getText());
-        productstock[6] = Formats.DOUBLE.parseValue(m_jQuantity.getText());
-        return productstock;
+        return new Object[] {
+            id,
+            prodid,
+            prodref,
+            prodname,
+            location,
+            Formats.DOUBLE.parseValue(m_jMinimum.getText()),
+            Formats.DOUBLE.parseValue(m_jMaximum.getText()),
+            Formats.DOUBLE.parseValue(m_jQuantity.getText())
+        };
     }
     
     public Component getComponent() {

@@ -61,6 +61,8 @@ public class JProductAttEdit extends javax.swing.JDialog {
     private String attInstanceId;
     private String attInstanceDescription;
 
+    private boolean ok;
+
     /** Creates new form JProductAttEdit */
     private JProductAttEdit(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -142,6 +144,8 @@ public class JProductAttEdit extends javax.swing.JDialog {
             this.attInstanceId = null;
             this.attInstanceDescription = null;
 
+            this.ok = false;
+
             // get attsetinst values
             AttributeSetInfo asi = (AttributeSetInfo) attsetSent.find(attsetid);
 
@@ -178,6 +182,10 @@ public class JProductAttEdit extends javax.swing.JDialog {
                 itemslist.get(0).assignSelection();
             }
         }
+    }
+
+    public boolean isOK() {
+        return ok;
     }
 
     public String getAttributeSetInst() {
@@ -320,45 +328,55 @@ public class JProductAttEdit extends javax.swing.JDialog {
         StringBuilder description = new StringBuilder();
         for (JProductAttEditI item : itemslist) {
             String value = item.getValue();
-            if (description.length() > 0 && value != null && value.length() > 0) {
-                description.append(", ");
+            if (value != null && value.length() > 0) {
+                if (description.length() > 0) {
+                    description.append(", ");
+                }
+                description.append(value);
             }
-            description.append(value);
         }
+
 
 
         String id;
-        try {
-            // Exist an attribute set instance with these values for the attributeset selected
-            id = (String) attsetinstExistsSent.find(attsetid, description.toString());
-        } catch (BasicException ex) {
-            // Logger.getLogger(JProductAttEdit.class.getName()).log(Level.SEVERE, null, ex);
-            return;
-        }
 
-
-        if (id == null) {
-            // No, create a new ATTRIBUTESETINSTANCE and return the ID generated
-            // or return null... That means that that product does not exists....
-            // Maybe these two modes must be supported one for selection and other for creation....
-            id = UUID.randomUUID().toString();
+        if (description.length() == 0) {
+            // No values then id is null
+            id = null;
+        } else {
+            // Some values then an instance should exists.
             try {
-                attsetSave.exec(id, attsetid, description.toString());
-                for (JProductAttEditI item : itemslist) {
-                    attinstSave.exec(UUID.randomUUID().toString(), id, item.getAttribute(), item.getValue());
-                }
-
+                // Exist an attribute set instance with these values for the attributeset selected
+                id = (String) attsetinstExistsSent.find(attsetid, description.toString());
             } catch (BasicException ex) {
                 // Logger.getLogger(JProductAttEdit.class.getName()).log(Level.SEVERE, null, ex);
                 return;
             }
+
+
+            if (id == null) {
+                // No, create a new ATTRIBUTESETINSTANCE and return the ID generated
+                // or return null... That means that that product does not exists....
+                // Maybe these two modes must be supported one for selection and other for creation....
+                id = UUID.randomUUID().toString();
+                try {
+                    attsetSave.exec(id, attsetid, description.toString());
+                    for (JProductAttEditI item : itemslist) {
+                        attinstSave.exec(UUID.randomUUID().toString(), id, item.getAttribute(), item.getValue());
+                    }
+
+                } catch (BasicException ex) {
+                    // Logger.getLogger(JProductAttEdit.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+            }
         }
 
+        ok = true;
         attInstanceId = id;
         attInstanceDescription = description.toString();
 
         dispose();
-
     }//GEN-LAST:event_m_jButtonOKActionPerformed
 
     private void m_jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonCancelActionPerformed

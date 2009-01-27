@@ -169,14 +169,8 @@ public class JInventoryLines extends javax.swing.JPanel {
     
     private static class InventoryTableModel extends AbstractTableModel {
         
-//        private AppView m_App;
-//        private ColumnTicket[] m_acolumns;
         private ArrayList<InventoryLine> m_rows = new ArrayList<InventoryLine>();
         
-//        public TicketTableModel(AppView app, ColumnTicket[] acolumns) {
-//            m_App = app;
-//            m_acolumns = acolumns;
-//        }
         public int getRowCount() {
             return m_rows.size();
         }
@@ -191,7 +185,10 @@ public class JInventoryLines extends javax.swing.JPanel {
             
             InventoryLine i = m_rows.get(row);
             switch (column) {
-                case 0: return i.getProductName();
+                case 0: return "<html>" + i.getProductName() + (
+                        i.getProductAttSetInstDesc() == null
+                        ? ""
+                        : "<br>" + i.getProductAttSetInstDesc());
                 case 1: return "x" + Formats.DOUBLE.formatValue(i.getMultiply());
                 case 2: return Formats.CURRENCY.formatValue(i.getPrice());
                 default: return null;

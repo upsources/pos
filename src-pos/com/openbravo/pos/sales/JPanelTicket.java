@@ -1677,15 +1677,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 JProductAttEdit attedit = JProductAttEdit.getAttributesEditor(this, m_App.getSession());
                 attedit.editAttributes(line.getProductAttSetId(), line.getProductAttSetInstId());
                 attedit.setVisible(true);
-                String id = attedit.getAttributeSetInst();
-                if (id != null) {
+                if (attedit.isOK()) {
                     // The user pressed OK
-                    line.setProductAttSetInstId(id);
+                    line.setProductAttSetInstId(attedit.getAttributeSetInst());
                     line.setProductAttSetInstDesc(attedit.getAttributeSetInstDescription());
                     paintTicketLine(i, line);
                 }
             } catch (BasicException ex) {
-                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindattributes"), ex);
                 msg.show(this);
             }
         }

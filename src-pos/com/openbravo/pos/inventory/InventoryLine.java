@@ -32,6 +32,10 @@ public class InventoryLine {
     
     private String m_sProdID;
     private String m_sProdName;
+
+    private String attsetid;
+    private String attsetinstid;
+    private String attsetinstdesc;
  
     /** Creates a new instance of InventoryLine */
     public InventoryLine(ProductInfoExt oProduct) {
@@ -39,6 +43,9 @@ public class InventoryLine {
         m_sProdName = oProduct.getName();
         m_dMultiply = 1.0;
         m_dPrice = oProduct.getPriceBuy();
+        attsetid = oProduct.getAttributeSetID();
+        attsetinstid = null;
+        attsetinstdesc = null;
     }
     
     public InventoryLine(ProductInfoExt oProduct, double dpor, double dprice) {
@@ -46,6 +53,9 @@ public class InventoryLine {
         m_sProdName = oProduct.getName();
         m_dMultiply = dpor;
         m_dPrice = dprice;
+        attsetid = oProduct.getAttributeSetID();
+        attsetinstid = null;
+        attsetinstdesc = null;
     }
     
     public String getProductID() {
@@ -80,6 +90,26 @@ public class InventoryLine {
         return m_dMultiply * m_dPrice;
     }
     
+    public String getProductAttSetInstId() {
+        return attsetinstid;
+    }
+
+    public void setProductAttSetInstId(String value) {
+        attsetinstid = value;
+    }    
+    
+    public String getProductAttSetId() {
+        return attsetid;
+    }
+
+    public String getProductAttSetInstDesc() {
+        return attsetinstdesc;
+    }
+
+    public void setProductAttSetInstDesc(String value) {
+        attsetinstdesc = value;
+    }
+    
     public String printName() {
         return m_sProdName;
     }
@@ -98,6 +128,5 @@ public class InventoryLine {
     
     public String printSubValue() {
         return Formats.CURRENCY.formatValue(new Double(getSubValue()));
-    }
-    
+    }    
 }
