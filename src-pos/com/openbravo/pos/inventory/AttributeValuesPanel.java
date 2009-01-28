@@ -88,9 +88,9 @@ public class AttributeValuesPanel extends JPanelTable2 {
     private void reload() throws BasicException {
 
         String attid = (String) filter.createValue();
+        editor.setInsertId(attid); // must be set before load
         bd.setEditable(attid != null);
         bd.actionLoad();
-        editor.setInsertId(attid);
     }
 
     public String getTitle() {
