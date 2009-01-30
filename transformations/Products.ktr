@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+  <info>
+    <name>Products</name>
+    <description/>
+    <extended_description/>
+    <trans_version/>
+    <directory>&#47;</directory>
+    <log>
+      <read/>
+      <write/>
+      <input/>
+      <output/>
+      <update/>
+      <rejected/>
+      <connection/>
+      <table/>
+      <step_performance_table/>
+      <use_batchid>Y</use_batchid>
+      <use_logfield>N</use_logfield>
+    </log>
+    <maxdate>
+      <connection/>
+      <table/>
+      <field/>
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file/>
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+  <modified_user>-</modified_user>
+  <modified_date>2009&#47;01&#47;19 11:18:26.732</modified_date>
+  </info>
+  <notepads>
+    <notepad>
+      <note>PRODUCTS SYNCHRONIZATION</note>
+      <xloc>13</xloc>
+      <yloc>12</yloc>
+      <width>184</width>
+      <heigth>23</heigth>
+    </notepad>
+    <notepad>
+      <note>Products
+-----------
+ id &lt;--&gt; ID
+ uPC &lt;--&gt; CODE
+ name &lt;--&gt; NAME
+ productCategory&#47;@id &lt;--&gt; CATEGORY
+ taxCategory&#47;@id &lt;--&gt; TAXCAT
+ imageURL &lt;--&gt; IMAGE
+ attributeSet&#47;@id &lt;--&gt; ATTRIBUTESET_ID
+ priceSell&#47;@price &lt;--&gt; PRICESELL
+ priceBuy&#47;@price &lt;--&gt; PRICEBUY
+ ISCOM = default false
+ ISSCALE = default false</note>
+      <xloc>717</xloc>
+      <yloc>136</yloc>
+      <width>240</width>
+      <heigth>179</heigth>
+    </notepad>
+  </notepads>
+  <connection>
+    <name>openbravoposDB</name>
+    <server/>
+    <type>GENERIC</type>
+    <access>Native</access>
+    <database/>
+    <port>1521</port>
+    <username>${db.user}</username>
+    <password>${db.password}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>CUSTOM_DRIVER_CLASS</code><attribute>${db.driver}</attribute></attribute>
+      <attribute><code>CUSTOM_URL</code><attribute>${db.URL}</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>1521</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
+  <order>
+  <hop> <from>URL</from><to>Parse XML Products</to><enabled>Y</enabled> </hop>  <hop> <from>Boolean</from><to>MYSQL bit</to><enabled>Y</enabled> </hop>  <hop> <from>MYSQL bit</from><to>URL</to><enabled>Y</enabled> </hop>  <hop> <from>Parse XML Products</from><to>Product uPC</to><enabled>Y</enabled> </hop>  <hop> <from>Product uPC</from><to>I&#47;U PRODUCTS</to><enabled>Y</enabled> </hop>  <hop> <from>NOT NULL</from><to>[1] Get missing units</to><enabled>Y</enabled> </hop>  <hop> <from>ATTSETINSTANCE?</from><to>[1] I&#47;U STOCKCURRENT (null)</to><enabled>Y</enabled> </hop>  <hop> <from>[2] Get missing units</from><to>[2] I&#47;U STOCKCURRENT (null)</to><enabled>Y</enabled> </hop>  <hop> <from>[2] I&#47;U STOCKCURRENT (null)</from><to>[2] Update Stocdiary?</to><enabled>Y</enabled> </hop>  <hop> <from>[2] Update Stocdiary?</from><to>[2] UUID</to><enabled>Y</enabled> </hop>  <hop> <from>[2] Update Stocdiary?</from><to>[2] Dummy</to><enabled>Y</enabled> </hop>  <hop> <from>NULL</from><to>[2] Get missing units</to><enabled>Y</enabled> </hop>  <hop> <from>[1] I&#47;U STOCKCURRENT (null)</from><to>[2] Waiting</to><enabled>Y</enabled> </hop>  <hop> <from>[2] Waiting</from><to>NULL</to><enabled>Y</enabled> </hop>  <hop> <from>ATTSETINSTANCE?</from><to>[1] I&#47;U STOCKCURRENT (not null)</to><enabled>Y</enabled> </hop>  <hop> <from>[1] Waiting</from><to>NOT NULL</to><enabled>Y</enabled> </hop>  <hop> <from>[1] Get missing units</from><to>[2] I&#47;U STOCKCURRENT (not null)</to><enabled>Y</enabled> </hop>  <hop> <from>[2] I&#47;U STOCKCURRENT (not null)</from><to>[1] Update Stocdiary?</to><enabled>Y</enabled> </hop>  <hop> <from>[1] Update Stocdiary?</from><to>[1] Dummy</to><enabled>Y</enabled> </hop>  <hop> <from>[1] Update Stocdiary?</from><to>[1] UUID</to><enabled>Y</enabled> </hop>  <hop> <from>[1] I&#47;U STOCKCURRENT (not null)</from><to>[1] Waiting</to><enabled>Y</enabled> </hop>  <hop> <from>Delete PRODUCTS_CAT</from><to>Boolean</to><enabled>Y</enabled> </hop>  <hop> <from>I&#47;U PRODUCTS</from><to>I&#47;U PRODUCTS_CAT</to><enabled>Y</enabled> </hop>  <hop> <from>I&#47;U PRODUCTS_CAT</from><to>ATTSETINSTANCE?</to><enabled>Y</enabled> </hop>  <hop> <from>[1] UUID</from><to>Date</to><enabled>Y</enabled> </hop>  <hop> <from>Date</from><to>[1] STOCKDIARY (exist)</to><enabled>Y</enabled> </hop>  <hop> <from>[2] UUID</from><to>[2] Date</to><enabled>Y</enabled> </hop>  <hop> <from>[2] Date</from><to>[2] STOCKDIARY (exist)</to><enabled>Y</enabled> </hop>  </order>
+  <step>
+    <name>ATTSETINSTANCE?</name>
+    <type>SwitchCase</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<fieldname>PRODUCT_ATTSETINSTANCE_ID</fieldname>
+<case_value_type>String</case_value_type>
+<case_value_format/>
+<case_value_decimal/>
+<case_value_group/>
+<default_target_step>[1] I&#47;U STOCKCURRENT (not null)</default_target_step>
+<cases><case><value/>
+<target_step>[1] I&#47;U STOCKCURRENT (null)</target_step>
+</case></cases>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>576</xloc>
+      <yloc>216</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Boolean</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>falseBoolean</name>
+        <type>Boolean</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>false</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>defaultUnits</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>0</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <limit>1</limit>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>63</xloc>
+      <yloc>373</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Date</name>
+    <type>SystemInfo</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>NOW</name>
+        <type>system date (variable)</type>
+        </field>
+      </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1155</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Delete PRODUCTS_CAT</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <schema/>
+    <table>PRODUCTS_CAT</table>
+    <commit>100000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>64</xloc>
+      <yloc>455</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>I&#47;U PRODUCTS</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>PRODUCTS</table>
+      <key>
+        <name>PRODUCT_ID</name>
+        <field>ID</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>ID</name>
+        <rename>PRODUCT_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>CODE</name>
+        <rename>PRODUCT_CODE</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>NAME</name>
+        <rename>PRODUCT_NAME</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>CATEGORY</name>
+        <rename>PRODUCT_CAT_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>TAXCAT</name>
+        <rename>PRODUCT_TAX_CAT_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>IMAGE</name>
+        <rename>PRODUCT_IMAGE</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESET_ID</name>
+        <rename>PRODUCT_ATT_SET_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>REFERENCE</name>
+        <rename>PRODUCT_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>PRICEBUY</name>
+        <rename>PRODUCT_PRICEBUY</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PRICESELL</name>
+        <rename>PRODUCT_PRICESELL</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ISCOM</name>
+        <rename>falseBoolean</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ISSCALE</name>
+        <rename>falseBoolean</rename>
+        <update>N</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>344</xloc>
+      <yloc>218</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>I&#47;U PRODUCTS_CAT</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>PRODUCTS_CAT</table>
+      <key>
+        <name>PRODUCT_ID</name>
+        <field>PRODUCT</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>PRODUCT</name>
+        <rename>PRODUCT_ID</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>452</xloc>
+      <yloc>220</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>MYSQL bit</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>        <select_unspecified>N</select_unspecified>
+      <meta>        <name>falseBoolean</name>
+        <rename>falseBoolean</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>62</xloc>
+      <yloc>292</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>NOT NULL</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>PRODUCT_QUANTITY</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_QUANTITY</name>
+        <rename>PRODUCT_QUANTITY2</rename>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_WAREHOUSE_ID</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_ID</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_ATTSETINSTANCE_ID</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>507</xloc>
+      <yloc>34</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>NULL</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>      <field>        <name>PRODUCT_QUANTITY</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_QUANTITY</name>
+        <rename>PRODUCT_QUANTITY2</rename>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_WAREHOUSE_ID</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>PRODUCT_ID</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>        <select_unspecified>N</select_unspecified>
+    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>512</xloc>
+      <yloc>408</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Parse XML Products</name>
+    <type>getXMLData</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <namespaceaware>N</namespaceaware>
+    <ignorecomments>N</ignorecomments>
+    <readurl>Y</readurl>
+    <validating>N</validating>
+    <usetoken>N</usetoken>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <rownum_field/>
+    <encoding>UTF-8</encoding>
+    <file>
+      <name/>
+      <filemask/>
+      <file_required>N</file_required>
+    </file>
+    <fields>
+      <field>
+        <name>PRODUCT_ID</name>
+        <xpath>id</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_CODE</name>
+        <xpath>uPC</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_NAME</name>
+        <xpath>name</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_CAT_ID</name>
+        <xpath>productCategory&#47;@id</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_TAX_CAT_ID</name>
+        <xpath>taxCategory&#47;@id</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_IMAGE</name>
+        <xpath>imageURL</xpath>
+        <element_type>node</element_type>
+        <type>Binary</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_ATT_SET_ID</name>
+        <xpath>attributeSet&#47;@id</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_PRICESELL</name>
+        <xpath>priceSell&#47;@price</xpath>
+        <element_type>node</element_type>
+        <type>BigNumber</type>
+        <format>#.00</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_PRICEBUY</name>
+        <xpath>priceBuy&#47;@price</xpath>
+        <element_type>node</element_type>
+        <type>BigNumber</type>
+        <format>#.00</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_QUANTITY</name>
+        <xpath>quantityOnHand&#47;@units</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_ATTSETINSTANCE_ID</name>
+        <xpath>attributeSetInstance&#47;@id</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PRODUCT_WAREHOUSE_ID</name>
+        <xpath>warehouse&#47;@id</xpath>
+        <element_type>node</element_type>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <loopxpath>&#47;ob:Openbravo&#47;Product</loopxpath>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <XmlField>EXTPOS_URL</XmlField>
+    <prunePath/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>147</xloc>
+      <yloc>218</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Product uPC</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <compatible>Y</compatible>
+    <jsScripts>      <jsScript>        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>&#47;&#47;
+if (PRODUCT_CODE.getString() == null) {
+   PRODUCT_CODE.setValue(PRODUCT_ID.getString());
+}
+</jsScript_script>
+      </jsScript>    </jsScripts>    <fields>    </fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>251</xloc>
+      <yloc>219</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>URL</name>
+    <type>GetVariable</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>EXTPOS_URL</name>
+        <variable>${erp.URL}&#47;ExternalPOS?where=client.id=&apos;${erp.id}&apos; and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;erp.id=&apos;${erp.id}&apos;&amp;erp.org=&apos;${erp.org}&apos;&amp;erp.pos=&apos;${erp.pos}&apos;&amp;l=${erp.user}&amp;p=${erp.password}</variable>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>62</xloc>
+      <yloc>219</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] Dummy</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1080</xloc>
+      <yloc>148</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] Get missing units</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <sql>SELECT SC.LOCATION s1_LOC, SC.PRODUCT s1_PRO, SC.ATTRIBUTESETINSTANCE_ID s1_ATTSET_ID, 0 + ? s1_UNITS_INSERT, ? - SC.UNITS s1_UNITS_AFTER, P.PRICESELL s1_PSELL, -1 s1_REASON
+FROM STOCKCURRENT SC JOIN PRODUCTS P ON SC.PRODUCT = P.ID
+WHERE LOCATION=? AND PRODUCT=? AND ATTRIBUTESETINSTANCE_ID = ?</sql>
+    <limit>0</limit>
+    <lookup>NOT NULL</lookup>
+    <execute_each_row>Y</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>637</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] I&#47;U STOCKCURRENT (not null)</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>Y</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>STOCKCURRENT</table>
+      <key>
+        <name>PRODUCT_ID</name>
+        <field>PRODUCT</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PRODUCT_WAREHOUSE_ID</name>
+        <field>LOCATION</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PRODUCT_ATTSETINSTANCE_ID</name>
+        <field>ATTRIBUTESETINSTANCE_ID</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LOCATION</name>
+        <rename>PRODUCT_WAREHOUSE_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>PRODUCT</name>
+        <rename>PRODUCT_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESETINSTANCE_ID</name>
+        <rename>PRODUCT_ATTSETINSTANCE_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>UNITS</name>
+        <rename>defaultUnits</rename>
+        <update>N</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>276</xloc>
+      <yloc>36</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] I&#47;U STOCKCURRENT (null)</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>Y</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>STOCKCURRENT</table>
+      <key>
+        <name>PRODUCT_ID</name>
+        <field>PRODUCT</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>PRODUCT_WAREHOUSE_ID</name>
+        <field>LOCATION</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name/>
+        <field>ATTRIBUTESETINSTANCE_ID</field>
+        <condition>IS NULL</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LOCATION</name>
+        <rename>PRODUCT_WAREHOUSE_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>PRODUCT</name>
+        <rename>PRODUCT_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>UNITS</name>
+        <rename>defaultUnits</rename>
+        <update>N</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>301</xloc>
+      <yloc>408</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] STOCKDIARY (exist)</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>STOCKDIARY</table>
+      <key>
+        <name/>
+        <field>ID</field>
+        <condition>IS NULL</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>ID</name>
+        <rename>UUID1</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>LOCATION</name>
+        <rename>s1_LOC</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PRODUCT</name>
+        <rename>s1_PRO</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESETINSTANCE_ID</name>
+        <rename>s1_ATTSET_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>UNITS</name>
+        <rename>s1_UNITS_AFTER</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PRICE</name>
+        <rename>s1_PSELL</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>REASON</name>
+        <rename>s1_REASON</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>DATENEW</name>
+        <rename>NOW</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1257</xloc>
+      <yloc>30</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] UUID</name>
+    <type>RandomValue</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>UUID1</name>
+        <type>random string</type>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1072</xloc>
+      <yloc>30</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] Update Stocdiary?</name>
+    <type>SwitchCase</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<fieldname>s1_UNITS_AFTER</fieldname>
+<case_value_type>Integer</case_value_type>
+<case_value_format/>
+<case_value_decimal/>
+<case_value_group/>
+<default_target_step>[1] UUID</default_target_step>
+<cases><case><value>0</value>
+<target_step>[1] Dummy</target_step>
+</case></cases>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>970</xloc>
+      <yloc>30</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[1] Waiting</name>
+    <type>BlockingStep</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <pass_all_rows>Y</pass_all_rows>
+      <directory>%%java.io.tmpdir%%</directory>
+      <prefix>block</prefix>
+      <cache_size>100000</cache_size>
+      <compress>Y</compress>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>421</xloc>
+      <yloc>34</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] Date</name>
+    <type>SystemInfo</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>NOW</name>
+        <type>system date (variable)</type>
+        </field>
+      </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1125</xloc>
+      <yloc>403</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] Dummy</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1087</xloc>
+      <yloc>285</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] Get missing units</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <sql>SELECT SC.LOCATION s2_LOC, SC.PRODUCT s2_PRO, SC.ATTRIBUTESETINSTANCE_ID s2_ATTSET_ID, 0 + ? s2_UNITS_INSERT, ? - SC.UNITS s2_UNITS_AFTER, P.PRICESELL s2_PSELL, -1 s2_REASON
+FROM STOCKCURRENT SC JOIN PRODUCTS P ON SC.PRODUCT = P.ID
+WHERE LOCATION=? AND PRODUCT=? AND ATTRIBUTESETINSTANCE_ID is NULL</sql>
+    <limit>0</limit>
+    <lookup>NULL</lookup>
+    <execute_each_row>Y</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>610</xloc>
+      <yloc>409</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] I&#47;U STOCKCURRENT (not null)</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>STOCKCURRENT</table>
+      <key>
+        <name>s1_PRO</name>
+        <field>PRODUCT</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>s1_LOC</name>
+        <field>LOCATION</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>s1_ATTSET_ID</name>
+        <field>ATTRIBUTESETINSTANCE_ID</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LOCATION</name>
+        <rename>s1_LOC</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>PRODUCT</name>
+        <rename>s1_PRO</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESETINSTANCE_ID</name>
+        <rename>s1_ATTSET_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>UNITS</name>
+        <rename>s1_UNITS_INSERT</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>799</xloc>
+      <yloc>31</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] I&#47;U STOCKCURRENT (null)</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>STOCKCURRENT</table>
+      <key>
+        <name>s2_PRO</name>
+        <field>PRODUCT</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>s2_LOC</name>
+        <field>LOCATION</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name/>
+        <field>ATTRIBUTESETINSTANCE_ID</field>
+        <condition>IS NULL</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>LOCATION</name>
+        <rename>s2_LOC</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>PRODUCT</name>
+        <rename>s2_PRO</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESETINSTANCE_ID</name>
+        <rename>s2_ATTSET_ID</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>UNITS</name>
+        <rename>s2_UNITS_INSERT</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>765</xloc>
+      <yloc>410</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] STOCKDIARY (exist)</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>STOCKDIARY</table>
+      <key>
+        <name/>
+        <field>ID</field>
+        <condition>IS NULL</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>ID</name>
+        <rename>UUID2</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>LOCATION</name>
+        <rename>s2_LOC</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PRODUCT</name>
+        <rename>s2_PRO</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESETINSTANCE_ID</name>
+        <rename>s2_ATTSET_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>UNITS</name>
+        <rename>s2_UNITS_AFTER</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>PRICE</name>
+        <rename>s2_PSELL</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>REASON</name>
+        <rename>s2_REASON</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>DATENEW</name>
+        <rename>NOW</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1234</xloc>
+      <yloc>404</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] UUID</name>
+    <type>RandomValue</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>UUID2</name>
+        <type>random string</type>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>1029</xloc>
+      <yloc>406</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] Update Stocdiary?</name>
+    <type>SwitchCase</type>
+    <description/>
+    <distribute>N</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<fieldname>s2_UNITS_AFTER</fieldname>
+<case_value_type>Integer</case_value_type>
+<case_value_format/>
+<case_value_decimal/>
+<case_value_group/>
+<default_target_step>[2] UUID</default_target_step>
+<cases><case><value>0</value>
+<target_step>[2] Dummy</target_step>
+</case></cases>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>921</xloc>
+      <yloc>409</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>[2] Waiting</name>
+    <type>BlockingStep</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <pass_all_rows>Y</pass_all_rows>
+      <directory>%%java.io.tmpdir%%</directory>
+      <prefix>block</prefix>
+      <cache_size>100000</cache_size>
+      <compress>Y</compress>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>432</xloc>
+      <yloc>409</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step_error_handling>
+  </step_error_handling>
+   <slave-step-copy-partition-distribution>
+</slave-step-copy-partition-distribution>
+   <slave_transformation>N</slave_transformation>
+</transformation>
