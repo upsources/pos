@@ -384,7 +384,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(AppLocal.getIntString("form.tickettitle")); // NOI18N
-        setBackground(java.awt.Color.white);
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
