@@ -68,9 +68,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         super(parent, modal);
         initComponents();       
         
-        this.applyComponentOrientation(o);
-        
-        getRootPane().setDefaultButton(m_jButtonOK); 
+        this.applyComponentOrientation(o);        
     }    
     
     public void init(AppView app) {
@@ -88,7 +86,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     }
 
     public List<PaymentInfo> getSelectedPayments() {
-        return m_aPaymentInfo.getPayments();        
+        return m_aPaymentInfo.getPayments();
     }
             
     public boolean showDialog(double total, CustomerInfoExt customerext) {
@@ -109,7 +107,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             // No payment panels available            
             m_aPaymentInfo.add(getDefaultPayment(total));
             accepted = true;            
-        } else {        
+        } else {
+            getRootPane().setDefaultButton(m_jButtonOK);
             printState();
             setVisible(true);
         }
