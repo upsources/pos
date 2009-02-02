@@ -42,7 +42,6 @@ public abstract class BaseJdbcDAO {
     protected Connection getConnection() throws Exception {
         try {
             Class.forName(properties.getDriverName());
-            System.out.println(properties.getDBUser() + " "+properties.getDBPassword());
             return DriverManager.getConnection(properties.getUrl(), properties.getDBUser(), properties.getDBPassword());
         } catch (SQLException sqlex) {
             sqlex.printStackTrace();

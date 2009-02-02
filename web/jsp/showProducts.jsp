@@ -24,7 +24,7 @@
 --%>
 
 
-<%@ page pageEncoding="UTF-8" import="java.util.ArrayList, com.openbravo.pos.ticket.ProductInfo" %>
+<%@ page pageEncoding="UTF-8" import="java.util.ArrayList, com.openbravo.pos.ticket.ProductInfoExt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-html" prefix="html" %>
@@ -36,7 +36,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
-        <meta http-equiv="" content="NO-CACHE">
+        <meta name = "viewport" content = "width=device-width">
         <title>Floors</title>
         <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
         <script type="text/javascript" src="tableScript.js"></script>
@@ -48,7 +48,7 @@
             <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
                 <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back"></a><%=placeName%><br>
         </div>
-
+        <div class="pad">
         <form action="#" method="get" >
             <html:select property="categoryId" value="id"
                          onchange="retrieveURL( 'productAjaxAction.do?categoryId=' + this.value, 'productSpan');update();setCategoryId(this.value);" >
@@ -56,31 +56,34 @@
             </html:select>
         </form>
 
-
-        <span id="productSpan" class="table">
+        
+        <span id="productSpan">
             <table class="pickme">
                 <thead>
                     <tr>
                         <th class="name">Item</th>
-                        <th>Price</th>
+                        <th class="normal">Price</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
-                    <c:forEach var="product" items="${products}">
+                    <c:forEach var="product" items="${products}" varStatus="nr">
                         <tr>
                             <td class="name">${product.name}</td>
-                            <td><fmt:formatNumber type="number" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td class="normal"><fmt:formatNumber type="number" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td><a href="#" onclick="getIndexBackByAddingWM5(${nr.count - 1}, <%=request.getSession().getAttribute("place")%>);"><img src="images/plus.png" alt="add" class="button" /></a></td>
+
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
         </span>
-
+        </div>
         <br>
 
         <div class="logo">
-            <br><button onclick="getIndexBack('<%=request.getSession().getAttribute("place")%>');" class="pad3">Add</button>
+            <br><input onclick="getIndexBack('<%=request.getSession().getAttribute("place")%>');" class="pad3" type="submit">
         </div>
 
 

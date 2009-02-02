@@ -21,7 +21,7 @@
 <%--
     Document   : productsAjax
     Created on : Nov 20, 2008, 10:06:21 AM
-    Author     : openbravo
+    Author     : jaroslawwozniak
 --%>
 
 <%@page contentType="text/javascript" pageEncoding="UTF-8"
@@ -30,23 +30,26 @@
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-logic" prefix="logic" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 
-<span id="productSpan" class="table">
+<span id="productSpan" class="middle">
 
 
-    <table class="pickme">
+    <table id="table" class="pickme">
         <thead>
             <tr>
                 <th class="name">Item</th>
-                <th>Price</th>
+                <th class="normal">Price</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
-            <c:forEach var="product" items="${products}">
-                <tr>
-                    <td class="name">${product.name}</td>
-                    <td><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                </tr>
+            <c:forEach var="product" items="${products}" varStatus="nr">
+                        <tr>
+                            <td class="name">${product.name}</td>
+                            <td class="normal"><fmt:formatNumber type="number" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                        <!--    <td><a href="#" onclick="getIndexBackByAddingWM5(${nr.count - 1}, '${place}');"><img src="images/plus.png" alt="add" class="button" /></a></td>-->
+                            <td><a href="#" onclick="getIndexBack('${place}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                        </tr>
             </c:forEach>
         </tbody>
     </table>

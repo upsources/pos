@@ -67,8 +67,12 @@ public class TicketInfo implements Serializable, Externalizable {
         m_aLines = new ArrayList<TicketLineInfo>(); // vacio de lineas
 
         payments = new ArrayList<PaymentInfo>();
-        taxes = null;
+        taxes = new ArrayList<TicketTaxInfo>();
     }
+
+ /*   public int  getLineIndex(){
+
+    } */
 
     public void addLine(TicketLineInfo oLine) {
 
@@ -187,6 +191,10 @@ public class TicketInfo implements Serializable, Externalizable {
         }
 
         return name.toString();
+    }
+
+    public List<TicketLineInfo> getLines() {
+        return m_aLines;
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {

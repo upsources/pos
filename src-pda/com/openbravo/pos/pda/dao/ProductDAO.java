@@ -47,7 +47,6 @@ public class ProductDAO extends BaseJdbcDAO {
             ps.setString(1, productId);
             //execute
             rs = ps.executeQuery();
-            //System.out.println(rs.toString());
             //transform to VO
             vos = (ProductInfo) transformSet(rs).get(0);
 
@@ -87,7 +86,6 @@ public class ProductDAO extends BaseJdbcDAO {
             ps.setString(1, categoryId);
             //execute
             rs = ps.executeQuery();
-            //System.out.println(rs.toString());
             //transform to VO
             vos = transformSet(rs);
 

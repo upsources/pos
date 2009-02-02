@@ -83,8 +83,6 @@ public class FloorAction extends org.apache.struts.action.Action {
             busyTables = manager.findAllBusyTable(floorId);
         }
 
-
-        //System.out.print(places.get(0));
         request.setAttribute("i", 0);
         request.setAttribute("busy", busyTables);
         request.getSession().setAttribute("places", places);

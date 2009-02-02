@@ -68,11 +68,11 @@ public class TaxInfo implements Serializable {
         this.order = order;
     }
 
-    public String getParentid() {
+    public String getParentID() {
         return parentid;
     }
 
-    public void setParentid(String parentid) {
+    public void setParentID(String parentid) {
         this.parentid = parentid;
     }
 
@@ -98,5 +98,9 @@ public class TaxInfo implements Serializable {
 
     public void setTaxcustcategoryid(String taxcustcategoryid) {
         this.taxcustcategoryid = taxcustcategoryid;
+    }
+
+     public Integer getApplicationOrder() {
+        return order == null ? Integer.MAX_VALUE : order.intValue();
     }
 }

@@ -36,45 +36,48 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
+        <meta name = "viewport" content = "width = 240">
         <title>Floors</title>
-        <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
-        <script type="text/javascript" src="a.js"></script>
+        <link rel=StyleSheet href="layout.css" type='text/css' media=screen>
+        <script type='text/javascript' src='a.js'></script>
     </head>
     <body>
         <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
-        <div class="pad">
+        <div>
 
-            <form name="FloorForm" method="post">
+            <form name="FloorForm" method="post" class="pad">
                 <html:select property="floorId" value="name" onchange="retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');saveFloorId(this.value);"  >
                     <html:options collection="floors" property="id" labelProperty="name"  />
                 </html:select>
+
+
             </form>
             <div class="pad2">
-                <span id="ble" >
+                <span id="ble">
                     <logic:present name="places">
-                        <form action="showPlace.do" method="get">
                             <input type="hidden" name="floorId" value="0" />
-                            <% ArrayList places = (ArrayList) request.getSession().getAttribute("places");%>                          
+                            <% ArrayList places = (ArrayList) request.getSession().getAttribute("places");%>
                             <c:forEach var="place" items="${places}">
                                 <c:set var="var" value="false" />
-                                <c:forEach var="busy" items="${busy}">    
+                                <c:forEach var="busy" items="${busy}">
                                     <c:if test="${place.id == busy.id}">
-                                        <button name="id" value="${place.id}" type="submit" class="busy">${place.name}</button>
+                                        <input type=submit name="id" value="${place.name}" onclick="window.location = 'showPlace.do?id=${place.id}';" class="busy">
                                         <c:set var="var" value="true" />
                                     </c:if>
                                 </c:forEach>
-                                <c:if test="${var == false}">
-                                    <button name="id" value="${place.id}" type="submit" class="floor">${place.name}</button>
-                                </c:if>
-                            </c:forEach>                   
-                        </form>
+                                    <c:if test="${var == false}">
+                                       <input type=submit name="id" value="${place.name}" onclick="window.location = 'showPlace.do?id=${place.id}';" class="floor">
+                                    </c:if>
+                               
+                            </c:forEach>
                     </logic:present>
                 </span>
             </div>
         </div>
-        <div class="pad4">
+        <div class="bottom">
             <form action="logout.do">
-                <button type="submit">logout</button>
+                <input type="submit" id="d" value="Logout" style="width:100px;">
+                 
             </form>
         </div>
     </body>

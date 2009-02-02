@@ -19,7 +19,7 @@
 package com.openbravo.pos.pda.struts.actions;
 
 import com.openbravo.pos.pda.bo.RestaurantManager;
-import com.openbravo.pos.ticket.ProductInfo;
+import com.openbravo.pos.ticket.ProductInfoExt;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +53,7 @@ public class ProductAjaxAction extends org.apache.struts.action.Action {
 
         DynaActionForm inputFormPlace = (DynaActionForm) form;
         RestaurantManager manager = new RestaurantManager();
-        List products = new ArrayList<ProductInfo>();
+        List products = new ArrayList<ProductInfoExt>();
         products = manager.findProductsByCategory((String) inputFormPlace.get("categoryId"));
         request.getSession().setAttribute("products", products);
 

@@ -20,7 +20,7 @@ package com.openbravo.pos.pda.struts.actions;
 
 import com.openbravo.pos.pda.bo.RestaurantManager;
 import com.openbravo.pos.pda.struts.forms.FloorForm;
-import com.openbravo.pos.ticket.ProductInfo;
+import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private final static String SUCCESS = "success";
     private final static String EDITING = "editing";
+    private final static String UPDATE = "update";
 
     /**
      * This is the action called from the Struts framework.
@@ -74,7 +75,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
             mode = Integer.valueOf(str);
         }
         List<TicketLineInfo> linesList = new ArrayList<TicketLineInfo>();
-        List products = new ArrayList<ProductInfo>();
+        List products = new ArrayList<ProductInfoExt>();
         TicketInfo ticket;
         switch (mode) {
 
@@ -85,7 +86,9 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 array = floorForm.getParameters();
                 if (array != null) {
                     for (int i = 0; i < array.length; i++) {
-                        linesList.remove(Integer.valueOf(array[i]) - 0);     //strange
+                        if(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() > 0){
+                            linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() - 1);
+                        }
                     }
                 }
                 manager.updateLineFromTicket(place, ticket);
@@ -93,7 +96,15 @@ public class PlaceAction extends org.apache.struts.action.Action {
                     TicketLineInfo li = (TicketLineInfo) line;
                     products.add(manager.findProductById(li.getProductid()));
                 }
-                break;
+                request.setAttribute("product", products.get(0));
+                request.setAttribute("place", place);
+                request.setAttribute("floorId", floorId);
+                //request.setAttribute("floorName", manager.findFloorById(floorId));
+                request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
+                request.setAttribute("lineNo", array[0]);
+                
+                return mapping.findForward(UPDATE);
+                
             //edits lines
             case 2:
                 ticket = manager.findTicket(place);
@@ -128,12 +139,20 @@ public class PlaceAction extends org.apache.struts.action.Action {
                     TicketLineInfo li = (TicketLineInfo) line;
                     products.add(manager.findProductById(li.getProductid()));
                 }
-                break;
+                request.setAttribute("product", products.get(0));
+                request.setAttribute("place", place);
+                request.setAttribute("floorId", floorId);
+                //request.setAttribute("floorName", manager.findFloorById(floorId));
+                request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
+                request.setAttribute("lineNo", array[0]);
+                
+                return mapping.findForward(UPDATE);
 
             //adds new products or just refresh
             default:
                 if (manager.findTicket(place) == null) {
                     manager.initTicket(place);
+                    manager.insertTicket(manager.findTicket(place));
                 } else {
                     linesList = manager.findTicketLines(place);
                 }

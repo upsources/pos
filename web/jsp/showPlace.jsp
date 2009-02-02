@@ -25,7 +25,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"
-        import="java.util.List, com.openbravo.pos.ticket.ProductInfo"%>
+        import="java.util.List, com.openbravo.pos.ticket.ProductInfoExt"%>
 <%@ taglib prefix="html" uri="http://jakarta.apache.org/struts/tags-html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"   %>
 <%@ taglib prefix="bean" uri="http://jakarta.apache.org/struts/tags-bean"  %>
@@ -36,56 +36,99 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
+        <meta name = "viewport" content = "width = 240">
         <LINK REL=StyleSheet HREF="layout.css" TYPE="text/css" MEDIA=screen>
-        <script type="text/javascript" src="tableScript.js"></script>
+        <script type="text/javascript" src='tableScript.js'></script>
+        <script type="text/javascript"
+   src="resources/prototype/prototype-1.6.0.2.js"></script>
+        <script type="text/javascript"
+   src="resources/scriptaculous_js_1.8.1/src/scriptaculous.js"></script>
         <title>JSP Page</title>
+  <script type="text/javascript" language="JavaScript">
+function updateValues(mode, index) {   
+    var nr = (index+1).toString();
+    var url = 'showPlace.do';
+    switch(mode) {
+        //add
+        case 3: var params = 'id=${place}&mode=3&parameters='+index;
+                break;
+        //remove
+        case 1: var params = 'id=${place}&mode=1&parameters='+index;
+                break;
+        //edit
+    }
+    alert("judl");
+    var ajax = new Ajax.Updater(
+        {success: nr},
+         url,
+         {method: 'get', parameters: params});
+   alert("judl2");
+}
+
+</script>
     </head>
     <body>
         <div class="logo">
             <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
-            <jsp:useBean id="products" type="List<ProductInfo>" scope="request" />
+            <jsp:useBean id="products" type="List<ProductInfoExt>" scope="request" />
             <jsp:useBean id="place" type="java.lang.String" scope="request" />
             <jsp:useBean id="floorName" type="java.lang.String" scope="request" />
             <jsp:useBean id="floorId" type="java.lang.String" scope="request" />
-            <a href="showFloors.do?floorId=${floorId}"><img alt="back" src="images/back.png" class="back"></a><%=floorName%><br>
+            <a href='showFloors.do?floorId=${floorId}'><img alt="back" src="images/back.png" class="back"></a><%=floorName%><br>
         </div>
-        <div class="table">
+      
+        <div class="middle">
             <table border="0" id="table" class="pickme">
                 <thead>
                     <tr>
                         <th class="name">Item</th>
-                        <th>Price</th>
-                        <th>Units</th>
-                        <th>Value</th>
+                        <th class="normal">Price</th>
+                        <th class="normal">Units</th>
+                        <th class="normal">Value</th> 
                         <th></th>
                         <th></th>
-                    </tr>
+                        <th></th>
                 </thead>
                 <tbody>
-                    <div id="products">
+                    <div id="products" >
                         <c:forEach var="line" items="${lines}" varStatus="nr">
-                            <tr onclick="">
+                            <tr>                           
                                 <td class="name">${products[nr.count - 1].name}</td>
-
-                                <td><fmt:formatNumber type="number" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                                <td>${line.multiply}</td>
-                                <td><fmt:formatNumber type="number" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                                <td><a href="#" onclick="getIndexBackByAdding(${nr.count - 1}, '${place}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
-                                <td><a href="#" onclick="getIndexBackByRemoving(${nr.count - 1}, '${place}');"><img src="images/minus.png" alt="remove" class="button" /></a></td>
-                                <td><a href="#" onclick="getIndexBackByEditing(${nr.count -1}, '${place}');"><img src="images/star.png" alt="multiply" class="button" /></a></td>
-                            </tr>
+                                <td class="normal"><fmt:formatNumber type="number" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                <td class="normal"><div id="${nr.count}"><fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/></div></td>
+                                <td class="normal" id="ble"><fmt:formatNumber type="number" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                <td><a href="#" onclick="updateValues(3, ${nr.count - 1});"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                                <td><a href="#" onclick="updateValues(1, ${nr.count - 1});"><img src="images/minus.png" alt="remove" class="button" /></a></td>
+                                <td><a href="#" onclick="editLine(${nr.count -1});"><img src="images/star.png" alt="multiply" class="button" /></a></td>
+                            <!--    <script>
+                                    var no = ${nr.count};
+                                    var url = 'showPlace.do';
+                                    var ajax = new Ajax.InPlaceEditor($(no.toString()), url, {
+                                                rows:5,
+                                                ajaxOptions: {method: 'get'}
+                                        });
+                                </script> -->
+                            </tr>                            
                         </c:forEach>
                     </div>
 
                 </tbody>
             </table>
+            <script>
+            var nr = (index+1).toString();
+            var url = 'showPlace.do';
+            var ajax = new Ajax.InPlaceEditor($(nr), url, {
+            rows:5,
+            ajaxOptions: {method: 'get'}
+        });
+        </script>
         </div>
         <br>
         <div class="logo">
 
-            <form action="showProducts.do">
-                <button name="place" value="${place}">Add</button>
-            </form>
+        <br>
+        <div class="bottom">
+           <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:100px;">
         </div>
 
     </body>

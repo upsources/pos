@@ -50,6 +50,7 @@ public class RestaurantManager {
     private LoginDAO login;
     private CategoryDAO category;
     private TaxDAO tax;
+    private TaxesLogic taxesLogic;
 
     public List<Floor> findAllFloors() {
         floor = new FloorDAO();
@@ -100,7 +101,10 @@ public class RestaurantManager {
 
     public ProductInfo findProductById(String productId) {
         product = new ProductDAO();
-
+        if(productId.contains("+")){
+           String[] str = productId.split("+");
+           productId = str[str.length - 1];
+        }
         return product.findProductById(productId);
     }
 
@@ -139,6 +143,8 @@ public class RestaurantManager {
         product = new ProductDAO();
         category = new CategoryDAO();
         tax = new TaxDAO();
+        taxesLogic = new TaxesLogic(tax.getTaxList());
+        
         TicketInfo obj = ticket.getTicket(ticketId);
         ProductInfo productObj = null;
         if (aCategory.equals("undefined")) {
@@ -146,7 +152,10 @@ public class RestaurantManager {
         }
 
         productObj = product.findProductsByCategory(aCategory).get(Integer.valueOf(productIndex));
-        obj.addLine(new TicketLineInfo(productObj, productObj.getPriceSell(), tax.getTax(productObj.getTaxcat())));
+        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryID()));
+        obj.addLine(line);
+        insertLine(line);
+        refreshTax(obj);
 
         ticket.updateTicket(ticketId, obj);
     }
@@ -155,4 +164,22 @@ public class RestaurantManager {
         ticket = new TicketDAO();
         ticket.updateTicket(ticketId, aticket);
     }
+
+    public void insertLine(TicketLineInfo line) {
+        lines = new TicketLineDAO();
+        lines.insertLine(line);
+    }
+
+    public void insertTicket(TicketInfo aticket) {
+        ticket = new TicketDAO();
+        ticket.insertTicket(aticket);
+    }
+
+    public void refreshTax(TicketInfo ticket) {
+        for (TicketLineInfo line : ticket.getLines()) {
+            line.setTax(taxesLogic.getTaxInfo(line.getProductTaxCategoryID(), ticket.getM_Customer()));
+        }
+    }
+
+   
 }

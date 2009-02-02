@@ -36,8 +36,7 @@ public class TicketLineInfo implements Serializable {
     private double price;
     private String productid;
     private Properties attributes;
-    private ProductInfo product;
-    private double value;
+    private transient ProductInfo product;
 
     public TicketLineInfo() {
     }
@@ -48,15 +47,20 @@ public class TicketLineInfo implements Serializable {
         this.multiply = 1.0;
         this.price = price;
         this.tax = tax;
-        attributes = new Properties();
 
         m_sTicket = null;
         m_iLine = -1;
+        attributes = new Properties();
         setProperties();
     }
 
     public void setProperties() {
         attributes.setProperty("product.name", product.getName());
+        attributes.setProperty("product.com", product.isCom() ? "true" : "false");
+        attributes.setProperty("product.taxcategoryid", product.getTaxcat());
+        if (product.getCategoryID() != null) {
+             attributes.setProperty("product.categoryid", product.getCategoryID());
+        }
     }
 
     public Properties getAttributes() {
@@ -115,6 +119,11 @@ public class TicketLineInfo implements Serializable {
         this.tax = tax;
     }
 
+    public double getSubValue() {
+        return price * multiply;
+    }
+
+
     public void setTicket(String ticket, int size) {
         m_sTicket = ticket;
         m_iLine = size;
@@ -122,6 +131,10 @@ public class TicketLineInfo implements Serializable {
 
     public double getValue() {
         return price * multiply;
+    }
+
+    public String getProductTaxCategoryID() {
+        return (attributes.getProperty("product.taxcategoryid"));
     }
 
     public String printPrice() {

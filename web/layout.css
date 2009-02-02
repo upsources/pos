@@ -30,15 +30,15 @@
       margin-top: 4px;
       margin-right:4px;
       margin-bottom:4px;
-      margin-left:4px;
-      padding:20px;
+      margin-left:0px;
+      padding:3px;
   }
 
 
   img.button {
       height:15px;
       width:15px;
-      padding-left:2px;
+      padding-left:1px;
       border:none;
   }
 
@@ -59,12 +59,13 @@
   }
 
   .pad {
-      margin-left: 40px;
+      margin-left: 50px;
       margin-top:10px;
   }
 
   .pad2 {
-      margin-left: 10px;
+      height:140px;
+      margin-left: 2px;
   }
 
   .pad3 {
@@ -72,17 +73,23 @@
   }
 
   .pad4 {
-      margin-left: 40px;
+      margin-left: 50px;
       margin-top:40px;
   }
 
   .floor {
-      width:100px;
+      height:20px;
+      width:70px;
+      font:bold 7px Arial;
+      margin-top:2px;
   }
 
   .busy {
-      width:100px;
+      height:20px;
+      width:70px;
+      font:bold 7px Arial;
       background-color:#b4f9a6;
+      margin-top:2px;
   }
 
   h   {
@@ -95,25 +102,40 @@
       border-bottom:1px solid #333;
   }
   th		{
-      font:bold 12px/17px Arial;
+      
+      font:bold 6px Arial;
       text-align:left;
-      padding:4px;
+      padding:2px;
       border-bottom:1px solid #333;
   }
   th.name{
-      font:bold 12px/17px Arial;
-      padding:4px;
-      width:100px;
+      font:bold 7px Arial;
+      width:55px;
+      max-width:55px;
+      padding:2px;
+     /* width:100px;*/
+  }
+  th.normal {
+      width:35px;
+      padding:2px;
   }
   td	{
-      font:normal 10px/14px Arial;
-      padding:4px;
+      
+      font:normal 7px Arial;
+      padding:2px;
   }
 
   td.name{
-      font:normal 10px/14px Arial;
-      padding:4px;
-      width:100px;
+      font:normal 7px Arial;
+      width:55px;
+      max-width:55px;
+      padding:2px;
+   /*   width:100px;*/
+  }
+
+  td.normal {
+      padding:2px;
+      width:35px;
   }
   tr.odd	{
       background:#e1ffdb;
@@ -128,13 +150,15 @@
   td+td+td {
       text-align:right;
   }
-  div.logo {
+  .logo {
       height:100px;
   }
-  .table {
-      overflow:auto;
-      height:150px;
-      max-height:150px;
+  .middle {  
+      height:140px;
+  }
+  .bottom {
+      padding-left:50px;
+      height:20px;
   }
 
 

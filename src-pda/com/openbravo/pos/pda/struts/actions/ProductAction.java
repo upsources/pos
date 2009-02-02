@@ -20,7 +20,7 @@ package com.openbravo.pos.pda.struts.actions;
 
 import com.openbravo.pos.pda.bo.RestaurantManager;
 import com.openbravo.pos.ticket.CategoryInfo;
-import com.openbravo.pos.ticket.ProductInfo;
+import com.openbravo.pos.ticket.ProductInfoExt;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -66,7 +66,7 @@ public class ProductAction extends org.apache.struts.action.Action {
         RestaurantManager manager = new RestaurantManager();
         List categories = new ArrayList<CategoryInfo>();
         categories = manager.findAllCategories();
-        List products = new ArrayList<ProductInfo>();
+        List products = new ArrayList<ProductInfoExt>();
         products = manager.findProductsByCategory(manager.findAllCategories().get(0).getId());
         request.setAttribute("products", products);
         request.getSession().setAttribute("place", (String) inputFormPlace.get("place"));

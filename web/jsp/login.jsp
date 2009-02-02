@@ -28,6 +28,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name = "viewport" content = "width = 240">
         <title><bean:message key="welcome.title"/></title>
         <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
         <html:base/>
@@ -48,16 +49,16 @@
                         <td ><bean:message key="message.login" /></td>
                     </tr>
                     <tr>
-                        <td><html:text property="login" size="10"/></td>
+                        <td><html:text property="login" size="13"/></td>
                     </tr>
                     <tr>
                         <td><bean:message key="message.password" /></td>
                     </tr>
                     <tr>
-                        <td><html:password property="password" size="10"/></td>
+                        <td><html:password property="password" size="13"/></td>
                     </tr>
                     <tr>
-                        <td><html:submit><bean:message key="button.login" /></html:submit></td>
+                        <td><html:submit style="width:100px;"><bean:message key="button.login" /></html:submit></td>
                     </tr>
                 </tbody>
             </table>

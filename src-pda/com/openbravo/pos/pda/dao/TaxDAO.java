@@ -62,6 +62,32 @@ public class TaxDAO extends BaseJdbcDAO implements Serializable {
         return list.get(0);
     }
 
+     public List<TaxInfo> getTaxList() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String sqlStr = "SELECT ID, NAME, CATEGORY, CUSTCATEGORY, PARENTID, RATE, RATECASCADE, RATEORDER FROM TAXES ORDER BY NAME";
+        List<TaxInfo> list = new ArrayList<TaxInfo>();
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            //execute
+            rs = ps.executeQuery();
+            //transform to VO
+            list = transformSet(rs);
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return list;
+    }
+
+
     @Override
     protected TaxInfo map2VO(ResultSet rs) throws SQLException {
         TaxInfo tax = new TaxInfo();
@@ -69,7 +95,7 @@ public class TaxDAO extends BaseJdbcDAO implements Serializable {
         tax.setName(rs.getString("name"));
         tax.setTaxcategoryid(rs.getString("category"));
         tax.setTaxcustcategoryid(rs.getString("custcategory"));
-        tax.setParentid(rs.getString("parentid"));
+        tax.setParentID(rs.getString("parentid"));
         tax.setRate(rs.getDouble("rate"));
         tax.setCascade(rs.getBoolean("ratecascade"));
         tax.setOrder(rs.getInt("rateorder"));

@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,7 +57,6 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
             rs = ps.executeQuery();
             //transform to VO
             rs.next();
-            //System.out.println(new ObjectInputStream(new BufferedInputStream(rs.getBinaryStream(1))));
             ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(rs.getBinaryStream(1)));
             ticket = (TicketInfo) in.readObject();
 
@@ -85,12 +85,9 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(bytes);
             out.writeObject(ticket);
             ps.setBytes(3, bytes.toByteArray());
-            //   System.out.println(bytes.toString());
             //execute
             ps.executeUpdate();
-        //transform to VO
-        // System.out.println("poszlo  " + id);
-        //System.out.println(new ObjectInputStream(new BufferedInputStream(rs.getBinaryStream(1))));
+
         } catch (Exception ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,6 +114,60 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void insertTicket(TicketInfo ticket){
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String sqlStr = "INSERT INTO TICKETS (ID, TICKETID, PERSON, STATUS, TICKETTYPE) VALUES (?, ?, ?, ?, ?)";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1, ticket.getM_sId());
+            ps.setInt(2, ticket.getM_iTicketId());
+            ps.setString(3, "0");
+            ps.setInt(4, 0);
+            ps.setInt(5, 0);
+            //execute
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+     public void insertReceipt(TicketInfo ticket){
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String sqlStr =  "INSERT INTO RECEIPTS (ID, MONEY, DATENEW, ATTRIBUTES) VALUES (?, ?, ?, ?)";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1, ticket.getM_sId());
+            ps.setString(2, ticket.getM_sActiveCash());
+            ps.setTimestamp(3, new Timestamp(ticket.getM_dDate().getTime()));
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bytes);
+            out.writeObject(ticket.getAttributes());
+            ps.setBytes(4, bytes.toByteArray());
+            //execute
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
 
     @Override
     protected TicketInfo map2VO(ResultSet rs) throws SQLException {

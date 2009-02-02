@@ -75,7 +75,7 @@ public class FloorAjaxAction extends org.apache.struts.action.Action {
             places = manager.findAllPlaces(floorId);
             busyTables = manager.findAllBusyTable(floorId);
         }
-        //System.out.print(places.get(0));
+
         request.setAttribute("busy", busyTables);
         request.getSession().setAttribute("floorId", floorId);
         request.getSession().setAttribute("places", places);
