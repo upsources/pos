@@ -57,12 +57,10 @@ function updateValues(mode, index) {
                 break;
         //edit
     }
-    alert("judl");
     var ajax = new Ajax.Updater(
         {success: nr},
          url,
          {method: 'get', parameters: params});
-   alert("judl2");
 }
 
 </script>
