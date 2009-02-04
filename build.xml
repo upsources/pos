@@ -194,7 +194,7 @@
     <!-- D I S T R I B U T I O N  F I L E S                                -->
     <!-- ================================================================= -->
 
-    <target name="dist" depends="dist.bin,dist.src" description="Generate the release files">
+    <target name="dist" depends="dist.bin,dist.src,sync" description="Generate the release files">
     </target>
 
    
@@ -292,6 +292,26 @@
         <delete dir="${basedir}/build/zip" />
     </target>   
 
+    <!-- ================================================================= -->
+    <!-- S Y N C H R O N I Z A T I O N                                     -->
+    <!-- ================================================================= -->
+
+    <target name="sync" description="Create .obx module and zip all kettle transformations" >	
+	<mkdir dir="${basedir}/build/transformations"/>
+	<mkdir dir="${basedir}/build/org.openbravo.service.rest"/>
+ 	<copy todir="${basedir}/build/transformations">
+            <fileset dir="${basedir}/transformations"/>
+        </copy>
+	<copy todir="${basedir}/build/org.openbravo.service.rest">
+            <fileset dir="${basedir}/org.openbravo.service.rest"/>
+        </copy>
+	<mkdir dir="${dest.dist}" />
+        <zip zipfile="${dest.dist}/transformations.zip" basedir="${basedir}/build/transformations" />
+	<zip zipfile="${dest.dist}/org.openbravo.service.rest.obx" basedir="${basedir}/build/org.openbravo.service.rest"/>
+        <delete dir="${basedir}/build/transformations"/>
+        <delete dir="${basedir}/build/org.openbravo.service.rest" />
+    </target>
+		
     <!-- ================================================================= -->
     <!-- I N S T A L L E R S                                               -->
     <!-- ================================================================= -->  
