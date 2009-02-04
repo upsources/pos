@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2009 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.pda.struts.actions;
 
@@ -74,7 +74,7 @@ public class FloorAction extends org.apache.struts.action.Action {
         //floorId
         String floorId = (String) inputFormPlace.get("floorId");
         List places = new ArrayList<Place>();
-        if (floorId.equals("")) {
+        if (floorId.equals("") || floorId.equals("undefined")) {
             places = manager.findAllPlaces(floors.get(0).getId());
             floorId = floors.get(0).getId();
             busyTables = manager.findAllBusyTable(floorId);

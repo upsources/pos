@@ -1,22 +1,22 @@
 <%--
-    Openbravo POS is a point of sales application designed for touch screens.
-    Copyright (C) 2007 Openbravo, S.L.
-    http://sourceforge.net/projects/openbravopos
+   Openbravo POS is a point of sales application designed for touch screens.
+   Copyright (C) 2007-2009 Openbravo, S.L.
+   http://sourceforge.net/projects/openbravopos
 
-    This program is free software; you can redistribute it and/or modify
+   This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+   (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-   --%>
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
+ --%>
 
 <%-- 
     Document   : showPlace
@@ -39,32 +39,9 @@
         <meta name = "viewport" content = "width = 240">
         <LINK REL=StyleSheet HREF="layout.css" TYPE="text/css" MEDIA=screen>
         <script type="text/javascript" src='tableScript.js'></script>
-        <script type="text/javascript"
-   src="resources/prototype/prototype-1.6.0.2.js"></script>
-        <script type="text/javascript"
-   src="resources/scriptaculous_js_1.8.1/src/scriptaculous.js"></script>
+        <script type="text/javascript" src='a.js'></script>
         <title>JSP Page</title>
-  <script type="text/javascript" language="JavaScript">
-function updateValues(mode, index) {   
-    var nr = (index+1).toString();
-    var url = 'showPlace.do';
-    switch(mode) {
-        //add
-        case 3: var params = 'id=${place}&mode=3&parameters='+index;
-                break;
-        //remove
-        case 1: var params = 'id=${place}&mode=1&parameters='+index;
-                break;
-        //edit
-    }
-    var ajax = new Ajax.Updater(
-        {success: nr},
-         url,
-         {method: 'get', parameters: params});
-}
-
-</script>
-    </head>
+     </head>
     <body>
         <div class="logo">
             <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
@@ -74,7 +51,6 @@ function updateValues(mode, index) {
             <jsp:useBean id="floorId" type="java.lang.String" scope="request" />
             <a href='showFloors.do?floorId=${floorId}'><img alt="back" src="images/back.png" class="back"></a><%=floorName%><br>
         </div>
-      
         <div class="middle">
             <table border="0" id="table" class="pickme">
                 <thead>
@@ -92,41 +68,22 @@ function updateValues(mode, index) {
                         <c:forEach var="line" items="${lines}" varStatus="nr">
                             <tr>                           
                                 <td class="name">${products[nr.count - 1].name}</td>
-                                <td class="normal"><fmt:formatNumber type="number" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                                <td class="normal"><div id="${nr.count}"><fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/></div></td>
-                                <td class="normal" id="ble"><fmt:formatNumber type="number" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                                <td><a href="#" onclick="updateValues(3, ${nr.count - 1});"><img src="images/plus.png" alt="add" class="button" /></a></td>
-                                <td><a href="#" onclick="updateValues(1, ${nr.count - 1});"><img src="images/minus.png" alt="remove" class="button" /></a></td>
-                                <td><a href="#" onclick="editLine(${nr.count -1});"><img src="images/star.png" alt="multiply" class="button" /></a></td>
-                            <!--    <script>
-                                    var no = ${nr.count};
-                                    var url = 'showPlace.do';
-                                    var ajax = new Ajax.InPlaceEditor($(no.toString()), url, {
-                                                rows:5,
-                                                ajaxOptions: {method: 'get'}
-                                        });
-                                </script> -->
+                                <td class="normal"><fmt:formatNumber type="currency" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                <td class="normal" id="mul${nr.count - 1}"><fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/></td>
+                                <td class="normal" id="value${nr.count - 1}"><fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                <td><a href="#" onclick="ajaxCall(3, '${place}', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                                <td><a href="#" onclick="ajaxCall(1, '${place}', '${nr.count - 1}');"><img src="images/minus.png" alt="remove" class="button" /></a></td>
+                                <td><a href="#" onclick="getIndexBackByEditing('${nr.count -1}', '${place}');"><img src="images/star.png" alt="multiply" class="button" /></a></td>
                             </tr>                            
                         </c:forEach>
                     </div>
 
                 </tbody>
             </table>
-            <script>
-            var nr = (index+1).toString();
-            var url = 'showPlace.do';
-            var ajax = new Ajax.InPlaceEditor($(nr), url, {
-            rows:5,
-            ajaxOptions: {method: 'get'}
-        });
-        </script>
-        </div>
+       
         <br>
-        <div class="logo">
-
         <br>
-        <div class="bottom">
-           <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:100px;">
+            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:100px;">
         </div>
 
     </body>

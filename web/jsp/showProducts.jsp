@@ -1,22 +1,23 @@
 <%--
-    Openbravo POS is a point of sales application designed for touch screens.
-    Copyright (C) 2007 Openbravo, S.L.
-    http://sourceforge.net/projects/openbravopos
+   Openbravo POS is a point of sales application designed for touch screens.
+   Copyright (C) 2007-2009 Openbravo, S.L.
+   http://sourceforge.net/projects/openbravopos
 
-    This program is free software; you can redistribute it and/or modify
+   This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+   (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-   --%>
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
+ --%>
+
 <%-- 
     Document   : showProducts
     Created on : Nov 17, 2008, 3:30:52 PM
@@ -42,7 +43,7 @@
         <script type="text/javascript" src="tableScript.js"></script>
         <script type="text/javascript" src="a.js"></script>
     </head>
-    <body onload="addLoadEvent(lockRow);">
+    <body onload="">
         <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
         <div class="logo">
             <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
@@ -51,12 +52,10 @@
         <div class="pad">
         <form action="#" method="get" >
             <html:select property="categoryId" value="id"
-                         onchange="retrieveURL( 'productAjaxAction.do?categoryId=' + this.value, 'productSpan');update();setCategoryId(this.value);" >
+                         onchange="retrieveURL( 'productAjaxAction.do?categoryId=' + this.value, 'productSpan');update();rememberCategory(this.value);" >
                 <html:options collection="categories" property="id" labelProperty="name"  />
             </html:select>
         </form>
-
-        
         <span id="productSpan">
             <table class="pickme">
                 <thead>
@@ -72,7 +71,7 @@
                         <tr>
                             <td class="name">${product.name}</td>
                             <td class="normal"><fmt:formatNumber type="number" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                            <td><a href="#" onclick="getIndexBackByAddingWM5(${nr.count - 1}, <%=request.getSession().getAttribute("place")%>);"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                            <td><a href="#" onclick="ajaxAddProduct(<%=request.getSession().getAttribute("place")%>, '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
 
                         </tr>
                     </c:forEach>
@@ -81,11 +80,9 @@
         </span>
         </div>
         <br>
-
-        <div class="logo">
-            <br><input onclick="getIndexBack('<%=request.getSession().getAttribute("place")%>');" class="pad3" type="submit">
-        </div>
-
+        <br>
+           <!--     <input onclick="getIndexBack('<%=request.getSession().getAttribute("place")%>');" class="pad3" type="submit">
+           -->
 
 
 

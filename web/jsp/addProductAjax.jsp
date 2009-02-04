@@ -17,19 +17,15 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
  --%>
+
 <%-- 
-    Document   : placeAjax
-    Created on : Feb 2, 2009, 1:26:41 PM
+    Document   : addProductAjax
+    Created on : Feb 3, 2009, 5:40:35 PM
     Author     : jaroslawwozniak
 --%>
 
-<%@page contentType="text/javascript" pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
- <span>
- <fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/>
- </span>
- <span>
- <fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/>
- </span>
+
+<!-- here will be the answer after addind a product -->

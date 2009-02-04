@@ -19,7 +19,7 @@
         </form-bean>
         <form-bean name="addProduct" type="com.openbravo.pos.pda.struts.forms.AddedProductForm" />
         <form-bean name="modifyProduct" type="com.openbravo.pos.pda.struts.forms.FloorForm" />
-        <form-bean name="AddedProductForm" type="com.openbravo.pos.pda.struts.forms.AddedProductForm"/>
+        <form-bean name="productsAjax" type="com.openbravo.pos.pda.struts.forms.AddedProductForm"/>
         <form-bean name="showFloors" type="org.apache.struts.action.DynaActionForm">
             <form-property name="floorId" type="java.lang.String" />
         </form-bean>
@@ -68,8 +68,8 @@
         <action input="/jsp/showProducts.jsp" name="productsBean" path="/productAjaxAction" type="com.openbravo.pos.pda.struts.actions.ProductAjaxAction" scope="request">
             <forward name="success" path="/jsp/productsAjax.jsp" />
         </action>
-        <action path="/addProduct" name="addProduct" type="com.openbravo.pos.pda.struts.actions.addProductAction">
-            <forward name="success" path="/showProducts.do" />
+        <action input="/jsp/addProduct.jsp" path="/addProduct" name="addProduct" type="com.openbravo.pos.pda.struts.actions.addProductAction" scope="request">
+            <forward name="success" path="/jsp/addProductAjax.jsp" />
         </action>
         <action input="/" name="modifyProduct" path="/modifyProduct" scope="request" type="com.openbravo.pos.pda.struts.actions.ModifyProductAction">
             <forward name="success" path="/showPlace.do" />

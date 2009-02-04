@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2009 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 
 package com.openbravo.pos.pda.struts.actions;
 
@@ -98,8 +98,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 }
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
-                request.setAttribute("floorId", floorId);
-                //request.setAttribute("floorName", manager.findFloorById(floorId));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
                 
@@ -113,12 +111,9 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 //if null go to default and refresh products. that's why no break
                 products.add(manager.findProductById(linesList.get(Integer.valueOf(index[0])).getProductid()));
 
-
-
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
                 request.setAttribute("floorId", floorId);
-                //request.setAttribute("floorName", manager.findFloorById(floorId));
                 request.setAttribute("line", linesList.get(Integer.valueOf(index[0])));
                 request.setAttribute("lineNo", index[0]);
 
@@ -141,8 +136,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 }
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
-                request.setAttribute("floorId", floorId);
-                //request.setAttribute("floorName", manager.findFloorById(floorId));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
                 
@@ -164,14 +157,14 @@ public class PlaceAction extends org.apache.struts.action.Action {
 
         }
 
-        if(floorId == null || floorId.equals("")) {
+        if(floorId == null || floorId.equals("") || floorId.equals("undefined")) {
             request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
         } else {
             //
             //it must be fixed
             //
-            //request.setAttribute("floorName", manager.findFloorById(floorId));
-            request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
+            request.setAttribute("floorName", manager.findFloorById(floorId));
+            //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
         }
 
         

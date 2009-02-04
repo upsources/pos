@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007 Openbravo, S.L.
+//    Copyright (C) 2007-2009 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -14,12 +14,75 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USAA
 
 var req;
-  var place;
+var place;
+var indexGlobal;
+var category;
 
+  function ajaxCall(mode, place, index){
+       indexGlobal = index;
+       var url = 'showPlace.do?id=';
+       var params;
+       switch(mode) {
+        //add
+        case 3: params = place + '&mode=3&parameters='+index;
+                break;
+        //remove
+        case 1: params = place + '&mode=1&parameters='+index;
+                break;
+       }
 
+      if (window.XMLHttpRequest) { // Non-IE browsers
+        req = new XMLHttpRequest();
+        req.onreadystatechange = startWorking;
+        try {
+            req.open("GET", url + params, true); //was get
+        } catch (e) {
+            alert("Problem Communicating with Server\n"+e);
+        }
+        req.send(null);
+        }
+  }
+
+  function startWorking(){     
+      if (req.readyState == 4) { // Complete
+               if (req.status == 200) {
+                        updatePlace(splitTextIntoSpan(req.responseText), 'value'+indexGlobal, 'mul'+indexGlobal);
+                } else {
+                        alert("Problem with server response:\n " + req.statusText);
+                }
+      }
+  }
+
+function updatePlace(newTextElements, place, place2){
+
+        //loop through newTextElements
+        for ( var i=newTextElements.length-1; i>=0; --i ){
+
+                //check that this begins with
+                if(newTextElements[i].indexOf('<span')>-1){
+
+                        //get the name - between the 1st and 2nd quote mark
+                        startNamePos=newTextElements[i].indexOf('"')+1;
+                        endNamePos=newTextElements[i].indexOf('"',startNamePos);
+                        name=newTextElements[i].substring(startNamePos,endNamePos);
+
+                        //get the content - everything after the first > mark
+                        startContentPos=newTextElements[i].indexOf('>')+1;
+                        content=newTextElements[i].substring(startContentPos);
+                        //Now update the existing Document with this element
+
+                        switch(i) {
+                            case 1:     document.getElementById(place).innerHTML = content;
+                                        break;
+                            case 0:     document.getElementById(place2).innerHTML = content;
+                                        break;
+                        }
+                }
+        }
+ }
  
   function retrieveURL(url, place2) {
     
@@ -57,8 +120,6 @@ var req;
           if (req.readyState == 4) { // Complete
                 if (req.status == 200) { // OK response
                 
-                       // alert("Ajax response: "+req.responseText);
-                
                         //Split the text response into Span elements
                         spanElements = splitTextIntoSpan(req.responseText);
                        // alert("tu dziwka3" + req.responseText);
@@ -74,13 +135,10 @@ var req;
  
         //Split the document
         returnElements=textToSplit.split('</span>')
-        //alert("tu dziwka2" + "spanPos");
         //Process each of the elements  
-        for ( var i=returnElements.length-1; i>=0; --i ){
-                
+        for ( var i=returnElements.length-1; i>=0; --i ){                
                 //Remove everything before the 1st span
                 aspanPos = returnElements[i].indexOf('<span');
-                //alert("tu dziwka" + aspanPos);
                 //if we find a match , take out everything before the span
                 if(aspanPos>0){
                         subString=returnElements[i].substring(aspanPos);
@@ -103,7 +161,7 @@ var req;
  
         //loop through newTextElements
         for ( var i=newTextElements.length-1; i>=0; --i ){
-  
+
                 //check that this begins with 
                 if(newTextElements[i].indexOf('<span')>-1){
                         
@@ -117,7 +175,6 @@ var req;
                         content=newTextElements[i].substring(startContentPos);
                         
                         //Now update the existing Document with this element
-                        
                                 //check that this element exists in the document
                                 if(document.getElementById(place)){
                                 
@@ -129,4 +186,35 @@ var req;
                 }
         }
  }
+
+ function ajaxAddProduct(place, index){
+      var url = 'addProduct.do?place=' + place +'&cat=' + category + '&parameters=' + index;
+
+      if (window.XMLHttpRequest) { // Non-IE browsers
+        req = new XMLHttpRequest();
+        req.onreadystatechange = startWorkingProducts;
+        try {
+            req.open("GET", url, true); //was get
+        } catch (e) {
+            alert("Problem Communicating with Server\n"+e);
+        }
+        req.send(null);
+        }
+  }
+
+  function startWorkingProducts(){
+      if (req.readyState == 4) { // Complete
+               if (req.status == 200) {
+                       
+                } else {
+                        alert("Problem with server response:\n " + req.statusText);
+                }
+      }
+  }
+
+  function rememberCategory(cat){
+      category = cat;
+  }
+
+
  
