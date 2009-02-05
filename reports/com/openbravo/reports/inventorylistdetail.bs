@@ -1,5 +1,5 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2008 Openbravo, S.L.
+//    Copyright (C) 2009 Openbravo, S.L.
 //    http://sourceforge.net/projects/openbravopos
 //
 //    This program is free software; you can redistribute it and/or modify
@@ -18,32 +18,30 @@
 
 report = new com.openbravo.pos.reports.PanelReportBean();
 
-report.setTitleKey("Menu.Inventory");
-report.setReport("/com/openbravo/reports/inventory");
-report.setResourceBundle("com/openbravo/reports/inventory_messages");
+report.setTitleKey("Menu.InventoryListDetail");
+report.setReport("/com/openbravo/reports/inventorylistdetail");
+report.setResourceBundle("com/openbravo/reports/inventorylistdetail_messages");
 
 report.setSentence("SELECT " +
                 "STOCKCURRENT.LOCATION AS LOCATIONID, " +
                 "LOCATIONS.NAME AS LOCATIONNAME, " +
                 "PRODUCTS.REFERENCE, " +
-                "PRODUCTS.NAME AS PRODUCTNAME, " +
+                "PRODUCTS.NAME AS NAME, " +
+                "STOCKCURRENT.ATTRIBUTESETINSTANCE_ID, " +
+                "ATTRIBUTESETINSTANCE.DESCRIPTION, " +
                 "PRODUCTS.CATEGORY, " +
                 "CATEGORIES.NAME AS CATEGORYNAME, " +
-                "SUM(STOCKCURRENT.UNITS) AS UNITS, " +
-                "PRODUCTS.PRICEBUY, " +
-                "PRODUCTS.PRICESELL, " +
-                "COALESCE(PRODUCTS.STOCKVOLUME, 0) AS STOCKVOLUME, " +
-                "COALESCE(PRODUCTS.STOCKCOST, 0) AS STOCKCOST, " +
+                "STOCKCURRENT.UNITS, " +
                 "COALESCE(STOCKLEVEL.STOCKSECURITY, 0) AS STOCKSECURITY, " +
                 "COALESCE(STOCKLEVEL.STOCKMAXIMUM, 0) AS STOCKMAXIMUM " +
                 "FROM STOCKCURRENT " +
                 "JOIN LOCATIONS ON STOCKCURRENT.LOCATION = LOCATIONS.ID " +
                 "JOIN PRODUCTS ON STOCKCURRENT.PRODUCT = PRODUCTS.ID " +
-                "JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID " +
+                "JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID  " +
                 "LEFT OUTER JOIN STOCKLEVEL ON STOCKCURRENT.LOCATION = STOCKLEVEL.LOCATION AND STOCKCURRENT.PRODUCT = STOCKLEVEL.PRODUCT " +
+		        "LEFT OUTER JOIN ATTRIBUTESETINSTANCE ON STOCKCURRENT.ATTRIBUTESETINSTANCE_ID = ATTRIBUTESETINSTANCE.ID " +
                 "WHERE ?(QBF_FILTER) " +
-                "GROUP BY STOCKCURRENT.LOCATION, LOCATIONS.NAME, PRODUCTS.REFERENCE, PRODUCTS.NAME, PRODUCTS.CATEGORY, CATEGORIES.NAME, PRODUCTS.PRICEBUY, PRODUCTS.PRICESELL, PRODUCTS.STOCKVOLUME, PRODUCTS.STOCKCOST, STOCKLEVEL.STOCKSECURITY, STOCKLEVEL.STOCKMAXIMUM " +
-                "ORDER BY STOCKCURRENT.LOCATION, CATEGORIES.NAME, PRODUCTS.NAME");
+                "ORDER BY CATEGORIES.NAME, PRODUCTS.NAME, STOCKCURRENT.LOCATION");
 report.addParameter("PRODUCTS.NAME");
 report.addParameter("PRODUCTS.PRICEBUY");
 report.addParameter("PRODUCTS.PRICESELL");
@@ -57,13 +55,11 @@ report.addField("LOCATIONID", com.openbravo.data.loader.Datas.STRING);
 report.addField("LOCATIONNAME", com.openbravo.data.loader.Datas.STRING);
 report.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
 report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("ATTINSTANCEID", com.openbravo.data.loader.Datas.STRING);
+report.addField("ATTINSTANCEDESC", com.openbravo.data.loader.Datas.STRING);
 report.addField("CATEGORY", com.openbravo.data.loader.Datas.STRING);
 report.addField("CATEGORYNAME", com.openbravo.data.loader.Datas.STRING);
 report.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
-report.addField("PRICEBUY", com.openbravo.data.loader.Datas.DOUBLE);
-report.addField("PRICESELL", com.openbravo.data.loader.Datas.DOUBLE);
-report.addField("STOCKVOLUME", com.openbravo.data.loader.Datas.DOUBLE);
-report.addField("STOCKCOST", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("STOCKSECURITY", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("STOCKMAXIMUM", com.openbravo.data.loader.Datas.DOUBLE);
 

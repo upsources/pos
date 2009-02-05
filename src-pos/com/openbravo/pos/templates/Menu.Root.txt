@@ -55,7 +55,9 @@
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Inventory", "/com/openbravo/reports/inventory.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.Inventory2", "/com/openbravo/reports/inventoryb.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.InventoryBroken", "/com/openbravo/reports/inventorybroken.bs");
+        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.InventoryListDetail", "/com/openbravo/reports/inventorylistdetail.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.InventoryDiff", "/com/openbravo/reports/inventorydiff.bs");
+        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.InventoryDiffDetail", "/com/openbravo/reports/inventorydiffdetail.bs");
     submenu = group.addSubmenu("/com/openbravo/images/contents.png", "Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement");
         submenu.addTitle("Menu.SalesManagement.Reports");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.UserSells", "/com/openbravo/reports/usersales.bs");

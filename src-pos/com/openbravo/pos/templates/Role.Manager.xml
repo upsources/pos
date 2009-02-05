@@ -70,7 +70,9 @@
     <class name="/com/openbravo/reports/inventory.bs"/>
     <class name="/com/openbravo/reports/inventoryb.bs"/>
     <class name="/com/openbravo/reports/inventorybroken.bs"/>
+    <class name="/com/openbravo/reports/inventorylistdetail.bs"/>
     <class name="/com/openbravo/reports/inventorydiff.bs"/>
+    <class name="/com/openbravo/reports/inventorydiffdetail.bs"/>
 
     <class name="com.openbravo.pos.forms.MenuSalesManagement"/>
     <class name="/com/openbravo/reports/usersales.bs"/>
