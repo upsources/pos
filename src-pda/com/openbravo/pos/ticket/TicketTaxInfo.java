@@ -41,7 +41,7 @@ public class TicketTaxInfo {
     
     public void add(double dValue) {
         subtotal += dValue;
-        taxtotal = RoundUtils.round(subtotal * tax.getRate());
+        taxtotal = subtotal * tax.getRate();
     }
     
     public double getSubTotal() {    

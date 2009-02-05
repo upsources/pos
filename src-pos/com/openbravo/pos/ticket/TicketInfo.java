@@ -28,8 +28,6 @@ import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.payment.PaymentInfoMagcard;
-import com.openbravo.pos.payment.PaymentInfoTicket;
-import com.openbravo.pos.util.RoundUtils;
 import com.openbravo.pos.util.StringUtils;
 
 /**
@@ -330,7 +328,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
             }
         } else {
             for (TicketLineInfo line : m_aLines) {
-                sum += RoundUtils.round(line.getTax());
+                sum += line.getTax();
             }
         }
         return sum;

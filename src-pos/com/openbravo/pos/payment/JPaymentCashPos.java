@@ -20,7 +20,6 @@ package com.openbravo.pos.payment;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
@@ -151,9 +150,9 @@ public class JPaymentCashPos extends javax.swing.JPanel implements JPaymentInter
         public void actionPerformed(ActionEvent e) {
             Double tendered = m_jTendered.getDoubleValue();
             if (tendered == null) {
-                m_jTendered.setDoubleValue(RoundUtils.round(amount));
+                m_jTendered.setDoubleValue(amount);
             } else {
-                m_jTendered.setDoubleValue(RoundUtils.round(tendered + amount));
+                m_jTendered.setDoubleValue(tendered + amount);
             }
 
             printState();

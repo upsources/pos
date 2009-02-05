@@ -19,7 +19,6 @@
 package com.openbravo.pos.ticket;
 
 import com.openbravo.format.Formats;
-import com.openbravo.pos.util.RoundUtils;
 
 
 public class TicketTaxInfo {
@@ -43,7 +42,7 @@ public class TicketTaxInfo {
     
     public void add(double dValue) {
         subtotal += dValue;
-        taxtotal = RoundUtils.round(subtotal * tax.getRate());
+        taxtotal = subtotal * tax.getRate();
     }
     
     public double getSubTotal() {    

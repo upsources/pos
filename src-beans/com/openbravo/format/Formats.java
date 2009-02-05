@@ -174,7 +174,8 @@ public abstract class Formats {
     }    
     private static final class FormatsDOUBLE extends Formats {       
         protected String formatValueInt(Object value) {
-            return m_doubleformat.format(((Number) value).doubleValue());
+            double roundedvalue = Math.rint(((Number) value).doubleValue() * 1000000.0) / 1000000.0; // quickfix for 3838
+            return m_doubleformat.format(roundedvalue);
         }   
         protected Object parseValueInt(String value) throws ParseException {
             return new Double(m_doubleformat.parse(value).doubleValue());
@@ -203,7 +204,8 @@ public abstract class Formats {
     }  
     private static final class FormatsCURRENCY extends Formats {       
         protected String formatValueInt(Object value) {
-            return m_currencyformat.format(((Number) value).doubleValue());
+            double roundedvalue = Math.rint(((Number) value).doubleValue() * 1000000.0) / 1000000.0; // quickfix for 3838
+            return m_currencyformat.format(roundedvalue);
         }   
         protected Object parseValueInt(String value) throws ParseException {
             try {
