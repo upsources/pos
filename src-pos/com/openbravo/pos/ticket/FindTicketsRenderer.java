@@ -40,7 +40,7 @@ public class FindTicketsRenderer extends DefaultListCellRenderer {
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
-        setText("<html><table>" + value.toString() +"</html></table>");
+        setText("<html><table>" + value.toString() +"</table></html>");
         setIcon(icoticket);
         return this;
     }   
