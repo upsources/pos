@@ -45,7 +45,9 @@
     <property name="src.data" value="${basedir}/src-data"/>
     <property name="src.beans" value="${basedir}/src-beans"/>
     <property name="src.erp" value="${basedir}/src-erp"/>
-
+    <property name="src.pda" value="${basedir}/src-pda"/>
+    <property name="src.web" value="${basedir}/web"/>
+    <property name="jetty.lib" value="${basedir}/jetty/lib"/>
 
     <!-- where the distribution files go -->
     <property name="dest.dist" value="${basedir}/build/dist"/>
@@ -56,8 +58,8 @@
     <!-- where the class files go -->
     <property name="dest.classes" value="${basedir}/build/classes"/>
 
-    <!-- the path to bitrock -->
-    
+    <!-- where war files go -->
+    <property name="dest.war" value="${basedir}/build/war"/>
 
 
     <!-- ================================================================= -->
@@ -70,6 +72,17 @@
         <delete dir="${dest.jar}" />
     </target>
     
+    <target name="init.pda">
+	<delete dir="${dest.war}" />
+	<mkdir dir="${dest.war}/WEB-INF" />
+	<mkdir dir="${dest.war}/WEB-INF/classes" />
+	<mkdir dir="${dest.war}/WEB-INF/lib" />
+	<mkdir dir="${dest.war}/META-INF" />
+	<mkdir dir="${dest.war}/jsp" />
+	<mkdir dir="${dest.war}/images" />
+	<mkdir dir="${dest.war}/resources" />
+    </target>
+	    
     <!-- ================================================================= -->
     <!-- C O M P I L E                                                     -->
     <!-- ================================================================= -->
@@ -171,7 +184,8 @@
             </fileset>
         </copy>                
     </target>
-    
+
+        
     <!-- ================================================================= -->
     <!-- J A R                                                             -->
     <!-- ================================================================= -->
@@ -188,6 +202,76 @@
              compress="true"
              basedir="${dest.classes}/openbravopos">
         </jar>
+    </target>
+
+    <!-- ================================================================= -->
+    <!-- C O M P I L E - P D A   M O D U L E                               -->
+    <!-- ================================================================= -->
+
+
+    <target name="compile.pda" depends="init.pda">
+	<mkdir dir="${dest.classes}/pda" />
+        <javac srcdir="${src.pda}"
+               destdir="${dest.classes}/pda"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               optimize="${javac.optimize}"
+               target="${javac.minVMVersion}">
+	    <classpath>
+                  <fileset dir="${src.web}/WEB-INF/lib">
+                    <include name="**/*.jar"/>
+                  </fileset>
+		  <fileset dir="${jetty.lib}">
+ 	            <include name="**/*.jar"/>
+                  </fileset>
+            </classpath>
+        </javac>
+	
+        <copy todir="${dest.war}/WEB-INF/classes">
+            <fileset dir="${dest.classes}/pda"/>
+        </copy> 
+	<copy todir="${dest.war}/WEB-INF/classes/">
+            <fileset dir="${dest.classes}/pda"/>
+        </copy>               
+    </target>
+
+
+    <!-- ================================================================= -->
+    <!-- W A R                                                            -->
+    <!-- ================================================================= -->
+	
+    <target name="pda.struts.resources" description="Language properties must be copied separately">
+    	<copy todir="${dest.war}/WEB-INF/classes//com/openbravo/pos/pda/struts" >
+		<fileset dir="${src.pda}/com/openbravo/pos/pda/struts" includes="*.properties"/>
+        </copy> 
+    </target>
+
+    <target name="war" depends="compile.pda, pda.struts.resources" description="Generate the .war file.">
+	<copy todir="${dest.war}"  >
+		<fileset dir="${src.web}" includes="*.*"/>
+        </copy>        
+	<copy todir="${dest.war}/WEB-INF">
+            <fileset dir="${src.web}/WEB-INF" includes="*.xml,*.tld"/>
+        </copy>
+	<copy todir="${dest.war}/WEB-INF/lib"  >
+		<fileset dir="${src.web}/WEB-INF/lib" includes="*.jar"/>
+        </copy>
+	<copy todir="${dest.war}/jsp"  >
+		<fileset dir="${src.web}/jsp" includes="*.jsp"/>
+        </copy>
+	<copy todir="${dest.war}/images"  >
+		<fileset dir="${src.web}/images" includes="*.*"/>
+        </copy>
+	<copy todir="${dest.war}/resources"  >
+		<fileset dir="${src.web}/resources" includes="*.*"/>
+        </copy>
+	<copy todir="${src.pda}/com/openbravo/"  >
+		<fileset dir="${src.web}/resources" includes="*.*"/>
+        </copy>
+        <mkdir dir="${dest.dist}" />
+        <war destfile="${dest.dist}/openbravopda.war"
+             basedir="${dest.war}">
+        </war>
     </target>
     
     <!-- ================================================================= -->
@@ -312,11 +396,21 @@
         <delete dir="${basedir}/build/org.openbravo.service.rest" />
     </target>
 		
+    
     <!-- ================================================================= -->
     <!-- I N S T A L L E R S                                               -->
     <!-- ================================================================= -->  
+ 
+    <target name="installer" depends="installer.pos, installer.pda" 
+			description="Generate installers of POS and PDA Module for all predefined platforms">	
+    </target>
 
-    <target name="installer" depends="installer.linux, installer.linux-x64, installer.linux-ia64, installer.windows, installer.osx, installer.solaris-intel" 
+
+    <!-- ================================================================= -->
+    <!-- I N S T A L L E R S   P O S                                            -->
+    <!-- ================================================================= -->  
+
+    <target name="installer.pos" depends="installer.linux, installer.linux-x64, installer.linux-ia64, installer.windows, installer.osx, installer.solaris-intel" 
 			description="Generate installers for all predefined platforms">
 		
     </target>
@@ -372,6 +466,65 @@
 	    <arg value="solaris-intel" /> 
     	</exec> 
     </target>
-		
+
+    <!-- ================================================================= -->
+    <!-- I N S T A L L E R S   P D A                                               -->
+    <!-- ================================================================= -->
+
+
+    <target name="installer.pda" depends="installer.pda.linux, installer.pda.linux-x64, installer.pda.linux-ia64, installer.pda.windows, installer.pda.osx, 						installer.pda.solaris-intel" description="Generate installers for all predefined platforms">		
+    </target>    
+
+    <target name="init.installer.pda">
+	    <mkdir dir="${basedir}/build/installer/pda" /> 
+    </target>    
+
+    <target name="installer.pda.linux" depends="init.installer.pda, war" description="Generate an installer for Linux">
+    	<exec executable="${bitrock}/bin/builder" failonerror="true">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer_pda.xml" />
+	    <arg value="linux" /> 
+    	</exec>
+    </target>
+
+    <target name="installer.pda.linux-x64" depends="init.installer.pda, war" description="Generate an installer for Linux x64">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer_pda.xml" />
+	    <arg value="linux-x64" /> 
+    	</exec> 
+    </target>
+
+   <target name="installer.pda.linux-ia64" depends="init.installer.pda, war" description="Generate an installer for Linux ia64">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer_pda.xml" />
+	    <arg value="linux-ia64" /> 
+    	</exec> 
+    </target>
+
+    <target name="installer.pda.windows" depends="init.installer.pda, war" description="Generate an installer for Windows">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer_pda.xml" />
+	    <arg value="windows" /> 
+    	</exec> 
+    </target>
+
+   <target name="installer.pda.osx" depends="init.installer.pda, war" description="Generate an installer for OSX">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer_pda.xml" />
+	    <arg value="osx" /> 
+    	</exec> 
+    </target>
+
+   <target name="installer.pda.solaris-intel" depends="init.installer.pda, war" description="Generate an installer for Solaris-Intel">
+	<exec executable="${bitrock}/bin/builder" failonerror="true">
+	    <arg value="build"/>
+	    <arg value="${basedir}/installer/installer_pda.xml" />
+	    <arg value="solaris-intel" /> 
+    	</exec> 
+    </target>
 
 </project>
