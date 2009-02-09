@@ -20,7 +20,6 @@ package com.openbravo.pos.panels;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.gui.ListQBFModelNumber;
-import com.openbravo.data.loader.LocalRes;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorCreator;
@@ -37,7 +36,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.swing.JFrame;
 
@@ -52,7 +50,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
     private ComboBoxValModel m_CategoryModel;
     private DataLogicSales dlSales;
     private FindTicketsInfo selectedTicket;
-    private Calendar cal;
    
     /** Creates new form JCustomerFinder */
     private JTicketsFinder(java.awt.Frame parent, boolean modal) {
@@ -83,7 +80,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
     }
 
     private void init(DataLogicSales dlSales) {
-        cal = Calendar.getInstance();
         this.dlSales = dlSales;
         
         initComponents();
@@ -118,29 +114,8 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
     }
     
     private void initCombos() {
-        int year = cal.get(Calendar.YEAR);
         
         jcboMoney.setModel(new ListQBFModelNumber());
-        
-        jcboDayFrom.addItem(null);
-        jcboMonthFrom.addItem(null);
-        jcboYearFrom.addItem(null);
-        jcboDayTo.addItem(null);
-        jcboMonthTo.addItem(null);
-        jcboYearTo.addItem(null);            
-        
-        for (int i = 1; i < 32; i++) {
-            jcboDayFrom.addItem(String.valueOf(i));
-            jcboDayTo.addItem(String.valueOf(i));
-        }
-        for (int i = 1; i < 13; i++) {
-            jcboMonthFrom.addItem(String.valueOf(i));
-            jcboMonthTo.addItem(String.valueOf(i));
-        }
-        for (int i = year; i > year-10; i--) {
-            jcboYearFrom.addItem(String.valueOf(i));
-            jcboYearTo.addItem(String.valueOf(i));
-        }
         
         m_sentcat = dlSales.getUserList();
         m_CategoryModel = new ComboBoxValModel(); 
@@ -153,16 +128,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         }
         catlist.add(0, null);
         m_CategoryModel = new ComboBoxValModel(catlist);
-        jcboUser.setModel(m_CategoryModel);
-
-        ComboBoxValModel cbv = new ComboBoxValModel();
-        cbv.add(null);
-        cbv.add(LocalRes.getIntString("combo.today"));
-        cbv.add(LocalRes.getIntString("combo.month"));
-        cbv.add(LocalRes.getIntString("combo.year"));
-        jcboTimeFrame.setModel(cbv);
-        
-        
+        jcboUser.setModel(m_CategoryModel);      
     }
     
     private void defaultValues() {
@@ -177,14 +143,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jCheckBoxSales.setSelected(false);
         jCheckBoxRefunds.setSelected(false); 
         
-        jcboTimeFrame.setSelectedItem(null);
-        jcboDayFrom.setSelectedItem(null);
-        jcboMonthFrom.setSelectedItem(null);
-        jcboYearFrom.setSelectedItem(null);
-        jcboDayTo.setSelectedItem(null);
-        jcboMonthTo.setSelectedItem(null);
-        jcboYearTo.setSelectedItem(null);
-        
         jcboUser.setSelectedItem(null);
         
         jcboMoney.setSelectedItem( ((ListQBFModelNumber)jcboMoney.getModel()).getElementAt(0) );
@@ -197,7 +155,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
     
     @Override
     public Object createValue() throws BasicException {
-        boolean dateRange = false;
         
         Object[] afilter = new Object[12];
         
@@ -225,77 +182,16 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         // Receipt money
         afilter[5] = jtxtMoney.getDoubleValue();
         afilter[4] = afilter[5] == null ? QBFCompareEnum.COMP_NONE : jcboMoney.getSelectedItem();
-
-        //Timeframe
-        if (jcboTimeFrame.getSelectedItem() == null) {
-            dateRange = true;
-            afilter[6] = QBFCompareEnum.COMP_NONE;
-            afilter[7] = null;
-            afilter[8] = QBFCompareEnum.COMP_NONE;
-            afilter[9] = null;
-        } else {
-            int year = cal.get(Calendar.YEAR);
-            
-            String month = (cal.get(Calendar.MONTH) + 1 < 10) 
-                ? "0"+(cal.get(Calendar.MONTH) + 1)
-                : Integer.toString(cal.get(Calendar.MONTH) + 1);
-            
-            String day = (cal.get(Calendar.DAY_OF_MONTH) < 10) 
-                ? "0"+cal.get(Calendar.DAY_OF_MONTH)
-                : Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
-            
-            if (jcboTimeFrame.getSelectedItem() == LocalRes.getIntString("combo.today")) {
-                afilter[6] = QBFCompareEnum.COMP_RE;
-                afilter[7] = "%" + year +"-"+ month +"-"+ day + "%" ;
-                afilter[8] = QBFCompareEnum.COMP_NONE;
-                afilter[9] = null;
-            } else if (jcboTimeFrame.getSelectedItem() == LocalRes.getIntString("combo.month")) {
-                afilter[6] = QBFCompareEnum.COMP_RE;
-                afilter[7] = "%" + year +"-"+ month + "%";
-                afilter[8] = QBFCompareEnum.COMP_NONE;
-                afilter[9] = null;
-            } else if (jcboTimeFrame.getSelectedItem() == LocalRes.getIntString("combo.year")) {
-                afilter[6] = QBFCompareEnum.COMP_RE;
-                afilter[7] = "%" + Integer.toString(year) + "%";
-                afilter[8] = QBFCompareEnum.COMP_NONE;
-                afilter[9] = null;
-            }
-        }
         
         // Date range
-        if (dateRange) {
-            String dayF = (jcboDayFrom.getSelectedItem() == null) ? "0" : (String)jcboDayFrom.getSelectedItem();
-            String monthF = (jcboMonthFrom.getSelectedItem() == null) ? "1" : (String)jcboMonthFrom.getSelectedItem();
-
-            String dayT = (jcboDayTo.getSelectedItem() == null) ? "32" : String.valueOf( Integer.parseInt((String)jcboDayTo.getSelectedItem()) + 1 );
-            String monthT = (jcboMonthTo.getSelectedItem() == null) ? "12" : (String)jcboMonthTo.getSelectedItem();
-
-            if (jcboYearFrom.getSelectedItem() == null && jcboYearTo.getSelectedItem() == null) {
-                afilter[6] = QBFCompareEnum.COMP_NONE;
-                afilter[7] = null;
-                afilter[8] = QBFCompareEnum.COMP_NONE;
-                afilter[9] = null;
-
-            } else if (jcboYearFrom.getSelectedItem() == null && jcboYearTo.getSelectedItem() != null) {
-                afilter[6] = QBFCompareEnum.COMP_NONE;
-                afilter[7] = null;
-                afilter[8] = QBFCompareEnum.COMP_LESSOREQUALS;
-                afilter[9] = jcboYearTo.getSelectedItem() +"-"+ monthT +"-"+ dayT;
-
-            } else if (jcboYearFrom.getSelectedItem() != null && jcboYearTo.getSelectedItem() == null) {
-                afilter[6] = QBFCompareEnum.COMP_GREATEROREQUALS;
-                afilter[7] = jcboYearFrom.getSelectedItem() +"-"+ monthF +"-"+ dayF;
-                afilter[8] = QBFCompareEnum.COMP_NONE;
-                afilter[9] = null;
-
-            } else {
-                afilter[6] = QBFCompareEnum.COMP_GREATEROREQUALS;
-                afilter[7] = jcboYearFrom.getSelectedItem() +"-"+ monthF +"-"+ dayF;
-                afilter[8] = QBFCompareEnum.COMP_LESSOREQUALS;
-                afilter[9] = jcboYearTo.getSelectedItem() +"-"+ monthT +"-"+ dayT;
-            }
+        if (jParamsDatesInterval1.createValue() != null) {
+            Object[] dates = (Object[])jParamsDatesInterval1.createValue();
+            afilter[6] = dates[0];
+            afilter[7] = dates[1];
+            afilter[8] = dates[2];
+            afilter[9] = dates[3];
         }
-
+        
         //User
         if (jcboUser.getSelectedItem() == null) {
             afilter[10] = QBFCompareEnum.COMP_NONE;
@@ -353,17 +249,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jLabel2 = new javax.swing.JLabel();
         jCheckBoxSales = new javax.swing.JCheckBox();
         jCheckBoxRefunds = new javax.swing.JCheckBox();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jcboYearFrom = new javax.swing.JComboBox();
-        jcboMonthFrom = new javax.swing.JComboBox();
-        jcboDayFrom = new javax.swing.JComboBox();
-        jcboYearTo = new javax.swing.JComboBox();
-        jcboMonthTo = new javax.swing.JComboBox();
-        jcboDayTo = new javax.swing.JComboBox();
-        jcboTimeFrame = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jtxtMoney = new com.openbravo.editor.JEditorCurrency();
@@ -371,6 +256,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jcboMoney = new javax.swing.JComboBox();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
         jtxtTicketID = new com.openbravo.editor.JEditorIntegerPositive();
+        jParamsDatesInterval1 = new com.openbravo.pos.reports.JParamsDatesInterval();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -399,69 +285,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
 
         jCheckBoxRefunds.setText(AppLocal.getIntString("label.refunds")); // NOI18N
 
-        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.timeperiod"))); // NOI18N
-
-        jLabel4.setText(AppLocal.getIntString("label.to")); // NOI18N
-
-        jLabel3.setText(AppLocal.getIntString("label.timeframe")); // NOI18N
-
-        jLabel5.setText(AppLocal.getIntString("label.from")); // NOI18N
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4))
-                .addGap(39, 39, 39)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jcboYearTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcboMonthTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcboDayTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jcboYearFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcboMonthFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcboDayFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jcboTimeFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(169, Short.MAX_VALUE))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel3))
-                    .addComponent(jcboTimeFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcboYearFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcboMonthFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcboDayFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcboYearTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcboMonthTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcboDayTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jLabel6.setText(AppLocal.getIntString("label.user")); // NOI18N
 
         jLabel7.setText(AppLocal.getIntString("label.money")); // NOI18N
@@ -483,8 +306,8 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
                                 .addComponent(jCheckBoxSales)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jCheckBoxRefunds))
-                            .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42))
+                            .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jParamsDatesInterval1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -496,9 +319,8 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
                                 .addComponent(jcboMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtxtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(m_jKeys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -506,8 +328,8 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
                             .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -517,8 +339,8 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
                             .addComponent(jCheckBoxSales)
                             .addComponent(jCheckBoxRefunds))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jParamsDatesInterval1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
@@ -655,9 +477,6 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JCheckBox jCheckBoxSales;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JList jListTickets;
@@ -668,17 +487,10 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
+    private com.openbravo.pos.reports.JParamsDatesInterval jParamsDatesInterval1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox jcboDayFrom;
-    private javax.swing.JComboBox jcboDayTo;
     private javax.swing.JComboBox jcboMoney;
-    private javax.swing.JComboBox jcboMonthFrom;
-    private javax.swing.JComboBox jcboMonthTo;
-    private javax.swing.JComboBox jcboTimeFrame;
     private javax.swing.JComboBox jcboUser;
-    private javax.swing.JComboBox jcboYearFrom;
-    private javax.swing.JComboBox jcboYearTo;
     private javax.swing.JButton jcmdCancel;
     private javax.swing.JButton jcmdOK;
     private com.openbravo.editor.JEditorCurrency jtxtMoney;
