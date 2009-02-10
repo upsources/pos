@@ -98,9 +98,9 @@ public class AuxiliarPanel extends JPanelTable2 {
     
     private void reload(AuxiliarFilter filter) throws BasicException {
         ProductInfoExt prod = filter.getProductInfoExt();
+        editor.setInsertProduct(prod); // must be set before load
         bd.setEditable(prod != null);
         bd.actionLoad();
-        editor.setInsertProduct(prod);        
     }
             
     private class ReloadActionListener implements ActionListener {

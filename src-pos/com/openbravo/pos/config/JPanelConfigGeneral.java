@@ -30,8 +30,8 @@ import java.util.Map;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.api.SubstanceSkin;
 import org.jvnet.substance.skin.SkinInfo;
-import org.jvnet.substance.skin.SubstanceSkin;
 
 /**
  *
@@ -96,7 +96,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         }
 
         // Substance skins
-        new SubstanceLookAndFeel(); // TODO: Remove in Substance 5.0. Workaround for Substance 4.3 to initialize static variables
+        // new SubstanceLookAndFeel(); // TODO: Remove in Substance 5.0. Workaround for Substance 4.3 to initialize static variables
         Map<String, SkinInfo> skins = SubstanceLookAndFeel.getAllSkins();
         for (SkinInfo skin : skins.values()) {
             jcboLAF.addItem(new LAFInfo(skin.getDisplayName(), skin.getClassName()));

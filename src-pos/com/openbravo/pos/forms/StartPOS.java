@@ -24,7 +24,7 @@ import com.openbravo.format.Formats;
 import com.openbravo.pos.instance.InstanceQuery;
 import javax.swing.LookAndFeel;
 import org.jvnet.substance.SubstanceLookAndFeel;
-import org.jvnet.substance.skin.SubstanceSkin;
+import org.jvnet.substance.api.SubstanceSkin;
 
 /**
  *

@@ -114,7 +114,7 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"
 						y="45"
@@ -306,7 +306,7 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 </graphicElement>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"
 						y="80"
@@ -340,7 +340,7 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$R{label.notes}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="270"
 						y="115"
@@ -368,7 +368,7 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]></queryString>
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 </graphicElement>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="21"
 						y="65"

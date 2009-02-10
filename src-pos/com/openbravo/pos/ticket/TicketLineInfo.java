@@ -53,6 +53,13 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         init(productid, dMultiply, dPrice, tax, new Properties());
     }
 
+    public TicketLineInfo(String productid, String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
+        Properties props = new Properties();
+        props.setProperty("product.name", productname);
+        props.setProperty("product.taxcategoryid", producttaxcategory);
+        init(productid, dMultiply, dPrice, tax, props);
+    }
+
     public TicketLineInfo(String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
 
         Properties props = new Properties();

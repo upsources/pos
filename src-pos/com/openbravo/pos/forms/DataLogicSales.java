@@ -487,6 +487,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
                 // and delete the receipt
                 new StaticSentence(s
+                    , "DELETE FROM TAXLINES WHERE RECEIPT = ?"
+                    , SerializerWriteString.INSTANCE).exec(ticket.getId());
+                new StaticSentence(s
                     , "DELETE FROM PAYMENTS WHERE RECEIPT = ?"
                     , SerializerWriteString.INSTANCE).exec(ticket.getId());
                 new StaticSentence(s

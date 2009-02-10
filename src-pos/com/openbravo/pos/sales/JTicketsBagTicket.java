@@ -132,7 +132,8 @@ public class JTicketsBagTicket extends JTicketsBag {
     
     private void resetToTicket() {       
         printTicket();
-        m_jTicketEditor.reset();        
+        m_jTicketEditor.reset();
+        m_jTicketEditor.activate();
         m_panelticketedit.setActiveTicket(null, null); 
     }
     
@@ -166,6 +167,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         }
         
         m_jTicketEditor.reset();
+        m_jTicketEditor.activate();
     }
     
     private void printTicket() {
@@ -433,7 +435,10 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         JTicketsFinder finder = JTicketsFinder.getReceiptFinder(this, m_dlSales);
         finder.setVisible(true);
         FindTicketsInfo selectedTicket = finder.getSelectedCustomer();
-        if (selectedTicket != null) {
+        if (selectedTicket == null) {
+            m_jTicketEditor.reset();
+            m_jTicketEditor.activate();
+        } else {
             readTicket(selectedTicket.getTicketId(), selectedTicket.getTicketType());
         }
 }//GEN-LAST:event_jButton2ActionPerformed

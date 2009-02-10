@@ -258,7 +258,7 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
 
     public final int getSequenceCash(String host) throws BasicException {
         Integer i = (Integer) m_sequencecash.find(host);
-        return (i == null) ? i : i.intValue();
+        return (i == null) ? 1 : i.intValue();
     }
 
     public final Object[] findActiveCash(String sActiveCashIndex) throws BasicException {

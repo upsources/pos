@@ -117,9 +117,10 @@ public class CustomerInfoExt extends CustomerInfo {
         this.curdebt = curdebt;
     }
     
-    public void updateCurDebt(Double ammount, Date d) {
+    public void updateCurDebt(Double amount, Date d) {
         
-        curdebt = curdebt + ammount;
+        curdebt = curdebt == null ? amount : curdebt + amount;
+
         if (RoundUtils.compare(curdebt, 0.0) > 0) {
             if (curdate == null) {
                 // new date

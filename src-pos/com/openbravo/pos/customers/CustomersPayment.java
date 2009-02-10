@@ -484,9 +484,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
                 msg.show(this);
             }
-            editorcard.reset();
-            editorcard.activate();
-        }        
+        }  
+        editorcard.reset();
+        editorcard.activate();
                 
 }//GEN-LAST:event_btnCustomerActionPerformed
 
@@ -544,10 +544,10 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                     ? "Printer.CustomerPaid"
                     : "Printer.CustomerPaid2",
                     ticket, c);
-
-            editorcard.reset();
-            editorcard.activate();
-        }        
+        }
+        
+        editorcard.reset();
+        editorcard.activate();
         
 }//GEN-LAST:event_btnPayActionPerformed
 
