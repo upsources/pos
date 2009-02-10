@@ -54,6 +54,7 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
     private SentenceExec m_resourcebytesinsert;
     private SentenceExec m_resourcebytesupdate;
 
+    protected SentenceFind m_sequencecash;
     protected SentenceFind m_activecash;
     protected SentenceExec m_insertcash;
     
@@ -114,7 +115,11 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         m_changepassword = new StaticSentence(s
                 , "UPDATE PEOPLE SET APPPASSWORD = ? WHERE ID = ?"
                 ,new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING}));
-        
+
+        m_sequencecash = new StaticSentence(s,
+                "SELECT MAX(HOSTSEQUENCE) FROM CLOSEDCASH WHERE HOST = ?",
+                SerializerWriteString.INSTANCE,
+                SerializerReadInteger.INSTANCE);
         m_activecash = new StaticSentence(s
             , "SELECT HOST, HOSTSEQUENCE, DATESTART, DATEEND FROM CLOSEDCASH WHERE MONEY = ?"
             , SerializerWriteString.INSTANCE
@@ -249,7 +254,12 @@ public class DataLogicSystem extends BeanFactoryDataSingle {
         } catch (IOException e) {
         }
         return p;
-    }    
+    }
+
+    public final int getSequenceCash(String host) throws BasicException {
+        Integer i = (Integer) m_sequencecash.find(host);
+        return (i == null) ? i : i.intValue();
+    }
 
     public final Object[] findActiveCash(String sActiveCashIndex) throws BasicException {
         return (Object[]) m_activecash.find(sActiveCashIndex);

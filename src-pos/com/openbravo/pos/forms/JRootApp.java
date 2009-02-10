@@ -165,7 +165,7 @@ public class JRootApp extends JPanel implements AppView {
                     : m_dlSystem.findActiveCash(sActiveCashIndex);
             if (valcash == null || !m_props.getHost().equals(valcash[0])) {
                 // no la encuentro o no es de mi host por tanto creo una...
-                setActiveCash(UUID.randomUUID().toString(), 1, new Date(), null);
+                setActiveCash(UUID.randomUUID().toString(), m_dlSystem.getSequenceCash(m_props.getHost()) + 1, new Date(), null);
 
                 // creamos la caja activa      
                 m_dlSystem.execInsertCash(
