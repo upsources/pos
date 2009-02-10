@@ -14,7 +14,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    Foundation, Inc., 51 Franklin Street, Fifth floor, Boston, MA  02110-1301  USA
 package com.openbravo.pos.ticket;
 
 import java.util.*;
@@ -26,6 +26,7 @@ import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.LocalRes;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.payment.PaymentInfoMagcard;
 import com.openbravo.pos.util.StringUtils;
@@ -188,7 +189,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         } else {
             name.append(info.toString());
         }
-
+        
         return name.toString();
     }
 
@@ -237,7 +238,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public String getReturnMessage(){
         return ( (getPayments().get(getPayments().size()-1)) instanceof PaymentInfoMagcard )
             ? ((PaymentInfoMagcard)(getPayments().get(getPayments().size()-1))).getReturnMessage()
-            : "OK";
+            : LocalRes.getIntString("button.ok");
     }
 
     public void setActiveCash(String value) {
@@ -298,7 +299,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public int getLinesCount() {
         return m_aLines.size();
     }
-
+    
     public double getArticlesCount() {
         double dArticles = 0.0;
         TicketLineInfo oLine;
@@ -335,7 +336,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
 
     public double getTotal() {
-
+        
         return getSubTotal() + getTax();
     }
 

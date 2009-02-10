@@ -45,7 +45,9 @@ public class PaymentGatewayPayPoint implements PaymentGateway {
         this.m_sCommercePassword = cypher.decrypt(props.getProperty("payment.commercepassword").substring(6));
         
         m_bTestMode = Boolean.valueOf(props.getProperty("payment.testmode")).booleanValue();
-        m_sCurrency = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
+        m_sCurrency = (Locale.getDefault().getCountry().isEmpty())
+            ? Currency.getInstance("EUR").getCurrencyCode()
+            : Currency.getInstance(Locale.getDefault()).getCurrencyCode();
     }
     
     public PaymentGatewayPayPoint(){

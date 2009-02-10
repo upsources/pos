@@ -142,7 +142,7 @@ public class PaymentGatewayCyberauthorize implements PaymentGateway {
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
         String returned = in.readLine();
-        System.out.println("-> " + returned);
+        
         //RESPONSE
         //response=1&responsetext=SUCCESS&authcode=123456&transactionid=849066017&avsresponse=&cvvresponse=M&orderid=&type=sale&response_code=100
         payinfo.setReturnMessage(returned);

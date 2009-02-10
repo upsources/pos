@@ -13,7 +13,7 @@
  *  Roedy Green, Canadian Mind Products
  */
 
-// Modifications by Adrian Romero
+// Modifications by Adrian Romero & Mikel Irurita
 
 package com.openbravo.pos.payment;
 
