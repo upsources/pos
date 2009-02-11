@@ -41,12 +41,14 @@ public class AppViewConnection {
     
     public static Session createSession(AppProperties props) throws BasicException {
                
-        // Inicializo la conexion contra la base de datos.
-        try {   
-            
-            ClassLoader cloader = new URLClassLoader(new URL[] {new File(props.getProperty("db.driverlib")).toURI().toURL()});
-            DriverManager.registerDriver(new DriverWrapper((Driver) Class.forName(props.getProperty("db.driver"), true, cloader).newInstance()));            
-            
+        try{// Inicializo la conexion contra la base de datos.
+            try {
+                Class.forName("javax.jnlp.ServiceManager");
+                Class.forName(props.getProperty("db.driver"), true, Thread.currentThread().getContextClassLoader());
+                } catch(ClassNotFoundException ue) {
+                    ClassLoader cloader = new URLClassLoader(new URL[] {new File(props.getProperty("db.driverlib")).toURI().toURL()});
+                    DriverManager.registerDriver(new DriverWrapper((Driver) Class.forName(props.getProperty("db.driver"), true, cloader).newInstance()));
+                }
             String sDBUser = props.getProperty("db.user");
             String sDBPassword = props.getProperty("db.password");        
             if (sDBUser != null && sDBPassword != null && sDBPassword.startsWith("crypt:")) {
