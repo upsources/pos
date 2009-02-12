@@ -57,8 +57,8 @@ public class DevicePrinterPrinter implements DevicePrinter {
      * @param printername - name of printer that will be called in the system
      * @param isReceiptPrinter - string with boolean values if the printer is a receipt
      */
-    public DevicePrinterPrinter(String printername, String isReceiptPrinter) {
-        this.receiptPrinter = Boolean.valueOf(isReceiptPrinter);
+    public DevicePrinterPrinter(String printername, boolean receiptPrinter) {
+        this.receiptPrinter = receiptPrinter;
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
         printservice = ReportUtils.getPrintService(printername);
