@@ -36,8 +36,7 @@
 //    Portions:
 //    Openbravo POS is a point of sales application designed for touch screens.
 //    Copyright (C) 2007 Openbravo, S.L.
-//    http://sourceforge.net/projects/openbravopos
-// 
+//    http://www.openbravo.com/product/pos
 //    author adrián romero
 // The modifications are:
 // The loadJasperPrint() method 

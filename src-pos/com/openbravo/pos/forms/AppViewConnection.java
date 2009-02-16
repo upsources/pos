@@ -1,20 +1,21 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
 //    Copyright (C) 2007 Openbravo, S.L.
-//    http://sourceforge.net/projects/openbravopos
+//    http://www.openbravo.com/product/pos
 //
-//    This program is free software; you can redistribute it and/or modify
+//    This file is part of Openbravo POS.
+//
+//    Openbravo POS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; either version 2 of the License, or
+//    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    This program is distributed in the hope that it will be useful,
+//    Openbravo POS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.forms;
 
@@ -41,18 +42,20 @@ public class AppViewConnection {
     
     public static Session createSession(AppProperties props) throws BasicException {
                
-        try{// Inicializo la conexion contra la base de datos.
-            try {
-                Class.forName("javax.jnlp.ServiceManager");
+        try{
+
+            // register the database driver
+            if (isJavaWebStart()) {
                 Class.forName(props.getProperty("db.driver"), true, Thread.currentThread().getContextClassLoader());
-                } catch(ClassNotFoundException ue) {
-                    ClassLoader cloader = new URLClassLoader(new URL[] {new File(props.getProperty("db.driverlib")).toURI().toURL()});
-                    DriverManager.registerDriver(new DriverWrapper((Driver) Class.forName(props.getProperty("db.driver"), true, cloader).newInstance()));
-                }
+            } else {
+                ClassLoader cloader = new URLClassLoader(new URL[] {new File(props.getProperty("db.driverlib")).toURI().toURL()});
+                DriverManager.registerDriver(new DriverWrapper((Driver) Class.forName(props.getProperty("db.driver"), true, cloader).newInstance()));
+            }
+
             String sDBUser = props.getProperty("db.user");
             String sDBPassword = props.getProperty("db.password");        
             if (sDBUser != null && sDBPassword != null && sDBPassword.startsWith("crypt:")) {
-                // La clave esta encriptada.
+                // the password is encrypted
                 AltEncrypter cypher = new AltEncrypter("cypherkey" + sDBUser);
                 sDBPassword = cypher.decrypt(sDBPassword.substring(6));
             }   
@@ -70,5 +73,15 @@ public class AppViewConnection {
         } catch (SQLException eSQL) {
             throw new BasicException(AppLocal.getIntString("message.databaseconnectionerror"), eSQL);
         }   
+    }
+
+    private static boolean isJavaWebStart() {
+
+        try {
+            Class.forName("javax.jnlp.ServiceManager");
+            return true;
+        } catch (ClassNotFoundException ue) {
+            return false;
+        }
     }
 }

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
  <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
-
-
 <!--
      This is a blank Tiles definition file with a commented example.
 -->
-
 <tiles-definitions>
-
     <!-- sample tiles definitions
     <definition name=".mainLayout" path="/common/layouts/classicLayout.jsp">
         <put name="title"  value="Sample Page Title" />
@@ -19,7 +14,6 @@
         <put name="footer" value="/common/footer.jsp" />
         <put name="body"   value=".portal.body" />
     </definition>
-
     <definition name=".mainMenu" path="/common/layouts/vboxLayout.jsp" >
         <putList name="list" >
             <add value=".menu.links" />
@@ -28,15 +22,11 @@
             <add value=".menu.old.documents" />
       </putList>
     </definition>
-
     <definition name="aPage" extends=".mainLayout">
         <put name="title"  value="Another Title" />
         <put name="body"   value=".aPage.body" />
     </definition>
-
     end samples -->
-
     <definition name="${YOUR_DEFINITION_HERE}">
     </definition>
-
 </tiles-definitions>

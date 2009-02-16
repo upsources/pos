@@ -1,20 +1,21 @@
 //    Openbravo POS is a point of sales application designed for touch screens.
 //    Copyright (C) 2007 Openbravo, S.L.
-//    http://sourceforge.net/projects/openbravopos
+//    http://www.openbravo.com/product/pos
 //
-//    This program is free software; you can redistribute it and/or modify
+//    This file is part of Openbravo POS.
+//
+//    Openbravo POS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation; either version 2 of the License, or
+//    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    This program is distributed in the hope that it will be useful,
+//    Openbravo POS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with this program; if not, write to the Free Software
-//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.printer.escpos;
 
@@ -53,7 +54,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x73; // 0x8D :
 //                case '\u0000': return -0x72; // 0x8E :
 //                case '\u0000': return -0x71; // 0x8F :
-//
 //                case '\u0000': return -0x70; // 0x90 :
 //                case '\u0000': return -0x6F; // 0x91 :
 //                case '\u0000': return -0x6E; // 0x92 :
@@ -70,7 +70,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x63; // 0x9D :
 //                case '\u0000': return -0x62; // 0x9E :
 //                case '\u0000': return -0x61; // 0x9F :
-//
 //                case '\u0000': return -0x60; // 0xA0 :
 //                case '\u0000': return -0x5F; // 0xA1 :
 //                case '\u0000': return -0x5E; // 0xA2 :
@@ -87,7 +86,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x53; // 0xAD :
 //                case '\u0000': return -0x52; // 0xAE :
 //                case '\u0000': return -0x51; // 0xAF :
-//
 //                case '\u0000': return -0x50; // 0xB0 :
 //                case '\u0000': return -0x4F; // 0xB1 :
 //                case '\u0000': return -0x4E; // 0xB2 :
@@ -104,7 +102,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x43; // 0xBD :
 //                case '\u0000': return -0x42; // 0xBE :
 //                case '\u0000': return -0x41; // 0xBF :
-//
 //                case '\u0000': return -0x40; // 0xC0 :
 //                case '\u0000': return -0x3F; // 0xC1 :
 //                case '\u0000': return -0x3E; // 0xC2 :
@@ -121,7 +118,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x33; // 0xCD :
 //                case '\u0000': return -0x32; // 0xCE :
 //                case '\u0000': return -0x31; // 0xCF :
-//
 //                case '\u0000': return -0x30; // 0xD0 :
 //                case '\u0000': return -0x2F; // 0xD1 :
 //                case '\u0000': return -0x2E; // 0xD2 :
@@ -138,7 +134,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x23; // 0xDD :
 //                case '\u0000': return -0x22; // 0xDE :
 //                case '\u0000': return -0x21; // 0xDF :
-//
 //                case '\u0000': return -0x20; // 0xE0 :
 //                case '\u0000': return -0x2F; // 0xE1 :
 //                case '\u0000': return -0x1E; // 0xE2 :
@@ -155,7 +150,6 @@ public abstract class UnicodeTranslator {
 //                case '\u0000': return -0x13; // 0xED :
 //                case '\u0000': return -0x12; // 0xEE :
 //                case '\u0000': return -0x11; // 0xEF :
-//
 //                case '\u0000': return -0x10; // 0xF0 :
 //                case '\u0000': return -0x0F; // 0xF1 :
 //                case '\u0000': return -0x0E; // 0xF2 :

@@ -1,55 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE form-validation PUBLIC
           "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
           "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
 <!--
-
    This file contains the default Struts Validator pluggable validator
    definitions.  It should be placed somewhere under /WEB-INF and
    referenced in the struts-config.xml under the plug-in element
    for the ValidatorPlugIn.
-
       <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
         <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,
                                                   /WEB-INF/validation.xml"/>
       </plug-in>
-
    These are the default error messages associated with
    each validator defined in this file.  They should be
    added to your projects ApplicationResources.properties
    file or you can associate new ones by modifying the
    pluggable validators msg attributes in this file.
-
    # Struts Validator Error Messages
    errors.required={0} is required.
    errors.minlength={0} can not be less than {1} characters.
    errors.maxlength={0} can not be greater than {1} characters.
    errors.invalid={0} is invalid.
-
    errors.byte={0} must be a byte.
    errors.short={0} must be a short.
    errors.integer={0} must be an integer.
    errors.long={0} must be a long.
    errors.float={0} must be a float.
    errors.double={0} must be a double.
-
    errors.date={0} is not a date.
    errors.range={0} is not in the range {1} through {2}.
    errors.creditcard={0} is an invalid credit card number.
    errors.email={0} is an invalid e-mail address.
-
    Note: Starting in Struts 1.2.0 the default javascript definitions have
          been consolidated to commons-validator. The default can be overridden
          by supplying a <javascript> element with a CDATA section, just as
          in struts 1.1.
-
 -->
-
 <form-validation>
-
    <global>
-
       <validator name="required"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateRequired"
@@ -60,7 +48,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.required"/>
-
       <validator name="requiredif"
                  classname="org.apache.struts.validator.FieldChecks"
                  method="validateRequiredIf"
@@ -71,7 +58,6 @@
                                org.apache.commons.validator.Validator,
                                javax.servlet.http.HttpServletRequest"
                  msg="errors.required"/>
-
       <validator name="validwhen"
           msg="errors.required"
                  classname="org.apache.struts.validator.validwhen.ValidWhen"
@@ -82,8 +68,6 @@
                        org.apache.struts.action.ActionMessages,
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"/>
-
-
       <validator name="minlength"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateMinLength"
@@ -96,8 +80,6 @@
               depends=""
                   msg="errors.minlength"
            jsFunction="org.apache.commons.validator.javascript.validateMinLength"/>
-
-
       <validator name="maxlength"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateMaxLength"
@@ -110,9 +92,6 @@
               depends=""
                   msg="errors.maxlength"
            jsFunction="org.apache.commons.validator.javascript.validateMaxLength"/>
-
-
-
       <validator name="mask"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateMask"
@@ -124,8 +103,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.invalid"/>
-
-
       <validator name="byte"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateByte"
@@ -138,8 +115,6 @@
               depends=""
                   msg="errors.byte"
        jsFunctionName="ByteValidations"/>
-
-
       <validator name="short"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateShort"
@@ -152,8 +127,6 @@
               depends=""
                   msg="errors.short"
        jsFunctionName="ShortValidations"/>
-
-
       <validator name="integer"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateInteger"
@@ -166,9 +139,6 @@
               depends=""
                   msg="errors.integer"
        jsFunctionName="IntegerValidations"/>
-
-
-
       <validator name="long"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateLong"
@@ -180,8 +150,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.long"/>
-
-
       <validator name="float"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateFloat"
@@ -194,7 +162,6 @@
               depends=""
                   msg="errors.float"
        jsFunctionName="FloatValidations"/>
-
       <validator name="double"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateDouble"
@@ -206,8 +173,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.double"/>
-
-
       <validator name="date"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateDate"
@@ -220,8 +185,6 @@
               depends=""
                   msg="errors.date"
        jsFunctionName="DateValidations"/>
-
-
       <validator name="intRange"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateIntRange"
@@ -233,8 +196,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends="integer"
                   msg="errors.range"/>
-
-
       <validator name="floatRange"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateFloatRange"
@@ -246,7 +207,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends="float"
                   msg="errors.range"/>
-
       <validator name="doubleRange"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateDoubleRange"
@@ -258,8 +218,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends="double"
                   msg="errors.range"/>
-
-
       <validator name="creditCard"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateCreditCard"
@@ -271,8 +229,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.creditcard"/>
-
-
       <validator name="email"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateEmail"
@@ -284,7 +240,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.email"/>
-
       <validator name="url"
             classname="org.apache.struts.validator.FieldChecks"
                method="validateUrl"
@@ -296,7 +251,6 @@
                        javax.servlet.http.HttpServletRequest"
               depends=""
                   msg="errors.url"/>
-
      <!--
        This simply allows struts to include the validateUtilities into a page, it should
        not be used as a validation rule.
@@ -308,7 +262,5 @@
               depends=""
                   msg=""
            jsFunction="org.apache.commons.validator.javascript.validateUtilities"/>
-
    </global>
-
 </form-validation>
