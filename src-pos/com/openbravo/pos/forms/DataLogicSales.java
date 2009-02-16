@@ -136,7 +136,6 @@ public class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? " +
-              "AND P.ISCOM = " + s.DB.FALSE() + " " +
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE
             , ProductInfoExt.getSerializerRead()).list(category);
