@@ -39,7 +39,7 @@ CP=$CP:$DIRNAME/lib/commons-lang-2.1.jar
 CP=$CP:$DIRNAME/lib/bsh-core-2.0b4.jar
 CP=$CP:$DIRNAME/lib/RXTXcomm.jar
 CP=$CP:$DIRNAME/lib/jpos1121.jar
-CP=$CP:$DIRNAME/lib/swingx-0.9.3.jar
+CP=$CP:$DIRNAME/lib/swingx-0.9.5.jar
 CP=$CP:$DIRNAME/lib/substance.jar
 CP=$CP:$DIRNAME/lib/substance-swingx.jar
 
