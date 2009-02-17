@@ -39,9 +39,12 @@
     <property name="src.data" value="${basedir}/src-data"/>
     <property name="src.beans" value="${basedir}/src-beans"/>
     <property name="src.erp" value="${basedir}/src-erp"/>
+    <property name="reports" value="${basedir}/reports"/>
+    <property name="locales" value="${basedir}/locales"/>
     <property name="src.pda" value="${basedir}/src-pda"/>
     <property name="src.web" value="${basedir}/web"/>
     <property name="jetty.lib" value="${basedir}/jetty/lib"/>
+    <property name="lib" value="${basedir}/lib"/>
     <!-- where the distribution files go -->
     <property name="dest.dist" value="${basedir}/build/dist"/>
     <!-- the jar directory -->
@@ -165,9 +168,35 @@
             </fileset>
         </copy>                
     </target>
-    <!-- ================================================================= -->
-    <!-- J A R                                                             -->
-    <!-- ================================================================= -->
+
+    <target name="compilereports">
+        <mkdir dir="${dest.classes}/reports" />
+        <javac srcdir="${src.erp}"
+               destdir="${dest.classes}/erp"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               optimize="${javac.optimize}"
+               target="${javac.minVMVersion}">
+            <classpath>
+                  <fileset dir="${basedir}/lib">
+                    <include name="**/*.jar"/>
+                  </fileset>
+                <pathelement location="${dest.classes}/beans"/>
+                <pathelement location="${dest.classes}/data"/>
+                <pathelement location="${dest.classes}/pos"/>
+            </classpath>
+        </javac>
+        <copy todir="${dest.classes}/erp">
+            <fileset dir="${src.erp}">
+                <exclude name="**/*.java"/>
+                <exclude name="**/*.form"/>
+                <exclude name="**/.nbattrs"/>
+                <exclude name="**/Thumbs.db"/>
+                <exclude name="**/filesystem.attributes"/>
+            </fileset>
+        </copy>                
+    </target>
+
     <target name="jar" depends="compilebeans,compiledata,compilepos,compileerp" description="Generate the .jar file.">
         <copy todir="${dest.classes}/openbravopos">
             <fileset dir="${dest.classes}/beans"/>
@@ -179,8 +208,67 @@
         <jar jarfile="${dest.dist}/openbravopos.jar"
              compress="true"
              basedir="${dest.classes}/openbravopos">
+	     <manifest>   	    
+      		<attribute name="Implementation-Vendor" value="Openbravo SL"/>
+      		<attribute name="Implementation-Title" value="Openbravo Network POS"/>
+      		<attribute name="Implementation-Version" value="2.30"/>
+      		<attribute name="Main-Class" value="com.openbravo.pos.forms.StartPOS" />
+    	    </manifest>
         </jar>
     </target>
+
+
+    <!-- ================================================================= -->
+    <!-- J A R  -  N A T I V E   L I B R A R I E S                         -->
+    <!-- ================================================================= -->
+
+
+    <target name="clean-native-libraries" description="Delete all native libraries packed in jars.">
+	<echo>Deleting all native libraries packed in jars ...</echo>	
+
+	<delete file="${lib}/Linux/i686-unknown-linux-gnu/linux-i686-native.jar" />
+	<delete file="${lib}/Linux/ia64-unkown-linux-gnu/linux-ia64-native.jar" />
+        <delete file="${lib}/Linux/x86_64-unknown-linux-gnu/linux-x86_64-native.jar" />
+	<delete file="${lib}/Mac_OS_X/osx-native.jar" />
+	<delete file="${lib}/Solaris/sparc-solaris/sparc32-sun-solaris2.8/sparc32-native.jar" />
+	<delete file="${lib}/Solaris/sparc-solaris/sparc64-sun-solaris2.8/sparc64-native.jar" />
+	<delete file="${lib}/Windows/i368-mingw32/windows-native.jar" />
+    </target>
+
+    <target name="jar-native-libraries" depends="clean-native-libraries" description="Generate the .jar file with native libraries.">
+	<echo>Packing native libraries in jars ...</echo>
+        
+	<jar jarfile="${lib}/Linux/i686-unknown-linux-gnu/linux-i686-native.jar"
+             compress="true"
+             basedir="${lib}/Linux/i686-unknown-linux-gnu">
+        </jar>
+	<jar jarfile="${lib}/Linux/ia64-unkown-linux-gnu/linux-ia64-native.jar"
+             compress="true"
+             basedir="${lib}/Linux/ia64-unkown-linux-gnu">
+        </jar>
+	<jar jarfile="${lib}/Linux/x86_64-unknown-linux-gnu/linux-x86_64-native.jar"
+             compress="true"
+             basedir="${lib}/Linux/x86_64-unknown-linux-gnu">
+        </jar>
+	<jar jarfile="${lib}/Mac_OS_X/osx-native.jar"
+             compress="true"
+             basedir="${lib}/Mac_OS_X">
+        </jar>
+	<jar jarfile="${lib}/Solaris/sparc-solaris/sparc32-sun-solaris2.8/sparc32-native.jar"
+             compress="true"
+             basedir="${lib}/Solaris/sparc-solaris/sparc32-sun-solaris2.8">
+        </jar>
+	<jar jarfile="${lib}/Solaris/sparc-solaris/sparc64-sun-solaris2.8/sparc64-native.jar"
+             compress="true"
+             basedir="${lib}/Solaris/sparc-solaris/sparc64-sun-solaris2.8">
+        </jar>
+	<jar jarfile="${lib}/Windows/i368-mingw32/windows-native.jar"
+             compress="true"
+             basedir="${lib}/Windows/i368-mingw32">
+        </jar>
+    </target>
+
+
     <!-- ================================================================= -->
     <!-- C O M P I L E - P D A   M O D U L E                               -->
     <!-- ================================================================= -->
@@ -208,14 +296,19 @@
             <fileset dir="${dest.classes}/pda"/>
         </copy>               
     </target>
+
+
     <!-- ================================================================= -->
     <!-- W A R                                                            -->
     <!-- ================================================================= -->
+
+
     <target name="pda.struts.resources" description="Language properties must be copied separately">
-    	<copy todir="${dest.war}/WEB-INF/classes//com/openbravo/pos/pda/struts" >
+    	<copy todir="${dest.war}/WEB-INF/classes/com/openbravo/pos/pda/struts" >
 		<fileset dir="${src.pda}/com/openbravo/pos/pda/struts" includes="*.properties"/>
         </copy> 
     </target>
+
     <target name="war" depends="compile.pda, pda.struts.resources" description="Generate the .war file.">
 	<copy todir="${dest.war}"  >
 		<fileset dir="${src.web}" includes="*.*"/>
@@ -243,11 +336,14 @@
              basedir="${dest.war}">
         </war>
     </target>
+
+
     <!-- ================================================================= -->
     <!-- D I S T R I B U T I O N  F I L E S                                -->
     <!-- ================================================================= -->
+    
     <target name="dist" depends="dist.bin,dist.src,sync" description="Generate the release files">
-    </target>
+    </target>  
     <target name="dist.bin" depends="init,jar" description="Generate the bin zip file.">
         <mkdir dir="${basedir}/build/zip" />
         <copy file="${basedir}/start.bat" todir="${basedir}/build/zip"/>
@@ -339,9 +435,11 @@
  	<copy todir="${basedir}/build/transformations">
             <fileset dir="${basedir}/transformations"/>
         </copy>
+
 	<copy todir="${basedir}/build/org.openbravo.service.rest">
             <fileset dir="${basedir}/org.openbravo.service.rest"/>
         </copy>
+
 	<mkdir dir="${dest.dist}" />
         <zip zipfile="${dest.dist}/transformations.zip" basedir="${basedir}/build/transformations" />
 	<zip zipfile="${dest.dist}/org.openbravo.service.rest.obx" basedir="${basedir}/build/org.openbravo.service.rest"/>
