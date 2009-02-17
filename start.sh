@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #    Openbravo POS is a point of sales application designed for touch screens.
-#    Copyright (C) 2007-2008 Openbravo, S.L.
+#    Copyright (C) 2007-2009 Openbravo, S.L.
 #    http://sourceforge.net/projects/openbravopos
 #
 #    This file is part of Openbravo POS.
