@@ -121,7 +121,7 @@
       </value>
       <value>
         <name>VALUE</name>
-        <rename>ATTVALUE_VALUE</rename>
+        <rename>ATTVALUE_SKEY</rename>
         <update>Y</update>
       </value>
       <value>
@@ -182,8 +182,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>ATTVALUE_VALUE</name>
-        <xpath>value</xpath>
+        <name>ATTVALUE_SKEY</name>
+        <xpath>searchKey</xpath>
         <element_type>node</element_type>
         <type>String</type>
         <format/>
@@ -251,7 +251,7 @@
     <fields>
       <field>
         <name>ATTVALUE_URL</name>
-        <variable>${erp.URL}&#47;AttributeValue?where=client.id=&apos;${erp.id}&apos; and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
+        <variable>${erp.URL}&#47;AttributeValue?where=client.id in (&apos;0&apos;, &apos;${erp.id}&apos;) and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
       </field>
     </fields>
      <cluster_schema/>

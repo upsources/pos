@@ -217,7 +217,7 @@
     <fields>
       <field>
         <name>ATT_URL</name>
-        <variable>${erp.URL}&#47;Attribute?where=client.id=&apos;${erp.id}&apos; and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
+        <variable>${erp.URL}&#47;Attribute?where=client.id in (&apos;0&apos;, &apos;${erp.id}&apos;) and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
       </field>
     </fields>
      <cluster_schema/>

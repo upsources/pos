@@ -189,7 +189,7 @@
       </field>
       <field>
         <name>ATTINSTANCE_ATTSETINSTANCE_ID</name>
-        <xpath>attributeSetInstance&#47;@id</xpath>
+        <xpath>attributeSetValue&#47;@id</xpath>
         <element_type>node</element_type>
         <type>String</type>
         <format/>
@@ -217,7 +217,7 @@
       </field>
       <field>
         <name>ATTINSTANCE_ATTVALUE_ID</name>
-        <xpath>value</xpath>
+        <xpath>attributeValue&#47;@id</xpath>
         <element_type>node</element_type>
         <type>String</type>
         <format/>
@@ -257,7 +257,7 @@
     <fields>
       <field>
         <name>ATT_INSTANCE_URL</name>
-        <variable>${erp.URL}&#47;AttributeInstance?where=client.id=&apos;${erp.id}&apos; and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
+        <variable>${erp.URL}&#47;AttributeInstance?where=client.id in (&apos;0&apos;, &apos;${erp.id}&apos;) and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
       </field>
     </fields>
      <cluster_schema/>

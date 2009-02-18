@@ -177,7 +177,7 @@
       </field>
       <field>
         <name>PRODUCTCAT_NAME</name>
-        <xpath>value</xpath>
+        <xpath>searchKey</xpath>
         <element_type>node</element_type>
         <type>String</type>
         <format/>

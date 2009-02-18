@@ -217,7 +217,7 @@
       </field>
       <field>
         <name>ATTUSE_LINENO</name>
-        <xpath>seqNo</xpath>
+        <xpath>sequenceNumber</xpath>
         <element_type>node</element_type>
         <type>Integer</type>
         <format/>
@@ -257,7 +257,7 @@
     <fields>
       <field>
         <name>ATTUSE_URL</name>
-        <variable>${erp.URL}&#47;AttributeUse?where=client.id=&apos;${erp.id}&apos; and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
+        <variable>${erp.URL}&#47;AttributeUse?where=client.id in (&apos;0&apos;, &apos;${erp.id}&apos;) and organization.id in (&apos;0&apos;, &apos;${erp.org}&apos;)&amp;l=${erp.user}&amp;p=${erp.password}</variable>
       </field>
     </fields>
      <cluster_schema/>
