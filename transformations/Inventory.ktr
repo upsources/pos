@@ -363,7 +363,7 @@
         <name>STO_QUANTITYONHAND</name>
         <xpath>quantityOnHand</xpath>
         <element_type>node</element_type>
-        <type>BigNumber</type>
+        <type>Integer</type>
         <format/>
         <currency/>
         <decimal/>
