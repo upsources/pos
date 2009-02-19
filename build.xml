@@ -431,20 +431,20 @@
     <!-- ================================================================= -->
     <target name="sync" description="Create .obx module and zip all kettle transformations" >	
 	<mkdir dir="${basedir}/build/transformations"/>
-	<mkdir dir="${basedir}/build/org.openbravo.service.rest"/>
+	<mkdir dir="${basedir}/build/org.openbravo.service.pos"/>
  	<copy todir="${basedir}/build/transformations">
             <fileset dir="${basedir}/transformations"/>
         </copy>
 
-	<copy todir="${basedir}/build/org.openbravo.service.rest">
-            <fileset dir="${basedir}/org.openbravo.service.rest"/>
+	<copy todir="${basedir}/build/org.openbravo.service.pos">
+            <fileset dir="${basedir}/org.openbravo.service.pos"/>
         </copy>
 
 	<mkdir dir="${dest.dist}" />
         <zip zipfile="${dest.dist}/transformations.zip" basedir="${basedir}/build/transformations" />
-	<zip zipfile="${dest.dist}/org.openbravo.service.rest.obx" basedir="${basedir}/build/org.openbravo.service.rest"/>
+	<zip zipfile="${dest.dist}/org.openbravo.service.pos.obx" basedir="${basedir}/build/org.openbravo.service.pos"/>
         <delete dir="${basedir}/build/transformations"/>
-        <delete dir="${basedir}/build/org.openbravo.service.rest" />
+        <delete dir="${basedir}/build/org.openbravo.service.pos" />
     </target>
     <!-- ================================================================= -->
     <!-- I N S T A L L E R S                                               -->
