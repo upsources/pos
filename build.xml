@@ -197,6 +197,10 @@
         </copy>                
     </target>
 
+    <!-- ================================================================= -->
+    <!-- J A R                           				   -->
+    <!-- ================================================================= -->
+
     <target name="jar" depends="compilebeans,compiledata,compilepos,compileerp" description="Generate the .jar file.">
         <copy todir="${dest.classes}/openbravopos">
             <fileset dir="${dest.classes}/beans"/>
@@ -267,8 +271,28 @@
              basedir="${lib}/Windows/i368-mingw32">
         </jar>
     </target>
+	
+    <!-- ================================================================= -->
+    <!-- J A R  -  R E P O R T S  &  L O C A L E S                         -->
+    <!-- ================================================================= -->
+    
+    <target name="clean-reports-and-locales" description="Delete all reports and locales packed in jars.">
+	<echo>Deleting reports and locales packed in jars ...</echo>	
+	<delete file="${dest.dist}/reports.jar" />
+	<delete file="${dest.dist}/locales.jar" />   
+    </target>    
 
-
+    <target name="jar-reports-and-locales" depends="clean-reports-and-locales" description="Generate the .jar file with reports and locales.">	
+	<echo>Packing reports and locales in jars ...</echo>      
+	<jar jarfile="${dest.dist}/reports.jar"
+             compress="true"
+             basedir="${basedir}/reports">
+        </jar>
+	<jar jarfile="${dest.dist}/locales.jar"
+             compress="true"
+             basedir="${basedir}/locales">
+        </jar>
+    </target>
     <!-- ================================================================= -->
     <!-- C O M P I L E - P D A   M O D U L E                               -->
     <!-- ================================================================= -->
