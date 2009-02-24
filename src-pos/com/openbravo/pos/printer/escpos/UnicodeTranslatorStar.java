@@ -41,32 +41,32 @@ public class UnicodeTranslatorStar extends UnicodeTranslator {
                 case '\u00da': return 0x55; // U acute
 
 
-//                case '\u0000': return -0x80; // 0x80 :
+                case '\u00C7': return -0x80; // 0x80 : C cedilla
                 case '\u00FC': return -0x7F; // 0x81 : u dieresis
                 case '\u00E9': return -0x7E; // 0x82 : e acute
 //                case '\u0000': return -0x7D; // 0x83 :
-//                case '\u0000': return -0x7C; // 0x84 :
+                case '\u00E4': return -0x7C; // 0x84 : a dieresis
 //                case '\u0000': return -0x7B; // 0x85 :
-//                case '\u0000': return -0x7A; // 0x86 :
-//                case '\u0000': return -0x79; // 0x87 :
+                case '\u00E5': return -0x7A; // 0x86 : a circle
+                case '\u00E7': return -0x79; // 0x87 : c cedilla
 //                case '\u0000': return -0x78; // 0x88 :
 //                case '\u0000': return -0x77; // 0x89 :
 //                case '\u0000': return -0x76; // 0x8A :
 //                case '\u0000': return -0x75; // 0x8B :
-//                case '\u0000': return -0x74; // 0x8C :
+//                case '\u0000': return -0x74; // 0x8C :dieresis
 //                case '\u0000': return -0x73; // 0x8D :
-//                case '\u0000': return -0x72; // 0x8E :
-//                case '\u0000': return -0x71; // 0x8F :
+                case '\u00C4': return -0x72; // 0x8E : A dieresis
+                case '\u00C5': return -0x71; // 0x8F : A circle
 //                case '\u0000': return -0x70; // 0x90 :
 //                case '\u0000': return -0x6F; // 0x91 :
 //                case '\u0000': return -0x6E; // 0x92 :
 //                case '\u0000': return -0x6D; // 0x93 :
-//                case '\u0000': return -0x6C; // 0x94 :
+                case '\u00F6': return -0x6C; // 0x94 : o dieresis
 //                case '\u0000': return -0x6B; // 0x95 :
 //                case '\u0000': return -0x6A; // 0x96 :
 //                case '\u0000': return -0x69; // 0x97 :
 //                case '\u0000': return -0x68; // 0x98 :
-//                case '\u0000': return -0x67; // 0x99 :
+                case '\u00D6': return -0x67; // 0x99 : O dieresis
                 case '\u00DC': return -0x66; // 0x9A : U dieresesis
 //                case '\u0000': return -0x65; // 0x9B :
                 case '\u00A3': return -0x64; // 0x9C : Pound currency
