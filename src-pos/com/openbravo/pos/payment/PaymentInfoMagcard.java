@@ -87,14 +87,32 @@ public class PaymentInfoMagcard extends PaymentInfo {
     public String getTransactionID() {
         return m_sTransactionID;
     }
-    public String getTrack1() {
-        return track1;
+    
+    /**
+     * Get tracks of magnetic card.
+     *   Framing characters: 
+     *    - start sentinel (SS)
+     *    - end sentinel (ES) 
+     *    - LRC 
+     * @param framingChar 
+     *    true: including framing characters
+     *    false: exluding framing characters
+     * @return tracks of the magnetic card
+     */
+    public String getTrack1(boolean framingChar) {
+        return (framingChar)
+            ? track1
+            : track1.substring(1, track1.length()-2);
     }
-    public String getTrack2() {
-        return track1;
+    public String getTrack2(boolean framingChar) {
+        return (framingChar)
+            ? track2
+            : track2.substring(1, track2.length()-2);
     }
-    public String getTrack3() {
-        return track1;
+    public String getTrack3(boolean framingChar) {
+        return (framingChar)
+            ? track3
+            : track3.substring(1, track3.length()-2);
     }
     
     public String getAuthorization() {
