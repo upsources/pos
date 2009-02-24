@@ -29,6 +29,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import com.openbravo.pos.ticket.UserInfo;
 import com.openbravo.pos.util.Hashcypher;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -39,7 +41,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author adrianromero
  */
 public class AppUser {
-    
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.forms.AppUser");
+
     private static SAXParser m_sp = null;
     private static HashMap<String, String> m_oldclasses; // This is for backwards compatibility purposes
     
@@ -121,11 +125,11 @@ public class AppUser {
                 m_sp.parse(new InputSource(new StringReader(sRolePermisions)), new ConfigurationHandler());
 
             } catch (ParserConfigurationException ePC) {
-                System.out.println(LocalRes.getIntString("exception.parserconfig"));
+                logger.log(Level.WARNING, "Cannot read permissions", ePC);
             } catch (SAXException eSAX) {
-                System.out.println(LocalRes.getIntString("exception.xmlfile"));
+                logger.log(Level.WARNING, "Cannot read permissions", eSAX);
             } catch (IOException eIO) {
-                System.out.println(LocalRes.getIntString("exception.iofile"));
+                logger.log(Level.WARNING, "Cannot read permissions", eIO);
             }
         }         
 

@@ -47,6 +47,8 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
  * @author adrianromero
  */
 public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.forms.JPrincipalApp");
     
     private JRootApp m_appview;
     private AppUser m_appuser;
@@ -113,13 +115,13 @@ public class JPrincipalApp extends javax.swing.JPanel implements AppUserView {
 
             m_jPanelLeft.setViewportView(getScriptMenu(m_dlSystem.getResourceAsText("Menu.Root")));
         } catch (ScriptException e) {
-            Logger.getLogger(JPrincipalApp.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, "Cannot read Menu.Root resource. Trying defaut menu.", e);
             try {
                 m_jPanelLeft.setViewportView(getScriptMenu(StringUtils.readResource("/com/openbravo/pos/templates/Menu.Root.txt")));
             } catch (IOException ex) {
-                Logger.getLogger(JPrincipalApp.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, "Cannot read default menu", ex);
             } catch (ScriptException es) {
-                Logger.getLogger(JPrincipalApp.class.getName()).log(Level.SEVERE, null, es);
+                logger.log(Level.SEVERE, "Cannot read default menu", es);
             }
         }               
     }

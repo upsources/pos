@@ -19,7 +19,6 @@
 
 package com.openbravo.pos.sales;
 
-import com.openbravo.data.loader.LocalRes;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -41,12 +40,16 @@ import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class JTicketLines extends javax.swing.JPanel {
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.sales.JTicketLines");
 
     private static SAXParser m_sp = null;
     
@@ -70,11 +73,11 @@ public class JTicketLines extends javax.swing.JPanel {
                 acolumns = columnshandler.getColumns();
 
             } catch (ParserConfigurationException ePC) {
-                System.out.println(LocalRes.getIntString("exception.parserconfig"));
+                logger.log(Level.WARNING, "Cannot read columns configuration", ePC);
             } catch (SAXException eSAX) {
-                System.out.println(LocalRes.getIntString("exception.xmlfile"));
+                logger.log(Level.WARNING, "Cannot read columns configuration", eSAX);
             } catch (IOException eIO) {
-                System.out.println(LocalRes.getIntString("exception.iofile"));
+                logger.log(Level.WARNING, "Cannot read columns configuration", eIO);
             }
         }
                

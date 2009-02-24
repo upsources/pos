@@ -27,12 +27,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  *
  * @author adrianromero
  */
 public class AppConfig implements AppProperties {
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.forms.AppConfig");
      
     private Properties m_propsconfig;
     private File configfile;
@@ -49,14 +52,11 @@ public class AppConfig implements AppProperties {
         init(configfile);
     }
     
-    /** Creates a new instance of AppConfig */
-    public AppConfig() {
-        init(getDefaultConfig());
-    }
-    
     private void init(File configfile) {
         this.configfile = configfile;
-        m_propsconfig = new Properties();        
+        m_propsconfig = new Properties();
+
+        logger.info("Reading configuration file: " + configfile.getAbsolutePath());
     }
     
     private File getDefaultConfig() {

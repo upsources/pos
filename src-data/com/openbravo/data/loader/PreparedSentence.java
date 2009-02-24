@@ -21,13 +21,16 @@ package com.openbravo.data.loader;
 
 import java.sql.*;
 import com.openbravo.basic.BasicException;
+import java.util.logging.Logger;
 
 /**
  *
  * @author  adrianromero
  */
 public class PreparedSentence extends JDBCSentence {
-    
+
+    private static Logger logger = Logger.getLogger("com.openbravo.data.loader.PreparedSentence");
+
     private String m_sentence;
     protected SerializerWrite m_SerWrite = null;
     protected SerializerRead m_SerRead = null;
@@ -126,8 +129,11 @@ public class PreparedSentence extends JDBCSentence {
         // false -> un updatecount (si -1 entonces se acabo)
         
         closeExec();
-        
+
         try {
+
+            logger.info("Executing prepared SQL: " + m_sentence);
+
             m_Stmt = m_s.getConnection().prepareStatement(m_sentence);
  
             if (m_SerWrite != null) {
@@ -135,7 +141,7 @@ public class PreparedSentence extends JDBCSentence {
                 m_SerWrite.writeValues(new PreparedSentencePars(m_Stmt), params);
             }
 
-            if (m_Stmt.execute()) {            
+            if (m_Stmt.execute()) {
                 return new JDBCDataResultSet(m_Stmt.getResultSet(), m_SerRead);
             } else { 
                 int iUC = m_Stmt.getUpdateCount();

@@ -20,7 +20,6 @@
 package com.openbravo.data.loader;
 
 import java.sql.*;
-import javax.sql.DataSource;
 import com.openbravo.basic.BasicException;
 
 public abstract class JDBCSentence extends BaseSentence {

@@ -23,7 +23,7 @@ import java.util.*;
 import com.openbravo.basic.BasicException;
 
 public abstract class BaseSentence implements SentenceList, SentenceFind, SentenceExec {
- 
+
     // Funciones de bajo nivel    
     public abstract DataResultSet openExec(Object params) throws BasicException;
     public abstract DataResultSet moreResults() throws BasicException;
@@ -59,7 +59,7 @@ public abstract class BaseSentence implements SentenceList, SentenceFind, Senten
     }
 
     public final List list(Object params) throws BasicException {
-    // En caso de error o lanza un pepinazo en forma de DataException          
+    // En caso de error o lanza un pepinazo en forma de DataException 
         DataResultSet SRS = openExec(params);
         List aSO = fetchAll(SRS);    
         SRS.close();

@@ -23,6 +23,8 @@ import java.util.Locale;
 import javax.swing.UIManager;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.instance.InstanceQuery;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.LookAndFeel;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.api.SubstanceSkin;
@@ -32,6 +34,8 @@ import org.jvnet.substance.api.SubstanceSkin;
  * @author adrianromero
  */
 public class StartPOS {
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.forms.StartPOS");
     
     /** Creates a new instance of StartPOS */
     private StartPOS() {
@@ -91,6 +95,7 @@ public class StartPOS {
                         SubstanceLookAndFeel.setSkin((SubstanceSkin) laf);                   
                     }
                 } catch (Exception e) {
+                    logger.log(Level.WARNING, "Cannot set look and feel", e);
                 }
                 
                 String screenmode = config.getProperty("machine.screenmode");

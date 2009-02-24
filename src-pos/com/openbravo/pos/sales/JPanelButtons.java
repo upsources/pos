@@ -19,7 +19,6 @@
 
 package com.openbravo.pos.sales;
 
-import com.openbravo.data.loader.LocalRes;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -41,10 +40,14 @@ import com.openbravo.pos.util.ThumbNailBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class JPanelButtons extends javax.swing.JPanel {
-    
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.sales.JPanelButtons");
+
     private static SAXParser m_sp = null;
     
     private Properties props;
@@ -77,11 +80,11 @@ public class JPanelButtons extends javax.swing.JPanel {
                 m_sp.parse(new InputSource(new StringReader(sConfigRes)), new ConfigurationHandler());
 
             } catch (ParserConfigurationException ePC) {
-                System.out.println(LocalRes.getIntString("exception.parserconfig"));
+                logger.log(Level.WARNING, "Cannot read panel configuration", ePC);
             } catch (SAXException eSAX) {
-                System.out.println(LocalRes.getIntString("exception.xmlfile"));
+                logger.log(Level.WARNING, "Cannot read panel configuration", eSAX);
             } catch (IOException eIO) {
-                System.out.println(LocalRes.getIntString("exception.iofile"));
+                logger.log(Level.WARNING, "Cannot read panel configuration", eIO);
             }
         }     
     
