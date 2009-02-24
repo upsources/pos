@@ -151,7 +151,9 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jcboMoney.repaint();
                 
         jtxtMoney.reset();
-
+        
+        jParamsDatesInterval1.setStartDate(null);
+        jParamsDatesInterval1.setEndDate(null);
     }
     
     @Override
