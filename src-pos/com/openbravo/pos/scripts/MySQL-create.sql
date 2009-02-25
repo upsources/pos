@@ -18,7 +18,7 @@
 --    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Database initial script for MYSQL
--- v2.30
+-- v2.30beta
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR(255) NOT NULL,

@@ -18,7 +18,7 @@
 --    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Database initial script for ORACLE
--- v2.30
+-- v2.30beta
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR2(255) NOT NULL,

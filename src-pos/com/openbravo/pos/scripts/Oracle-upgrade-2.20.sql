@@ -19,7 +19,7 @@
 
 -- Database upgrade script for ORACLE
 
--- v2.20 - v2.30
+-- v2.20 - v2.30beta
 
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('30', 'Printer.PartialCash', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash.xml});
 

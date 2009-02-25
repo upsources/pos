@@ -27,7 +27,7 @@
     <!-- program name -->
     <property name="name" value="openbravopos"/>
     <!-- project version -->
-    <property name="version" value="2.30"/>
+    <property name="version" value="2.30beta"/>
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
     <property name="javac.optimize" value="on"/>
@@ -215,7 +215,7 @@
 	     <manifest>   	    
       		<attribute name="Implementation-Vendor" value="Openbravo SL"/>
       		<attribute name="Implementation-Title" value="Openbravo Network POS"/>
-      		<attribute name="Implementation-Version" value="2.30"/>
+      		<attribute name="Implementation-Version" value="2.30beta"/>
       		<attribute name="Main-Class" value="com.openbravo.pos.forms.StartPOS" />
     	    </manifest>
         </jar>
@@ -367,7 +367,8 @@
     <!-- ================================================================= -->
     
     <target name="dist" depends="dist.bin,dist.src,sync" description="Generate the release files">
-    </target>  
+    </target>
+  
     <target name="dist.bin" depends="init,jar" description="Generate the bin zip file.">
         <mkdir dir="${basedir}/build/zip" />
         <copy file="${basedir}/start.bat" todir="${basedir}/build/zip"/>

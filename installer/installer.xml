@@ -1,11 +1,11 @@
 <project>
     <shortName>openbravopos</shortName>
     <fullName>Openbravo POS</fullName>
-    <version>2.30</version>
+    <version>2.30beta</version>
     <installerFilename></installerFilename>
     <outputDirectory>../build/installer</outputDirectory>
     <readmeFile>../README</readmeFile>
-    <licenseFile>../licensing/gpl-2.0.txt</licenseFile>
+    <licenseFile>../licensing/gpl-3.0.txt</licenseFile>
     <leftImage>images/left.png</leftImage>
     <logoImage>images/icon.png</logoImage>
     <splashImage>images/splash.png</splashImage>
