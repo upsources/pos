@@ -86,7 +86,7 @@ public class PaymentGatewayAuthorizeNet implements PaymentGateway {
             String amount = formatter.format(Math.abs(payinfo.getTotal()));
             sb.append(URLEncoder.encode(amount.replace(',', '.'), "UTF-8"));
             
-            if (payinfo.getTrack1(true) == null && payinfo.getTrack2(true) == null && payinfo.getTrack3(true) == null) {
+            if (payinfo.getTrack1(true) == null) {
                 sb.append("&x_card_num=");
                 sb.append(URLEncoder.encode(payinfo.getCardNumber(), "UTF-8"));
 
