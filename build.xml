@@ -534,6 +534,7 @@
     </target>    
     <target name="init.installer.pda">
 	    <mkdir dir="${basedir}/build/installer/pda" /> 
+	    <copy file="${dest.dist}/openbravopda.war" todir="${basedir}/jetty/webapps" />
     </target>    
     <target name="installer.pda.linux" depends="init.installer.pda, war" description="Generate an installer for Linux">
     	<exec executable="${bitrock}/bin/builder" failonerror="true">
