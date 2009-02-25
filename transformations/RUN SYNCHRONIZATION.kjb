@@ -93,7 +93,6 @@
       <launch_in_parallel>Transformation</launch_in_parallel>
       <filename>${Internal.Job.Filename.Directory}&#47;Customers.ktr</filename>
       <transname/>
-      <directory/>
       <arg_from_previous>N</arg_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
