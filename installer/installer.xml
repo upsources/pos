@@ -278,7 +278,7 @@
                             <origin>../openbravo-logo-128.png</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../build/jar/openbravopos.jarpa</origin>
+                            <origin>../build/jar/openbravopos.jar</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>../README</origin>
