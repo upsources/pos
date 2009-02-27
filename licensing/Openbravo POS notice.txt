@@ -28,10 +28,11 @@ B) Some portions of the Openbravo POS Software are provided by third parties. In
 - Files in /src-pos/com/openbravo/pos/util/: JRPrinterAWT300.java and JRViewer300.form and JRViewer300.form - Copyright (C) 2001-2006 JasperSoft Corporation http://www.jaspersoft.com. Distributed under the Lesser General Public License (LGPL)
 
  
-C) This product uses certain third party software libraries, found in /lib/ 
+C) This product uses certain third party software libraries, found in /lib/ and in /web/WEB-INF/lib and in /jetty/
 
 
-Portions of this code are developed by The Apache Software Foundation (www.apache.org). These files are: 
+Portions of this code are developed by The Apache Software Foundation (www.apache.org). These files are:
+
 - axis.jar
 - jaxrpc.jar (a dependency of axis)
 - saaj.jar (a dependency of axis)
@@ -42,11 +43,19 @@ Portions of this code are developed by The Apache Software Foundation (www.apach
 - commons-digester-1.7.jar
 - commons-discovery-0.2.jar
 - commons-lang-2.1.jar
-- common-logging-1.0.4.jar
+- commons-logging-1.0.4.jar
 - oro-2.0.8.jar (a dependency of velocity)
 - poi-3.0.1-FINAL-20070705.jar (a dependency of jasperreports)
 - velocity-1.5.jar
 - derby.jar
+- antlr.jar (a dependency of struts)
+- commons-digester.jar (a dependency of struts)
+- commons-fileupload-1.0.jar (a dependency of struts)
+- commons-logging.jar (a dependency of struts)
+- commons-validator.jar (a dependency of struts)
+- jakarta-oro (a dependency of struts)
+- struts.jar
+- standard.jar
 Copyright � 1999-2007, The Apache Software Foundation. Distributed under the Apache License Version 2.0, January 2004
 
 Other third party libraries in /lib/
@@ -81,5 +90,6 @@ All available from http://www.rxtx.org/. Copyright 1998-2006 Keane Jarvi. Distri
 
 - jpos1121.jar - available from http://www.javapos.com/. Distributed under the Common Public License
 
+The jetty web server version 6.1.12 is found in the folder /jetty/ and is available from http://www.mortbay.org/jetty/. Copyright (C) 1995-2008 Mort Bay Consulting
 
 If you have questions about the licensing terms for the Openbravo POS Software, please contact us at: legal@openbravo.com
