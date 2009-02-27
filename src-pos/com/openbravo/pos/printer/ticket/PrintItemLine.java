@@ -23,24 +23,18 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
 
 public class PrintItemLine implements PrintItem {
 
-    protected static Font BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
-    protected static int FONTHEIGHT = 17; //
-    protected static int FONTWIDTH = 7; //
-    protected int m_itextsize;
+    protected Font BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
+    protected int FONTHEIGHT = 17; //
+    protected int textsize;
     protected List<StyledText> m_atext;
-    protected JLabel label;
 
     /** Creates a new instance of PrinterItemLine */
-    public PrintItemLine(int itextsize) {
-        m_itextsize = itextsize;
+    public PrintItemLine(int textsize, Font font, int fontheight) {
+        this.textsize = textsize;
         m_atext = new ArrayList<StyledText>();
-
-        label = new JLabel();
-        label.setLocation(0, 0);
     }
 
     public void addText(int style, String text) {
@@ -49,27 +43,18 @@ public class PrintItemLine implements PrintItem {
 
     public void draw(Graphics2D g, int x, int y, int width) {
 
-        MyPrinterState ps = new MyPrinterState(m_itextsize);
-        int left = x;
+        MyPrinterState ps = new MyPrinterState(textsize);
+        float left = x;
         for (int i = 0; i < m_atext.size(); i++) {
             StyledText t = m_atext.get(i);
-
-            label.setFont(ps.getFont(BASEFONT, t.style));
-            label.setText(t.text);
-            label.setSize(label.getPreferredSize());
-//            label.setBounds(0,0, FONTWIDTH * t.text.length(), FONTASCENT * ps.getLineMult());
-
-            g.translate(left, y);
-            label.paint(g);
-            g.translate(-left, -y);
-
-            // left += label.getWidth();
-            left += FONTWIDTH * t.text.length();
+            g.setFont(ps.getFont(BASEFONT, t.style));
+            g.drawString(t.text, left, (float) y);
+            left += g.getFontMetrics().getStringBounds(t.text, g).getWidth();
         }
     }
 
     public int getHeight() {
-        return FONTHEIGHT * MyPrinterState.getLineMult(m_itextsize);
+        return FONTHEIGHT * MyPrinterState.getLineMult(textsize);
     }
 
     protected static class StyledText {

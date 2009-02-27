@@ -19,8 +19,6 @@
 
 package com.openbravo.pos.printer.ticket;
 
-import com.openbravo.pos.printer.printer.DevicePrinterPrinter;
-import com.openbravo.pos.printer.printer.PrinterBook;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 

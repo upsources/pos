@@ -19,9 +19,8 @@
 
 package com.openbravo.pos.printer.ticket;
 
-import java.awt.Graphics2D;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 /**
  *
@@ -29,14 +28,14 @@ import java.util.ArrayList;
  */
 public class BasicTicketForPrinter extends BasicTicket {
 
+    static {
+        BASEFONT = new Font("Monospaced", Font.PLAIN, 7);
+        FONTHEIGHT = 12;
+    }
+
     /** Creates a new instance of AbstractTicket */
     public BasicTicketForPrinter() {
         super();
-    }
-
-    @Override
-    public void beginLine(int iTextSize) {
-        pil = new PrintItemLineForPrinter(iTextSize);
     }
 
     public void printBarCode(String type, String position, String code, boolean isReceiptPrinter) {
@@ -45,42 +44,10 @@ public class BasicTicketForPrinter extends BasicTicket {
         m_iBodyHeight += pi.getHeight();
     }
 
-    public void draw(Graphics2D g2d, int x, int y, int width, int start, int lines) {
-        int currenty = y;
-        int i = 0;
-        //loop for lines on 1 page
-        for (i = start; i < lines; i++) {
-
-            m_aCommands.get(i).draw(g2d, x, currenty, width);
-            currenty += m_aCommands.get(i).getHeight();
-        }
-        //print the last line
-        if (i == lines) {
-            m_aCommands.get(i).draw(g2d, x, currenty, width);
-        }
-    }
-
     public void printImage(BufferedImage image, boolean isReceiptPrinter) {
 
         PrintItem pi = new PrintItemImageForPrinter(image, isReceiptPrinter);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
-    }
-
-    public int getHeightOfCommands(int line) {
-        return m_aCommands.get(line).getHeight();
-
-    }
-
-    public String getCommand(int line) {
-        return m_aCommands.get(line).toString();
-    }
-
-    public ArrayList getCommands() {
-        return (ArrayList) m_aCommands;
-    }
-
-    public int getTheLastIndex() {
-        return m_aCommands.size();
     }
 }

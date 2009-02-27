@@ -26,8 +26,15 @@ import javax.swing.JComponent;
 import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import com.openbravo.pos.util.ReportUtils;
-import java.awt.print.PrinterJob;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
 import javax.print.PrintService;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.JobName;
+import javax.print.attribute.standard.OrientationRequested;
 
 /**
  *Class DevicePrinterPrinter is responsible for printing tickets using system <br>
@@ -38,7 +45,6 @@ import javax.print.PrintService;
  * class PrintableTicket @see com.openbravo.pos.printer.printer.PrintableTicket
  *  
  * @author jaroslawwozniak
- * @since 2.30
  */
 public class DevicePrinterPrinter implements DevicePrinter {
 
@@ -48,8 +54,6 @@ public class DevicePrinterPrinter implements DevicePrinter {
     private BasicTicketForPrinter m_ticketcurrent;
     /*system printer*/
     private PrintService printservice;
-    //book
-    private PrinterBook printerBook;
     private boolean receiptPrinter;
 
     /** 
@@ -63,16 +67,6 @@ public class DevicePrinterPrinter implements DevicePrinter {
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
         printservice = ReportUtils.getPrintService(printername);
-        printerBook = new PrinterBook(this);
-    }
-
-    /**
-     * Method that returns a boolean value if a printer is a recipt printert or not
-     *
-     * @return receiptPrinter a boolean value if a printer is a receipt printer
-     */
-    public boolean isReceiptPrinter(){
-        return receiptPrinter;
     }
 
     /**
@@ -128,7 +122,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
      */
     @Override
     public void printImage(BufferedImage image) {
-        m_ticketcurrent.printImage(image, isReceiptPrinter());
+        m_ticketcurrent.printImage(image, receiptPrinter);
     }
 
     /**
@@ -140,7 +134,7 @@ public class DevicePrinterPrinter implements DevicePrinter {
      */
     @Override
     public void printBarCode(String type, String position, String code) {
-        m_ticketcurrent.printBarCode(type, position, code, isReceiptPrinter());
+        m_ticketcurrent.printBarCode(type, position, code, receiptPrinter);
     }
 
     /**
@@ -181,19 +175,19 @@ public class DevicePrinterPrinter implements DevicePrinter {
     public void endReceipt() {
 
         try {
-            //get the printer
-            PrinterJob printJob = PrinterJob.getPrinterJob();
-            printJob.setJobName(AppLocal.APP_NAME + " - Document");
-            printJob.setPageable(printerBook.getBook(m_ticketcurrent));
 
-            //set the printer
-            if (printservice == null) {
-                if (printJob.printDialog()) {
-                    printJob.print();
-                }
+            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+            aset.add(OrientationRequested.PORTRAIT);
+            aset.add(new JobName(AppLocal.APP_NAME + " - Document", null));
+            // aset.add(MediaSizeName.ISO_A4);
+
+            if (printservice == null)  {
+                // printer not available
             } else {
-                printJob.setPrintService(printservice);
-                printJob.print();
+                DocPrintJob printjob = printservice.createPrintJob();
+                Doc doc = new SimpleDoc(new PrintableBasicTicket(m_ticketcurrent), DocFlavor.SERVICE_FORMATTED.PRINTABLE, null);
+
+                printjob.print(doc, aset);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

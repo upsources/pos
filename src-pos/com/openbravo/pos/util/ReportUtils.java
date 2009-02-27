@@ -47,7 +47,7 @@ public class ReportUtils {
                 return PrintServiceLookup.lookupDefaultPrintService(); 
             } else {
                 PrintService[] pservices = 
-                        PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE , null);
+                        PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PRINTABLE , null);
                 for (PrintService s : pservices) {    
                     if (printername.equals(s.getName())) {
                         return s;
@@ -60,7 +60,7 @@ public class ReportUtils {
     
     public static String[] getPrintNames() {
         PrintService[] pservices = 
-                PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE , null);
+                PrintServiceLookup.lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PRINTABLE , null);
         
         String printers[] = new String[pservices.length];
         for (int i = 0; i < pservices.length; i++) {    

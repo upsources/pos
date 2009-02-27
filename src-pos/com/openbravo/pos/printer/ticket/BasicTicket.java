@@ -18,15 +18,24 @@
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.printer.ticket;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class BasicTicket implements PrintItem {
 
+    protected static Font BASEFONT;
+    protected static int FONTHEIGHT;
+
     protected java.util.List<PrintItem> m_aCommands;
     protected PrintItemLine pil;
     protected int m_iBodyHeight;
+
+    static {
+        BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
+        FONTHEIGHT = 17;
+    }
 
     /** Creates a new instance of AbstractTicket */
     public BasicTicket() {
@@ -48,6 +57,10 @@ public class BasicTicket implements PrintItem {
         }
     }
 
+    public java.util.List<PrintItem> getCommands() {
+        return m_aCommands;
+    }
+
     // INTERFAZ PRINTER 2
     public void printImage(BufferedImage image) {
 
@@ -64,7 +77,7 @@ public class BasicTicket implements PrintItem {
     }
 
     public void beginLine(int iTextSize) {
-        pil = new PrintItemLine(iTextSize);
+        pil = new PrintItemLine(iTextSize, BASEFONT, FONTHEIGHT);
     }
 
     public void printText(int iStyle, String sText) {
