@@ -365,7 +365,14 @@ public class StockManagement extends JPanel implements JPanelView {
     
     private class CatalogListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            incProduct( (ProductInfoExt) e.getSource(),1.0);
+            String sQty = m_jcodebar.getText();
+            if (sQty != null) {
+                Double dQty = (Double.valueOf(sQty)==0) ? 1.0 : Double.valueOf(sQty);
+                incProduct( (ProductInfoExt) e.getSource(), dQty);
+                m_jcodebar.setText(null);
+            } else {
+                incProduct( (ProductInfoExt) e.getSource(),1.0);
+            }
         }  
     }  
   
