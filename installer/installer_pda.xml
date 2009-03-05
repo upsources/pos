@@ -3,7 +3,7 @@
     <fullName>Openbravo POS PDA Module</fullName>
     <version>2.30beta</version>
     <installerFilename></installerFilename>
-    <outputDirectory>../build/installer</outputDirectory>
+    <outputDirectory>../build/installerpda</outputDirectory>
     <readmeFile>../README</readmeFile>
     <licenseFile>../licensing/gpl-3.0.txt</licenseFile>
     <leftImage>images/left.png</leftImage>

@@ -10,7 +10,7 @@
     <allowLanguageSelection>1</allowLanguageSelection>
     <description>Openbravo POS is a point of sale designed for touch screens</description>
     <enableRollback>1</enableRollback>
-    <outputDirectory>../build/installer</outputDirectory>
+    <outputDirectory>../build/installerpos</outputDirectory>
     <release>3</release>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <summary>POS</summary>

@@ -45,30 +45,49 @@
     <property name="src.web" value="${basedir}/web"/>
     <property name="jetty.lib" value="${basedir}/jetty/lib"/>
     <property name="lib" value="${basedir}/lib"/>
-    <!-- where the distribution files go -->
-    <property name="dest.dist" value="${basedir}/build/dist"/>
+
     <!-- the jar directory -->
     <property name="dest.jar" value="${basedir}/build/jar"/>
+    <property name="dest.war" value="${basedir}/build/war"/>
     <!-- where the class files go -->
     <property name="dest.classes" value="${basedir}/build/classes"/>
-    <!-- where war files go -->
-    <property name="dest.war" value="${basedir}/build/war"/>
+    <!-- where the distribution files go -->
+    <property name="dest.dist" value="${basedir}/build/dist"/>
+    <!-- where the installers go -->
+    <property name="dest.installer.pos" value="${basedir}/build/installerpos"/>
+    <property name="dest.installer.pda" value="${basedir}/build/installerpda"/>
+
     <!-- ================================================================= -->
     <!-- I N I T                                                           -->
     <!-- ================================================================= -->
-    <target name="init">
+    <target name="init.classes">
         <delete dir="${dest.classes}" />
-        <delete dir="${dest.dist}" />
+    </target>
+
+    <target name="init.jar">
         <delete dir="${dest.jar}" />
     </target>
 
-    <target name="init.pda">
+    <target name="init.war">
         <delete dir="${dest.war}" />
     </target>
+
+    <target name="init.dist">
+        <delete dir="${dest.dist}" />
+    </target>
+
+    <target name="init.installer.pos">
+        <delete dir="${dest.installer.pos}" />
+    </target>
+
+    <target name="init.installer.pda">
+	    <mkdir dir="${dest.installer.pda}" />
+    </target>
+
     <!-- ================================================================= -->
     <!-- C O M P I L E                                                     -->
     <!-- ================================================================= -->
-    <target name="compilebeans" depends="init">
+    <target name="compilebeans" depends="init.classes">
         <mkdir dir="${dest.classes}/beans" />
         <javac srcdir="${src.beans}"
                destdir="${dest.classes}/beans"
@@ -87,7 +106,7 @@
             </fileset>
         </copy>                
     </target>
-    <target name="compiledata" depends="init,compilebeans">
+    <target name="compiledata" depends="init.classes,compilebeans">
         <mkdir dir="${dest.classes}/data" />
         <javac srcdir="${src.data}"
                destdir="${dest.classes}/data"
@@ -109,7 +128,7 @@
             </fileset>
         </copy>                
     </target>
-    <target name="compilepos" depends="init,compilebeans,compiledata">
+    <target name="compilepos" depends="init.classes,compilebeans,compiledata">
         <mkdir dir="${dest.classes}/pos" />
         <javac srcdir="${src.pos}"
                destdir="${dest.classes}/pos"
@@ -135,7 +154,7 @@
             </fileset>
         </copy>                
     </target>
-    <target name="compileerp" depends="init,compilebeans,compiledata,compilepos">
+    <target name="compileerp" depends="init.classes,compilebeans,compiledata,compilepos">
         <mkdir dir="${dest.classes}/erp" />
         <javac srcdir="${src.erp}"
                destdir="${dest.classes}/erp"
@@ -167,8 +186,11 @@
     <!-- J A R                           				   -->
     <!-- ================================================================= -->
 
-    <target name="jar" depends="compilebeans,compiledata,compilepos,compileerp" description="Generate the .jar file.">
-        <copy todir="${dest.classes}/openbravopos">
+    <target name="jar" depends="init.jar,compilebeans,compiledata,compilepos,compileerp" description="Generate the .jar file.">
+
+        <mkdir dir="${basedir}/build/zip" />
+
+        <copy todir="${basedir}/build/zip">
             <fileset dir="${dest.classes}/beans"/>
             <fileset dir="${dest.classes}/data"/>
             <fileset dir="${dest.classes}/pos"/>
@@ -177,14 +199,15 @@
         <mkdir dir="${dest.jar}" />
         <jar jarfile="${dest.jar}/openbravopos.jar"
              compress="true"
-             basedir="${dest.classes}/openbravopos">
-	     <manifest>   	    
-      		<attribute name="Implementation-Vendor" value="Openbravo SL"/>
-      		<attribute name="Implementation-Title" value="Openbravo Network POS"/>
-      		<attribute name="Implementation-Version" value="${version}"/>
-      		<attribute name="Main-Class" value="com.openbravo.pos.forms.StartPOS" />
+             basedir="${basedir}/build/zip">
+            <manifest>
+                <attribute name="Implementation-Vendor" value="Openbravo SL"/>
+                <attribute name="Implementation-Title" value="Openbravo Network POS"/>
+                <attribute name="Implementation-Version" value="${version}"/>
+                <attribute name="Main-Class" value="com.openbravo.pos.forms.StartPOS" />
     	    </manifest>
         </jar>
+        <delete dir="${basedir}/build/zip" />
     </target>
 
 
@@ -192,33 +215,33 @@
     <!-- J A R  -  N A T I V E   L I B R A R I E S                         -->
     <!-- ================================================================= -->
 
-    <target name="jar-native-libraries" depends="init" description="Generate the .jar file with native libraries.">
-        
-	<jar jarfile="${dest.jar}/linux-i686-native.jar"
+    <target name="jar-native-libraries" depends="init.jar" description="Generate the .jar file with native libraries.">
+        <mkdir dir="${dest.jar}" />
+        <jar jarfile="${dest.jar}/linux-i686-native.jar"
              compress="true"
              basedir="${lib}/Linux/i686-unknown-linux-gnu">
         </jar>
-	<jar jarfile="${dest.jar}/linux-ia64-native.jar"
+    	<jar jarfile="${dest.jar}/linux-ia64-native.jar"
              compress="true"
              basedir="${lib}/Linux/ia64-unkown-linux-gnu">
         </jar>
-	<jar jarfile="${dest.jar}/linux-x86_64-native.jar"
+    	<jar jarfile="${dest.jar}/linux-x86_64-native.jar"
              compress="true"
              basedir="${lib}/Linux/x86_64-unknown-linux-gnu">
         </jar>
-	<jar jarfile="${dest.jar}/osx-native.jar"
+        <jar jarfile="${dest.jar}/osx-native.jar"
              compress="true"
              basedir="${lib}/Mac_OS_X">
         </jar>
-	<jar jarfile="${dest.jar}/sparc32-native.jar"
+    	<jar jarfile="${dest.jar}/sparc32-native.jar"
              compress="true"
              basedir="${lib}/Solaris/sparc-solaris/sparc32-sun-solaris2.8">
         </jar>
-	<jar jarfile="${dest.jar}/sparc64-native.jar"
+        <jar jarfile="${dest.jar}/sparc64-native.jar"
              compress="true"
              basedir="${lib}/Solaris/sparc-solaris/sparc64-sun-solaris2.8">
         </jar>
-	<jar jarfile="${dest.jar}/windows-native.jar"
+        <jar jarfile="${dest.jar}/windows-native.jar"
              compress="true"
              basedir="${lib}/Windows/i368-mingw32">
         </jar>
@@ -228,13 +251,13 @@
     <!-- J A R  -  R E P O R T S  &  L O C A L E S                         -->
     <!-- ================================================================= -->
 
-    <target name="jar-reports-and-locales" depends="init" description="Generate the .jar file with reports and locales.">
-   
-	<jar jarfile="${dest.jar}/reports.jar"
+    <target name="jar-reports-and-locales" depends="init.jar" description="Generate the .jar file with reports and locales.">
+        <mkdir dir="${dest.jar}" />
+        <jar jarfile="${dest.jar}/reports.jar"
              compress="true"
              basedir="${basedir}/reports">
         </jar>
-	<jar jarfile="${dest.jar}/locales.jar"
+        <jar jarfile="${dest.jar}/locales.jar"
              compress="true"
              basedir="${basedir}/locales">
         </jar>
@@ -244,7 +267,7 @@
     <!-- C O M P I L E - P D A   M O D U L E                               -->
     <!-- ================================================================= -->
 
-    <target name="compile.pda" depends="init.pda">
+    <target name="compile.pda" depends="init.classes">
         <mkdir dir="${dest.classes}/pda" />
 
         <javac srcdir="${src.pda}"
@@ -272,28 +295,29 @@
     <!-- W A R                                                            -->
     <!-- ================================================================= -->
 
-    <target name="war" depends="compile.pda" description="Generate the .war file.">
+    <target name="war" depends="init.war,compile.pda" description="Generate the .war file.">
 
-        <mkdir dir="${dest.war}" />
-        <mkdir dir="${dest.war}/WEB-INF/classes" />
-        <mkdir dir="${dest.war}/WEB-INF/lib" />
+        <mkdir dir="${basedir}/build/zip" />
+        <mkdir dir="${basedir}/build/zip/WEB-INF/classes" />
+        <mkdir dir="${basedir}/build/zip/WEB-INF/lib" />
 
-        <copy todir="${dest.war}"  >
+        <copy todir="${basedir}/build/zip">
             <fileset dir="${src.web}">
                 <include name="**/*.*"/>
             </fileset>
         </copy>
 
-        <copy todir="${dest.war}/WEB-INF/classes">
+        <copy todir="${basedir}/build/zip/WEB-INF/classes">
             <fileset dir="${dest.classes}/pda"/>
         </copy>
 
-        <copy file="${basedir}/lib/derby.jar" todir="${dest.war}/WEB-INF/lib"/>
+        <copy file="${basedir}/lib/derby.jar" todir="${basedir}/build/zip/WEB-INF/lib"/>
 
-        <mkdir dir="${dest.dist}" />
-        <war destfile="${dest.dist}/${name}_${version}_pda.war"
-             basedir="${dest.war}">
+        <mkdir dir="${dest.war}" />
+        <war destfile="${dest.war}/${name}_${version}_pda.war"
+             basedir="${basedir}/build/zip">
         </war>
+        <delete dir="${basedir}/build/zip"/>
     </target>
 
 
@@ -301,10 +325,10 @@
     <!-- D I S T R I B U T I O N  F I L E S                                -->
     <!-- ================================================================= -->
     
-    <target name="dist" depends="dist.bin,dist.src,dist.pda,sync,war" description="Generate the release files">
+    <target name="dist" depends="dist.bin,dist.src,dist.pda,dist.sync" description="Generate the release files">
     </target>
   
-    <target name="dist.bin" depends="init,jar" description="Generate the bin zip file.">
+    <target name="dist.bin" depends="init.dist,jar" description="Generate the bin zip file.">
         <mkdir dir="${basedir}/build/zip" />
         <copy file="${basedir}/start.bat" todir="${basedir}/build/zip"/>
         <copy file="${basedir}/configure.bat" todir="${basedir}/build/zip"/>
@@ -331,7 +355,7 @@
         <delete dir="${basedir}/build/zip" />
     </target>
 
-    <target name="dist.pda" depends="init,war" description="Generate de pda zip file">
+    <target name="dist.pda" depends="init.dist,war" description="Generate de pda zip file">
         <mkdir dir="${basedir}/build/zip" />
 
         <copy todir="${basedir}/build/zip"  >
@@ -339,7 +363,7 @@
                 <include name="**/*.*"/>
             </fileset>
         </copy>
-        <copy file="${dest.dist}/${name}_${version}_pda.war" todir="${basedir}/build/zip/webapps" />
+        <copy file="${dest.war}/${name}_${version}_pda.war" todir="${basedir}/build/zip/webapps" />
         <copy file="${basedir}/installer/pda/start.sh" todir="${basedir}/build/zip" />
         <copy file="${basedir}/installer/pda/start.bat" todir="${basedir}/build/zip" />
 
@@ -348,7 +372,7 @@
         <delete dir="${basedir}/build/zip" />
     </target>
 
-    <target name="dist.src" depends="init" description="Generate the src zip file.">
+    <target name="dist.src" depends="init.dist" description="Generate the src zip file.">
         <mkdir dir="${basedir}/build/zip" />
 
         <!-- Openbravo POS -->
@@ -434,27 +458,22 @@
         <delete dir="${basedir}/build/zip" />
     </target>
 
-    <!-- ================================================================= -->
-    <!-- S Y N C H R O N I Z A T I O N                                     -->
-    <!-- ================================================================= -->
+    <target name="dist.sync" depends="init.dist" description="Create .obx module and zip all kettle transformations" >
 
-    <target name="sync" description="Create .obx module and zip all kettle transformations" >	
+        <mkdir dir="${dest.dist}" />
+
         <mkdir dir="${basedir}/build/transformations"/>
-        <mkdir dir="${basedir}/build/org.openbravo.service.pos"/>
-
         <copy todir="${basedir}/build/transformations">
             <fileset dir="${basedir}/transformations"/>
         </copy>
+        <zip zipfile="${dest.dist}/${name}_${version}_int.zip" basedir="${basedir}/build/transformations" />
+        <delete dir="${basedir}/build/transformations"/>
 
+        <mkdir dir="${basedir}/build/org.openbravo.service.pos"/>
         <copy todir="${basedir}/build/org.openbravo.service.pos">
             <fileset dir="${basedir}/org.openbravo.service.pos"/>
         </copy>
-
-        <mkdir dir="${dest.dist}" />
-        <zip zipfile="${dest.dist}/${name}_${version}_int.zip" basedir="${basedir}/build/transformations" />
         <zip zipfile="${dest.dist}/${name}_${version}_web.obx" basedir="${basedir}/build/org.openbravo.service.pos"/>
-
-        <delete dir="${basedir}/build/transformations"/>
         <delete dir="${basedir}/build/org.openbravo.service.pos" />
     </target>
 
@@ -470,48 +489,46 @@
     <!-- I N S T A L L E R S   P O S                                       -->
     <!-- ================================================================= -->
 
-    <target name="installer.pos" depends="installer.linux, installer.linux-x64, installer.linux-ia64, installer.windows, installer.osx, installer.solaris-intel" 
+    <target name="installer.pos" depends="installer.pos.linux, installer.pos.linux-x64, installer.pos.linux-ia64, installer.pos.windows, installer.pos.osx, installer.pos.solaris-intel"
 			description="Generate installers for all predefined platforms">
     </target>
-    <target name="init.installer">
-	    <mkdir dir="${basedir}/build/installer" /> 
-    </target>
-    <target name="installer.linux" depends="init.installer, jar" description="Generate an installer for Linux">
+
+    <target name="installer.pos.linux" depends="init.installer.pos, jar" description="Generate an installer for Linux">
     	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="linux" /> 
     	</exec>
     </target>
-   <target name="installer.linux-x64" depends="init.installer, jar" description="Generate an installer for Linux x64">
+   <target name="installer.pos.linux-x64" depends="init.installer.pos, jar" description="Generate an installer for Linux x64">
 	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="linux-x64" /> 
     	</exec> 
     </target>
-   <target name="installer.linux-ia64" depends="init.installer, jar" description="Generate an installer for Linux ia64">
+   <target name="installer.pos.linux-ia64" depends="init.installer.pos, jar" description="Generate an installer for Linux ia64">
 	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="linux-ia64" /> 
     	</exec> 
     </target>
-    <target name="installer.windows" depends="init.installer, jar" description="Generate an installer for Windows">
+    <target name="installer.pos.windows" depends="init.installer.pos, jar" description="Generate an installer for Windows">
 	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="windows" /> 
     	</exec> 
     </target>
-   <target name="installer.osx" depends="init.installer, jar" description="Generate an installer for OSX">
+   <target name="installer.pos.osx" depends="init.installer.pos, jar" description="Generate an installer for OSX">
 	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
 	    <arg value="osx" /> 
     	</exec> 
     </target>
-   <target name="installer.solaris-intel" depends="init.installer, jar" description="Generate an installer for Solaris-Intel">
+   <target name="installer.pos.solaris-intel" depends="init.installer.pos, jar" description="Generate an installer for Solaris-Intel">
 	<exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
 	    <arg value="${basedir}/installer/installer.xml" />
@@ -525,9 +542,7 @@
 
     <target name="installer.pda" depends="installer.pda.linux, installer.pda.linux-x64, installer.pda.linux-ia64, installer.pda.windows, installer.pda.osx, 						installer.pda.solaris-intel" description="Generate installers for all predefined platforms">		
     </target>
-    <target name="init.installer.pda">
-	    <mkdir dir="${basedir}/build/installer" />
-    </target>
+
     <target name="installer.pda.linux" depends="init.installer.pda, war" description="Generate an installer for Linux">
         <exec executable="${bitrock}/bin/builder" failonerror="true">
 	    <arg value="build"/>
