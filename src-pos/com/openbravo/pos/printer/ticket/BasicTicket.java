@@ -16,6 +16,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+
 package com.openbravo.pos.printer.ticket;
 
 import java.awt.Font;
@@ -27,6 +28,7 @@ public class BasicTicket implements PrintItem {
 
     protected static Font BASEFONT;
     protected static int FONTHEIGHT;
+    protected static double IMAGE_SCALE;
 
     protected java.util.List<PrintItem> m_aCommands;
     protected PrintItemLine pil;
@@ -35,6 +37,7 @@ public class BasicTicket implements PrintItem {
     static {
         BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
         FONTHEIGHT = 17;
+        IMAGE_SCALE = 1.0;
     }
 
     /** Creates a new instance of AbstractTicket */
@@ -64,14 +67,14 @@ public class BasicTicket implements PrintItem {
     // INTERFAZ PRINTER 2
     public void printImage(BufferedImage image) {
 
-        PrintItem pi = new PrintItemImage(image);
+        PrintItem pi = new PrintItemImage(image, IMAGE_SCALE);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }
 
     public void printBarCode(String type, String position, String code) {
 
-        PrintItem pi = new PrintItemBarcode(type, position, code);
+        PrintItem pi = new PrintItemBarcode(type, position, code, IMAGE_SCALE);
         m_aCommands.add(pi);
         m_iBodyHeight += pi.getHeight();
     }

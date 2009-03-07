@@ -92,16 +92,17 @@ public class AppConfig implements AppProperties {
     }
    
     public boolean delete() {
+        loadDefault();
         return configfile.delete();
     }
     
     public void load() {
 
-        // Cargo las propiedades
+        loadDefault();
+
         try {
             InputStream in = new FileInputStream(configfile);
             if (in != null) {
-                m_propsconfig = new Properties();
                 m_propsconfig.load(in);
                 in.close();
             }
@@ -174,5 +175,21 @@ public class AppConfig implements AppProperties {
         m_propsconfig.setProperty("payment.commercepassword", "password");
         
         m_propsconfig.setProperty("machine.printername", "(Default)");
+
+        // Receipt printer paper set to 72mmx200mm
+        m_propsconfig.setProperty("paper.receipt.x", "10");
+        m_propsconfig.setProperty("paper.receipt.y", "287");
+        m_propsconfig.setProperty("paper.receipt.width", "190");
+        m_propsconfig.setProperty("paper.receipt.height", "546");
+        m_propsconfig.setProperty("paper.receipt.mediasizename", "A4");
+
+        // Normal printer paper for A4
+        m_propsconfig.setProperty("paper.A4.x", "72");
+        m_propsconfig.setProperty("paper.A4.y", "72");
+        m_propsconfig.setProperty("paper.A4.width", "451");
+        m_propsconfig.setProperty("paper.A4.height", "698");
+        m_propsconfig.setProperty("paper.A4.mediasizename", "A4");
+
+        m_propsconfig.setProperty("machine.uniqueinstance", "false");
     }
 }

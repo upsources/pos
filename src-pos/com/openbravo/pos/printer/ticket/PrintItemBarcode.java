@@ -35,11 +35,13 @@ public class PrintItemBarcode implements PrintItem {
     protected String m_sCode;
     protected int m_iWidth;
     protected int m_iHeight;
+    protected double scale;
 
     /** Creates a new instance of PrinterItemBarcode */
-    public PrintItemBarcode(String type, String position, String code) {
+    public PrintItemBarcode(String type, String position, String code, double scale) {
 
         m_sCode = code;
+        this.scale = scale;
 
         if (DevicePrinter.BARCODE_CODE128.equals(type)) {
             m_barcode = new Code128Bean();
@@ -70,8 +72,9 @@ public class PrintItemBarcode implements PrintItem {
             Graphics2D g2d = (Graphics2D) g;
 
             AffineTransform oldt = g2d.getTransform();
-
-            g2d.translate(x - 10 + (width - m_iWidth) / 2, y + 10);
+        
+            g2d.translate(x - 10 + (width - (int)(m_iWidth * scale)) / 2, y + 10);
+            g2d.scale(scale, scale);
 
             try {
                 m_barcode.generateBarcode(new Java2DCanvasProvider(g2d, 0), m_sCode);
@@ -86,6 +89,6 @@ public class PrintItemBarcode implements PrintItem {
     }
 
     public int getHeight() {
-        return m_iHeight + 20;
+        return (int) (m_iHeight * scale) + 20;
     }
 }

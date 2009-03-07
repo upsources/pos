@@ -20,7 +20,6 @@
 package com.openbravo.pos.printer.ticket;
 
 import java.awt.Font;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -31,23 +30,6 @@ public class BasicTicketForPrinter extends BasicTicket {
     static {
         BASEFONT = new Font("Monospaced", Font.PLAIN, 7);
         FONTHEIGHT = 12;
-    }
-
-    /** Creates a new instance of AbstractTicket */
-    public BasicTicketForPrinter() {
-        super();
-    }
-
-    public void printBarCode(String type, String position, String code, boolean isReceiptPrinter) {
-        PrintItem pi = new PrintItemBarcodeForPrinter(type, position, code, isReceiptPrinter);
-        m_aCommands.add(pi);
-        m_iBodyHeight += pi.getHeight();
-    }
-
-    public void printImage(BufferedImage image, boolean isReceiptPrinter) {
-
-        PrintItem pi = new PrintItemImageForPrinter(image, isReceiptPrinter);
-        m_aCommands.add(pi);
-        m_iBodyHeight += pi.getHeight();
+        IMAGE_SCALE = 0.65;
     }
 }

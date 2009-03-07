@@ -33,33 +33,37 @@ import java.awt.print.PrinterException;
  */
 public class PrintableBasicTicket implements Printable {
 
-    // For Page Size 72mm x 200mm  && No MediaSize.
-    private static final int MARGIN_HORIZONTAL = 150;
-    private static final int MARGIN_VERTICAL = 51;
-
-//    // For Page Size 72mm x 200mm && MediaSizeName A4.
-//    private static final int MARGIN_HORIZONTAL = 210;
-//    private static final int MARGIN_VERTICAL = 148;
+    private int imageable_width;
+    private int imageable_height;
+    private int imageable_x;
+    private int imageable_y;
 
     private BasicTicket ticket;
 
-    public PrintableBasicTicket(BasicTicket ticket) {
+    public PrintableBasicTicket(BasicTicket ticket, int imageable_x, int imageable_y, int imageable_width, int imageable_height) {
         this.ticket = ticket;
+        this.imageable_x = imageable_x;
+        this.imageable_y = imageable_y;
+        this.imageable_width = imageable_width;
+        this.imageable_height = imageable_height;
     }
-
 
     @Override
     public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 
         Graphics2D g2d = (Graphics2D) graphics;
 
-        int imageablewidth = (int) pageFormat.getImageableWidth() - MARGIN_HORIZONTAL * 2;
-        int imageableheight = (int) pageFormat.getImageableHeight() - MARGIN_VERTICAL * 2;
-
         int line = 0;
         int currentpage = 0;
         int currentpagey = 0;
         boolean printed = false;
+
+//        System.out.println(pageFormat.getImageableX());
+//        System.out.println(pageFormat.getImageableY());
+//        System.out.println(pageFormat.getImageableWidth());
+//        System.out.println(pageFormat.getImageableHeight());
+
+        g2d.translate(imageable_x, imageable_y);
 
         java.util.List<PrintItem> commands = ticket.getCommands();
 
@@ -67,7 +71,7 @@ public class PrintableBasicTicket implements Printable {
 
             int itemheight = commands.get(line).getHeight();
 
-            if (currentpagey + itemheight <= imageableheight) {
+            if (currentpagey + itemheight <= imageable_height) {
                 currentpagey += itemheight;
             } else {
                 currentpage ++;
@@ -78,7 +82,7 @@ public class PrintableBasicTicket implements Printable {
                 line ++;
             } else if (currentpage == pageIndex) {
                 printed = true;
-                commands.get(line).draw(g2d, 0, currentpagey - itemheight, imageablewidth);
+                commands.get(line).draw(g2d, 0, currentpagey - itemheight, imageable_width);
 
                 line ++;
             } else if (currentpage > pageIndex) {

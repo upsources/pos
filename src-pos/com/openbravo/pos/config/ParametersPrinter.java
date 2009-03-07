@@ -30,6 +30,8 @@ import java.awt.Component;
  */
 public class ParametersPrinter extends javax.swing.JPanel implements ParametersConfig {
 
+    private String othersizename = "A4";
+
     /** Creates new form ParametersPrinter */
     public ParametersPrinter(String [] printernames) {
         initComponents();
@@ -52,7 +54,9 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
 
     public void setParameters(StringParser p) {
         jPrinters.setSelectedItem(p.nextToken(','));
-        jReceiptPrinter.setSelected("true".equals(p.nextToken(',')));
+        String sizename = p.nextToken(',');
+        jReceiptPrinter.setSelected("receipt".equals(sizename));
+        othersizename = "receipt".equals(sizename) ? "A4" : sizename;
     }
 
     public String getParameters() {
@@ -63,8 +67,8 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
         return value == null ? "" : value.toString();
     }
 
-    private static String boolValue(boolean value) {
-        return value ? "true" : "false";
+    private String boolValue(boolean value) {
+        return value ? "receipt" : othersizename;
     }
 
     /** This method is called from within the constructor to

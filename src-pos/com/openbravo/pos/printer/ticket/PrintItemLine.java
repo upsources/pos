@@ -26,14 +26,17 @@ import java.util.List;
 
 public class PrintItemLine implements PrintItem {
 
-    protected Font BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
-    protected int FONTHEIGHT = 17; //
+    protected Font font;
+    protected int fontheight;
     protected int textsize;
     protected List<StyledText> m_atext;
 
     /** Creates a new instance of PrinterItemLine */
     public PrintItemLine(int textsize, Font font, int fontheight) {
         this.textsize = textsize;
+        this.font = font;
+        this.fontheight = fontheight;
+
         m_atext = new ArrayList<StyledText>();
     }
 
@@ -47,14 +50,14 @@ public class PrintItemLine implements PrintItem {
         float left = x;
         for (int i = 0; i < m_atext.size(); i++) {
             StyledText t = m_atext.get(i);
-            g.setFont(ps.getFont(BASEFONT, t.style));
+            g.setFont(ps.getFont(font, t.style));
             g.drawString(t.text, left, (float) y);
             left += g.getFontMetrics().getStringBounds(t.text, g).getWidth();
         }
     }
 
     public int getHeight() {
-        return FONTHEIGHT * MyPrinterState.getLineMult(textsize);
+        return fontheight * MyPrinterState.getLineMult(textsize);
     }
 
     protected static class StyledText {
