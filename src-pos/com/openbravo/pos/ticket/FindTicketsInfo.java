@@ -22,6 +22,7 @@ package com.openbravo.pos.ticket;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.SerializableRead;
+import com.openbravo.format.Formats;
 
 /**
  *
@@ -58,13 +59,12 @@ public class FindTicketsInfo implements SerializableRead {
         
         String sTicketType = (tickettype==0) ? "SALE" : "REFUND" ;
         String sCustomer = (customer==null) ? "" : customer;
-        String sTotal = (total==0.0) ? "" : Double.toString(total);
         String sPayment = (payment==null) ? "" : payment;
         
         String sHtml = "<tr><td width=\"90\">"+ "["+ ticketid +", "+ sTicketType +"]" +"</td>"+
                 "<td width=\"100\">"+ date +"</td>"+
                 "<td width=\"100\">"+ name +"</td>"+
-                "<td align=\"center\" width=\"80\">"+ sTotal +"</td>"+
+                "<td align=\"center\" width=\"80\">"+ Formats.CURRENCY.formatValue(total) +"</td>"+
                 "<td width=\"100\">"+ sPayment +"</td>"+
                 "<td width=\"100\">"+ sCustomer +"</td></tr>";
         

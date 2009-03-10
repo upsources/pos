@@ -35,7 +35,7 @@ public class FindTicketsRenderer extends DefaultListCellRenderer {
     
     /** Creates a new instance of ProductRenderer */
     public FindTicketsRenderer() {
-        icoticket = new ImageIcon(getClass().getClassLoader().getResource("com/openbravo/images/mime.png"));
+        icoticket = new ImageIcon(getClass().getClassLoader().getResource("com/openbravo/images/ticket.png"));
     }
 
     @Override
