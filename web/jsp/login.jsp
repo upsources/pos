@@ -39,7 +39,7 @@
         <logic:messagesPresent >
             <html:messages id="msg">
                 <p>
-                    <strong><font color="red"><bean:write name="msg" /></font></strong>
+                    <strong><center><font color="red" size="-1"><bean:write name="msg" /></font></center></strong>
                 </p>
             </html:messages>
         </logic:messagesPresent>
@@ -64,15 +64,5 @@
                 </tbody>
             </table>
         </html:form>
-        <logic:notPresent name="org.apache.struts.action.MESSAGE" scope="application">
-            <div style="color: red">
-                ERROR:  Application resources not loaded -- check servlet container
-                logs for error messages.
-            </div>
-        </logic:notPresent>
-        <logic:messagesPresent>
-            <h3><bean:message key="welcome.heading"/></h3>
-            <p><bean:message key="welcome.message"/></p>
-        </logic:messagesPresent>
     </body>
 </html>
