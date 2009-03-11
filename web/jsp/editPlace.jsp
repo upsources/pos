@@ -38,29 +38,33 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>JSP Page</title>
+    <meta name = "viewport" content = "user-scalable=no, width=device-width">
+    <title><bean:message key="editproduct" /></title>
     <LINK REL=StyleSheet HREF="layout.css" TYPE="text/css" MEDIA=screen>
     <script type="text/javascript" src="tableScript.js"></script>
 </head>
 <body>
     <div class="logo">
-    <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
-
+    <center>
+        <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
+    
     <jsp:useBean id="place" type="java.lang.String" scope="request" />
     <jsp:useBean id="line" type="com.openbravo.pos.ticket.TicketLineInfo" scope="request" />
     <jsp:useBean id="product" type="com.openbravo.pos.ticket.ProductInfo" scope="request" />
     <jsp:useBean id="lineNo" type="java.lang.String" scope="request" />
-    <a href="showPlace.do?id=${place}"><img alt="back" src="images/back.png" class="back">${place}</a><br>
+    <a href="showPlace.do?id=${place}"><img alt="back" src="images/back.png" class="back"></a>Table<br>
+    </center>
     </div>
     <div class="middle">
+        <center>
     <form action="modifyProduct.do" >
     <table border="0" id="table" class="pickme">
         <thead>
             <tr>
-                <th>Item</th>
-                <th>Price</th>
-                <th>Units</th>
-                <th>Value</th>
+                <th><bean:message key="item" /></th>
+                <th><bean:message key="price" /></th>
+                <th><bean:message key="units" /></th>
+                <th><bean:message key="value" /></th>
             </tr>
         </thead>
         <tbody>
@@ -69,15 +73,17 @@
                 <html:hidden property="line" value="${lineNo}" />
                  <tr onclick="">
                     <td class="name">${product.name}</td>
-                    <td><fmt:formatNumber type="currency" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                    <td><input type="text" name="parameters" size="3" value="${line.multiply}"></td>
-                    <td><fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                    <td class="normal"><fmt:formatNumber type="currency" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                    <td class="normal"><input type="text" name="parameters" size="3" value="${line.multiply}"></td>
+                    <td class="normal"><fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
                 </tr>
         </tbody>
     </table>
     <br>
-    <html:submit style="margin-left:80px;">Modify</html:submit>
+        <center><html:submit><bean:message key="modify" /></html:submit></center>
     </form>
+    </center>
     </div>
+    
 </body>
 </html>

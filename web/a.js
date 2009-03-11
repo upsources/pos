@@ -206,7 +206,7 @@ function updatePlace(newTextElements, place, place2){
   function startWorkingProducts(){
       if (req.readyState == 4) { // Complete
                if (req.status == 200) {
-                       
+
                 } else {
                         alert("Problem with server response:\n " + req.statusText);
                 }

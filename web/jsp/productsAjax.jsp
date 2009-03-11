@@ -30,6 +30,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-logic" prefix="logic" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
 
 <span id="productSpan" class="middle">
 
@@ -37,8 +38,8 @@
     <table id="table" class="pickme">
         <thead>
             <tr>
-                <th class="name">Item</th>
-                <th class="normal">Price</th>
+                <th class="name"><bean:message key="item" /></th>
+                <th class="normal"><bean:message key="price" /></th>
                 <th></th>
             </tr>
         </thead>
@@ -47,8 +48,8 @@
             <c:forEach var="product" items="${products}" varStatus="nr">
                         <tr>
                             <td class="name">${product.name}</td>
-                            <td class="normal"><fmt:formatNumber type="number" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                            <td><a href="#" onclick="ajaxAddProduct(<%=request.getSession().getAttribute("place")%>, '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                            <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td><a href="#" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
                         </tr>
             </c:forEach>
         </tbody>

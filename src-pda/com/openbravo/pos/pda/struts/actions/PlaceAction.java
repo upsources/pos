@@ -87,7 +87,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 array = floorForm.getParameters();
                 if (array != null) {
                     for (int i = 0; i < array.length; i++) {
-                        if(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() > 0){
+                        if (linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() > 0) {
                             linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() - 1);
                         }
                     }
@@ -101,9 +101,9 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 request.setAttribute("place", place);
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
-                
+
                 return mapping.findForward(UPDATE);
-                
+
             //edits lines
             case 2:
                 ticket = manager.findTicket(place);
@@ -139,7 +139,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 request.setAttribute("place", place);
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
-                
+
                 return mapping.findForward(UPDATE);
 
             //adds new products or just refresh
@@ -158,17 +158,17 @@ public class PlaceAction extends org.apache.struts.action.Action {
 
         }
 
-        if(floorId == null || floorId.equals("") || floorId.equals("undefined")) {
+        if (floorId == null || floorId.equals("") || floorId.equals("undefined")) {
             request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
         } else {
             //
             //it must be fixed
             //
             request.setAttribute("floorName", manager.findFloorById(floorId));
-            //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
+        //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
         }
 
-        
+
         request.setAttribute("place", place);
         request.setAttribute("floorId", floorId);
         request.setAttribute("lines", linesList);

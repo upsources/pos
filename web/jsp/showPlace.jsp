@@ -37,29 +37,33 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
-        <meta name = "viewport" content = "width = 240">
+        <meta name = "viewport" content = "user-scalable=no, width=device-width">
         <LINK REL=StyleSheet HREF="layout.css" TYPE="text/css" MEDIA=screen>
         <script type="text/javascript" src='tableScript.js'></script>
         <script type="text/javascript" src='a.js'></script>
-        <title>JSP Page</title>
+        <title><bean:message key="tables" /></title>
      </head>
     <body>
         <div class="logo">
-            <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
+        <center>
+        <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
+        
             <jsp:useBean id="products" type="List<ProductInfoExt>" scope="request" />
             <jsp:useBean id="place" type="java.lang.String" scope="request" />
             <jsp:useBean id="floorName" type="java.lang.String" scope="request" />
             <jsp:useBean id="floorId" type="java.lang.String" scope="request" />
             <a href='showFloors.do?floorId=${floorId}'><img alt="back" src="images/back.png" class="back"></a><%=floorName%><br>
+        </center>
         </div>
         <div class="middle">
+            <center>
             <table border="0" id="table" class="pickme">
                 <thead>
                     <tr>
-                        <th class="name">Item</th>
-                        <th class="normal">Price</th>
-                        <th class="normal">Units</th>
-                        <th class="normal">Value</th> 
+                        <th class="name"><bean:message key="item" /></th>
+                        <th class="normal"><bean:message key="price" /></th>
+                        <th class="units"><bean:message key="units" /></th>
+                        <th class="normal"><bean:message key="value" /></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -70,7 +74,7 @@
                             <tr>                           
                                 <td class="name">${products[nr.count - 1].name}</td>
                                 <td class="normal"><fmt:formatNumber type="currency" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                                <td class="normal" id="mul${nr.count - 1}"><fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/></td>
+                                <td class="units" id="mul${nr.count - 1}"><fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/></td>
                                 <td class="normal" id="value${nr.count - 1}"><fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
                                 <td><a href="#" onclick="ajaxCall(3, '${place}', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
                                 <td><a href="#" onclick="ajaxCall(1, '${place}', '${nr.count - 1}');"><img src="images/minus.png" alt="remove" class="button" /></a></td>
@@ -81,10 +85,11 @@
 
                 </tbody>
             </table>
-       
+            </center>
         <br>
-        <br>
-            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:100px;">
+        <br><center>
+            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:100px;margin-bottom:15px;">
+        </center>
         </div>
 
     </body>

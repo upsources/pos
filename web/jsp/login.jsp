@@ -29,13 +29,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name = "viewport" content = "width = 240">
+        <meta name = "viewport" content = "user-scalable=no, width=device-width">
         <title><bean:message key="welcome.title"/></title>
         <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
         <html:base/>
     </head>
     <body>
-        <img src="../images/logo.gif" alt="Openbravo" class="logo"/><br>
+        <center>
+        <img src="../images/logo.gif" alt="Openbravo" class="logo" /><br>
+        </center>
         <logic:messagesPresent >
             <html:messages id="msg">
                 <p>
@@ -44,6 +46,7 @@
             </html:messages>
         </logic:messagesPresent>
         <html:form action="login.do" method="post">
+            <center>
             <table class="pad">
                 <tbody>
                     <tr>
@@ -59,10 +62,11 @@
                         <td><html:password property="password" size="13"/></td>
                     </tr>
                     <tr>
-                        <td><html:submit style="width:100px;"><bean:message key="button.login" /></html:submit></td>
+                        <td><center><html:submit style="width:100px;"><bean:message key="button.login" /></html:submit></center></td>
                     </tr>
                 </tbody>
             </table>
+            </center>
         </html:form>
     </body>
 </html>

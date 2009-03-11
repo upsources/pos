@@ -37,21 +37,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
-        <meta name = "viewport" content = "width = 240">
-        <title>Floors</title>
+        <meta name = "viewport" content = "user-scalable=no, width=device-width">
+            <title><bean:message key="floors" /></title>
         <link rel=StyleSheet href="layout.css" type='text/css' media=screen>
         <script type='text/javascript' src='a.js'></script>
         <script type='text/javascript' src='tableScript.js'></script>
     </head>
     <body>
+        <center>
         <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
+        </center>
         <div>
-
+        <center>
             <form name="FloorForm" method="post" class="pad">
                 <html:select property="floorId" value="name" onchange="saveFloorId(this.value);retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');"  >
                     <html:options collection="floors" property="id" labelProperty="name"  />
                 </html:select>
             </form>
+        
             <div class="pad2">
                 <span id="ble">
                     <logic:present name="places">
@@ -73,10 +76,12 @@
                     </logic:present>
                 </span>
             </div>
+            </center>
         </div>
+        
         <div class="bottom">
             <form action="logout.do">
-                <input type="submit" id="d" value="Logout" style="width:100px;">
+               <center> <input type="submit" id="d" value="Logout" style="width:100px;"> </center>
                  
             </form>
         </div>

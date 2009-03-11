@@ -37,16 +37,15 @@
 
 
   img.button {
-      height:15px;
-      width:15px;
-      padding-left:1px;
+      height:30px;
+      width:30px;
+      padding-left:2px;
       border:none;
   }
 
   img.logo {
       height:45px;
       width:183px;
-      padding-left:20px;
       padding-bottom:20px;
       border: none;
   }
@@ -60,17 +59,16 @@
   }
 
   .pad {
-      margin-left: 50px;
       margin-top:10px;
   }
 
   .pad2 {
       height:140px;
-      margin-left: 2px;
+      padding:2px;
   }
 
   .pad3 {
-      margin-left: 40px;
+     
   }
 
   .pad4 {
@@ -79,18 +77,20 @@
   }
 
   .floor {
-      height:20px;
+      padding:5px;
+      height:30px;
       width:70px;
-      font:bold 7px Arial;
-      margin-top:2px;
+      font:bold 9px Arial;
+      margin-top:3px;
   }
 
   .busy {
-      height:20px;
+      padding:5px;
+      height:30px;
       width:70px;
-      font:bold 7px Arial;
-      background-color:#b4f9a6;
-      margin-top:2px;
+      font:bold 9px Arial;
+      background-color:#3ce116;
+      margin-top:3px;
   }
 
   h   {
@@ -104,39 +104,48 @@
   }
   th		{
       
-      font:bold 6px Arial;
+      font:bold 9px Arial;
       text-align:left;
       padding:2px;
       border-bottom:1px solid #333;
   }
   th.name{
-      font:bold 7px Arial;
+      font:bold 9px Arial;
       width:55px;
       max-width:55px;
       padding:2px;
      /* width:100px;*/
   }
+th.units {
+      width:15px;
+      padding:2px;
+}
   th.normal {
-      width:35px;
+      width:20px;
       padding:2px;
   }
   td	{
       
-      font:normal 7px Arial;
+      font:normal 9px Arial;
       padding:2px;
   }
 
   td.name{
-      font:normal 7px Arial;
+      font:normal 9px Arial;
       width:55px;
       max-width:55px;
       padding:2px;
    /*   width:100px;*/
   }
 
-  td.normal {
+  td.units {
+      width:5px;
       padding:2px;
-      width:35px;
+}
+
+  td.normal {
+      padding:10px;
+      width:40px;
   }
   tr.odd	{
       background:#e1ffdb;
@@ -158,7 +167,6 @@
       height:140px;
   }
   .bottom {
-      padding-left:50px;
       height:20px;
   }
 

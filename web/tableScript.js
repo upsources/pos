@@ -35,7 +35,7 @@ function addLoadEvent(func) {
 
 function update() {
   //  var t = setTimeout('stripeTables(), highlightRows(), lockRow()', 600 );
-  var t = setTimeout('stripeTables(), highlightRows()', 600 );
+  var t = setTimeout('stripeTables(), highlightRows()', 900 );
 }
 
 function addClass(element,value) {

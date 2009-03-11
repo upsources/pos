@@ -38,8 +38,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
-        <meta name = "viewport" content = "width=device-width">
-        <title>Floors</title>
+        <meta name = "viewport" content = "user-scalable=no, width=device-width">          
+        <title><bean:message key="edit" /></title>
         <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
         <script type="text/javascript" src="tableScript.js"></script>
         <script type="text/javascript" src="a.js"></script>
@@ -47,10 +47,14 @@
     <body onload="">
         <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
         <div class="logo">
-            <img src="images/logo.gif" alt="Openbravo" class="logo"/><br>
+            <center>
+            <img src="images/logo.gif" alt="Openbravo" class="logo"/>
+            <br>
                 <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back"></a><%=placeName%><br>
+            </center>
         </div>
         <div class="pad">
+            <center>
         <form action="#" method="get" >
             <html:select property="categoryId" value="id"
                          onchange="retrieveURL( 'productAjaxAction.do?categoryId=' + this.value, 'productSpan');update();rememberCategory(this.value);" >
@@ -61,8 +65,8 @@
             <table class="pickme">
                 <thead>
                     <tr>
-                        <th class="name">Item</th>
-                        <th class="normal">Price</th>
+                        <th class="name"><bean:message  key="item" /></th>
+                        <th class="normal"><bean:message  key="price" /></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -71,14 +75,15 @@
                     <c:forEach var="product" items="${products}" varStatus="nr">
                         <tr>
                             <td class="name">${product.name}</td>
-                            <td class="normal"><fmt:formatNumber type="number" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                            <td><a href="#" onclick="ajaxAddProduct(<%=request.getSession().getAttribute("place")%>, '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                            <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td><a href="#" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
 
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
         </span>
+        </center>
         </div>
         <br>
         <br>
