@@ -149,7 +149,7 @@ public class MetaSentence extends JDBCSentence {
                 return new JDBCDataResultSet(db.getExportedKeys(mp.getString(0), mp.getString(1), mp.getString(2)), m_SerRead);
             } else if ("getImportedKeys".equals(m_sSentence)) {
                 return new JDBCDataResultSet(db.getImportedKeys(mp.getString(0), mp.getString(1), mp.getString(2)), m_SerRead);
-            } else if ("getImportedKeys".equals(m_sSentence)) {  
+            } else if ("getCrossReference".equals(m_sSentence)) {
                 return new JDBCDataResultSet(db.getCrossReference(mp.getString(0), mp.getString(1), mp.getString(2), null, null, null), m_SerRead);
 
             // Los procedimientos y sus objetos relacionados
