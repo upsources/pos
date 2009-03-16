@@ -23,14 +23,14 @@ DIRNAME=`dirname $0`
 
 CP=$DIRNAME/openbravopos.jar
 
-CP=$CP:$DIRNAME/lib/jasperreports-3.0.0.jar
-CP=$CP:$DIRNAME/lib/jcommon-1.0.0.jar
-CP=$CP:$DIRNAME/lib/jfreechart-1.0.0.jar
+CP=$CP:$DIRNAME/lib/jasperreports-3.1.4.jar
+CP=$CP:$DIRNAME/lib/jcommon-1.0.15.jar
+CP=$CP:$DIRNAME/lib/jfreechart-1.0.12.jar
 CP=$CP:$DIRNAME/lib/jdt-compiler-3.1.1.jar
 CP=$CP:$DIRNAME/lib/commons-beanutils-1.7.jar
 CP=$CP:$DIRNAME/lib/commons-digester-1.7.jar
-CP=$CP:$DIRNAME/lib/itext-1.3.1.jar
-CP=$CP:$DIRNAME/lib/poi-3.0.1-FINAL-20070705.jar
+CP=$CP:$DIRNAME/lib/iText-2.1.0.jar
+CP=$CP:$DIRNAME/lib/poi-3.2-FINAL-20081019.jar
 CP=$CP:$DIRNAME/lib/barcode4j-light.jar
 CP=$CP:$DIRNAME/lib/commons-codec-1.3.jar
 CP=$CP:$DIRNAME/lib/velocity-1.5.jar

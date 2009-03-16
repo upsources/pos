@@ -45,7 +45,7 @@ Portions of this code are developed by The Apache Software Foundation (www.apach
 - commons-lang-2.1.jar
 - commons-logging-1.0.4.jar
 - oro-2.0.8.jar (a dependency of velocity)
-- poi-3.0.1-FINAL-20070705.jar (a dependency of jasperreports)
+- poi-3.2-FINAL-20081019.jar (a dependency of jasperreports)
 - velocity-1.5.jar
 - derby.jar
 - antlr.jar (a dependency of struts)
@@ -66,11 +66,11 @@ Other third party libraries in /lib/
 
 - hsqldb.jar - available at http://www.hsqldb.org/. Copyright (c) 1995-2000 by the Hypersonic SQL Group and Copyright (c) 2001-2005, The HSQL Development Group. Distributed under the http://www.hsqldb.org/web/hsqlLicense.html (similar to the BSD license).
 
-- itext-1.3.1.jar (a dependency of jasperreports) - available from http://www.lowagie.com/iText/.  Copyright � 1999-2007 by Bruno Lowagie. Distributed under the MPL and LGPL.
+- iText-2.1.0.jar (a dependency of jasperreports) - available from http://www.lowagie.com/iText/.  Copyright � 1999-2007 by Bruno Lowagie. Distributed under the MPL and LGPL.
 
-- jasperreports-3.0.0.jar - available from http://www.jasperforge.org/jaspersoft/opensource/business_intelligence/jasperreports/. Copyright � 2007 JasperSoft Corporation. Distributed under the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
+- jasperreports-3.1.14.jar - available from http://www.jasperforge.org/jaspersoft/opensource/business_intelligence/jasperreports/. Copyright � 2007 JasperSoft Corporation. Distributed under the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
 
-- jcommon-1.0.0.jar (a dependency of jfreechart) and jfreechart-1.0.0.jar - available from http://www.jfree.org/jfreechart/. � 2005-2008 Object Refinery Limited. Distributed under the GNU LESSER GENERAL PUBLIC LICENSE
+- jcommon-1.0.15.jar (a dependency of jfreechart) and jfreechart-1.0.12.jar - available from http://www.jfree.org/jfreechart/. � 2005-2008 Object Refinery Limited. Distributed under the GNU LESSER GENERAL PUBLIC LICENSE
 
 - RXTXcomm.jar
 - librxtxParallel.so
