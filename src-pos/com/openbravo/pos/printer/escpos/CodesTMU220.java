@@ -60,6 +60,7 @@ public class CodesTMU220 extends Codes {
     public byte[] getCutReceipt() { return PARTIAL_CUT_1; }   
     public byte[] getNewLine() { return NEW_LINE; } 
     public byte[] getImageHeader() { return IMAGE_HEADER; } // Not used
+    public int getImageWidth() { return 256; }
     
     @Override
     public byte[] transImage(BufferedImage oImage) {

@@ -45,8 +45,6 @@ public class CodesStar extends Codes {
     private static final byte[] IMAGE_END = {0x1B, 0x7A, 0x01};
     private static final byte[] IMAGE_HEADER = {0x1B, 0x4B};
     private static final byte[] NEW_LINE = {0x0D, 0x0A}; // Print and carriage return
-
-    private static final int IMAGE_WIDTH = 192;
     
     /** Creates a new instance of CodesStar */
     public CodesStar() {
@@ -68,11 +66,12 @@ public class CodesStar extends Codes {
     public byte[] getCutReceipt() { return PARTIAL_CUT; }   
     public byte[] getNewLine() { return NEW_LINE; } 
     public byte[] getImageHeader() { return IMAGE_HEADER; }     
+    public int getImageWidth() { return 192; }
     
     @Override
     public byte[] transImage(BufferedImage image) {
 
-        CenteredImage centeredimage = new CenteredImage(image, IMAGE_WIDTH);
+        CenteredImage centeredimage = new CenteredImage(image, getImageWidth());
                         
         int iWidth = centeredimage.getWidth();
         int iHeight = (centeredimage.getHeight() + 7) / 8; //

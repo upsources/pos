@@ -57,5 +57,6 @@ public class CodesEpson extends Codes {
     public byte[] getOpenDrawer() { return OPEN_DRAWER; }   
     public byte[] getCutReceipt() { return PARTIAL_CUT_1; }    
     public byte[] getNewLine() { return NEW_LINE; } 
-    public byte[] getImageHeader() { return IMAGE_HEADER; } 
+    public byte[] getImageHeader() { return IMAGE_HEADER; }
+    public int getImageWidth() { return 256; }
 }

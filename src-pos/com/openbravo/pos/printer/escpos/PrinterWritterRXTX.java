@@ -49,8 +49,9 @@ public class PrinterWritterRXTX extends PrinterWritter /* implements SerialPortE
 
                 if (m_PortIdPrinter.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     ((SerialPort)m_CommPortPrinter).setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE); // Configuramos el puerto
-                } else if (m_PortIdPrinter.getPortType() == CommPortIdentifier.PORT_PARALLEL) {
-                    ((ParallelPort)m_CommPortPrinter).setMode(1);
+// Not needed to set parallel properties
+//                } else if (m_PortIdPrinter.getPortType() == CommPortIdentifier.PORT_PARALLEL) {
+//                    ((ParallelPort)m_CommPortPrinter).setMode(1);
                 }
             }
             m_out.write(data);

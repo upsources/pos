@@ -58,4 +58,5 @@ public class CodesIthaca extends Codes {
     public byte[] getCutReceipt() { return PARTIAL_CUT; }       
     public byte[] getNewLine() { return NEW_LINE; } 
     public byte[] getImageHeader() { return IMAGE_HEADER; } 
+    public int getImageWidth() { return 256; }
 }

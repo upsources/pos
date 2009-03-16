@@ -25,9 +25,6 @@ import java.awt.image.BufferedImage;
 
 public abstract class Codes {
 
-    private static final int IMAGE_WIDTH = 192;
-
-
     /** Creates a new instance of Codes */
     public Codes() {
     }
@@ -48,6 +45,7 @@ public abstract class Codes {
     public abstract byte[] getCutReceipt();   
     public abstract byte[] getNewLine();    
     public abstract byte[] getImageHeader();
+    public abstract int getImageWidth();
 
     public void printBarcode(PrinterWritter out, String type, String position, String code) {
 
@@ -72,7 +70,7 @@ public abstract class Codes {
    
     public byte[] transImage(BufferedImage image) {
         
-            CenteredImage centeredimage = new CenteredImage(image, IMAGE_WIDTH);
+            CenteredImage centeredimage = new CenteredImage(image, getImageWidth());
 
         // Imprimo los par\u00e1metros en cu\u00e1druple
         int iWidth = (centeredimage.getWidth() + 7) / 8; // n\u00famero de bytes
