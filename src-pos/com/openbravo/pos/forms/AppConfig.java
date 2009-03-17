@@ -184,11 +184,11 @@ public class AppConfig implements AppProperties {
         m_propsconfig.setProperty("paper.receipt.mediasizename", "A4");
 
         // Normal printer paper for A4
-        m_propsconfig.setProperty("paper.A4.x", "72");
-        m_propsconfig.setProperty("paper.A4.y", "72");
-        m_propsconfig.setProperty("paper.A4.width", "451");
-        m_propsconfig.setProperty("paper.A4.height", "698");
-        m_propsconfig.setProperty("paper.A4.mediasizename", "A4");
+        m_propsconfig.setProperty("paper.standard.x", "72");
+        m_propsconfig.setProperty("paper.standard.y", "72");
+        m_propsconfig.setProperty("paper.standard.width", "451");
+        m_propsconfig.setProperty("paper.standard.height", "698");
+        m_propsconfig.setProperty("paper.standard.mediasizename", "A4");
 
         m_propsconfig.setProperty("machine.uniqueinstance", "false");
     }

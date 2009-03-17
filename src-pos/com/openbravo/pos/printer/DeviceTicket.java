@@ -137,7 +137,7 @@ public class DeviceTicket {
                     if (sPrinterParam2 == null || sPrinterParam2.equals("") || sPrinterParam2.equals("true")) {
                         sPrinterParam2 = "receipt";
                     } else if (sPrinterParam2.equals("false")) {
-                        sPrinterParam2 = "A4";
+                        sPrinterParam2 = "standard";
                     }
 
                     addPrinter(sPrinterIndex, new DevicePrinterPrinter(sPrinterParam1,

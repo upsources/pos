@@ -30,7 +30,7 @@ import java.awt.Component;
  */
 public class ParametersPrinter extends javax.swing.JPanel implements ParametersConfig {
 
-    private String othersizename = "A4";
+    private String othersizename = "standard";
 
     /** Creates new form ParametersPrinter */
     public ParametersPrinter(String [] printernames) {
@@ -56,7 +56,7 @@ public class ParametersPrinter extends javax.swing.JPanel implements ParametersC
         jPrinters.setSelectedItem(p.nextToken(','));
         String sizename = p.nextToken(',');
         jReceiptPrinter.setSelected("receipt".equals(sizename));
-        othersizename = "receipt".equals(sizename) ? "A4" : sizename;
+        othersizename = "receipt".equals(sizename) ? "standard" : sizename;
     }
 
     public String getParameters() {
