@@ -132,6 +132,14 @@ public class DeviceTicket {
                 if ("screen".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterPanel());
                 } else if ("printer".equals(sPrinterType)) {
+
+                    // backward compatibility
+                    if (sPrinterParam2 == null || sPrinterParam2.equals("") || sPrinterParam2.equals("true")) {
+                        sPrinterParam2 = "receipt";
+                    } else if (sPrinterParam2.equals("false")) {
+                        sPrinterParam2 = "A4";
+                    }
+
                     addPrinter(sPrinterIndex, new DevicePrinterPrinter(sPrinterParam1,
                             Integer.parseInt(props.getProperty("paper." + sPrinterParam2 + ".x")),
                             Integer.parseInt(props.getProperty("paper." + sPrinterParam2 + ".y")),
