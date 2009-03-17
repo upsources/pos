@@ -16,6 +16,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+
 package com.openbravo.pos.ticket;
 
 import java.io.*;
@@ -47,18 +48,18 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
 
     /** Creates new TicketLineInfo */
     public TicketLineInfo(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties props) {
-        init(productid, dMultiply, dPrice, tax, props);
+        init(productid, null, dMultiply, dPrice, tax, props);
     }
 
     public TicketLineInfo(String productid, double dMultiply, double dPrice, TaxInfo tax) {
-        init(productid, dMultiply, dPrice, tax, new Properties());
+        init(productid, null, dMultiply, dPrice, tax, new Properties());
     }
 
     public TicketLineInfo(String productid, String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
         Properties props = new Properties();
         props.setProperty("product.name", productname);
         props.setProperty("product.taxcategoryid", producttaxcategory);
-        init(productid, dMultiply, dPrice, tax, props);
+        init(productid, null, dMultiply, dPrice, tax, props);
     }
 
     public TicketLineInfo(String productname, String producttaxcategory, double dMultiply, double dPrice, TaxInfo tax) {
@@ -66,11 +67,11 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         Properties props = new Properties();
         props.setProperty("product.name", productname);
         props.setProperty("product.taxcategoryid", producttaxcategory);
-        init(null, dMultiply, dPrice, tax, props);
+        init(null, null, dMultiply, dPrice, tax, props);
     }
 
     public TicketLineInfo() {
-        init(null, 0.0, 0.0, null, new Properties());
+        init(null, null, 0.0, 0.0, null, new Properties());
     }
 
     public TicketLineInfo(ProductInfoExt product, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
@@ -91,7 +92,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
                 attributes.setProperty("product.categoryid", product.getCategoryID());
             }
         }
-        init(pid, dMultiply, dPrice, tax, attributes);
+        init(pid, null, dMultiply, dPrice, tax, attributes);
     }
 
     public TicketLineInfo(ProductInfoExt oProduct, double dPrice, TaxInfo tax, Properties attributes) {
@@ -99,13 +100,13 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
 
     public TicketLineInfo(TicketLineInfo line) {
-        init(line.productid, line.multiply, line.price, line.tax, (Properties) line.attributes.clone());
+        init(line.productid, line.attsetinstid, line.multiply, line.price, line.tax, (Properties) line.attributes.clone());
     }
 
-    private void init(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
+    private void init(String productid, String attsetinstid, double dMultiply, double dPrice, TaxInfo tax, Properties attributes) {
 
         this.productid = productid;
-        attsetinstid = null;
+        this.attsetinstid = attsetinstid;
         multiply = dMultiply;
         price = dPrice;
         this.tax = tax;
@@ -162,6 +163,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         // l.m_sTicket = null;
         // l.m_iLine = -1;
         l.productid = productid;
+        l.attsetinstid = attsetinstid;
         l.multiply = multiply;
         l.price = price;
         l.tax = tax;
