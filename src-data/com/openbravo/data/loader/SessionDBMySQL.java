@@ -31,6 +31,12 @@ public class SessionDBMySQL implements SessionDB {
     public String FALSE() {
         return "FALSE";
     }
+    public String INTEGER_NULL() {
+        return "CAST(NULL AS UNSIGNED INTEGER)";
+    }
+    public String CHAR_NULL() {
+        return "CAST(NULL AS CHAR)";
+    }
 
     public String getName() {
         return "MySQL";

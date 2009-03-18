@@ -96,7 +96,7 @@ public class JProductAttEdit extends javax.swing.JDialog {
                 new SerializerWriteBasic(Datas.STRING, Datas.STRING),
                 SerializerReadString.INSTANCE);
 
-        attinstSent = new PreparedSentence(s, "SELECT A.ID, A.NAME, CAST(NULL AS CHAR), CAST(NULL AS CHAR) " +
+        attinstSent = new PreparedSentence(s, "SELECT A.ID, A.NAME, " + s.DB.CHAR_NULL() + ", " + s.DB.CHAR_NULL() + " " +
                 "FROM ATTRIBUTEUSE AU JOIN ATTRIBUTE A ON AU.ATTRIBUTE_ID = A.ID " +
                 "WHERE AU.ATTRIBUTESET_ID = ? " +
                 "ORDER BY AU.LINENO",

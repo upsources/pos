@@ -31,6 +31,12 @@ public class SessionDBPostgreSQL implements SessionDB {
     public String FALSE() {
         return "False";
     }
+    public String INTEGER_NULL() {
+        return "CAST(NULL AS INTEGER)";
+    }
+    public String CHAR_NULL() {
+        return "CAST(NULL AS CHAR)";
+    }
 
     public String getName() {
         return "PostgreSQL";

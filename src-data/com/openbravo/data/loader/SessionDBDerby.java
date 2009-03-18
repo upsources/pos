@@ -31,6 +31,12 @@ public class SessionDBDerby implements SessionDB {
     public String FALSE() {
         return "0";
     }
+    public String INTEGER_NULL() {
+        return "CAST(NULL AS INTEGER)";
+    }
+    public String CHAR_NULL() {
+        return "CAST(NULL AS CHAR)";
+    }
 
     public String getName() {
         return "Derby";

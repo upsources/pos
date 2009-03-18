@@ -683,7 +683,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
     public final SentenceExec getCatalogCategoryAdd() {
         return new StaticSentence(s
-                , "INSERT INTO PRODUCTS_CAT(PRODUCT, CATORDER) SELECT ID, CAST(NULL AS INTEGER) FROM PRODUCTS WHERE CATEGORY = ?"
+                , "INSERT INTO PRODUCTS_CAT(PRODUCT, CATORDER) SELECT ID, " + s.DB.INTEGER_NULL() + " FROM PRODUCTS WHERE CATEGORY = ?"
                 , SerializerWriteString.INSTANCE);
     }
     public final SentenceExec getCatalogCategoryDel() {
