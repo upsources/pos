@@ -19,6 +19,7 @@
 
 package com.openbravo.pos.customers;
 
+import com.openbravo.pos.util.StringUtils;
 import java.io.Serializable;
 
 /**
@@ -67,6 +68,14 @@ public class CustomerInfo implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String printTaxid() {
+        return StringUtils.encodeXML(taxid);
+    }
+
+    public String printName() {
+        return StringUtils.encodeXML(name);
     }
     
     @Override

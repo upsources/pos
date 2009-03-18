@@ -61,11 +61,11 @@
          #if ($ticket.getCustomer())
         <line>
             <text align="left" length="15">Customer:</text>
-            <text>${ticket.getCustomer().getName()}</text>
+            <text>${ticket.getCustomer().printName()}</text>
         </line>      
         <line>
             <text align="left" length="15"></text>
-            <text>${ticket.getCustomer().getTaxid()}</text>
+            <text>${ticket.getCustomer().printTaxid()}</text>
         </line>  
         #end
         #if ($place != "")
