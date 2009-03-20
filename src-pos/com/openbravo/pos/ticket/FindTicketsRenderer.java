@@ -31,18 +31,29 @@ import javax.swing.JList;
  */
 public class FindTicketsRenderer extends DefaultListCellRenderer {
     
-     private Icon icoticket;
+    private Icon icoTicketNormal;
+    private Icon icoTicketRefund;
+
+    public static final int RECEIPT_NORMAL = 0;
     
     /** Creates a new instance of ProductRenderer */
     public FindTicketsRenderer() {
-        icoticket = new ImageIcon(getClass().getClassLoader().getResource("com/openbravo/images/ticket.png"));
+        this.icoTicketNormal = new ImageIcon(getClass().getClassLoader().getResource("com/openbravo/images/pay.png"));
+        this.icoTicketRefund = new ImageIcon(getClass().getClassLoader().getResource("com/openbravo/images/refund.png"));
     }
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+
+        int ticketType = ((FindTicketsInfo)value).getTicketType();
         setText("<html><table>" + value.toString() +"</table></html>");
-        setIcon(icoticket);
+        if (ticketType == RECEIPT_NORMAL) {
+            setIcon(icoTicketNormal);
+        } else {
+            setIcon(icoTicketRefund);
+        }
+        
         return this;
     }   
 }

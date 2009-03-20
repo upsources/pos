@@ -30,6 +30,7 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.printer.*;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.JMessageDialog;
+import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.scripting.ScriptEngine;
 import com.openbravo.pos.scripting.ScriptException;
 import com.openbravo.pos.scripting.ScriptFactory;
@@ -40,6 +41,7 @@ import com.openbravo.pos.ticket.FindTicketsInfo;
 public class JTicketsBagTicket extends JTicketsBag {
     
     private DataLogicSystem m_dlSystem = null;
+    protected DataLogicCustomers dlCustomers = null;
 
     private DeviceTicket m_TP;    
     private TicketParser m_TTP;    
@@ -58,6 +60,7 @@ public class JTicketsBagTicket extends JTicketsBag {
         super(app, panelticket);
         m_panelticketedit = panelticket; 
         m_dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystem");
+        dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
         
         // Inicializo la impresora...
         m_TP = new DeviceTicket();
@@ -433,7 +436,7 @@ public class JTicketsBagTicket extends JTicketsBag {
     }//GEN-LAST:event_m_jKeysActionPerformed
 
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JTicketsFinder finder = JTicketsFinder.getReceiptFinder(this, m_dlSales);
+        JTicketsFinder finder = JTicketsFinder.getReceiptFinder(this, m_dlSales, dlCustomers);
         finder.setVisible(true);
         FindTicketsInfo selectedTicket = finder.getSelectedCustomer();
         if (selectedTicket == null) {

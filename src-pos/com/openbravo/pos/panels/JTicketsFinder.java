@@ -19,13 +19,18 @@
 package com.openbravo.pos.panels;
 
 import com.openbravo.basic.BasicException;
+import com.openbravo.beans.JCalendarDialog;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.gui.ListQBFModelNumber;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.QBFCompareEnum;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.user.EditorCreator;
 import com.openbravo.data.user.ListProvider;
 import com.openbravo.data.user.ListProviderCreator;
+import com.openbravo.format.Formats;
+import com.openbravo.pos.customers.DataLogicCustomers;
+import com.openbravo.pos.customers.JCustomerFinder;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.inventory.TaxCategoryInfo;
@@ -37,6 +42,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 
@@ -50,6 +56,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
     private SentenceList m_sentcat;
     private ComboBoxValModel m_CategoryModel;
     private DataLogicSales dlSales;
+    private DataLogicCustomers dlCustomers;
     private FindTicketsInfo selectedTicket;
    
     /** Creates new form JCustomerFinder */
@@ -62,7 +69,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         super(parent, modal);
     }
     
-    public static JTicketsFinder getReceiptFinder(Component parent, DataLogicSales dlSales) {
+    public static JTicketsFinder getReceiptFinder(Component parent, DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
         Window window = getWindow(parent);
         
         JTicketsFinder myMsg;
@@ -71,7 +78,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         } else {
             myMsg = new JTicketsFinder((Dialog) window, true);
         }
-        myMsg.init(dlSales);
+        myMsg.init(dlSales, dlCustomers);
         myMsg.applyComponentOrientation(parent.getComponentOrientation());
         return myMsg;
     }
@@ -80,8 +87,10 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         return selectedTicket;
     }
 
-    private void init(DataLogicSales dlSales) {
+    private void init(DataLogicSales dlSales, DataLogicCustomers dlCustomers) {
+        
         this.dlSales = dlSales;
+        this.dlCustomers = dlCustomers;
         
         initComponents();
 
@@ -89,7 +98,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
 
         jtxtTicketID.addEditorKeys(m_jKeys);
         jtxtMoney.addEditorKeys(m_jKeys);
-        jtxtCustomer.addEditorKeys(m_jKeys);
+        
         //jtxtTicketID.activate();
         lpr = new ListProviderCreator(dlSales.getTicketsList(), this);
 
@@ -152,10 +161,12 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jcboMoney.repaint();
                 
         jtxtMoney.reset();
-        jtxtCustomer.reset();
         
-        jParamsDatesInterval1.setStartDate(null);
-        jParamsDatesInterval1.setEndDate(null);
+        jTxtStartDate.setText(null);
+        jTxtEndDate.setText(null);
+        
+        jtxtCustomer.setText(null);
+        
     }
     
     @Override
@@ -189,13 +200,15 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         afilter[4] = afilter[5] == null ? QBFCompareEnum.COMP_NONE : jcboMoney.getSelectedItem();
         
         // Date range
-        if (jParamsDatesInterval1.createValue() != null) {
-            Object[] dates = (Object[])jParamsDatesInterval1.createValue();
-            afilter[6] = dates[0];
-            afilter[7] = dates[1];
-            afilter[8] = dates[2];
-            afilter[9] = dates[3];
-        }
+        Object startdate = Formats.TIMESTAMP.parseValue(jTxtStartDate.getText());
+        Object enddate = Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());
+        
+        afilter[6] = (startdate == null) ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_GREATEROREQUALS;
+        afilter[7] = startdate;
+        afilter[8] = (enddate == null) ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_LESS;
+        afilter[9] = enddate;
+
+        
         
         //User
         if (jcboUser.getSelectedItem() == null) {
@@ -260,7 +273,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jCheckBoxSales = new javax.swing.JCheckBox();
         jCheckBoxRefunds = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
@@ -268,11 +280,16 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jtxtMoney = new com.openbravo.editor.JEditorCurrency();
         jcboUser = new javax.swing.JComboBox();
         jcboMoney = new javax.swing.JComboBox();
-        m_jKeys = new com.openbravo.editor.JEditorKeys();
         jtxtTicketID = new com.openbravo.editor.JEditorIntegerPositive();
-        jParamsDatesInterval1 = new com.openbravo.pos.reports.JParamsDatesInterval();
         labelCustomer = new javax.swing.JLabel();
-        jtxtCustomer = new com.openbravo.editor.JEditorString();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTxtStartDate = new javax.swing.JTextField();
+        jTxtEndDate = new javax.swing.JTextField();
+        btnDateStart = new javax.swing.JButton();
+        btnDateEnd = new javax.swing.JButton();
+        jtxtCustomer = new javax.swing.JTextField();
+        btnCustomer = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -283,6 +300,8 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jPanel1 = new javax.swing.JPanel();
         jcmdOK = new javax.swing.JButton();
         jcmdCancel = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        m_jKeys = new com.openbravo.editor.JEditorKeys();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(AppLocal.getIntString("form.tickettitle")); // NOI18N
@@ -291,11 +310,9 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jPanel7.setPreferredSize(new java.awt.Dimension(0, 270));
+        jPanel7.setPreferredSize(new java.awt.Dimension(0, 210));
 
         jLabel1.setText(AppLocal.getIntString("label.ticketid")); // NOI18N
-
-        jLabel2.setText(AppLocal.getIntString("label.tickettype")); // NOI18N
 
         jCheckBoxSales.setText(AppLocal.getIntString("label.sales")); // NOI18N
 
@@ -303,79 +320,128 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
 
         jLabel6.setText(AppLocal.getIntString("label.user")); // NOI18N
 
-        jLabel7.setText(AppLocal.getIntString("label.money")); // NOI18N
+        jLabel7.setText(AppLocal.getIntString("label.totalcash")); // NOI18N
 
         labelCustomer.setText(AppLocal.getIntString("label.customer")); // NOI18N
+
+        jLabel3.setText(AppLocal.getIntString("Label.StartDate")); // NOI18N
+
+        jLabel4.setText(AppLocal.getIntString("Label.EndDate")); // NOI18N
+
+        jTxtStartDate.setPreferredSize(new java.awt.Dimension(200, 25));
+
+        jTxtEndDate.setPreferredSize(new java.awt.Dimension(200, 25));
+
+        btnDateStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnDateStart.setPreferredSize(new java.awt.Dimension(50, 25));
+        btnDateStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDateStartActionPerformed(evt);
+            }
+        });
+
+        btnDateEnd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnDateEnd.setPreferredSize(new java.awt.Dimension(50, 25));
+        btnDateEnd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDateEndActionPerformed(evt);
+            }
+        });
+
+        jtxtCustomer.setPreferredSize(new java.awt.Dimension(200, 25));
+
+        btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
+        btnCustomer.setFocusPainted(false);
+        btnCustomer.setFocusable(false);
+        btnCustomer.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnCustomer.setPreferredSize(new java.awt.Dimension(50, 25));
+        btnCustomer.setRequestFocusEnabled(false);
+        btnCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(33, 33, 33)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(62, 62, 62)
+                            .addComponent(jTxtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(84, 84, 84)
+                            .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBoxSales)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jCheckBoxRefunds))
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(68, 68, 68)
+                            .addComponent(jTxtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel7Layout.createSequentialGroup()
+                            .addComponent(labelCustomer)
+                            .addGap(61, 61, 61)
+                            .addComponent(jtxtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jCheckBoxSales)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCheckBoxRefunds))
-                            .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jParamsDatesInterval1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)
+                        .addGap(90, 90, 90)
+                        .addComponent(jcboMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtxtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6)
-                            .addComponent(labelCustomer))
-                        .addGap(76, 76, 76)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtxtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jcboMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(m_jKeys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(jLabel6)
+                        .addGap(91, 91, 91)
+                        .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jCheckBoxSales)
-                            .addComponent(jCheckBoxRefunds))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jParamsDatesInterval1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelCustomer)
-                            .addComponent(jtxtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jtxtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jcboMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7))))
-                    .addComponent(m_jKeys, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxRefunds)
+                    .addComponent(jCheckBoxSales))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(btnDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTxtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel4)
+                    .addComponent(jTxtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(labelCustomer)
+                    .addComponent(jtxtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel6)
+                    .addComponent(jcboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel7)
+                    .addComponent(jcboMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(91, 91, 91))
         );
 
         jPanel5.add(jPanel7, java.awt.BorderLayout.CENTER);
@@ -460,8 +526,14 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 250));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(m_jKeys, java.awt.BorderLayout.NORTH);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.LINE_END);
+
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-645)/2, (screenSize.height-684)/2, 645, 684);
+        setBounds((screenSize.width-695)/2, (screenSize.height-684)/2, 695, 684);
     }// </editor-fold>//GEN-END:initComponents
     private void jcmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmdOKActionPerformed
         selectedTicket = (FindTicketsInfo) jListTickets.getSelectedValue();
@@ -494,30 +566,78 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         defaultValues();
 }//GEN-LAST:event_jButton1ActionPerformed
 
+private void btnDateStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateStartActionPerformed
+    Date date;
+        try {
+            date = (Date) Formats.TIMESTAMP.parseValue(jTxtStartDate.getText());
+        } catch (BasicException e) {
+            date = null;
+        }        
+        date = JCalendarDialog.showCalendarTimeHours(this, date);
+        if (date != null) {
+            jTxtStartDate.setText(Formats.TIMESTAMP.formatValue(date));
+        }
+}//GEN-LAST:event_btnDateStartActionPerformed
+
+private void btnDateEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateEndActionPerformed
+Date date;
+        try {
+            date = (Date) Formats.TIMESTAMP.parseValue(jTxtEndDate.getText());
+        } catch (BasicException e) {
+            date = null;
+        }        
+        date = JCalendarDialog.showCalendarTimeHours(this, date);
+        if (date != null) {
+            jTxtEndDate.setText(Formats.TIMESTAMP.formatValue(date));
+        }
+}//GEN-LAST:event_btnDateEndActionPerformed
+
+private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlCustomers);
+        finder.search(null);
+        finder.setVisible(true);
+        
+        try {
+            jtxtCustomer.setText(finder.getSelectedCustomer() == null
+                    ? null
+                    : dlSales.loadCustomerExt(finder.getSelectedCustomer().getId()).toString());
+        } catch (BasicException e) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), e);
+            msg.show(this);            
+        }
+
+}//GEN-LAST:event_btnCustomerActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCustomer;
+    private javax.swing.JButton btnDateEnd;
+    private javax.swing.JButton btnDateStart;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBoxRefunds;
     private javax.swing.JCheckBox jCheckBoxSales;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JList jListTickets;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private com.openbravo.pos.reports.JParamsDatesInterval jParamsDatesInterval1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTxtEndDate;
+    private javax.swing.JTextField jTxtStartDate;
     private javax.swing.JComboBox jcboMoney;
     private javax.swing.JComboBox jcboUser;
     private javax.swing.JButton jcmdCancel;
     private javax.swing.JButton jcmdOK;
-    private com.openbravo.editor.JEditorString jtxtCustomer;
+    private javax.swing.JTextField jtxtCustomer;
     private com.openbravo.editor.JEditorCurrency jtxtMoney;
     private com.openbravo.editor.JEditorIntegerPositive jtxtTicketID;
     private javax.swing.JLabel labelCustomer;
