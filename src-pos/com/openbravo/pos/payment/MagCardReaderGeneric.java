@@ -162,7 +162,8 @@ public class MagCardReaderGeneric implements MagCardReader {
 
         m_sCardNumber = sCardNumber1;
         m_sHolderName = formatHolderName(sHolderName);
-        m_sExpirationDate = sExpDate1 == null ? sExpDate2 : sExpDate1;
+        String yymm = sExpDate1 == null ? sExpDate2 : sExpDate1;
+        m_sExpirationDate = yymm.substring(2, 4) + yymm.substring(0, 2); //MMYY format
     }
     
     private boolean checkCardNumber(String sNumber) {

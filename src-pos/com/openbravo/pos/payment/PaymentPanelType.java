@@ -137,6 +137,7 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
         jLabel8 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -151,25 +152,56 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
 
         add(jPanel2, java.awt.BorderLayout.EAST);
 
-        jPanel4.setLayout(null);
-        jPanel4.add(m_jCardNumber);
-        m_jCardNumber.setBounds(110, 50, 180, 25);
-        jPanel4.add(m_jExpirationDate);
-        m_jExpirationDate.setBounds(110, 80, 110, 25);
-        jPanel4.add(m_jHolderName);
-        m_jHolderName.setBounds(110, 20, 180, 25);
-
         jLabel8.setText(AppLocal.getIntString("label.cardholder")); // NOI18N
-        jPanel4.add(jLabel8);
-        jLabel8.setBounds(20, 20, 90, 15);
 
         jLabel6.setText(AppLocal.getIntString("label.cardnumber")); // NOI18N
-        jPanel4.add(jLabel6);
-        jLabel6.setBounds(20, 50, 90, 15);
 
         jLabel7.setText(AppLocal.getIntString("label.cardexpdate")); // NOI18N
-        jPanel4.add(jLabel7);
-        jLabel7.setBounds(20, 80, 120, 15);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        jLabel2.setText("MMYY");
+
+        org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel4Layout.createSequentialGroup()
+                .add(20, 20, 20)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(jLabel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(m_jHolderName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 180, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(m_jCardNumber, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 180, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jPanel4Layout.createSequentialGroup()
+                                .add(90, 90, 90)
+                                .add(m_jExpirationDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(4, 4, 4)
+                        .add(jLabel2)))
+                .add(60, 60, 60))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel4Layout.createSequentialGroup()
+                .add(20, 20, 20)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel8)
+                    .add(m_jHolderName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel6)
+                    .add(m_jCardNumber, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(5, 5, 5)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel7)
+                    .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
+                        .add(jLabel2)
+                        .add(m_jExpirationDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+        );
 
         add(jPanel4, java.awt.BorderLayout.CENTER);
 
@@ -182,6 +214,7 @@ public class PaymentPanelType extends javax.swing.JPanel implements PaymentPanel
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
