@@ -25,6 +25,18 @@
  * San Francisco, CA 94107
  * http://www.jaspersoft.com
  */
+
+//    Portions:
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007-2009 Openbravo, S.L.
+//    http://www.openbravo.com/product/pos
+//    author adrian romero
+// This class is a copy of net.sf.jasperreports.engine.print.JRPrinterAWT
+// The modifications are:
+// Added to the constructor the service, instead of isDialog
+// And the redesign of the design properties of the toolbar
+// Nothing else.
+
 package com.openbravo.pos.util;
 
 import java.awt.Graphics;
