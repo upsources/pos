@@ -19,6 +19,7 @@
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.data.loader.LocalRes;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -80,11 +81,11 @@ public class JPanelButtons extends javax.swing.JPanel {
                 m_sp.parse(new InputSource(new StringReader(sConfigRes)), new ConfigurationHandler());
 
             } catch (ParserConfigurationException ePC) {
-                logger.log(Level.WARNING, "Cannot read panel configuration", ePC);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.parserconfig"), ePC);
             } catch (SAXException eSAX) {
-                logger.log(Level.WARNING, "Cannot read panel configuration", eSAX);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.xmlfile"), eSAX);
             } catch (IOException eIO) {
-                logger.log(Level.WARNING, "Cannot read panel configuration", eIO);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.iofile"), eIO);
             }
         }     
     

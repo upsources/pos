@@ -125,13 +125,13 @@ public class AppUser {
                 m_sp.parse(new InputSource(new StringReader(sRolePermisions)), new ConfigurationHandler());
 
             } catch (ParserConfigurationException ePC) {
-                logger.log(Level.WARNING, "Cannot read permissions", ePC);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.parserconfig"), ePC);
             } catch (SAXException eSAX) {
-                logger.log(Level.WARNING, "Cannot read permissions", eSAX);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.xmlfile"), eSAX);
             } catch (IOException eIO) {
-                logger.log(Level.WARNING, "Cannot read permissions", eIO);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.iofile"), eIO);
             }
-        }         
+        }
 
     }
     

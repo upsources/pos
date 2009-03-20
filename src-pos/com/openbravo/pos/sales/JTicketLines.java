@@ -19,6 +19,7 @@
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.data.loader.LocalRes;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -73,11 +74,11 @@ public class JTicketLines extends javax.swing.JPanel {
                 acolumns = columnshandler.getColumns();
 
             } catch (ParserConfigurationException ePC) {
-                logger.log(Level.WARNING, "Cannot read columns configuration", ePC);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.parserconfig"), ePC);
             } catch (SAXException eSAX) {
-                logger.log(Level.WARNING, "Cannot read columns configuration", eSAX);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.xmlfile"), eSAX);
             } catch (IOException eIO) {
-                logger.log(Level.WARNING, "Cannot read columns configuration", eIO);
+                logger.log(Level.WARNING, LocalRes.getIntString("exception.iofile"), eIO);
             }
         }
                
