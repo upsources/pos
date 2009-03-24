@@ -1569,11 +1569,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         int i = m_ticketlines.getSelectedIndex();
         if (i < 0){
             Toolkit.getDefaultToolkit().beep(); // no line selected
-        } else { 
-            TicketLineInfo newline = JProductLineEdit.showMessage(this, m_App, m_oTicket.getLine(i));
-            if (newline != null) {
-                // line has been modified
-                paintTicketLine(i, newline); 
+        } else {
+            try {
+                TicketLineInfo newline = JProductLineEdit.showMessage(this, m_App, m_oTicket.getLine(i));
+                if (newline != null) {
+                    // line has been modified
+                    paintTicketLine(i, newline);
+                }
+            } catch (BasicException e) {
+                new MessageInf(e).show(this);
             }
         }
 

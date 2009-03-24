@@ -19,6 +19,7 @@
 
 package com.openbravo.pos.sales;
 
+import com.openbravo.basic.BasicException;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -50,10 +51,14 @@ public class JProductLineEdit extends javax.swing.JDialog {
         super(parent, modal);
     }
     
-    private TicketLineInfo init(AppView app, TicketLineInfo oLine) {
+    private TicketLineInfo init(AppView app, TicketLineInfo oLine) throws BasicException {
         // Inicializo los componentes
         initComponents();
-        
+
+        if (oLine.getTaxInfo() == null) {
+            throw new BasicException(AppLocal.getIntString("message.cannotcalculatetaxes"));
+        }
+
         m_oLine = new TicketLineInfo(oLine);
         m_bunitsok = true;
         m_bpriceok = true;
@@ -169,7 +174,7 @@ public class JProductLineEdit extends javax.swing.JDialog {
         }
     }       
     
-    public static TicketLineInfo showMessage(Component parent, AppView app, TicketLineInfo oLine) {
+    public static TicketLineInfo showMessage(Component parent, AppView app, TicketLineInfo oLine) throws BasicException {
          
         Window window = getWindow(parent);
         
