@@ -125,17 +125,18 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         dp.setString(1, m_sTicket);
         dp.setInt(2, new Integer(m_iLine));
         dp.setString(3, productid);
+        dp.setString(4, attsetinstid);
 
-        dp.setDouble(4, new Double(multiply));
-        dp.setDouble(5, new Double(price));
+        dp.setDouble(5, new Double(multiply));
+        dp.setDouble(6, new Double(price));
 
-        dp.setString(6, tax.getId());
+        dp.setString(7, tax.getId());
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
             attributes.storeToXML(o, AppLocal.APP_NAME, "UTF-8");
-            dp.setBytes(7, o.toByteArray());
+            dp.setBytes(8, o.toByteArray());
         } catch (IOException e) {
-            dp.setBytes(7, null);
+            dp.setBytes(8, null);
         }
     }
 
@@ -143,14 +144,15 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_sTicket = dr.getString(1);
         m_iLine = dr.getInt(2).intValue();
         productid = dr.getString(3);
+        attsetinstid = dr.getString(4);
 
-        multiply = dr.getDouble(4);
-        price = dr.getDouble(5);
+        multiply = dr.getDouble(5);
+        price = dr.getDouble(6);
 
-        tax = new TaxInfo(dr.getString(6), dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10), dr.getDouble(11), dr.getBoolean(12), dr.getInt(13));
+        tax = new TaxInfo(dr.getString(7), dr.getString(8), dr.getString(9), dr.getString(10), dr.getString(11), dr.getDouble(12), dr.getBoolean(13), dr.getInt(14));
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(14);
+            byte[] img = dr.getBytes(15);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
