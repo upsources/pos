@@ -37,8 +37,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>101</xloc>
-      <yloc>123</yloc>
+      <xloc>40</xloc>
+      <yloc>122</yloc>
       </entry>
     <entry>
       <name>ATTRIBUTES JOB</name>
@@ -60,8 +60,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>209</xloc>
-      <yloc>123</yloc>
+      <xloc>263</xloc>
+      <yloc>119</yloc>
       </entry>
     <entry>
       <name>TAXES JOB</name>
@@ -83,8 +83,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>323</xloc>
-      <yloc>124</yloc>
+      <xloc>377</xloc>
+      <yloc>120</yloc>
       </entry>
     <entry>
       <name>Customers</name>
@@ -109,8 +109,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>438</xloc>
-      <yloc>125</yloc>
+      <xloc>492</xloc>
+      <yloc>121</yloc>
       </entry>
     <entry>
       <name>Success 1</name>
@@ -120,8 +120,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>687</xloc>
-      <yloc>126</yloc>
+      <xloc>741</xloc>
+      <yloc>122</yloc>
       </entry>
     <entry>
       <name>PRODUCTS JOB</name>
@@ -143,20 +143,37 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>560</xloc>
-      <yloc>126</yloc>
+      <xloc>614</xloc>
+      <yloc>122</yloc>
+      </entry>
+    <entry>
+      <name>Initialization</name>
+      <description>Transformation</description>
+      <type>TRANS</type>
+      <launch_in_parallel>Transformation</launch_in_parallel>
+      <filename>${Internal.Job.Filename.Directory}&#47;Initialization.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Nothing</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>139</xloc>
+      <yloc>121</yloc>
       </entry>
   </entries>
   <hops>
-    <hop>
-      <from>START</from>
-      <to>ATTRIBUTES JOB</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
     <hop>
       <from>ATTRIBUTES JOB</from>
       <to>TAXES JOB</to>
@@ -187,6 +204,24 @@
     <hop>
       <from>PRODUCTS JOB</from>
       <to>Success 1</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>START</from>
+      <to>Initialization</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Initialization</from>
+      <to>ATTRIBUTES JOB</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>

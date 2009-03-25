@@ -69,8 +69,8 @@
  priceBuy&#47;@price &lt;--&gt; PRICEBUY
  ISCOM = default false
  ISSCALE = default false</note>
-      <xloc>319</xloc>
-      <yloc>267</yloc>
+      <xloc>104</xloc>
+      <yloc>253</yloc>
       <width>240</width>
       <heigth>179</heigth>
     </notepad>
@@ -99,9 +99,9 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>URL</from><to>Parse XML Products</to><enabled>Y</enabled> </hop>  <hop> <from>Boolean</from><to>MYSQL bit</to><enabled>Y</enabled> </hop>  <hop> <from>MYSQL bit</from><to>URL</to><enabled>Y</enabled> </hop>  <hop> <from>Product uPC</from><to>I&#47;U PRODUCTS</to><enabled>Y</enabled> </hop>  <hop> <from>Delete PRODUCTS_CAT</from><to>Boolean</to><enabled>Y</enabled> </hop>  <hop> <from>I&#47;U PRODUCTS_CAT</from><to>UUID</to><enabled>Y</enabled> </hop>  <hop> <from>UUID</from><to>I&#47;U STOCKLEVEL</to><enabled>Y</enabled> </hop>  <hop> <from>Parse XML Products</from><to>Product uPC</to><enabled>Y</enabled> </hop>  <hop> <from>I&#47;U PRODUCTS</from><to>[1] Waiting</to><enabled>Y</enabled> </hop>  <hop> <from>[1] Waiting</from><to>I&#47;U PRODUCTS_CAT</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>URL</from><to>Parse XML Products</to><enabled>Y</enabled> </hop>  <hop> <from>Delete PRODUCTS_CAT</from><to>Auxiliar variables</to><enabled>Y</enabled> </hop>  <hop> <from>I&#47;U PRODUCTS_CAT</from><to>UUID</to><enabled>Y</enabled> </hop>  <hop> <from>UUID</from><to>I&#47;U STOCKLEVEL</to><enabled>Y</enabled> </hop>  <hop> <from>Parse XML Products</from><to>Product uPC</to><enabled>Y</enabled> </hop>  <hop> <from>[1] Waiting</from><to>I&#47;U PRODUCTS_CAT</to><enabled>Y</enabled> </hop>  <hop> <from>Auxiliar variables</from><to>URL</to><enabled>Y</enabled> </hop>  <hop> <from>I&#47;U PRODUCTS</from><to>[1] Waiting</to><enabled>Y</enabled> </hop>  <hop> <from>Product uPC</from><to>I&#47;U PRODUCTS</to><enabled>Y</enabled> </hop>  </order>
   <step>
-    <name>Boolean</name>
+    <name>Auxiliar variables</name>
     <type>RowGenerator</type>
     <description/>
     <distribute>Y</distribute>
@@ -111,17 +111,6 @@
            <schema_name/>
            </partitioning>
     <fields>
-      <field>
-        <name>falseBoolean</name>
-        <type>Boolean</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>false</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
       <field>
         <name>defaultUnits</name>
         <type>Integer</type>
@@ -137,7 +126,7 @@
     <limit>1</limit>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>169</xloc>
+      <xloc>182</xloc>
       <yloc>85</yloc>
       <draw>Y</draw>
       </GUI>
@@ -249,21 +238,11 @@
         <rename>PRODUCT_PRICESELL</rename>
         <update>Y</update>
       </value>
-      <value>
-        <name>ISCOM</name>
-        <rename>falseBoolean</rename>
-        <update>N</update>
-      </value>
-      <value>
-        <name>ISSCALE</name>
-        <rename>falseBoolean</rename>
-        <update>N</update>
-      </value>
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>587</xloc>
-      <yloc>189</yloc>
+      <xloc>592</xloc>
+      <yloc>82</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -298,8 +277,8 @@
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>813</xloc>
-      <yloc>189</yloc>
+      <xloc>818</xloc>
+      <yloc>83</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -360,37 +339,8 @@
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>819</xloc>
-      <yloc>399</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>MYSQL bit</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>        <select_unspecified>N</select_unspecified>
-      <meta>        <name>falseBoolean</name>
-        <rename>falseBoolean</rename>
-        <type>Integer</type>
-        <length>-2</length>
-        <precision>-2</precision>
-        <conversion_mask/>
-        <decimal_symbol/>
-        <grouping_symbol/>
-        <currency_symbol/>
-        <storage_type/>
-      </meta>    </fields>     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>255</xloc>
-      <yloc>88</yloc>
+      <xloc>824</xloc>
+      <yloc>293</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -573,8 +523,8 @@
     <prunePath/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>357</xloc>
-      <yloc>190</yloc>
+      <xloc>362</xloc>
+      <yloc>84</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -599,8 +549,8 @@ if (PRODUCT_CODE.getString() == null) {
 </jsScript_script>
       </jsScript>    </jsScripts>    <fields>    </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>492</xloc>
-      <yloc>190</yloc>
+      <xloc>476</xloc>
+      <yloc>84</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -623,8 +573,8 @@ if (PRODUCT_CODE.getString() == null) {
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>257</xloc>
-      <yloc>192</yloc>
+      <xloc>262</xloc>
+      <yloc>86</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -647,8 +597,8 @@ if (PRODUCT_CODE.getString() == null) {
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>815</xloc>
-      <yloc>302</yloc>
+      <xloc>820</xloc>
+      <yloc>196</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -670,8 +620,8 @@ if (PRODUCT_CODE.getString() == null) {
       <compress>Y</compress>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>698</xloc>
-      <yloc>191</yloc>
+      <xloc>703</xloc>
+      <yloc>85</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
