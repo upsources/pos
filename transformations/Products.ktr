@@ -214,11 +214,6 @@
         <update>Y</update>
       </value>
       <value>
-        <name>IMAGE</name>
-        <rename>PRODUCT_IMAGE</rename>
-        <update>Y</update>
-      </value>
-      <value>
         <name>ATTRIBUTESET_ID</name>
         <rename>PRODUCT_ATT_SET_ID</rename>
         <update>Y</update>
@@ -435,20 +430,6 @@
         <xpath>taxCategory&#47;@id</xpath>
         <element_type>node</element_type>
         <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-      <field>
-        <name>PRODUCT_IMAGE</name>
-        <xpath>imageURL</xpath>
-        <element_type>node</element_type>
-        <type>Binary</type>
         <format/>
         <currency/>
         <decimal/>
