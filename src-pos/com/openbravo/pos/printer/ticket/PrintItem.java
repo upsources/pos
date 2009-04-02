@@ -20,7 +20,6 @@
 package com.openbravo.pos.printer.ticket;
 
 import java.awt.Graphics2D;
-import com.openbravo.pos.printer.screen.*;
 
 public interface PrintItem {
     
