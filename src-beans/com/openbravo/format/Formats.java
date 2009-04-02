@@ -175,8 +175,7 @@ public abstract class Formats {
     }    
     private static final class FormatsDOUBLE extends Formats {       
         protected String formatValueInt(Object value) {
-            double roundedvalue = Math.rint(((Number) value).doubleValue() * 1000000.0) / 1000000.0; // quickfix for 3838
-            return m_doubleformat.format(roundedvalue);
+            return m_doubleformat.format(DoubleUtils.fixDecimals((Number) value)); // quickfix for 3838
         }   
         protected Object parseValueInt(String value) throws ParseException {
             return new Double(m_doubleformat.parse(value).doubleValue());
@@ -187,12 +186,10 @@ public abstract class Formats {
     }    
     private static final class FormatsPERCENT extends Formats {       
         protected String formatValueInt(Object value) {
-            //return NumberFormat.getPercentInstance().format(((Number) value).doubleValue());
-            return m_percentformat.format(((Number) value).doubleValue());
+            return m_percentformat.format(DoubleUtils.fixDecimals((Number) value)); // quickfix for 3838
         }   
         protected Object parseValueInt(String value) throws ParseException {
             try {
-                //return new Double(NumberFormat.getPercentInstance().parse(value).doubleValue());
                 return new Double(m_percentformat.parse(value).doubleValue());
             } catch (ParseException e) {
                 // Segunda oportunidad como numero normalito
@@ -205,8 +202,7 @@ public abstract class Formats {
     }  
     private static final class FormatsCURRENCY extends Formats {       
         protected String formatValueInt(Object value) {
-            double roundedvalue = Math.rint(((Number) value).doubleValue() * 1000000.0) / 1000000.0; // quickfix for 3838
-            return m_currencyformat.format(roundedvalue);
+            return m_currencyformat.format(DoubleUtils.fixDecimals((Number) value)); // quickfix for 3838
         }   
         protected Object parseValueInt(String value) throws ParseException {
             try {

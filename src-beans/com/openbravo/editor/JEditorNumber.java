@@ -21,6 +21,7 @@ package com.openbravo.editor;
 
 import java.awt.Toolkit;
 import com.openbravo.basic.BasicException;
+import com.openbravo.format.DoubleUtils;
 import com.openbravo.format.Formats;
 
 public abstract class JEditorNumber extends JEditorAbstract {
@@ -119,8 +120,8 @@ public abstract class JEditorNumber extends JEditorAbstract {
         }
     }    
     
-    private String formatDouble(Double dvalue) {
-        String sNumber = dvalue.toString();
+    private String formatDouble(Double value) {
+        String sNumber = Double.toString(DoubleUtils.fixDecimals(value));
         if (sNumber.endsWith(".0")) {
             sNumber = sNumber.substring(0,  sNumber.length() - 2);
         }
