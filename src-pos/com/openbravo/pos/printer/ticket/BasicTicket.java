@@ -21,6 +21,7 @@ package com.openbravo.pos.printer.ticket;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -35,8 +36,8 @@ public class BasicTicket implements PrintItem {
     protected int m_iBodyHeight;
 
     static {
-        BASEFONT = new Font("Monospaced", Font.PLAIN, 12);
-        FONTHEIGHT = 17;
+        BASEFONT = new Font("Monospaced", Font.PLAIN, 12).deriveFont(AffineTransform.getScaleInstance(1.0, 1.40));
+        FONTHEIGHT = 20;
         IMAGE_SCALE = 1.0;
     }
 

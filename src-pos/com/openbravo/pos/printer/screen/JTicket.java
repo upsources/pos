@@ -21,6 +21,7 @@ package com.openbravo.pos.printer.screen;
 
 import java.awt.*;
 import com.openbravo.pos.printer.ticket.BasicTicket;
+import java.util.Map;
 
 class JTicket extends javax.swing.JPanel {
     
@@ -30,32 +31,32 @@ class JTicket extends javax.swing.JPanel {
     private static final int LINEWIDTH = COLUMNS * 7;    
     
     private BasicTicket basict;
+    private Map desktophints;
    
     /** Creates new form JTicket */
     public JTicket(BasicTicket t) {
         
         basict = t;
+        desktophints = (Map) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
         initComponents();
     }
     
     protected void paintComponent(Graphics g) {
         paintBorder(g);
         
-        Graphics2D g2d = (Graphics2D) g;     
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        Graphics2D g2d = (Graphics2D) g;
+
+        if (desktophints != null) {
+            g2d.addRenderingHints(desktophints);
+        }
         
         Insets i = getInsets();
-        //g.setColor(getBackground());
         g2d.setPaint(new GradientPaint(getWidth() - i.left - i.right - 100, getHeight() - i.top - i.bottom - 100, getBackground()
                                      , getWidth() - i.left - i.right, getHeight() - i.top - i.bottom, new Color(0xf0f0f0), true));
         g2d.fillRect(i.left, i.top, getWidth() - i.left - i.right, getHeight() - i.top - i.bottom);
         
-//        AffineTransform oldtrans = g2d.getTransform();
-//        g2d.scale(0.75, 0.75);
         g.setColor(getForeground());
         basict.draw(g2d, i.left + H_GAP, i.top + V_GAP, LINEWIDTH);   
-//        g2d.setTransform(oldtrans);
     }  
     
       
@@ -63,8 +64,6 @@ class JTicket extends javax.swing.JPanel {
         Insets ins = getInsets();
         return new Dimension((int) (LINEWIDTH + 2 * H_GAP) + ins.left + ins.right
                            , (int) (basict.getHeight() + 2 * V_GAP) + ins.top + ins.bottom);
-//        return new Dimension((int) (0.75 * (LINEWIDTH + 2 * H_GAP) + ins.left + ins.right)
-//                           , (int) (0.75 * (basict.getHeight() + 2 * V_GAP) + ins.top + ins.bottom));
     }
 
     public Dimension getMaximumSize() {
