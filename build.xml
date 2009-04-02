@@ -584,6 +584,69 @@
 	    <arg value="${basedir}/installer/installer_pda.xml" />
 	    <arg value="solaris-intel" /> 
     	</exec> 
-    </target>
+   </target>
+    
+   <target name="jws" depends="copy-libraries-up, sign-jars"/>	
+
+   <target name="keystore">
+        <property name="jnlp.signjar.keystore" value="keystore"/>
+        <property name="jnlp.signjar.storepass" value="changeit"/>
+        <property name="jnlp.signjar.keypass" value="changeit"/>
+        <property name="jnlp.signjar.alias" value="key"/><delete dir="lib"/>
+   </target>
+
+   <target name="init-keystore" depends="keystore">
+        <echo message="Going to create default keystore in ${jnlp.signjar.keystore}"/> 
+	<genkey keystore="${dest.dist}/jws/${jnlp.signjar.keystore}" alias="${dest.dist}/jws/${jnlp.signjar.alias}" storepass="${dest.dist}/jws/${jnlp.signjar.storepass}" >
+  		<dname>
+    			<param name="CN" value="Openbravo POS Network"/>
+    			<param name="OU" value="Openbravo POS Network"/>
+    			<param name="O"  value="Openbravo S.L."/>
+    			<param name="C"  value="ES"/>
+  		</dname>
+	</genkey>
+   </target>
+
+   <target name="sign-jars" depends="init-keystore">
+        <signjar keystore="${dest.dist}/jws/${jnlp.signjar.keystore}" storepass="${dest.dist}/jws/${jnlp.signjar.storepass}"
+                 alias="${dest.dist}/jws/${jnlp.signjar.alias}" >
+            <fileset dir="${dest.dist}/jws">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${dest.dist}/jws/lib">
+                <include name="*.jar"/>
+            </fileset>
+        </signjar>
+   </target>
+   <target name="copy-libraries-up" depends="jar-reports-and-locales, jar-native-libraries, jar">
+	<mkdir dir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/linux-i686-native.jar" 
+	      todir="${dest.dist}/jws"/>
+ 	<copy file="${dest.jar}/linux-ia64-native.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/linux-x86_64-native.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/osx-native.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/sparc32-native.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/sparc64-native.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/windows-native.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/openbravopos.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/locales.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${dest.jar}/reports.jar" 
+	      todir="${dest.dist}/jws"/>
+	<copy file="${basedir}/openbravo-logo-128.png" 
+	      todir="${dest.dist}/jws"/>
+	<copy todir="${dest.dist}/jws/lib">
+    	    <fileset dir="lib"/>
+        </copy> 
+        <copy file="${basedir}/launch.jnlp" 
+	      todir="${dest.dist}/jws"/>
+   </target>
 
 </project>
