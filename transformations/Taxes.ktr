@@ -145,7 +145,7 @@
            <schema_name/>
            </partitioning>
     <connection>openbravoposDB</connection>
-    <procedure>updateboolean_taxe</procedure>
+    <procedure>taxes_update_cascade</procedure>
     <lookup>
       <arg>
         <name>TAXES_ID</name>

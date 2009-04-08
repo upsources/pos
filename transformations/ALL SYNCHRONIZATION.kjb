@@ -90,7 +90,7 @@
       <description>Transformation</description>
       <type>TRANS</type>
       <launch_in_parallel>Transformation</launch_in_parallel>
-      <filename>${Internal.Job.Filename.Directory}&#47;Cutomers.ktr</filename>
+      <filename>${Internal.Job.Filename.Directory}&#47;Customers.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <exec_per_row>N</exec_per_row>

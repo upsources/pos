@@ -161,7 +161,7 @@ var bbdd = parts[1];
            <schema_name/>
            </partitioning>
     <connection>openbravoposDB</connection>
-    <execute_each_row>N</execute_each_row>
+    <execute_each_row>Y</execute_each_row>
     <replace_variables>N</replace_variables>
     <sql>CREATE OR REPLACE FUNCTION exist_language(varchar)
 RETURNS bigint AS &apos; SELECT count(*) from pg_language where lanname = $1; &apos;
@@ -177,15 +177,27 @@ LANGUAGE &apos;sql&apos;; -- END
 
 SELECT * FROM create_language(&apos;plpgsql&apos;); -- END
 
-CREATE OR REPLACE FUNCTION update_visible_customer(aux numeric)
+CREATE OR REPLACE FUNCTION customers_visible_false(aux numeric)
   RETURNS void AS &apos; BEGIN UPDATE CUSTOMERS SET VISIBLE=false; END; &apos;
   LANGUAGE &apos;plpgsql&apos; VOLATILE
   COST 100; --END
 
-CREATE OR REPLACE FUNCTION updateboolean_taxe(tax_id character varying, flag numeric)
-  RETURNS void AS &apos; BEGIN UPDATE TAXES SET RATECASCADE=flag::int::boolean WHERE ID=tax_id; END; &apos;
+CREATE OR REPLACE FUNCTION taxes_update_cascade(customer_id character varying, flag numeric)
+  RETURNS void AS &apos; BEGIN UPDATE CUSTOMERS SET VISIBLE=flag::int::boolean WHERE ID=customer_id; END; &apos;
   LANGUAGE &apos;plpgsql&apos; VOLATILE
-  COST 100; --END</sql>
+  COST 100; --END
+
+CREATE OR REPLACE FUNCTION customer_update_visible(customer_id character varying, flag numeric)
+  RETURNS void AS &apos; BEGIN UPDATE CUSTOMERS SET VISIBLE=flag::int::boolean WHERE ID=customer_id; END; &apos;
+  LANGUAGE &apos;plpgsql&apos; VOLATILE
+  COST 100; --END
+
+CREATE OR REPLACE FUNCTION products_update_image(product_id character varying, img bytea)
+  RETURNS void AS &apos; BEGIN UPDATE PRODUCTS SET IMAGE=img::bytea WHERE ID=product_id; END; &apos;
+  LANGUAGE &apos;plpgsql&apos; VOLATILE
+  COST 100;
+
+</sql>
     <insert_field/>
     <update_field/>
     <delete_field/>
