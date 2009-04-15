@@ -191,14 +191,14 @@ public class JRootApp extends JPanel implements AppView {
         }
         
         // Inicializo la impresora...
-        m_TP = new DeviceTicket(m_props);   
+        m_TP = new DeviceTicket(this, m_props);
         
         // Inicializamos 
         m_TTP = new TicketParser(getDeviceTicket(), m_dlSystem);
         printerStart();
         
         // Inicializamos la bascula
-        m_Scale = new DeviceScale(m_props);
+        m_Scale = new DeviceScale(this, m_props);
         
         // Inicializamos la scanpal
         m_Scanner = DeviceScannerFactory.createInstance(m_props);

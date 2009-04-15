@@ -24,12 +24,17 @@ import com.openbravo.pos.printer.escpos.*;
 import com.openbravo.pos.printer.javapos.DeviceDisplayJavaPOS;
 import com.openbravo.pos.printer.javapos.DeviceFiscalPrinterJavaPOS;
 import com.openbravo.pos.printer.javapos.DevicePrinterJavaPOS;
-import com.openbravo.pos.printer.printer.*;
+import com.openbravo.pos.printer.printer.DevicePrinterPrinter;
 import com.openbravo.pos.printer.screen.*;
 
 import com.openbravo.pos.util.StringParser;
+import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DeviceTicket {
+
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.printer.DeviceTicket");
 
     private DeviceFiscalPrinter m_deviceFiscal;
     private DeviceDisplay m_devicedisplay;
@@ -54,7 +59,7 @@ public class DeviceTicket {
         m_deviceprinterslist.add(p);
     }
 
-    public DeviceTicket(AppProperties props) {
+    public DeviceTicket(Component parent, AppProperties props) {
 
         PrinterWritterPool pws = new PrinterWritterPool();
 
@@ -102,6 +107,7 @@ public class DeviceTicket {
                 m_devicedisplay = new DeviceDisplayNull();
             }
         } catch (TicketPrinterException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
             m_devicedisplay = new DeviceDisplayNull(e.getMessage());
         }
 
@@ -140,7 +146,7 @@ public class DeviceTicket {
                         sPrinterParam2 = "standard";
                     }
 
-                    addPrinter(sPrinterIndex, new DevicePrinterPrinter(sPrinterParam1,
+                    addPrinter(sPrinterIndex, new DevicePrinterPrinter(parent, sPrinterParam1,
                             Integer.parseInt(props.getProperty("paper." + sPrinterParam2 + ".x")),
                             Integer.parseInt(props.getProperty("paper." + sPrinterParam2 + ".y")),
                             Integer.parseInt(props.getProperty("paper." + sPrinterParam2 + ".width")),
@@ -163,7 +169,7 @@ public class DeviceTicket {
                     addPrinter(sPrinterIndex, new DevicePrinterJavaPOS(sPrinterParam1, sPrinterParam2));
                 }
             } catch (TicketPrinterException e) {
-                // m_deviceprinters.add(new DevicePrinterNull(e.getMessage()));
+                logger.log(Level.WARNING, e.getMessage(), e);
             }
 
             // siguiente impresora...

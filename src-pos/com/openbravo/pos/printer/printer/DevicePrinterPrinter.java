@@ -19,6 +19,8 @@
 
 package com.openbravo.pos.printer.printer;
 
+import com.openbravo.data.gui.JMessageDialog;
+import com.openbravo.data.gui.MessageInf;
 import com.openbravo.pos.forms.AppLocal;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -26,10 +28,15 @@ import javax.swing.JComponent;
 import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.ticket.BasicTicketForPrinter;
 import com.openbravo.pos.util.ReportUtils;
+import com.openbravo.pos.util.SelectPrinter;
+import java.awt.Component;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -51,6 +58,9 @@ import javax.print.attribute.standard.OrientationRequested;
  */
 public class DevicePrinterPrinter implements DevicePrinter {
 
+    private static Logger logger = Logger.getLogger("com.openbravo.pos.printer.printer.DevicePrinterPrinter");
+
+    private Component parent;
     /*name of a printer*/
     private String m_sName;
     /*a ticket to print*/
@@ -86,7 +96,9 @@ public class DevicePrinterPrinter implements DevicePrinter {
      * @param printername - name of printer that will be called in the system
      * @param isReceiptPrinter - string with boolean values if the printer is a receipt
      */
-    public DevicePrinterPrinter(String printername, int imageable_x, int imageable_y, int imageable_width, int imageable_height, String mediasizename) {
+    public DevicePrinterPrinter(Component parent, String printername, int imageable_x, int imageable_y, int imageable_width, int imageable_height, String mediasizename) {
+
+        this.parent = parent;
         m_sName = "Printer"; // "AppLocal.getIntString("Printer.Screen");
         m_ticketcurrent = null;
         printservice = ReportUtils.getPrintService(printername);
@@ -205,22 +217,44 @@ public class DevicePrinterPrinter implements DevicePrinter {
 
         try {
 
-            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-            aset.add(OrientationRequested.PORTRAIT);
-            aset.add(new JobName(AppLocal.APP_NAME + " - Document", null));
-            aset.add(media);
+            PrintService ps;
 
-            if (printservice == null)  {
-                // printer not available
+            if (printservice == null) {
+                String[] printers = ReportUtils.getPrintNames();
+                if (printers.length == 0) {
+                    logger.warning(AppLocal.getIntString("message.noprinters"));
+                    ps = null;
+                } else {
+                    SelectPrinter selectprinter = SelectPrinter.getSelectPrinter(parent, printers);
+                    selectprinter.setVisible(true);
+                    if (selectprinter.isOK()) {
+                        ps = ReportUtils.getPrintService(selectprinter.getPrintService());
+                    } else {
+                        ps = null;
+                    }
+                }
             } else {
-                DocPrintJob printjob = printservice.createPrintJob();
+                ps = printservice;
+            }
+
+            if (ps != null)  {
+
+                PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+                aset.add(OrientationRequested.PORTRAIT);
+                aset.add(new JobName(AppLocal.APP_NAME + " - Document", null));
+                aset.add(media);
+
+                DocPrintJob printjob = ps.createPrintJob();
                 Doc doc = new SimpleDoc(new PrintableBasicTicket(m_ticketcurrent, imageable_x, imageable_y, imageable_width, imageable_height), DocFlavor.SERVICE_FORMATTED.PRINTABLE, null);
 
                 printjob.print(doc, aset);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        } catch (PrintException ex) {
+            logger.log(Level.WARNING, AppLocal.getIntString("message.printererror"), ex);
+            JMessageDialog.showMessage(parent, new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.printererror"), ex));
         }
+
         //ticket is not needed any more
         m_ticketcurrent = null;
     }

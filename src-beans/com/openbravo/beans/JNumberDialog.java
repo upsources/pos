@@ -19,13 +19,12 @@
 
 package com.openbravo.beans;
 
-import com.openbravo.basic.BasicException;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Window;
 import javax.swing.Icon;
-import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -75,16 +74,6 @@ public class JNumberDialog extends javax.swing.JDialog {
         m_lblMessage.setIcon(icon);
     }
     
-    private static Window getWindow(Component parent) {
-        if (parent == null) {
-            return new JFrame();
-        } else if (parent instanceof Frame || parent instanceof Dialog) {
-            return (Window) parent;
-        } else {
-            return getWindow(parent.getParent());
-        }
-    }    
-    
     public static Double showEditNumber(Component parent, String title) {
         return showEditNumber(parent, title, null, null);
     }
@@ -93,7 +82,7 @@ public class JNumberDialog extends javax.swing.JDialog {
     }
     public static Double showEditNumber(Component parent, String title, String message, Icon icon) {
         
-        Window window = getWindow(parent);      
+        Window window = SwingUtilities.windowForComponent(parent);
         
         JNumberDialog myMsg;
         if (window instanceof Frame) { 
