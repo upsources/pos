@@ -50,10 +50,16 @@
         
             <jsp:useBean id="products" type="List<ProductInfoExt>" scope="request" />
             <jsp:useBean id="place" type="java.lang.String" scope="request" />
+            <jsp:useBean id="placeName" type="java.lang.String" scope="request" />
             <jsp:useBean id="floorName" type="java.lang.String" scope="request" />
             <jsp:useBean id="floorId" type="java.lang.String" scope="request" />
-            <a href='showFloors.do?floorId=${floorId}'><img alt="back" src="images/back.png" class="back"></a><%=floorName%><br>
+
         </center>
+        <a href='showFloors.do?floorId=${floorId}'><img alt="back" src="images/back.png" class="back"><%=floorName%> / ${placeName}</a><br>
+        </div>
+        <div>
+        <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:70px;margin-bottom:15px;margin-left:70%;">
+        <br>
         </div>
         <div class="middle">
             <center>
@@ -78,7 +84,7 @@
                                 <td class="normal" id="value${nr.count - 1}"><fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
                                 <td><a href="#" onclick="ajaxCall(3, '${place}', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
                                 <td><a href="#" onclick="ajaxCall(1, '${place}', '${nr.count - 1}');"><img src="images/minus.png" alt="remove" class="button" /></a></td>
-                                <td><a href="#" onclick="getIndexBackByEditing('${nr.count -1}', '${place}');"><img src="images/star.png" alt="multiply" class="button" /></a></td>
+                                <!--<td><a href="#" onclick="getIndexBackByEditing('${nr.count -1}', '${place}');"><img src="images/star.png" alt="multiply" class="button" /></a></td>-->
                             </tr>                            
                         </c:forEach>
                     </div>
@@ -86,10 +92,11 @@
                 </tbody>
             </table>
             </center>
-        <br>
-        <br><center>
-            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:100px;margin-bottom:15px;">
-        </center>
+        
+            <p class="total">Total: <fmt:formatNumber type="currency" value="${total}" maxFractionDigits="2" minFractionDigits="2" /> </p>
+            <input name="delete" value="Delete" type="submit" onclick="confirmDeleting('${floorId}', '${place}');" style="width:70px;margin:0px 0px 10px 10px;"/>
+            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:70px;margin:0% 0% 10px 43%;">
+
         </div>
 
     </body>

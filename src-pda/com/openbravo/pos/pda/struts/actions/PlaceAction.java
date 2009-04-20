@@ -56,15 +56,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        /*     HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
-        ActionMessages errors = new ActionErrors();
-        ActionMessage msg = new ActionMessage("errors.nologon", "nouser");
-        errors.add(ActionMessages.GLOBAL_MESSAGE, msg);
-        saveErrors(request, errors);
-        return mapping.findForward(FAILURE);
-        }
-         * */
         FloorForm floorForm = (FloorForm) form;
         RestaurantManager manager = new RestaurantManager();
         String floorId = (String) floorForm.getFloorId();
@@ -99,8 +90,10 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 }
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
+                request.setAttribute("placeName", manager.findPlaceById(place));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
+                request.setAttribute("total", manager.getTotalOfaTicket(place));
 
                 return mapping.findForward(UPDATE);
 
@@ -114,9 +107,11 @@ public class PlaceAction extends org.apache.struts.action.Action {
 
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
+                request.setAttribute("placeName", manager.findPlaceById(place));
                 request.setAttribute("floorId", floorId);
                 request.setAttribute("line", linesList.get(Integer.valueOf(index[0])));
                 request.setAttribute("lineNo", index[0]);
+                request.setAttribute("total", manager.getTotalOfaTicket(place));
 
                 return mapping.findForward(EDITING);
 
@@ -137,8 +132,10 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 }
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
+                request.setAttribute("placeName", manager.findPlaceById(place));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
+                request.setAttribute("total", manager.getTotalOfaTicket(place));
 
                 return mapping.findForward(UPDATE);
 
@@ -146,7 +143,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
             default:
                 if (manager.findTicket(place) == null) {
                     manager.initTicket(place);
-                    manager.insertTicket(manager.findTicket(place));
                 } else {
                     linesList = manager.findTicketLines(place);
                 }
@@ -155,7 +151,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
                     products.add(manager.findProductById(li.getProductid()));
                 }
                 break;
-
         }
 
         if (floorId == null || floorId.equals("") || floorId.equals("undefined")) {
@@ -168,11 +163,12 @@ public class PlaceAction extends org.apache.struts.action.Action {
         //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
         }
 
-
         request.setAttribute("place", place);
+        request.setAttribute("placeName", manager.findPlaceById(place));
         request.setAttribute("floorId", floorId);
         request.setAttribute("lines", linesList);
         request.setAttribute("products", products);
+        request.setAttribute("total", manager.getTotalOfaTicket(place));
 
         return mapping.findForward(SUCCESS);
     }

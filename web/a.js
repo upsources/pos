@@ -20,7 +20,8 @@
 var req;
 var place;
 var indexGlobal;
-var category;
+var category
+var notification;
 
   function ajaxCall(mode, place, index){
        indexGlobal = index;
@@ -162,7 +163,6 @@ function updatePlace(newTextElements, place, place2){
  
         //loop through newTextElements
         for ( var i=newTextElements.length-1; i>=0; --i ){
-
                 //check that this begins with 
                 if(newTextElements[i].indexOf('<span')>-1){
                         
@@ -188,12 +188,10 @@ function updatePlace(newTextElements, place, place2){
         }
  }
 
- function ajaxAddProduct(place, index){
+ function ajaxAddProduct(place, index, not){
       var url = 'addProduct.do?place=' + place +'&cat=' + category + '&parameters=' + index;
-
       if (window.XMLHttpRequest) { // Non-IE browsers
         req = new XMLHttpRequest();
-        req.onreadystatechange = startWorkingProducts;
         try {
             req.open("GET", url, true); //was get
         } catch (e) {
@@ -201,21 +199,17 @@ function updatePlace(newTextElements, place, place2){
         }
         req.send(null);
         }
+        document.getElementById('notification').innerHTML = not + ' has been added to the receipt';
   }
 
-  function startWorkingProducts(){
-      if (req.readyState == 4) { // Complete
-               if (req.status == 200) {
-
-                } else {
-                        alert("Problem with server response:\n " + req.statusText);
-                }
-      }
-  }
-
-  function rememberCategory(cat){
+ function rememberCategory(cat){
       category = cat;
-  }
+ }
+
+function confirmDeleting(floor, place) {
+    if(confirm('Are you sure you want to delete the current receipt?'))
+        window.location = 'showFloors.do?floorId=' + floor +'&place=' + place;
+}
 
 
  

@@ -20,7 +20,7 @@
  */
   /*
   Document   : CSS layout for PDA module
-  Version    : Qtek 200
+  Version    : Qtek 200, iPhone
   Created on : Nov 20, 2008, 10:31:08 AM
   Author     : jaroslawwozniak
   */
@@ -34,7 +34,6 @@
       margin-left:0px;
       padding:3px;
   }
-
 
   img.button {
       height:30px;
@@ -58,13 +57,26 @@
       border:none;
   }
 
+a {
+    text-decoration:none;
+    color:black;
+}
+
+a:visited  {
+    text-decoration:none;
+}
+
+a:hover {
+    text-decoration:none;
+}
   .pad {
       margin-top:10px;
   }
 
   .pad2 {
-      height:140px;
+      /*height:140px;*/
       padding:2px;
+      padding-bottom:30px;
   }
 
   .pad3 {
@@ -89,7 +101,9 @@
       height:30px;
       width:70px;
       font:bold 9px Arial;
-      background-color:#3ce116;
+      background-image: url("images/edit_group.png");
+      background-repeat: no-repeat;
+      background-position: center;
       margin-top:3px;
   }
 
@@ -116,10 +130,10 @@
       padding:2px;
      /* width:100px;*/
   }
-th.units {
+  th.units {
       width:15px;
       padding:2px;
-}
+  }
   th.normal {
       width:20px;
       padding:2px;
@@ -169,5 +183,17 @@ th.units {
   .bottom {
       height:20px;
   }
+
+p.total {
+    text-align:right;
+    padding-right: 25%;
+}
+
+.notification {
+    background-color: yellow;
+    font-size: 14px;
+    margin-bottom: 15px;
+    width: 250px;
+}
 
 

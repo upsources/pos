@@ -34,6 +34,7 @@ import com.openbravo.pos.ticket.ProductInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import com.openbravo.pos.ticket.UserInfo;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -94,6 +95,11 @@ public class RestaurantManager {
         ticket.initTicket(id);
     }
 
+    public void deleteTicket(String id) {
+        TicketDAO ticket = new TicketDAO();
+        ticket.deleteTicket(id);
+    }
+
     public List<TicketLineInfo> findTicketLines(String ticketId) {
         lines = new TicketLineDAO();
 
@@ -127,11 +133,6 @@ public class RestaurantManager {
         return category.findAllCategories();
     }
 
-    public void setTableBusy(String placeId, TicketInfo ticket) {
-        place = new PlaceDAO();
-        place.setTableBusy(placeId, ticket.getM_dDate().toString());
-    }
-
     public String findPlaceById(String placeId) {
         place = new PlaceDAO();
 
@@ -155,10 +156,8 @@ public class RestaurantManager {
         productObj = product.findProductsByCategory(aCategory).get(Integer.valueOf(productIndex));
         TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryID()));
         obj.addLine(line);
-        insertLine(line);
-        refreshTax(obj);
-
         ticket.updateTicket(ticketId, obj);
+        refreshTax(obj);
     }
 
     public void updateLineFromTicket(String ticketId, TicketInfo aticket) {
@@ -166,9 +165,12 @@ public class RestaurantManager {
         ticket.updateTicket(ticketId, aticket);
     }
 
-    public void insertLine(TicketLineInfo line) {
-        lines = new TicketLineDAO();
-        lines.insertLine(line);
+    public BigDecimal getTotalOfaTicket(String place){
+        double total = 0;
+        for(TicketLineInfo line : findTicket(place).getM_aLines()){
+            total += line.getPrice() + line.getPrice() * line.getTax().getRate();
+        }
+        return BigDecimal.valueOf(total);
     }
 
     public void insertTicket(TicketInfo aticket) {

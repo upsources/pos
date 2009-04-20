@@ -47,35 +47,6 @@ public class TicketLineDAO extends BaseJdbcDAO {
 
     }
 
-    public void insertLine(TicketLineInfo line) {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        String sqlStr = "INSERT INTO TICKETLINES (TICKET, LINE, PRODUCT, UNITS, PRICE, TAXID, ATTRIBUTES) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        try {
-            //get connection
-            con = getConnection();
-            //prepare statement
-            ps = con.prepareStatement(sqlStr);
-            ps.setString(1, line.getM_sTicket());
-            ps.setInt(2, line.getM_iLine());
-            ps.setString(3, line.getProductid());
-            ps.setDouble(4, line.getMultiply());
-            ps.setDouble(5, line.getPrice());
-            ps.setString(6, line.getTax().getId());
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(bytes);
-            out.writeObject(line.getAttributes());
-            ps.setBytes(7, bytes.toByteArray());
-            //execute
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     @Override
     protected Object map2VO(ResultSet rs) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");

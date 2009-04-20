@@ -44,14 +44,14 @@
         <script type="text/javascript" src="tableScript.js"></script>
         <script type="text/javascript" src="a.js"></script>
     </head>
-    <body onload="">
+    <body onload="update();">
         <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
         <div class="logo">
             <center>
             <img src="images/logo.gif" alt="Openbravo" class="logo"/>
             <br>
-                <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back"></a><%=placeName%><br>
             </center>
+            <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back">../<%=placeName%>/Adding Products</a><br>
         </div>
         <div class="pad">
             <center>
@@ -61,23 +61,27 @@
                 <html:options collection="categories" property="id" labelProperty="name"  />
             </html:select>
         </form>
+
         <span id="productSpan">
-            <table class="pickme">
+           
+        <div id="notification" class="notification"></div>
+            <table class="pickme" style="width:230px;">
                 <thead>
                     <tr>
                         <th class="name"><bean:message  key="item" /></th>
                         <th class="normal"><bean:message  key="price" /></th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
                     <c:forEach var="product" items="${products}" varStatus="nr">
-                        <tr>
+                        <tr id="${nr.count - 1}">
                             <td class="name">${product.name}</td>
                             <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                            <td><a href="#" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
-
+                            <td class="normal"></td>
+                            <td><a href="#" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', '${nr.count - 1}', '${product.name}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
                         </tr>
                     </c:forEach>
                 </tbody>

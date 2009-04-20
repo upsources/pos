@@ -74,6 +74,12 @@ public class FloorAction extends org.apache.struts.action.Action {
         List busyTables = new ArrayList<Floor>();
         //floorId
         String floorId = (String) inputFormPlace.get("floorId");
+        try {
+            String deletedPlace = (String) inputFormPlace.get("place");
+            manager.deleteTicket(deletedPlace);
+        } catch (java.lang.IllegalArgumentException ex) {
+            //no receipt to delete so just continue and show floors
+        }
         List places = new ArrayList<Place>();
         if (floorId.equals("") || floorId.equals("undefined")) {
             places = manager.findAllPlaces(floors.get(0).getId());

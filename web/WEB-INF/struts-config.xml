@@ -21,6 +21,7 @@
         <form-bean name="productsAjax" type="com.openbravo.pos.pda.struts.forms.AddedProductForm"/>
         <form-bean name="showFloors" type="org.apache.struts.action.DynaActionForm">
             <form-property name="floorId" type="java.lang.String" />
+            <form-property name="place" type="java.lang.String" />
         </form-bean>
         <form-bean name="FloorAjax" type="org.apache.struts.action.DynaActionForm">
             <form-property name="floorId" type="java.lang.String" />

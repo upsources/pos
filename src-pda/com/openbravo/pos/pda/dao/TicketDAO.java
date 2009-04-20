@@ -120,47 +120,20 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
 
         Connection con = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        String sqlStr = "INSERT INTO TICKETS (ID, TICKETID, PERSON, STATUS, TICKETTYPE) VALUES (?, ?, ?, ?, ?)";
+        String sqlStr = "INSERT INTO SHAREDTICKETS (ID, NAME, CONTENT) VALUES (?, ?, ?)";
 
         try {
             //get connection
             con = getConnection();
             //prepare statement
             ps = con.prepareStatement(sqlStr);
-            ps.setString(1, ticket.getM_sId());
-            ps.setInt(2, ticket.getM_iTicketId());
-            ps.setString(3, "0");
-            ps.setInt(4, 0);
-            ps.setInt(5, 0);
-            //execute
-            ps.executeUpdate();
-        } catch (Exception ex) {
-            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-     public void insertReceipt(TicketInfo ticket){
-
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        String sqlStr =  "INSERT INTO RECEIPTS (ID, MONEY, DATENEW, ATTRIBUTES) VALUES (?, ?, ?, ?)";
-
-        try {
-            //get connection
-            con = getConnection();
-            //prepare statement
-            ps = con.prepareStatement(sqlStr);
-            ps.setString(1, ticket.getM_sId());
-            ps.setString(2, ticket.getM_sActiveCash());
-            ps.setTimestamp(3, new Timestamp(ticket.getM_dDate().getTime()));
+            ps.setString(1,ticket.getM_sId());
+            ps.setString(2, ticket.getName());
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bytes);
-            out.writeObject(ticket.getAttributes());
-            ps.setBytes(4, bytes.toByteArray());
+            out.writeObject(ticket);
+            ps.setBytes(3, bytes.toByteArray());
+
             //execute
             ps.executeUpdate();
         } catch (Exception ex) {
@@ -168,8 +141,25 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
         }
     }
 
+    public void deleteTicket(String id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        String sqlStr = "DELETE FROM SHAREDTICKETS WHERE ID = ?";
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
 
+            ps.setString(1, id);
+            //execute
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    
     @Override
     protected TicketInfo map2VO(ResultSet rs) throws SQLException {
         ObjectInputStream in = null;
