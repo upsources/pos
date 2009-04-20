@@ -108,6 +108,8 @@ public class PaymentGatewayAuthorizeNet implements PaymentGateway {
                 // %B4111111111111111^PADILLA VISDOMINE/LUIS^0905123000000000000002212322222?5
                 sb.append("&x_track1=");
                 sb.append(payinfo.getTrack1(false));
+                sb.append("&x_track2=");
+                sb.append(payinfo.getTrack2(false));
             }
             
             sb.append("&x_method=CC");

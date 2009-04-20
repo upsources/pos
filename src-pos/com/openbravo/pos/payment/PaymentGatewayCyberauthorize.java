@@ -70,7 +70,7 @@ public class PaymentGatewayCyberauthorize implements PaymentGateway {
         StringBuffer sb = new StringBuffer();
         
         try {
-            sb.append("&username="); //test=demo
+            sb.append("username="); //test=demo
             sb.append(m_sCommerceID);
 
             sb.append("&password="); //test=password
@@ -83,17 +83,7 @@ public class PaymentGatewayCyberauthorize implements PaymentGateway {
 
             //sb.append("&cvv="); //card security code
             
-            if (3==4){
-                String a = "%B4111111111111111^PADILLA VISDOMINE/LUIS ^0509120000000000000000999000000?";
-                String b = ";4111111111111111=05091200333300000000?";
-                String c = ";4111111111111111=7247241000000000000303009046040400005090=111111234564568798543654==1=0000000000000000?";
-                sb.append("&track_1="+ URLEncoder.encode(a,"UTF-8"));
-                sb.append("&track_2=" + URLEncoder.encode(b, "UTF-8"));
-                sb.append("&track_3="+ URLEncoder.encode(c,"UTF-8"));
-                /*sb.append("&track_1="+ URLEncoder.encode(payinfo.getTrack1(),"UTF-8"));
-                sb.append("&track_2=" + URLEncoder.encode(payinfo.getTrack2(), "UTF-8"));
-                sb.append("&track_3="+ URLEncoder.encode(payinfo.getTrack3(),"UTF-8"));*/
-            } else {
+            if (payinfo.getTrack1(true) == null){
                 sb.append("&ccnumber="); //test=4111111111111111 (visa)
                 sb.append(URLEncoder.encode(payinfo.getCardNumber(), "UTF-8"));
 
@@ -109,6 +99,14 @@ public class PaymentGatewayCyberauthorize implements PaymentGateway {
                 if (cc_name.length > 1) {
                     sb.append(URLEncoder.encode(cc_name[1], "UTF-8"));
                 }
+                
+            } else {             
+                //String track_1 = "%B4111111111111111^PADILLA VISDOMINE/LUIS ^0509120000000000000000999000000?";
+                //String track_2 = ";4111111111111111=05091200333300000000?";
+                //String track_3 = ";4111111111111111=7247241000000000000303009046040400005090=111111234564568798543654==1=0000000000000000?";
+                sb.append("&track_1="+ URLEncoder.encode(payinfo.getTrack1(true),"UTF-8"));
+                sb.append("&track_2=" + URLEncoder.encode(payinfo.getTrack2(true), "UTF-8"));
+                
             }
             
             if (payinfo.getTotal() > 0.0) { //SALE

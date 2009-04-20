@@ -112,6 +112,10 @@ public class PaymentGatewayPGNET implements PaymentGateway {
             sb.append("&ecom_payment_card_name=");
             sb.append(payinfo.getHolderName());
             
+            if (payinfo.getTrack1(true) != null){
+                sb.append("&pg_cc_swipe_data=");
+                sb.append(URLEncoder.encode(payinfo.getTrack1(true), "UTF-8"));
+            }
             //sb.append("&ecom_payment_card_verification=");
             
             //PAYMENT

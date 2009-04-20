@@ -36,6 +36,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
@@ -92,9 +94,7 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
         System.setProperty("javax.net.ssl.keyStorePassword", sPasswordCert);
         System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");        
         
-        String sTransactionType = (payinfo.getTotal()>0.0)
-            ? SALE
-            : REFUND;
+        
         
         try {
             url = new URL("https://"+HOST+":"+PORT);
@@ -106,40 +106,11 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
             connection.setAllowUserInteraction(false);
 
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            NumberFormat formatter = new DecimalFormat("0000.00");
-            String amount = formatter.format(Math.abs(payinfo.getTotal()));
             
-            String tmp = payinfo.getExpirationDate();
-            
-            String refundLine = (sTransactionType.equals("CREDIT"))
-                   ? "<oid>"+ payinfo.getTransactionID() +"</oid>"
-                   :  "";
-            
-            String xml = "<order> " +
-                "<merchantinfo> " +
-                    "<configfile>"+ sConfigfile +"</configfile> " +
-                "</merchantinfo> " +
-                "<orderoptions> " +
-                    "<ordertype>"+ sTransactionType +"</ordertype> " +
-                    "<result>LIVE</result>  " +
-                "</orderoptions> " +
-                "<payment> " +
-                    "<chargetotal>"+ URLEncoder.encode(amount.replace(',', '.'), "UTF-8") +"</chargetotal> " +
-                "</payment> " +
-                "<creditcard> " +
-                    "<cardnumber>"+ payinfo.getCardNumber() +"</cardnumber> " +
-                    "<cardexpmonth>" + tmp.charAt(0) + "" + tmp.charAt(1) + "</cardexpmonth> " +
-                    "<cardexpyear>" + tmp.charAt(2) + "" + tmp.charAt(3) + "</cardexpyear> " +
-                "</creditcard> " +
-                "<transactiondetails>"+
-                refundLine +
-                "<transactionorigin>RETAIL</transactionorigin>"+
-                "<terminaltype>POS</terminaltype>"+
-                "</transactiondetails>"+
-            "</order>";
-            
+            StringBuilder xml = createOrder(payinfo);
+            String a = xml.toString();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(xml.getBytes());
+            out.write(xml.toString().getBytes());
             out.flush();
             
             // process and read the gateway response
@@ -175,6 +146,61 @@ public class PaymentGatewayLinkPoint implements PaymentGateway {
         public boolean verify(String hostname, SSLSession session) {
             return true;
         }
+    }
+    
+    private StringBuilder createOrder(PaymentInfoMagcard payinfo) {
+        StringBuilder moreInfo = new StringBuilder();
+        StringBuilder xml = new StringBuilder();
+        
+        String sTransactionType = (payinfo.getTotal()>0.0)
+            ? SALE
+            : REFUND;
+        
+        NumberFormat formatter = new DecimalFormat("0000.00");
+        String amount = formatter.format(Math.abs(payinfo.getTotal()));
+
+        String tmp = payinfo.getExpirationDate();
+        
+        String refundLine = (sTransactionType.equals("CREDIT"))
+               ? "<oid>"+ payinfo.getTransactionID() +"</oid>"
+               :  "";
+        
+        try {
+            
+        if (payinfo.getTrack1(true) == null){
+            moreInfo.append("<creditcard>");
+            moreInfo.append("<cardnumber>"+ payinfo.getCardNumber() +"</cardnumber> ");
+            moreInfo.append("<cardexpmonth>" + tmp.charAt(0) + "" + tmp.charAt(1) + "</cardexpmonth>");
+            moreInfo.append("<cardexpyear>" + tmp.charAt(2) + "" + tmp.charAt(3) + "</cardexpyear>");
+            moreInfo.append("</creditcard>");
+            
+        } else {
+            moreInfo.append("<creditcard>");
+            moreInfo.append("<track>");
+            //moreInfo.append("%B4111111111111111^PADILLA VISDOMINE/LUIS ^1206120000000000000000999000000?");
+            moreInfo.append(payinfo.getTrack1(true));
+            //moreInfo.append(payinfo.getTrack2(true));
+            moreInfo.append("</track>");
+            moreInfo.append("</creditcard>");
+        }
+        
+        //Construct the order
+        xml.append("<order>");
+        xml.append("<merchantinfo><configfile>"+ sConfigfile +"</configfile></merchantinfo>");
+        xml.append("<orderoptions><ordertype>"+ sTransactionType +"</ordertype><result>LIVE</result></orderoptions>");
+        xml.append("<payment><chargetotal>"+ URLEncoder.encode(amount.replace(',', '.'), "UTF-8") +"</chargetotal></payment>");
+        xml.append(moreInfo);
+        xml.append("<transactiondetails>");
+        xml.append(refundLine);
+        xml.append("<transactionorigin>RETAIL</transactionorigin><terminaltype>POS</terminaltype></transactiondetails>");
+        xml.append("</order>");
+        
+        } catch (UnsupportedEncodingException ex) {
+            payinfo.paymentError(AppLocal.getIntString("message.paymentexceptionservice"), ex.getMessage());
+        }
+        
+        return xml;
+        
     }
     
     private class LinkPointParser extends DefaultHandler {
