@@ -167,7 +167,7 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
         m_jSearch = new javax.swing.JTextField();
         search = new javax.swing.JButton();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder("By product"));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.byproduct"))); // NOI18N
 
         jLabel6.setText(AppLocal.getIntString("label.prodref")); // NOI18N
 
@@ -255,8 +255,10 @@ public class AuxiliarFilter extends javax.swing.JPanel implements ReportEditorCr
                             .addComponent(search)
                             .addComponent(m_jSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(Enter2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
+
+        getAccessibleContext().setAccessibleName("By product");
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jReference1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jReference1ActionPerformed
