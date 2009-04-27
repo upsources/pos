@@ -114,7 +114,7 @@ public class ProductDAO extends BaseJdbcDAO {
         ResultSet rs = null;
         List<ProductInfo> vos = null;
         String sqlStr = "SELECT * FROM PRODUCTS P, PRODUCTS_CAT PCAT WHERE P.CATEGORY= ? AND P.ID = PCAT.PRODUCT"+
-               " AND P.ISCOM = 0 ORDER BY PCAT.CATORDER, P.NAME";
+               " AND P.ISCOM = FALSE ORDER BY PCAT.CATORDER, P.NAME";
 
         try {
             //get connection

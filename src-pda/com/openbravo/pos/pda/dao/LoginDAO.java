@@ -45,7 +45,11 @@ public class LoginDAO extends BaseJdbcDAO {
             //prepare statement
             ps = con.prepareStatement(sqlStr);
             ps.setString(1, login);
-            ps.setString(2, StringUtils.hashString(password));
+            if(password.equals("")){
+                ps.setString(2, null);
+            } else {
+                ps.setString(2, StringUtils.hashString(password));
+            }
             //execute
             rs = ps.executeQuery();
             //transform to VO

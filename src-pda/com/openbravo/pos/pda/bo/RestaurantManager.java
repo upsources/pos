@@ -163,28 +163,6 @@ public class RestaurantManager {
         return place.findPlaceById(placeId);
     }
 
-//    public String addLineToTicket(String ticketId, String aCategory, String productIndex) {
-//        lines = new TicketLineDAO();
-//        ticket = new TicketDAO();
-//        product = new ProductDAO();
-//        category = new CategoryDAO();
-//        tax = new TaxDAO();
-//        taxesLogic = new TaxesLogic(tax.getTaxList());
-//
-//        TicketInfo obj = ticket.getTicket(ticketId);
-//        ProductInfo productObj = null;
-//        if (aCategory.equals("undefined")) {
-//            aCategory = category.findFirstCategory();
-//        }
-//
-//        productObj = product.findProductsByCategory(aCategory).get(Integer.valueOf(productIndex));
-//        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryId()));
-//        obj.addLine(line);
-//        ticket.updateTicket(ticketId, obj);
-//        refreshTax(obj);
-//
-//        return productObj.getId();
-//    }
     public void addLineToTicket(String ticketId, String productId) {
         ticket = new TicketDAO();
         product = new ProductDAO();
