@@ -141,7 +141,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 }
                
                 break;
-               // return mapping.findForward(EDITING);
 
             //increment product
             case 3:
@@ -181,15 +180,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 break;
         }
 
-//        if (floorId == null || floorId.equals("") || floorId.equals("undefined")) {
-//            request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
-//        } else {
-//            //
-//            //it must be fixed
-//            //
-//            request.setAttribute("floorName", manager.findFloorNameById(floorId));
-//        //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
-//        }
         request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
         request.setAttribute("place", place);
 

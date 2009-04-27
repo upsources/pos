@@ -44,13 +44,14 @@
         <script type='text/javascript' src='tableScript.js'></script>
     </head>
     <body>
+        <jsp:useBean id="floorId" scope="request" type="java.lang.String" />
         <center>
         <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
         </center>
         <div>
         <center>
             <form name="FloorForm" method="post" class="pad">
-                <html:select property="floorId" value="name" onchange="saveFloorId(this.value);retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');"  >
+                <html:select property="floorId" value="${floorId}" onchange="saveFloorId(this.value);retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');"  >
                     <html:options collection="floors" property="id" labelProperty="name"  />
                 </html:select>
             </form>
