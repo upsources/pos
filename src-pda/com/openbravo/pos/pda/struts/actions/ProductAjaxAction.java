@@ -39,6 +39,7 @@ public class ProductAjaxAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private final static String SUCCESS = "success";
+    private final static String NEXTLEVEL = "nextlevel";
 
     /**
      * This is the action called from the Struts framework.
@@ -58,7 +59,11 @@ public class ProductAjaxAction extends org.apache.struts.action.Action {
         List products = new ArrayList<ProductInfoExt>();
         products = manager.findProductsByCategory((String) inputFormPlace.get("categoryId"));
         request.getSession().setAttribute("products", products);
-
+        if(inputFormPlace.get("mode").equals("1")){
+            request.setAttribute("subcategories", manager.findAllSubcategories(inputFormPlace.getString("categoryId")));
+            return mapping.findForward(NEXTLEVEL);
+        }
+        request.setAttribute("subcategories", manager.findAllSubcategories(inputFormPlace.getString("categoryId")));
 
         return mapping.findForward(SUCCESS);
 

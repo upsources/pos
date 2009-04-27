@@ -25,8 +25,24 @@
     Author     : jaroslawwozniak
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/javascript" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
-<!-- here will be the answer after addind a product -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://jakarta.apache.org/struts/tags-logic" prefix="logic" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>
+
+<span>
+
+    <c:forEach var="product" items="${auxiliars}" varStatus="nr">
+        <tr id="${nr.count - 1}">
+            <td class="name" style="background-color:#ffb7b3;">* ${product.name}</td>
+            <td class="normal" style="background-color:#ffb7b3;"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="normal" style="background-color:#ffb7b3;"></td>
+            <td style="background-color:#ffb7b3;"><input value="Add" type="submit" class="floor" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', ${nr.count - 1}, '${product.name}', '${product.id}', 1);"/></td>
+        </tr>
+    </c:forEach>
+</span>
+

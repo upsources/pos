@@ -32,6 +32,43 @@ import java.util.List;
  */
 public class ProductDAO extends BaseJdbcDAO {
 
+    public List<ProductInfo> findAllAuxiliars(String id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<ProductInfo> vos = null;
+        String sqlStr = "SELECT * FROM PRODUCTS P, PRODUCTS_COM COM WHERE COM.PRODUCT=? AND P.ID = COM.PRODUCT2";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1,id);
+            //execute
+            rs = ps.executeQuery();
+            //transform to VO
+            vos = transformSet(rs);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                // close the resources
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
+        }
+
+        return vos;
+    }
+
     public ProductInfo findProductById(String productId) {
 
         Connection con = null;
@@ -118,7 +155,7 @@ public class ProductDAO extends BaseJdbcDAO {
         product.setName(rs.getString("name"));
         product.setPriceBuy(rs.getDouble("pricebuy"));
         product.setPriceSell(rs.getDouble("pricesell"));
-        product.setCategoryID(rs.getString("category"));
+        product.setCategoryId(rs.getString("category"));
         product.setTaxcat(rs.getString("taxcat"));
         product.setCom(rs.getBoolean("iscom"));
         product.setScale(rs.getBoolean("isscale"));

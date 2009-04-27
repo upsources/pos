@@ -19,13 +19,13 @@
     along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
  --%>
 
-<%-- 
+<%--
     Document   : showPlace
     Created on : Nov 11, 2008, 5:38:14 PM
     Author     : jaroslawwozniak
 --%>
 
-<%@page pageEncoding="UTF-8"
+<%@page contentType="java" pageEncoding="UTF-8"
         import="java.util.List, com.openbravo.pos.ticket.ProductInfoExt, com.openbravo.pos.ticket.TicketLineInfo"%>
 <%@ taglib prefix="html" uri="http://jakarta.apache.org/struts/tags-html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"   %>
@@ -47,7 +47,7 @@
         <div class="logo">
         <center>
         <img src="images/logo.gif" alt="Openbravo" class="logo" /><br>
-        
+
             <jsp:useBean id="products" type="List<ProductInfoExt>" scope="request" />
             <jsp:useBean id="place" type="java.lang.String" scope="request" />
             <jsp:useBean id="placeName" type="java.lang.String" scope="request" />
@@ -58,7 +58,7 @@
         <a href='showFloors.do?floorId=${floorId}'><img alt="back" src="images/back.png" class="back"><%=floorName%> / ${placeName}</a><br>
         </div>
         <div>
-        <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:70px;margin-bottom:15px;margin-left:70%;" class="floor"/>
+        <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:70px;margin-bottom:15px;margin-left:70%;">
         <br>
         </div>
         <span class="middle">
@@ -68,11 +68,11 @@
                     <tr>
                         <th class="name"><bean:message key="item" /></th>
                         <th class="normal"><bean:message key="price" /></th>
-                   <!--     <th class="units">#</th>-->
-                        <th class="normal"># / <bean:message key="value" /></th>
-                        <th class="units"></th>
-                        <th class="units"></th>
-                       
+                        <th class="units">#</th>
+                        <th class="normal"><bean:message key="value" /></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                 </thead>
                 <tbody>
                     <span id="products" >
@@ -80,9 +80,12 @@
                             <tr id="${nr.count - 1}">
                                 <td class="name">${products[nr.count - 1].name}</td>
                                 <td class="normal"><fmt:formatNumber type="currency" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                                <td class="normal" id="value${nr.count - 1}"><input type="text" id="input${nr.count - 1}" size="3" onchange="getIndexBackByEditing('${nr.count -1}', '${place}');" value="<fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/>" /> <fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                <td class="units" id="mul${nr.count - 1}"><fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/></td>
+                                <td class="normal" id="value${nr.count - 1}"><fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>
                                 <td><a href="#" onclick="ajaxCall(3, '${place}', '${nr.count - 1}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
-                                <td><a href="#" onclick="ajaxCall(1, '${place}', '${nr.count - 1}');"><img src="images/minus.png" alt="remove" class="button" /></a></td>
+                                <td><a href="#" onclick="refreshList('${place}', ${nr.count}, ${line.multiply});"><img src="images/minus.png" alt="remove" class="button" /></a></td>
+                                <!--<td><a href="#" onclick="getIndexBackByEditing('${nr.count -1}', '${place}');"><img src="images/star.png" alt="multiply" class="button" /></a></td>
+                                <td><a href="#" onclick="ajaxCall(1, '${place}', '${nr.count - 1}');"><img src="images/minus.png" alt="remove" class="button" /></a></td>-->
                             </tr>
                         </c:forEach>
                     </span>
@@ -90,12 +93,13 @@
                 </tbody>
             </table>
             </center>
-        
-            <p class="total" id="atotal">Total: <fmt:formatNumber type="currency" value="${total}" maxFractionDigits="2" minFractionDigits="2" /> </p>
-            <input name="delete" value="Delete" type="submit" onclick="confirmDeleting('${floorId}', '${place}');" style="width:70px;margin:0px 0px 10px 10px;"class="floor" />
-            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:70px;margin:0% 0% 10px 43%;" class="floor" />
+
+            <p class="total">Total: <fmt:formatNumber type="currency" value="${total}" maxFractionDigits="2" minFractionDigits="2" /> </p>
+            <input name="delete" value="Delete" type="submit" onclick="confirmDeleting('${floorId}', '${place}');" style="width:70px;margin:0px 0px 10px 10px;"/>
+            <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}'" style="width:70px;margin:0% 0% 10px 43%;">
 
         </span>
 
     </body>
 </html>
+

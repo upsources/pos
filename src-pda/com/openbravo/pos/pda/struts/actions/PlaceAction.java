@@ -42,6 +42,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
     private final static String SUCCESS = "success";
     private final static String EDITING = "editing";
     private final static String UPDATE = "update";
+    private final static String REFRESH = "refresh";
 
     /**
      * This is the action called from the Struts framework.
@@ -62,6 +63,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
         String place = (String) floorForm.getId();
         String str = (String) floorForm.getMode();
         String[] array = null;
+    
         int mode = 0;
         if (!str.equals("")) {
             mode = Integer.valueOf(str);
@@ -81,6 +83,9 @@ public class PlaceAction extends org.apache.struts.action.Action {
                         if (linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() > 0) {
                             linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() - 1);
                         }
+//                        } else {
+//                            linesList.remove(Integer.valueOf(array[i]));
+//                        }
                     }
                 }
                 manager.updateLineFromTicket(place, ticket);
@@ -88,14 +93,38 @@ public class PlaceAction extends org.apache.struts.action.Action {
                     TicketLineInfo li = (TicketLineInfo) line;
                     products.add(manager.findProductById(li.getProductid()));
                 }
+                
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
-                request.setAttribute("placeName", manager.findPlaceById(place));
+                request.setAttribute("placeName", manager.findPlaceNameById(place));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
                 request.setAttribute("total", manager.getTotalOfaTicket(place));
-
+                
                 return mapping.findForward(UPDATE);
+
+            case 4:
+                 ticket = manager.findTicket(place);
+                 linesList = ticket.getM_aLines();
+                 array = floorForm.getParameters();
+                 if (array != null) {
+                    linesList.remove(Integer.parseInt(array[0]));
+                 }
+                 manager.updateLineFromTicket(place, ticket);
+                 for (Object line : linesList) {
+                    TicketLineInfo li = (TicketLineInfo) line;
+                    products.add(manager.findProductById(li.getProductid()));
+                 }
+
+                request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
+                request.setAttribute("place", place);
+                request.setAttribute("placeName", manager.findPlaceNameById(place));
+                request.setAttribute("floorId", floorId);
+                request.setAttribute("lines", linesList);
+                request.setAttribute("products", products);
+                request.setAttribute("total", manager.getTotalOfaTicket(place));
+
+                return mapping.findForward(SUCCESS);
 
             //edits lines
             case 2:
@@ -103,17 +132,16 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 linesList = ticket.getM_aLines();
                 String[] index = floorForm.getParameters();
                 //if null go to default and refresh products. that's why no break
-                products.add(manager.findProductById(linesList.get(Integer.valueOf(index[0])).getProductid()));
+                linesList.get(Integer.valueOf(index[0])).setMultiply(Double.valueOf(index[1]));
 
-                request.setAttribute("product", products.get(0));
-                request.setAttribute("place", place);
-                request.setAttribute("placeName", manager.findPlaceById(place));
-                request.setAttribute("floorId", floorId);
-                request.setAttribute("line", linesList.get(Integer.valueOf(index[0])));
-                request.setAttribute("lineNo", index[0]);
-                request.setAttribute("total", manager.getTotalOfaTicket(place));
-
-                return mapping.findForward(EDITING);
+                manager.updateLineFromTicket(floorForm.getId(), ticket);
+                for (Object line : linesList) {
+                    TicketLineInfo li = (TicketLineInfo) line;
+                    products.add(manager.findProductById(li.getProductid()));
+                }
+               
+                break;
+               // return mapping.findForward(EDITING);
 
             //increment product
             case 3:
@@ -132,7 +160,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 }
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
-                request.setAttribute("placeName", manager.findPlaceById(place));
+                request.setAttribute("placeName", manager.findPlaceNameById(place));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
                 request.setAttribute("total", manager.getTotalOfaTicket(place));
@@ -153,18 +181,19 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 break;
         }
 
-        if (floorId == null || floorId.equals("") || floorId.equals("undefined")) {
-            request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
-        } else {
-            //
-            //it must be fixed
-            //
-            request.setAttribute("floorName", manager.findFloorById(floorId));
-        //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
-        }
-
+//        if (floorId == null || floorId.equals("") || floorId.equals("undefined")) {
+//            request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
+//        } else {
+//            //
+//            //it must be fixed
+//            //
+//            request.setAttribute("floorName", manager.findFloorNameById(floorId));
+//        //request.setAttribute("floorName", manager.findAllFloors().get(0).getName());
+//        }
+        request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
         request.setAttribute("place", place);
-        request.setAttribute("placeName", manager.findPlaceById(place));
+
+        request.setAttribute("placeName", manager.findPlaceNameById(place));
         request.setAttribute("floorId", floorId);
         request.setAttribute("lines", linesList);
         request.setAttribute("products", products);

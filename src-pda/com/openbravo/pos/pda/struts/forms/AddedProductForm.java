@@ -31,7 +31,7 @@ public class AddedProductForm extends org.apache.struts.action.ActionForm {
 
     private String floorId = "";
     private String place = "";
-    private String cat = "";
+    private String productId = "";
     private String[] parameters;
 
     /**
@@ -50,12 +50,12 @@ public class AddedProductForm extends org.apache.struts.action.ActionForm {
         this.floorId = floorId;
     }
 
-    public String getCat() {
-        return cat;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setCat(String cat) {
-        this.cat = cat;
+    public void setProductId(String cat) {
+        this.productId = cat;
     }
 
     public String getPlace() {

@@ -59,8 +59,8 @@ public class TicketLineInfo implements Serializable {
         attributes.setProperty("product.name", product.getName());
         attributes.setProperty("product.com", product.isCom() ? "true" : "false");
         attributes.setProperty("product.taxcategoryid", product.getTaxcat());
-        if (product.getCategoryID() != null) {
-             attributes.setProperty("product.categoryid", product.getCategoryID());
+        if (product.getCategoryId() != null) {
+             attributes.setProperty("product.categoryid", product.getCategoryId());
         }
     }
 

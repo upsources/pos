@@ -68,6 +68,42 @@ public class CategoryDAO extends BaseJdbcDAO {
         return vos;
     }
 
+    public List<CategoryInfo> findAllSubcategories(String id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<CategoryInfo> vos = null;
+        String sqlStr = "select * from CATEGORIES where PARENTID = ?";
+
+        try {
+            //get connection
+            con = getConnection();
+            //prepare statement
+            ps = con.prepareStatement(sqlStr);
+            ps.setString(1, id);
+            //execute
+            rs = ps.executeQuery();
+            //transform to VO
+            vos = transformSet(rs);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                // close the resources
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException sqlee) {
+                sqlee.printStackTrace();
+            }
+        }
+
+        return vos;
+    }
+
     public String findFirstCategory() {
         Connection con = null;
         PreparedStatement ps = null;

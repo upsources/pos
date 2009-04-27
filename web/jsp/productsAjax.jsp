@@ -35,29 +35,40 @@
 <span id="productSpan" class="middle">
 
     <div id="notification" class="notification"></div>
+            <table class="pickme" id="tab">
+                <thead>
+                    <tr>
+                        <th class="name"><bean:message  key="item" /></th>
+                        <th class="normal"><bean:message  key="price" /></th>
+                        <th class="normal"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="category" items="${subcategories}" varStatus="nr">
+                        <tr>
+                            <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');update();">${category.name}</td>
+                        </tr>
+                        <tr><td colspan="4"><div id="${category.id}"></div></td>
 
-    <table id="table" class="pickme">
-        <thead>
-            <tr>
-                <th class="name"><bean:message key="item" /></th>
-                <th class="normal"><bean:message key="price" /></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
-            <c:forEach var="product" items="${products}" varStatus="nr">
-                        <tr id="${nr.count - 1}">
+                        </tr>
+                    </c:forEach>
+               
+                    <c:forEach var="product" items="${products}" varStatus="nr">
+                        <tr>
+                            <div id="pro${nr.count - 1}">
                             <td class="name">${product.name}</td>
                             <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
                             <td class="normal"></td>
-                            <td><a href="#" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', '${nr.count - 1}', '${product.name}');"><img src="images/plus.png" alt="add" class="button" /></a></td>
+                            <td><input value="Add" type="submit" class="floor" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', ${nr.count - 1}, '${product.name}', '${product.id}', 0);"/></td>
+                            </div>
                         </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+                        <tr>
+                            <td colspan="4"><div id="aux${nr.count - 1}"></div></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
 </span>
 
 

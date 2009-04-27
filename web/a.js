@@ -22,20 +22,26 @@ var place;
 var indexGlobal;
 var category
 var notification;
+var mem = new Array;
+var count = 0;
 
-  function ajaxCall(mode, place, index){
+  function ajaxCall(mode, aplace, index){
        indexGlobal = index;
        var url = 'showPlace.do?id=';
        var params;
        switch(mode) {
         //add
-        case 3: params = place + '&mode=3&parameters='+index;
+        case 3: params = aplace + '&mode=3&parameters='+index;
                 break;
         //remove
-        case 1: params = place + '&mode=1&parameters='+index;
-                break;
+        case 1: if(document.getElementsByTagName('table')[0].getElementsByTagName('tr')[parseInt(index)+1].getElementsByTagName('td')[2].getElementsByTagName('input')[0].value == 0){
+                    params = aplace + '&mode=4&parameters='+index;
+                    window.location = url + params
+                } else {
+                    params = aplace + '&mode=1&parameters='+index;
+                    break;
+                }
        }
-
       if (window.XMLHttpRequest) { // Non-IE browsers
         req = new XMLHttpRequest();
         req.onreadystatechange = startWorking;
@@ -51,18 +57,20 @@ var notification;
   function startWorking(){     
       if (req.readyState == 4) { // Complete
                if (req.status == 200) {
-                        updatePlace(splitTextIntoSpan(req.responseText), 'value'+indexGlobal, 'mul'+indexGlobal);
+                   spanelem = splitTextIntoSpan(req.responseText);
+                   updatePlace(spanelem, 'value'+indexGlobal, 'atotal');
                 } else {
                         alert("Problem with server response:\n " + req.statusText);
                 }
       }
   }
 
-function updatePlace(newTextElements, place, place2){
 
+function updatePlace(newTextElements, place, place3){
+        
         //loop through newTextElements
         for ( var i=newTextElements.length-1; i>=0; --i ){
-
+                
                 //check that this begins with
                 if(newTextElements[i].indexOf('<span')>-1){
 
@@ -75,19 +83,21 @@ function updatePlace(newTextElements, place, place2){
                         startContentPos=newTextElements[i].indexOf('>')+1;
                         content=newTextElements[i].substring(startContentPos);
                         //Now update the existing Document with this element
-
+                        
                         switch(i) {
-                            case 1:     document.getElementById(place).innerHTML = content;
+                            case 2:     document.getElementById(place3).innerHTML = content;
                                         break;
-                            case 0:     document.getElementById(place2).innerHTML = content;
+                            case 1:     document.getElementById(place3).innerHTML = content;
+                                        break;
+                            case 0:     document.getElementById(place).innerHTML = content;
                                         break;
                         }
                 }
         }
  }
- 
-  function retrieveURL(url, place2) {
-    
+
+ function retrieveURL(url, place2) {
+
     //get the (form based) params to push up as part of the get request
     //url=url+getFormAsString(nameOfFormToPost);
     place = place2;
@@ -102,7 +112,7 @@ function updatePlace(newTextElements, place, place2){
       }
       req.send(null);
     } else if (window.ActiveXObject) { // IE
-      
+
       req = new ActiveXObject("Microsoft.XMLHTTP");
       if (req) {
         req.onreadystatechange = processStateChange;
@@ -110,6 +120,48 @@ function updatePlace(newTextElements, place, place2){
         req.send();
       }
     }
+  }
+ 
+  function retrieveURLforCategories(url, place2) {
+    
+    //get the (form based) params to push up as part of the get request
+    //url=url+getFormAsString(nameOfFormToPost);
+    if(wrapupCategories(place2) == 1){
+        place = place2;
+        //Do the Ajax call
+        if (window.XMLHttpRequest) { // Non-IE browsers
+            req = new XMLHttpRequest();
+            req.onreadystatechange = processStateChange;
+            try {
+                req.open("GET", url, true); //was get
+            } catch (e) {
+                alert("Problem Communicating with Server\n"+e);
+            }
+            req.send(null);
+        }
+    }
+     else {
+         
+         text = new Array();
+         text[0]='<span>';
+         replaceExistingWithNewHtml(text, place2);
+     }
+    
+  }
+
+  function wrapupCategories(cat) {
+      if(mem.length == 0){
+          mem[0] = cat;
+          return 1;
+      }
+      for(i = 0; i < mem.length; i++) {
+        if(mem[i] == cat) {
+            mem[i] = '';
+            return 0;
+        } 
+      }
+      mem[mem.length] = cat;
+      return 1;
   }
 
 /*
@@ -121,10 +173,9 @@ function updatePlace(newTextElements, place, place2){
   
           if (req.readyState == 4) { // Complete
                 if (req.status == 200) { // OK response
-                
                         //Split the text response into Span elements
                         spanElements = splitTextIntoSpan(req.responseText);
-                       // alert("tu dziwka3" + req.responseText);
+                        
                         //Use these span elements to update the page
                         replaceExistingWithNewHtml(spanElements, place);
                 } else {
@@ -134,9 +185,10 @@ function updatePlace(newTextElements, place, place2){
   }
 
  function splitTextIntoSpan(textToSplit){
- 
+
         //Split the document
         returnElements=textToSplit.split('</span>')
+      
         //Process each of the elements  
         for ( var i=returnElements.length-1; i>=0; --i ){                
                 //Remove everything before the 1st span
@@ -148,8 +200,7 @@ function updatePlace(newTextElements, place, place2){
                 
                 } 
         }
-        
-        return returnElements;
+      return returnElements;
  }
  
  /*
@@ -160,7 +211,6 @@ function updatePlace(newTextElements, place, place2){
   *                                     in the format id=name>texttoupdate
   */
  function replaceExistingWithNewHtml(newTextElements, place){
- 
         //loop through newTextElements
         for ( var i=newTextElements.length-1; i>=0; --i ){
                 //check that this begins with 
@@ -188,10 +238,30 @@ function updatePlace(newTextElements, place, place2){
         }
  }
 
- function ajaxAddProduct(place, index, not){
-      var url = 'addProduct.do?place=' + place +'&cat=' + category + '&parameters=' + index;
+// function ajaxAddProduct(plac, index, not, cat){
+//      var url = 'addProduct.do?place=' + plac +'&cat=' + cat + '&parameters=' + index;
+//      indexGlobal = index;
+//      if (window.XMLHttpRequest) { // Non-IE browsers
+//        req = new XMLHttpRequest();
+//        req.onreadystatechange = startWorkingAuxiliars;
+//        try {
+//            req.open("GET", url, true); //was get
+//        } catch (e) {
+//            alert("Problem Communicating with Server\n"+e);
+//        }
+//        req.send(null);
+//        }
+//
+//        showNotifications(index, not);
+//  }
+var mode;
+ function ajaxAddProduct(plac, index, not, productId, mod){
+      var url = 'addProduct.do?place=' + plac +'&productId=' + productId ;
+      mode = mod;
+      indexGlobal = index;
       if (window.XMLHttpRequest) { // Non-IE browsers
         req = new XMLHttpRequest();
+        req.onreadystatechange = startWorkingAuxiliars;
         try {
             req.open("GET", url, true); //was get
         } catch (e) {
@@ -199,7 +269,34 @@ function updatePlace(newTextElements, place, place2){
         }
         req.send(null);
         }
-        document.getElementById('notification').innerHTML = not + ' has been added to the receipt';
+
+        showNotifications(index, not);
+  }
+
+   function startWorkingAuxiliars(){
+      if (req.readyState == 4) { // Complete
+               if (req.status == 200) {
+                   spanelem = splitTextIntoSpan(req.responseText);
+                   if(mode != 1){
+                        updatePlace(spanelem, 'aux'+indexGlobal, '');
+                   }
+                } else {
+                        alert("Problem with server response:\n " + req.statusText);
+                }
+      }
+  }
+
+  function showNotifications(index, not) {
+      document.getElementById('notification').innerHTML = not + ' has been added to the receipt';
+     // alert(document.getElementsByTagName('table')[0].getElementsByTagName('tr')[index + 1].getElementsByTagName('td')[3].innerHTML+' co kets');
+    // row = document.getElementsByTagName('table')[0].getElementsByTagName('tr')[index + 1].getElementsByTagName('td')[2];
+    
+      if(row.value == null) {
+           row.value = 1;
+           row.innerHTML = 1;
+      } else {
+          row.innerHTML = parseInt(row.innerHTML) + 1;
+      }
   }
 
  function rememberCategory(cat){
@@ -211,5 +308,31 @@ function confirmDeleting(floor, place) {
         window.location = 'showFloors.do?floorId=' + floor +'&place=' + place;
 }
 
+function refreshListDelete(plac, line) {
+ //   ajaxCall(1, plac, (line-1).toString());
+// count = 0;
+// var licz = 0;
+//    if(unit <= 1){
+//        rows = document.getElementById('table').getElementsByTagName('tr');
+//        document.getElementById('table').deleteRow(line);
+//        mem[line] = 1;
+//    }
+//    alert(rows.length);
+//    for(i=0; i < rows.length ; i++){
+//        if(mem[i] == 1){
+//            alert('jest' + count);
+//            count++;
+//        }
+//        licz++;
+//    }
+//    alert(line-count + ' ' + rows[line].getElementsByTagName('td')[0].value + ' ' +licz);
+//   // ajaxCall(1, plac, (line-count).toString());
 
+    window.location = 'showPlace.do?id='+plac+'&mode=1&parameters='+line;
+    //window.location = 'showPlace.do?id='+plac+'&mode=0';
+}
+
+function refreshListIncementing(plac, line) {
+    window.location = 'showPlace.do?id='+plac+'&mode=3&parameters='+line;
+}
  

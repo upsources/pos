@@ -21,8 +21,10 @@ package com.openbravo.pos.pda.struts.actions;
 
 import com.openbravo.pos.pda.bo.RestaurantManager;
 import com.openbravo.pos.pda.struts.forms.FloorForm;
+import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,17 +54,36 @@ public class ModifyProductAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        FloorForm aForm = (FloorForm) form;
+        FloorForm floorForm = (FloorForm) form;
         RestaurantManager manager = new RestaurantManager();
+        String floorId = (String) floorForm.getFloorId();
+        String place = (String) floorForm.getId();
+        String str = (String) floorForm.getMode();
+        String[] array = floorForm.getParameters();
+        List<TicketLineInfo> linesList = new ArrayList<TicketLineInfo>();
+        List products = new ArrayList<ProductInfoExt>();
+        TicketInfo ticket = manager.findTicket(place);
+        linesList = ticket.getM_aLines();
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() + 1);    //strange
+            }
+        }
+         manager.updateLineFromTicket(floorForm.getId(), ticket);
+        for (Object line : linesList) {
+            TicketLineInfo li = (TicketLineInfo) line;
+            products.add(manager.findProductById(li.getProductid()));
+        }
+       
 
-        TicketInfo ticket = manager.findTicket(aForm.getId());
-        List<TicketLineInfo> list = ticket.getM_aLines();
-        String[] array = aForm.getParameters();
-        list.get(Integer.valueOf(aForm.getLine())).setMultiply(Double.valueOf(array[0]));
-        manager.updateLineFromTicket(aForm.getId(), ticket);
+        request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
+        request.setAttribute("place", place);
 
-        request.setAttribute("line", aForm.getLine());
-        request.setAttribute("place", ticket.getName());
+        request.setAttribute("placeName", manager.findPlaceNameById(place));
+        request.setAttribute("floorId", floorId);
+        request.setAttribute("lines", linesList);
+        request.setAttribute("products", products);
+        request.setAttribute("total", manager.getTotalOfaTicket(place));
         
         return mapping.findForward(SUCCESS);
     }

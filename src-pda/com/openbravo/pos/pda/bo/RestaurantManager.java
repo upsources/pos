@@ -60,10 +60,28 @@ public class RestaurantManager {
         return floor.findAllFloors();
     }
 
-    public String findFloorById(String floorId) {
+    public List<CategoryInfo> findAllSubcategories(String id) {
+        category = new CategoryDAO();
+
+        return category.findAllSubcategories(id);
+    }
+
+    public List<ProductInfo> findAuxiliars(String id) {
+        product = new ProductDAO();
+
+        return product.findAllAuxiliars(id);
+    }
+
+    public String findFloorNameById(String floorId) {
         floor = new FloorDAO();
 
         return floor.findFloorById(floorId).getName();
+    }
+
+    public Floor findFloorById(String floorId) {
+        floor = new FloorDAO();
+
+        return floor.findFloorById(floorId);
     }
 
     public List<Place> findAllPlaces(String floor) {
@@ -108,9 +126,9 @@ public class RestaurantManager {
 
     public ProductInfo findProductById(String productId) {
         product = new ProductDAO();
-        if(productId.contains("+")){
-           String[] str = productId.split("+");
-           productId = str[str.length - 1];
+        if (productId.contains("+")) {
+            String[] str = productId.split("+");
+            productId = str[str.length - 1];
         }
         return product.findProductById(productId);
     }
@@ -133,28 +151,53 @@ public class RestaurantManager {
         return category.findAllCategories();
     }
 
-    public String findPlaceById(String placeId) {
+    public String findPlaceNameById(String placeId) {
         place = new PlaceDAO();
 
         return place.findPlaceById(placeId).getName();
     }
 
-    public void addLineToTicket(String ticketId, String aCategory, String productIndex) {
-        lines = new TicketLineDAO();
+    public Place findPlaceById(String placeId) {
+        place = new PlaceDAO();
+
+        return place.findPlaceById(placeId);
+    }
+
+//    public String addLineToTicket(String ticketId, String aCategory, String productIndex) {
+//        lines = new TicketLineDAO();
+//        ticket = new TicketDAO();
+//        product = new ProductDAO();
+//        category = new CategoryDAO();
+//        tax = new TaxDAO();
+//        taxesLogic = new TaxesLogic(tax.getTaxList());
+//
+//        TicketInfo obj = ticket.getTicket(ticketId);
+//        ProductInfo productObj = null;
+//        if (aCategory.equals("undefined")) {
+//            aCategory = category.findFirstCategory();
+//        }
+//
+//        productObj = product.findProductsByCategory(aCategory).get(Integer.valueOf(productIndex));
+//        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryId()));
+//        obj.addLine(line);
+//        ticket.updateTicket(ticketId, obj);
+//        refreshTax(obj);
+//
+//        return productObj.getId();
+//    }
+    public void addLineToTicket(String ticketId, String productId) {
         ticket = new TicketDAO();
         product = new ProductDAO();
         category = new CategoryDAO();
         tax = new TaxDAO();
         taxesLogic = new TaxesLogic(tax.getTaxList());
-        
+
         TicketInfo obj = ticket.getTicket(ticketId);
         ProductInfo productObj = null;
-        if (aCategory.equals("undefined")) {
-            aCategory = category.findFirstCategory();
-        }
 
-        productObj = product.findProductsByCategory(aCategory).get(Integer.valueOf(productIndex));
-        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryID()));
+
+        productObj = product.findProductById(productId);
+        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryId()));
         obj.addLine(line);
         ticket.updateTicket(ticketId, obj);
         refreshTax(obj);
@@ -165,10 +208,14 @@ public class RestaurantManager {
         ticket.updateTicket(ticketId, aticket);
     }
 
-    public BigDecimal getTotalOfaTicket(String place){
+    public BigDecimal getTotalOfaTicket(String place) {
         double total = 0;
-        for(TicketLineInfo line : findTicket(place).getM_aLines()){
-            total += line.getPrice() + line.getPrice() * line.getTax().getRate();
+        for (TicketLineInfo line : findTicket(place).getM_aLines()) {
+            try {
+                total += line.getMultiply() * (line.getPrice() + line.getPrice() * line.getTax().getRate());
+            } catch (NullPointerException e) {
+                total += line.getMultiply() * line.getPrice();
+            }
         }
         return BigDecimal.valueOf(total);
     }
@@ -183,6 +230,4 @@ public class RestaurantManager {
             line.setTax(taxesLogic.getTaxInfo(line.getProductTaxCategoryID(), ticket.getM_Customer()));
         }
     }
-
-   
 }

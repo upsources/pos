@@ -35,7 +35,7 @@ function addLoadEvent(func) {
 
 function update() {
   //  var t = setTimeout('stripeTables(), highlightRows(), lockRow()', 600 );
-  var t = setTimeout('stripeTables(), highlightRows()', 900 );
+  var t = setTimeout('stripeTables()', 500 );
 }
 
 function addClass(element,value) {
@@ -161,7 +161,7 @@ function getIndexBackByRemoving(place){
 function getIndexBackByEditing(place){
 
     var tables = document.getElementsByTagName('table');
-    var score = 'id=' + place +'&mode=2&';
+    var score = 'id=' + place +'&mode=0&';
 	for (var m=0; m<tables.length; m++) {
 		if (tables[m].className == 'pickme') {
 				var tbodies = tables[m].getElementsByTagName('tbody');
@@ -177,12 +177,11 @@ function getIndexBackByEditing(place){
         }
     }
 
-    window.location ='showPlace.do?' + score;
+    window.location ='modifyProduct.do?' + score;
 }
 
 function getIndexBackByEditing(nr, place){
-
-    var score = 'id=' + place +'&mode=2&parameters=' + nr;
+    var score = 'id=' + place +'&mode=2&parameters=' + nr + '&parameters=' + document.getElementById('input'+nr).value;
 
     window.location ='showPlace.do?' + score;
 }
@@ -224,7 +223,6 @@ function getLocation(place){
 }
 
 addLoadEvent(stripeTables);
-addLoadEvent(highlightRows);
 
 
 

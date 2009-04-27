@@ -65,16 +65,18 @@ public class ProductAction extends org.apache.struts.action.Action {
          * */
         DynaActionForm inputFormPlace = (DynaActionForm) form;
         RestaurantManager manager = new RestaurantManager();
-        List categories = new ArrayList<CategoryInfo>();
+        List<CategoryInfo> categories = new ArrayList<CategoryInfo>();
         categories = manager.findAllCategories();
         List products = new ArrayList<ProductInfoExt>();
-        products = manager.findProductsByCategory(manager.findAllCategories().get(0).getId());
+        products = manager.findProductsByCategory(categories.get(0).getId());
+        List subcategories = new ArrayList<CategoryInfo>();
+        subcategories = manager.findAllSubcategories(categories.get(0).getId());
         request.setAttribute("products", products);
         request.getSession().setAttribute("place", (String) inputFormPlace.get("place"));
-        request.setAttribute("placeName", manager.findPlaceById((String) inputFormPlace.get("place")));
+        request.setAttribute("placeName", manager.findPlaceNameById((String) inputFormPlace.get("place")));
         request.setAttribute("categories", categories);
         request.setAttribute("floorId", request.getAttribute("floorId"));
-
+        request.setAttribute("subcategories", subcategories);
 
         return mapping.findForward(SUCCESS);
 

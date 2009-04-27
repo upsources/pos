@@ -36,10 +36,15 @@
   }
 
   img.button {
-      height:30px;
-      width:30px;
+      height:40px;
+      width:40px;
       padding-left:2px;
       border:none;
+  }
+
+  .button {
+      padding-left:2px;
+
   }
 
   img.logo {
@@ -90,20 +95,32 @@ a:hover {
 
   .floor {
       padding:5px;
-      height:30px;
+      height:40px;
       width:70px;
-      font:bold 9px Arial;
+      font:bold 11px Arial;
       margin-top:3px;
-  }
+      margin-bottom:3px;
+      }
 
+  .notbusy {
+      padding:5px;
+      height:40px;
+      width:70px;
+      font:bold 11px Arial;
+      margin-top:3px;
+      background-image: url("images/edit_group.png");
+      background-repeat: no-repeat;
+      background-position: 250%;
+      }
   .busy {
       padding:5px;
-      height:30px;
+      height:40px;
       width:70px;
-      font:bold 9px Arial;
+      font:bold 12px Arial;
       background-image: url("images/edit_group.png");
       background-repeat: no-repeat;
       background-position: center;
+      
       margin-top:3px;
   }
 
@@ -118,48 +135,62 @@ a:hover {
   }
   th		{
       
-      font:bold 9px Arial;
-      text-align:left;
+      font:bold 11px Arial;
+      text-align:center;
       padding:2px;
       border-bottom:1px solid #333;
   }
   th.name{
-      font:bold 9px Arial;
-      width:55px;
-      max-width:55px;
+      font:bold 11px Arial;
+      width:120px;
+   
       padding:2px;
      /* width:100px;*/
   }
   th.units {
-      width:15px;
+      width:44px;
       padding:2px;
   }
   th.normal {
-      width:20px;
+      width:50px;
       padding:2px;
+     
+     
   }
   td	{
       
-      font:normal 9px Arial;
+      font:normal 11px Arial;
       padding:2px;
   }
 
   td.name{
-      font:normal 9px Arial;
-      width:55px;
-      max-width:55px;
+      font:normal 11px Arial;
+      width:120px;
+     
       padding:2px;
+      text-align: center;
+   /*   width:100px;*/
+  }
+
+  td.category{
+      font:normal 11px Arial;
+      width:120px;
+      height: 40px;
+      padding:2px;
+      text-align: center;
+      font:bold 11px Arial;
    /*   width:100px;*/
   }
 
   td.units {
-      width:5px;
+      width:44px;
       padding:2px;
 }
 
   td.normal {
-      padding:10px;
-      width:40px;
+      padding:5px;
+      width:50px;
+      text-align: center;
   }
   tr.odd	{
       background:#e1ffdb;

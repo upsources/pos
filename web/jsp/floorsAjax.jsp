@@ -44,7 +44,7 @@
                                     </c:if>
                                 </c:forEach>
                                     <c:if test="${var == false}">
-                                       <input type=submit name="id" value="${place.name}" onclick="getLocation('${place.id}');" class="floor">
+                                       <input type=submit name="id" value="${place.name}" onclick="getLocation('${place.id}');" class="notbusy">
                                     </c:if>
 
                             </c:forEach>

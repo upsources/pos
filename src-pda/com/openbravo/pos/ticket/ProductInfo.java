@@ -34,7 +34,7 @@ public class ProductInfo implements Serializable {
     private String name;
     private boolean com;
     private boolean scale;
-    private String categoryID;
+    private String categoryId;
     private String taxcat;
     private double priceBuy;
     private double priceSell;
@@ -47,12 +47,12 @@ public class ProductInfo implements Serializable {
         this.taxcat = taxcat;
     }
 
-    public String getCategoryID() {
-        return categoryID;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryID(String categoryID) {
-        this.categoryID = categoryID;
+    public void setCategoryId(String categoryID) {
+        this.categoryId = categoryID;
     }
 
     public String getCode() {

@@ -29,7 +29,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,7 +61,7 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
             ticket = (TicketInfo) in.readObject();
 
         } catch (Exception ex) {
-            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         return ticket;
@@ -72,7 +71,6 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         String sqlStr = "INSERT INTO SHAREDTICKETS (ID, NAME,CONTENT) VALUES (?, ?, ?)";
         TicketInfo ticket = new TicketInfo();
         try {
