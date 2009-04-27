@@ -45,8 +45,10 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% boolean rowodd = false; %>
                     <c:forEach var="category" items="${subcategories}" varStatus="nr">
-                        <tr>
+                        <% rowodd = !rowodd; %>
+                        <tr class="<%= rowodd ? "odd" : "even" %>">
                             <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');update();">${category.name}</td>
                         </tr>
                         <tr><td colspan="4"><div id="${category.id}"></div></td>
@@ -55,7 +57,8 @@
                     </c:forEach>
                
                     <c:forEach var="product" items="${products}" varStatus="nr">
-                        <tr>
+                        <% rowodd = !rowodd; %>
+                        <tr class="<%= rowodd ? "odd" : "even" %>">
                             <div id="pro${nr.count - 1}">
                             <td class="name">${product.name}</td>
                             <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>

@@ -76,8 +76,10 @@
                 </thead>
                 <tbody>
                     <span id="products" >
+                        <% boolean rowodd = false; %>
                         <c:forEach var="line" items="${lines}" varStatus="nr">
-                            <tr id="${nr.count - 1}">
+                            <% rowodd = !rowodd; %>
+                            <tr id="${nr.count - 1}" class="<%= rowodd ? "odd" : "even" %>">
                                 <td class="name">${products[nr.count - 1].name}</td>
                                 <td class="normal"><fmt:formatNumber type="currency" value="${line.price}" maxFractionDigits="2" minFractionDigits="2"/></td>
                                 <td class="normal" id="value${nr.count - 1}"><input type="text" id="input${nr.count - 1}" size="3" onchange="getIndexBackByEditing('${nr.count -1}', '${place}');" value="<fmt:formatNumber type="number" value="${line.multiply}" maxFractionDigits="2" minFractionDigits="0"/>" /> <fmt:formatNumber type="currency" value="${line.value}" maxFractionDigits="2" minFractionDigits="2"/></td>

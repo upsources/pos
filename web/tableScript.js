@@ -21,101 +21,6 @@
 var categoryId;
 var floorId;
 
-function addLoadEvent(func) {
-  var oldonload = window.onload;
-  if (typeof window.onload != 'function') {
-    window.onload = func;
-  } else {
-    window.onload = function() {
-      oldonload();
-      func();
-    }
-  }
-}
-
-function update() {
-  //  var t = setTimeout('stripeTables(), highlightRows(), lockRow()', 600 );
-  var t = setTimeout('stripeTables()', 500 );
-}
-
-function addClass(element,value) {
-  if (!element.className) {
-    element.className = value;
-  } else {
-    newClassName = element.className;
-    newClassName+= ' ';
-    newClassName+= value;
-    element.className = newClassName;
-  }
-}
-
-function stripeTables() {
-	var tables = document.getElementsByTagName('table');
-	for (var m=0; m<tables.length; m++) {
-		if (tables[m].className == 'pickme') {
-			var tbodies = tables[m].getElementsByTagName('tbody');
-			for (var i=0; i<tbodies.length; i++) {
-				var odd = true;
-				var rows = tbodies[i].getElementsByTagName('tr');
-				for (var j=0; j<rows.length; j++) {
-					if (odd == false) {
-						odd = true;
-					} else {
-						addClass(rows[j],'odd');
-						odd = false;
-					}
-				}
-			}
-		}
-	}
-}
-function highlightRows() {
-  if(!document.getElementsByTagName) return false;
-  	var tables = document.getElementsByTagName('table');
-	for (var m=0; m<tables.length; m++) {
-		if (tables[m].className == 'pickme') {
-			  var tbodies = tables[m].getElementsByTagName('tbody');
-			  for (var j=0; j<tbodies.length; j++) {
-				 var rows = tbodies[j].getElementsByTagName('tr');
-				 for (var i=0; i<rows.length; i++) {
-					   rows[i].oldClassName = rows[i].className
-					   rows[i].onmouseover = function() {
-						  if( this.className.indexOf('selected') == -1)
-							 addClass(this,'highlight');
-					   }
-					   rows[i].onmouseout = function() {
-						  if( this.className.indexOf('selected') == -1)
-							 this.className = this.oldClassName
-					   }
-				 }
-			  }
-		}
-	}
-}
-
-function lockRow() {
-  	var tables = document.getElementsByTagName('table');
-	for (var m=0; m<tables.length; m++) {
-		if (tables[m].className == 'pickme') {
-				var tbodies = tables[m].getElementsByTagName('tbody');
-				for (var j=0; j<tbodies.length; j++) {
-					var rows = tbodies[j].getElementsByTagName('tr');
-					for (var i=0; i<rows.length; i++) {
-						rows[i].oldClassName = rows[i].className;
-						rows[i].onclick = function() {
-							if (this.className.indexOf('selected') != -1) {
-								this.className = this.oldClassName;
-							} else {
-								addClass(this,'selected');
-							}
-							selectRowCheckbox(this);
-						}
-					}
-				}
-		}
-	}
-}
-
 function getIndexBack(place){
 
     var tables = document.getElementsByTagName('table');
@@ -222,7 +127,7 @@ function getLocation(place){
    window.location = 'showPlace.do?id='+ place + '&floorId=' +floorId;
 }
 
-addLoadEvent(stripeTables);
+//addLoadEvent(stripeTables);
 
 
 

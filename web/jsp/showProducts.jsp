@@ -44,7 +44,7 @@
         <script type="text/javascript" src="tableScript.js"></script>
         <script type="text/javascript" src="a.js"></script>
     </head>
-    <body onload="update();">
+    <body>
         <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
         <div class="logo">
             <center>
@@ -57,7 +57,7 @@
             <center>
         <form action="#" method="get" >
             <html:select property="categoryId" value="id"
-                         onchange="retrieveURL( 'productAjaxAction.do?categoryId=' + this.value, 'productSpan');update();rememberCategory(this.value);" >
+                         onchange="retrieveURL( 'productAjaxAction.do?categoryId=' + this.value, 'productSpan');rememberCategory(this.value);" >
                 <html:options collection="categories" property="id" labelProperty="name"  />
             </html:select>
         </form>
@@ -75,7 +75,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% boolean rowodd = false; %>
                     <c:forEach var="category" items="${subcategories}" varStatus="nr">
+                        <% rowodd = !rowodd; %>
                         <tr>
                             <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');update();">${category.name}</td>
                         </tr>
@@ -85,7 +87,8 @@
                     </c:forEach>
                     <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
                     <c:forEach var="product" items="${products}" varStatus="nr">
-                        <tr>
+                        <% rowodd = !rowodd; %>
+                        <tr class="<%= rowodd ? "odd" : "even" %>">
                             <div id="pro${nr.count - 1}">
                             <td class="name">${product.name}</td>
                             <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>

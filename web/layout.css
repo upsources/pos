@@ -192,16 +192,25 @@ a:hover {
       width:50px;
       text-align: center;
   }
+
   tr.odd	{
       background:#e1ffdb;
   }
-  tr.highlight	{
-      background:#b4f9a6;
+  tr.even {
+      background:#ffffff;
   }
   tr.selected		{
       background:#51990F;
       color:#fff;
   }
+/*
+  tr.odd:hover {
+      background:#b4f9a6;
+  }
+  tr.even:hover {
+      background:#b4f9a6;
+  }
+*/
   td+td+td {
       text-align:right;
   }
