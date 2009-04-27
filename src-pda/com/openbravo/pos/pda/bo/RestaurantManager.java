@@ -171,10 +171,7 @@ public class RestaurantManager {
         taxesLogic = new TaxesLogic(tax.getTaxList());
 
         TicketInfo obj = ticket.getTicket(ticketId);
-        ProductInfo productObj = null;
-
-
-        productObj = product.findProductById(productId);
+        ProductInfo productObj = product.findProductById(productId);
         TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryId()));
         obj.addLine(line);
         ticket.updateTicket(ticketId, obj);
