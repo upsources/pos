@@ -20,9 +20,14 @@
 var floorId;
 
 function getIndexBackByEditing(nr, place){
-    var score = 'id=' + place +'&mode=2&parameters=' + nr + '&parameters=' + document.getElementById('input'+nr).value;
-
-    window.location ='showPlace.do?' + score;
+    var value = parseFloat(document.getElementById('input'+nr).value);
+    if(isNaN(value)){
+        alert('Please enter a valid number!');
+    } else {
+        var score = 'id=' + place +'&mode=2&parameters=' + nr + '&parameters=' + value;
+        window.location ='showPlace.do?' + score;
+    }
+    
 }
 
 function saveFloorId(id){

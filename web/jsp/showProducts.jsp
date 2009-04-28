@@ -79,7 +79,7 @@
                     <c:forEach var="category" items="${subcategories}" varStatus="nr">
                         <% rowodd = !rowodd; %>
                         <tr class="<%= rowodd ? "odd" : "even" %>">
-                            <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');update();">${category.name}</td>
+                            <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');">${category.name}</td>
                         </tr>
                         <tr><td colspan="4"><div id="${category.id}"></div></td>
 
