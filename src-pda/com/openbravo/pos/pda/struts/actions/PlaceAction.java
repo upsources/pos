@@ -63,7 +63,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
         String place = (String) floorForm.getId();
         String str = (String) floorForm.getMode();
         String[] array = null;
-    
+
         int mode = 0;
         if (!str.equals("")) {
             mode = Integer.valueOf(str);
@@ -80,12 +80,10 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 array = floorForm.getParameters();
                 if (array != null) {
                     for (int i = 0; i < array.length; i++) {
-                        if (linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() > 0) {
-                            linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() - 1);
+                        if (linesList.get(Integer.valueOf(array[i])).getMultiply() > 0) {
+                            linesList.get(Integer.valueOf(array[i])).setMultiply(linesList.get(Integer.valueOf(array[i])).getMultiply() - 1);
                         }
-//                        } else {
-//                            linesList.remove(Integer.valueOf(array[i]));
-//                        }
+
                     }
                 }
                 manager.updateLineFromTicket(place, ticket);
@@ -93,28 +91,28 @@ public class PlaceAction extends org.apache.struts.action.Action {
                     TicketLineInfo li = (TicketLineInfo) line;
                     products.add(manager.findProductById(li.getProductid()));
                 }
-                
+
                 request.setAttribute("product", products.get(0));
                 request.setAttribute("place", place);
                 request.setAttribute("placeName", manager.findPlaceNameById(place));
                 request.setAttribute("line", linesList.get(Integer.valueOf(array[0])));
                 request.setAttribute("lineNo", array[0]);
                 request.setAttribute("total", manager.getTotalOfaTicket(place));
-                
+
                 return mapping.findForward(UPDATE);
 
             case 4:
-                 ticket = manager.findTicket(place);
-                 linesList = ticket.getM_aLines();
-                 array = floorForm.getParameters();
-                 if (array != null) {
+                ticket = manager.findTicket(place);
+                linesList = ticket.getM_aLines();
+                array = floorForm.getParameters();
+                if (array != null) {
                     linesList.remove(Integer.parseInt(array[0]));
-                 }
-                 manager.updateLineFromTicket(place, ticket);
-                 for (Object line : linesList) {
+                }
+                manager.updateLineFromTicket(place, ticket);
+                for (Object line : linesList) {
                     TicketLineInfo li = (TicketLineInfo) line;
                     products.add(manager.findProductById(li.getProductid()));
-                 }
+                }
 
                 request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
                 request.setAttribute("place", place);
@@ -139,7 +137,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                     TicketLineInfo li = (TicketLineInfo) line;
                     products.add(manager.findProductById(li.getProductid()));
                 }
-               
+
                 break;
 
             //increment product
@@ -149,7 +147,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 array = floorForm.getParameters();
                 if (array != null) {
                     for (int i = 0; i < array.length; i++) {
-                        linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() + 1);    //strange
+                        linesList.get(Integer.valueOf(array[i])).setMultiply(linesList.get(Integer.valueOf(array[i])).getMultiply() + 1);    //strange
                     }
                 }
                 manager.updateLineFromTicket(place, ticket);

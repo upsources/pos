@@ -51,7 +51,7 @@
         <div>
         <center>
             <form name="FloorForm" method="post" class="pad">
-                <html:select property="floorId" value="${floorId}" onchange="saveFloorId(this.value);retrieveURL( 'floorAjaxAction.do?floorId=' + this.value, 'ble');"  >
+                <html:select property="floorId" value="${floorId}" onchange="saveFloorId(this.value);retrieveURL( 'sec/floorAjaxAction.do?floorId=' + this.value, 'ble');"  >
                     <html:options collection="floors" property="id" labelProperty="name"  />
                 </html:select>
             </form>

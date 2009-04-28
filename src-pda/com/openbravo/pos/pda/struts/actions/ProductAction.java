@@ -75,8 +75,7 @@ public class ProductAction extends org.apache.struts.action.Action {
         request.getSession().setAttribute("place", (String) inputFormPlace.get("place"));
         request.setAttribute("placeName", manager.findPlaceNameById((String) inputFormPlace.get("place")));
         request.setAttribute("categories", categories);
-        request.setAttribute("floorId", request.getAttribute("floorId"));
-        request.setAttribute("subcategories", subcategories);
+        request.getSession().setAttribute("floorId",  (String) inputFormPlace.get("floorId"));
 
         return mapping.findForward(SUCCESS);
 

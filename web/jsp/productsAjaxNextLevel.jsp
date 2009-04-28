@@ -10,10 +10,12 @@
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-logic" prefix="logic" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-bean" prefix="bean" %>d">
-
+<link rel=StyleSheet href="../layout.css" type="text/css" media=screen>
 <span>
+    <% boolean rowodd = false; %>
     <c:forEach var="category" items="${subcategories}" varStatus="nr">
-        <tr>
+        <% rowodd = !rowodd; %>
+        <tr class="<%= rowodd ? "odd" : "even" %>">
             <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');update();">${category.name}</td>
         </tr>
         <tr>
@@ -22,7 +24,8 @@
     </c:forEach>
     <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
     <c:forEach var="product" items="${products}" varStatus="nr">
-        <tr id="${nr.count - 1}">
+        <% rowodd = !rowodd; %>
+        <tr id="${nr.count - 1}" class="<%= rowodd ? "odd" : "even" %>">
             <td class="name">${product.name}</td>
             <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
             <td class="normal"></td>

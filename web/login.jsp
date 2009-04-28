@@ -31,12 +31,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name = "viewport" content = "user-scalable=no, width=device-width">
         <title><bean:message key="welcome.title"/></title>
-        <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
+        
         <html:base/>
     </head>
     <body>
         <center>
-        <img src="../images/logo.gif" alt="Openbravo" class="logo" /><br>
+        <img src="images/logo.gif" alt="Openbravo" /><br><br>
         </center>
         <logic:messagesPresent >
             <html:messages id="msg">

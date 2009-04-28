@@ -46,8 +46,6 @@ public class addProductAction extends org.apache.struts.action.Action {
      * @throws java.lang.Exception
      * @return
      */
-
-    //niepottzebne
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -56,14 +54,13 @@ public class addProductAction extends org.apache.struts.action.Action {
         RestaurantManager bo = new RestaurantManager();
         String place = aForm.getPlace();
         String productId = aForm.getProductId();
-        
+
         bo.addLineToTicket(place, productId);
-        
+
         List li = bo.findAuxiliars(productId);
         request.setAttribute("place", place);
         request.setAttribute("auxiliars", bo.findAuxiliars(productId));
 
         return mapping.findForward(SUCCESS);
-
     }
 }

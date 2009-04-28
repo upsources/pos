@@ -305,7 +305,7 @@ var mode;
 
 function confirmDeleting(floor, place) {
     if(confirm('Are you sure you want to delete the current receipt?'))
-        window.location = 'showFloors.do?floorId=' + floor +'&place=' + place;
+        window.location = '../showFloors.do?floorId=' + floor +'&place=' + place;
 }
 
 function refreshListDelete(plac, line) {

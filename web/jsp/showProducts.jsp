@@ -40,18 +40,18 @@
         <meta http-equiv="Content-Type" content="javascript; charset=UTF-8">
         <meta name = "viewport" content = "user-scalable=no, width=device-width">          
         <title><bean:message key="edit" /></title>
-        <link rel=StyleSheet href="layout.css" type="text/css" media=screen>
-        <script type="text/javascript" src="tableScript.js"></script>
-        <script type="text/javascript" src="a.js"></script>
+        <link rel=StyleSheet href="../layout.css" type="text/css" media=screen>
+        <script type="text/javascript" src="../tableScript.js"></script>
+        <script type="text/javascript" src="../a.js"></script>
     </head>
     <body>
         <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
         <div class="logo">
             <center>
-            <img src="images/logo.gif" alt="Openbravo" class="logo"/>
+            <img src="../images/logo.gif" alt="Openbravo" class="logo"/>
             <br>
             </center>
-            <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>" ><img alt="back" src="images/back.png" class="back">../<%=placeName%>/Adding Products</a><br>
+            <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>&floorId=<%=request.getSession().getAttribute("floorId")%>" ><img alt="back" src="../images/back.png" class="back">../<%=placeName%>/Adding Products</a><br>
         </div>
         <div class="pad">
             <center>
@@ -78,7 +78,7 @@
                     <% boolean rowodd = false; %>
                     <c:forEach var="category" items="${subcategories}" varStatus="nr">
                         <% rowodd = !rowodd; %>
-                        <tr>
+                        <tr class="<%= rowodd ? "odd" : "even" %>">
                             <td class="category" colspan="4" onclick="retrieveURLforCategories('productAjaxAction.do?categoryId=${category.id}&mode=1', '${category.id}');update();">${category.name}</td>
                         </tr>
                         <tr><td colspan="4"><div id="${category.id}"></div></td>

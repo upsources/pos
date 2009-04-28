@@ -30,5 +30,6 @@ function saveFloorId(id){
 }
 
 function getLocation(place){
-   window.location = 'showPlace.do?id='+ place + '&floorId=' +floorId;
+   window.location = 'sec/showPlace.do?id='+ place + '&floorId=' +floorId;
 }
+
