@@ -306,7 +306,7 @@
     <name>Parse MaterialMgmtStorageDetail</name>
     <type>getXMLData</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <copies>1</copies>
          <partitioning>
            <method>none</method>

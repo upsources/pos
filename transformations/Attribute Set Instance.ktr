@@ -92,7 +92,7 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>URL</from><to>Parse XML AttributeSetInstance</to><enabled>Y</enabled> </hop>  <hop> <from>Parse XML AttributeSetInstance</from><to>Inser&#47;Update ATTRIBUTESETINSTANCE</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>URL</from><to>Parse XML AttributeSetInstance</to><enabled>Y</enabled> </hop>  <hop> <from>Parse XML AttributeSetInstance</from><to>Inser&#47;Update ATTRIBUTESETINSTANCE</to><enabled>Y</enabled> </hop>  <hop> <from>Generate Rows</from><to>Default record</to><enabled>Y</enabled> </hop>  <hop> <from>Inser&#47;Update ATTRIBUTESETINSTANCE</from><to>Generate Rows</to><enabled>Y</enabled> </hop>  </order>
   <step>
     <name>Inser&#47;Update ATTRIBUTESETINSTANCE</name>
     <type>InsertUpdate</type>
@@ -245,6 +245,90 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>35</xloc>
       <yloc>81</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Default record</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>ATTRIBUTESETINSTANCE</table>
+      <key>
+        <name>DEF_ID</name>
+        <field>ID</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>ID</name>
+        <rename>DEF_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>ATTRIBUTESET_ID</name>
+        <rename>DEF_ATTSET_ID</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>769</xloc>
+      <yloc>82</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Generate Rows</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>DEF_ID</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>0</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>DEF_ATTSET_ID</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>0</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <limit>1</limit>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>632</xloc>
+      <yloc>82</yloc>
       <draw>Y</draw>
       </GUI>
     </step>

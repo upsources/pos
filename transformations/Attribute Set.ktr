@@ -90,7 +90,7 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>Parse XML AttributeSet</from><to>Insert&#47;Update ATTRIBUTESET</to><enabled>Y</enabled> </hop>  <hop> <from>URL</from><to>Parse XML AttributeSet</to><enabled>Y</enabled> </hop>  </order>
+  <hop> <from>Parse XML AttributeSet</from><to>Insert&#47;Update ATTRIBUTESET</to><enabled>Y</enabled> </hop>  <hop> <from>URL</from><to>Parse XML AttributeSet</to><enabled>Y</enabled> </hop>  <hop> <from>Insert&#47;Update ATTRIBUTESET</from><to>Generate Rows</to><enabled>Y</enabled> </hop>  <hop> <from>Generate Rows</from><to>Default record</to><enabled>Y</enabled> </hop>  </order>
   <step>
     <name>Insert&#47;Update ATTRIBUTESET</name>
     <type>InsertUpdate</type>
@@ -126,8 +126,8 @@
     </lookup>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>484</xloc>
-      <yloc>106</yloc>
+      <xloc>505</xloc>
+      <yloc>97</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -198,8 +198,8 @@
     <prunePath/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>241</xloc>
-      <yloc>104</yloc>
+      <xloc>262</xloc>
+      <yloc>95</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -222,8 +222,92 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>26</xloc>
-      <yloc>106</yloc>
+      <xloc>47</xloc>
+      <yloc>97</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Default record</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>openbravoposDB</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>ATTRIBUTESET</table>
+      <key>
+        <name>DEF_ID</name>
+        <field>ID</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>ID</name>
+        <rename>DEF_ID</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>NAME</name>
+        <rename>DEF_NAME</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>809</xloc>
+      <yloc>98</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Generate Rows</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>DEF_ID</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>0</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>DEF_NAME</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>STANDARD</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <limit>1</limit>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>672</xloc>
+      <yloc>98</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
