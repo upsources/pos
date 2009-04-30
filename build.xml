@@ -481,8 +481,8 @@
     <!-- I N S T A L L E R S                                               -->
     <!-- ================================================================= -->
 
-    <target name="installer" depends="installer.pos,installer.pda" 
-			description="Generate installers of POS and PDA Module for all predefined platforms">	
+    <target name="installer" depends="installer.pos" 
+			description="Generate installers of POS for all predefined platforms">	
     </target>
 
     <!-- ================================================================= -->
@@ -536,63 +536,18 @@
     	</exec> 
     </target>
 
+   
     <!-- ================================================================= -->
-    <!-- I N S T A L L E R S   P D A                                       -->
+    <!-- J W S                                     			   -->
     <!-- ================================================================= -->
 
-    <target name="installer.pda" depends="installer.pda.linux, installer.pda.linux-x64, installer.pda.linux-ia64, installer.pda.windows, installer.pda.osx, 						installer.pda.solaris-intel" description="Generate installers for all predefined platforms">		
-    </target>
-
-    <target name="installer.pda.linux" depends="init.installer.pda, war" description="Generate an installer for Linux">
-        <exec executable="${bitrock}/bin/builder" failonerror="true">
-	    <arg value="build"/>
-	    <arg value="${basedir}/installer/installer_pda.xml" />
-	    <arg value="linux" /> 
-    	</exec>
-    </target>
-    <target name="installer.pda.linux-x64" depends="init.installer.pda, war" description="Generate an installer for Linux x64">
-	<exec executable="${bitrock}/bin/builder" failonerror="true">
-	    <arg value="build"/>
-	    <arg value="${basedir}/installer/installer_pda.xml" />
-	    <arg value="linux-x64" /> 
-    	</exec> 
-    </target>
-   <target name="installer.pda.linux-ia64" depends="init.installer.pda, war" description="Generate an installer for Linux ia64">
-	<exec executable="${bitrock}/bin/builder" failonerror="true">
-	    <arg value="build"/>
-	    <arg value="${basedir}/installer/installer_pda.xml" />
-	    <arg value="linux-ia64" /> 
-    	</exec> 
-    </target>
-    <target name="installer.pda.windows" depends="init.installer.pda, war" description="Generate an installer for Windows">
-	<exec executable="${bitrock}/bin/builder" failonerror="true">
-	    <arg value="build"/>
-	    <arg value="${basedir}/installer/installer_pda.xml" />
-	    <arg value="windows" /> 
-    	</exec> 
-    </target>
-   <target name="installer.pda.osx" depends="init.installer.pda, war" description="Generate an installer for OSX">
-	<exec executable="${bitrock}/bin/builder" failonerror="true">
-	    <arg value="build"/>
-	    <arg value="${basedir}/installer/installer_pda.xml" />
-	    <arg value="osx" /> 
-    	</exec> 
-    </target>
-   <target name="installer.pda.solaris-intel" depends="init.installer.pda, war" description="Generate an installer for Solaris-Intel">
-	<exec executable="${bitrock}/bin/builder" failonerror="true">
-	    <arg value="build"/>
-	    <arg value="${basedir}/installer/installer_pda.xml" />
-	    <arg value="solaris-intel" /> 
-    	</exec> 
-   </target>
-    
    <target name="jws" depends="copy-libraries-up, sign-jars"/>	
 
    <target name="keystore">
         <property name="jnlp.signjar.keystore" value="keystore"/>
         <property name="jnlp.signjar.storepass" value="changeit"/>
         <property name="jnlp.signjar.keypass" value="changeit"/>
-        <property name="jnlp.signjar.alias" value="key"/><delete dir="lib"/>
+        <property name="jnlp.signjar.alias" value="key"/>
    </target>
 
    <target name="init-keystore" depends="keystore">
@@ -601,7 +556,7 @@
   		<dname>
     			<param name="CN" value="Openbravo POS Network"/>
     			<param name="OU" value="Openbravo POS Network"/>
-    			<param name="O"  value="Openbravo S.L."/>
+    			<param name="O"  value="Openbravo, S.L."/>
     			<param name="C"  value="ES"/>
   		</dname>
 	</genkey>
