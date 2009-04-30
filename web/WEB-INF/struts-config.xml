@@ -54,7 +54,7 @@
             <forward name="success" path="/jsp/showPlace.jsp" />
             <forward name="editing" path="/jsp/editPlace.jsp" />
             <forward name="update" path="/jsp/placeAjax.jsp" />
-            
+
         </action>
         <action input="/login.jsp" name="login" path="/login" type="com.openbravo.pos.pda.struts.actions.LoginAction" scope="request">
             <forward name="success" path="/showFloors.do" />

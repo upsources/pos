@@ -24,6 +24,7 @@ import com.openbravo.pos.pda.struts.forms.FloorForm;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
     private final static String SUCCESS = "success";
     private final static String EDITING = "editing";
     private final static String UPDATE = "update";
-    private final static String REFRESH = "refresh";
 
     /**
      * This is the action called from the Struts framework.
@@ -80,7 +80,7 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 array = floorForm.getParameters();
                 if (array != null) {
                     for (int i = 0; i < array.length; i++) {
-                        if (linesList.get(Integer.valueOf(array[i])).getMultiply() > 0) {
+                        if (linesList.get(Integer.valueOf(array[i])).getMultiply() > 1) {
                             linesList.get(Integer.valueOf(array[i])).setMultiply(linesList.get(Integer.valueOf(array[i])).getMultiply() - 1);
                         }
 
@@ -105,8 +105,16 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 ticket = manager.findTicket(place);
                 linesList = ticket.getM_aLines();
                 array = floorForm.getParameters();
-                if (array != null) {
-                    linesList.remove(Integer.parseInt(array[0]));
+                int var = Integer.parseInt(array[0]);
+                linesList.remove(var);
+                if(linesList.size() > var && manager.findProductById(linesList.get(var).getProductid()).isCom()) {
+                    linesList.remove(var);
+                    while(linesList.size() > var && manager.findProductById(linesList.get(var).getProductid()).isCom()){
+                       linesList.remove(var);
+                       if(linesList.size() == var) {
+                            break;
+                       }
+                    }
                 }
                 manager.updateLineFromTicket(place, ticket);
                 for (Object line : linesList) {

@@ -24,34 +24,46 @@ var category
 var notification;
 var mem = new Array;
 var count = 0;
+var first = 1;
 
   function ajaxCall(mode, aplace, index){
        indexGlobal = index;
        var url = 'showPlace.do?id=';
        var params;
+       var flag = true;
+       place = aplace;
        switch(mode) {
         //add
         case 3: params = aplace + '&mode=3&parameters='+index;
                 break;
-        //remove
-        case 1: if(document.getElementsByTagName('table')[0].getElementsByTagName('tr')[parseInt(index)+1].getElementsByTagName('td')[2].getElementsByTagName('input')[0].value == 0){
+         //remove
+        case 1: if(document.getElementsByTagName('table')[0].getElementsByTagName('tr')[parseInt(index)+1].getElementsByTagName('td')[2].getElementsByTagName('input')[0].value == 1){
                     params = aplace + '&mode=4&parameters='+index;
-                    window.location = url + params
+                    flag = false;
+                    var string = window.location.toString();
+                    if(string.indexOf(params) != -1){
+                        window.location.reload(true);
+                    } else {
+                        window.location = url + params;
+                    }                        
                 } else {
                     params = aplace + '&mode=1&parameters='+index;
                     break;
                 }
        }
-      if (window.XMLHttpRequest) { // Non-IE browsers
-        req = new XMLHttpRequest();
-        req.onreadystatechange = startWorking;
-        try {
-            req.open("GET", url + params, true); //was get
-        } catch (e) {
-            alert("Problem Communicating with Server\n"+e);
-        }
-        req.send(null);
-        }
+       
+            if (window.XMLHttpRequest) { // Non-IE browsers
+                req = new XMLHttpRequest();
+                if(flag) {
+                    req.onreadystatechange = startWorking;
+                }
+                try {
+                    req.open("GET", url + params, true); //was get
+                } catch (e) {
+                    alert("Problem Communicating with Server\n"+e);
+                }
+                req.send(null);
+                }          
   }
 
   function startWorking(){     
@@ -203,13 +215,6 @@ function updatePlace(newTextElements, place, place3){
       return returnElements;
  }
  
- /*
-  * Replace html elements in the existing (ie viewable document)
-  * with new elements (from the ajax requested document)
-  * WHERE they have the same name AND are  elements
-  * @param newTextElements (output of splitTextIntoSpan)
-  *                                     in the format id=name>texttoupdate
-  */
  function replaceExistingWithNewHtml(newTextElements, place){
         //loop through newTextElements
         for ( var i=newTextElements.length-1; i>=0; --i ){
@@ -238,22 +243,6 @@ function updatePlace(newTextElements, place, place3){
         }
  }
 
-// function ajaxAddProduct(plac, index, not, cat){
-//      var url = 'addProduct.do?place=' + plac +'&cat=' + cat + '&parameters=' + index;
-//      indexGlobal = index;
-//      if (window.XMLHttpRequest) { // Non-IE browsers
-//        req = new XMLHttpRequest();
-//        req.onreadystatechange = startWorkingAuxiliars;
-//        try {
-//            req.open("GET", url, true); //was get
-//        } catch (e) {
-//            alert("Problem Communicating with Server\n"+e);
-//        }
-//        req.send(null);
-//        }
-//
-//        showNotifications(index, not);
-//  }
 var mode;
  function ajaxAddProduct(plac, index, not, productId, mod){
       var url = 'addProduct.do?place=' + plac +'&productId=' + productId ;
@@ -306,30 +295,6 @@ var mode;
 function confirmDeleting(floor, place) {
     if(confirm('Are you sure you want to delete the current receipt?'))
         window.location = '../showFloors.do?floorId=' + floor +'&place=' + place;
-}
-
-function refreshListDelete(plac, line) {
- //   ajaxCall(1, plac, (line-1).toString());
-// count = 0;
-// var licz = 0;
-//    if(unit <= 1){
-//        rows = document.getElementById('table').getElementsByTagName('tr');
-//        document.getElementById('table').deleteRow(line);
-//        mem[line] = 1;
-//    }
-//    alert(rows.length);
-//    for(i=0; i < rows.length ; i++){
-//        if(mem[i] == 1){
-//            alert('jest' + count);
-//            count++;
-//        }
-//        licz++;
-//    }
-//    alert(line-count + ' ' + rows[line].getElementsByTagName('td')[0].value + ' ' +licz);
-//   // ajaxCall(1, plac, (line-count).toString());
-
-    window.location = 'showPlace.do?id='+plac+'&mode=1&parameters='+line;
-    //window.location = 'showPlace.do?id='+plac+'&mode=0';
 }
 
 function refreshListIncementing(plac, line) {
