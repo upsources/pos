@@ -57,6 +57,7 @@
         </center>
         <a href='../showFloors.do?floorId=${floorId}'><img alt="back" src="../images/back.png" class="back"><%=floorName%> / ${placeName}</a><br>
         </div>
+        
         <div>
         <input name="place" value="Add" type="submit" onclick="window.location='showProducts.do?place=${place}&floorId=${floorId}'" style="width:70px;margin-bottom:15px;margin-left:70%;" class="floor"/>
         <br>

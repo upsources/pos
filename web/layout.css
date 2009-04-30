@@ -55,11 +55,14 @@
   }
 
   img.back {
-      height:20px;
+      height:40px;
+      width:40px;
       padding-top:3px;
       padding-left:20px;
       padding-right:10px;
       border:none;
+      vertical-align:middle;
+      
   }
 
 a {

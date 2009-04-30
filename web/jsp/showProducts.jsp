@@ -53,6 +53,7 @@
             </center>
             <a href="showPlace.do?id=<%=request.getSession().getAttribute("place")%>&floorId=<%=request.getSession().getAttribute("floorId")%>" ><img alt="back" src="../images/back.png" class="back">../<%=placeName%>/Adding Products</a><br>
         </div>
+        <br>
         <div class="pad">
             <center>
         <form action="#" method="get" >
