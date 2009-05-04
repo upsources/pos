@@ -204,13 +204,13 @@ public class PaymentGatewayPGNET implements PaymentGateway {
             c = "DISC";
         } else if (sCardNumber.startsWith("5")) {
             c = "MAST";
-        } else if (sCardNumber.startsWith("3")) {
-            c = "DINE";
         } else if (sCardNumber.startsWith("34") || sCardNumber.startsWith("37")) {
             c = "AMER";
         } else if (sCardNumber.startsWith("3528") || sCardNumber.startsWith("3589")) {
             c = "JCB";
-        }
+        } else if (sCardNumber.startsWith("3")) {
+            c = "DINE";
+        }  
         return c;
     }
 
