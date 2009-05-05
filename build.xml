@@ -363,6 +363,7 @@
                 <include name="**/*.*"/>
             </fileset>
         </copy>
+	<mkdir dir="${basedir}/build/zip/logs" />
         <copy file="${dest.war}/${name}_${version}_pda.war" todir="${basedir}/build/zip/webapps" />
         <copy file="${basedir}/installer/pda/start.sh" todir="${basedir}/build/zip" />
         <copy file="${basedir}/installer/pda/start.bat" todir="${basedir}/build/zip" />
