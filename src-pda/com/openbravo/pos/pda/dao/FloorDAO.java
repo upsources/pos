@@ -38,7 +38,7 @@ public class FloorDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Floor> vos = null;
-        String sqlStr = "select * from FLOORS";
+        String sqlStr = "select * from FLOORS order by NAME";
 
         try {
             //get connection
@@ -74,7 +74,7 @@ public class FloorDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Floor vo = null;
-        String sqlStr = "select * from FLOORS where ID = ?";
+        String sqlStr = "select * from FLOORS where ID = ? order by NAME";
 
         try {
             //get connection
