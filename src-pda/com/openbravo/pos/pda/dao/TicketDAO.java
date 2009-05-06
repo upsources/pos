@@ -96,7 +96,7 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sqlStr = "UPDATE SHAREDTICKETS SET SHAREDTICKETS.CONTENT = ? WHERE SHAREDTICKETS.ID = ?";
+        String sqlStr = "UPDATE SHAREDTICKETS SET CONTENT = ? WHERE ID = ?";
         try {
             //get connection
             con = getConnection();

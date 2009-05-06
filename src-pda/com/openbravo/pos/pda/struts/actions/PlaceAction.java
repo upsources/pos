@@ -24,7 +24,6 @@ import com.openbravo.pos.pda.struts.forms.FloorForm;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
-import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
