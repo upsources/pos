@@ -50,6 +50,7 @@
             <text align ="left" length="32">Payments:</text>
             <text align ="right" length="10">${payments.printPayments()}</text>
         </line>
+        <line></line>
         <line size="1">
             <text align ="left" length="32" bold="true">Total</text>
             <text align ="right" length="10" bold="true">${payments.printPaymentsTotal()}</text>
@@ -77,6 +78,7 @@
             <text align ="left" length="32">Receipts:</text>
             <text align ="right" length="10">${payments.printSales()}</text>
         </line>
+        <line></line>
         <line size="1">
             <text align ="left" length="32" bold="true">Subtotal</text>
             <text align ="right" length="10" bold="true">${payments.printSalesBase()}</text>
