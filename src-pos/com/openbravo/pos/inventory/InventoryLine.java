@@ -21,6 +21,7 @@ package com.openbravo.pos.inventory;
 
 import com.openbravo.format.Formats;
 import com.openbravo.pos.ticket.ProductInfoExt;
+import com.openbravo.pos.util.StringUtils;
 
 /**
  *
@@ -112,7 +113,7 @@ public class InventoryLine {
     }
     
     public String printName() {
-        return m_sProdName;
+        return StringUtils.encodeXML(m_sProdName);
     }
     
     public String printPrice() {
