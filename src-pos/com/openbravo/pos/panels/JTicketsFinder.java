@@ -44,6 +44,7 @@ import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 
 /**
@@ -125,6 +126,9 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
     }
     
     private void initCombos() {
+        String[] values = new String[] {AppLocal.getIntString("label.sales"),
+                    AppLocal.getIntString("label.refunds"), AppLocal.getIntString("label.all")};
+        jComboBoxTicket.setModel(new DefaultComboBoxModel(values));
         
         jcboMoney.setModel(new ListQBFModelNumber());
         
@@ -151,8 +155,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jtxtTicketID.reset();
         jtxtTicketID.activate();
         
-        jCheckBoxSales.setSelected(false);
-        jCheckBoxRefunds.setSelected(false); 
+        jComboBoxTicket.setSelectedIndex(0);
         
         jcboUser.setSelectedItem(null);
         
@@ -184,13 +187,13 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         }
         
         // Sale and refund checkbox        
-        if (jCheckBoxSales.isSelected() && jCheckBoxRefunds.isSelected() || !jCheckBoxSales.isSelected() && !jCheckBoxRefunds.isSelected()) {
-            afilter[2] = QBFCompareEnum.COMP_NONE;
-            afilter[3] = null;
-        } else if (jCheckBoxSales.isSelected()) {
+        if (jComboBoxTicket.getSelectedIndex() == 2) {
+            afilter[2] = QBFCompareEnum.COMP_DISTINCT;
+            afilter[3] = 2;
+        } else if (jComboBoxTicket.getSelectedIndex() == 0) {
             afilter[2] = QBFCompareEnum.COMP_EQUALS;
             afilter[3] = 0;
-        } else if (jCheckBoxRefunds.isSelected()) {
+        } else if (jComboBoxTicket.getSelectedIndex() == 1) {
             afilter[2] = QBFCompareEnum.COMP_EQUALS;
             afilter[3] = 1;
         }
@@ -273,8 +276,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jCheckBoxSales = new javax.swing.JCheckBox();
-        jCheckBoxRefunds = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jtxtMoney = new com.openbravo.editor.JEditorCurrency();
@@ -290,6 +291,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         btnDateEnd = new javax.swing.JButton();
         jtxtCustomer = new javax.swing.JTextField();
         btnCustomer = new javax.swing.JButton();
+        jComboBoxTicket = new javax.swing.JComboBox();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -313,10 +315,6 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
         jPanel7.setPreferredSize(new java.awt.Dimension(0, 210));
 
         jLabel1.setText(AppLocal.getIntString("label.ticketid")); // NOI18N
-
-        jCheckBoxSales.setText(AppLocal.getIntString("label.sales")); // NOI18N
-
-        jCheckBoxRefunds.setText(AppLocal.getIntString("label.refunds")); // NOI18N
 
         jLabel6.setText(AppLocal.getIntString("label.user")); // NOI18N
 
@@ -399,16 +397,15 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
                         .addComponent(jTxtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jTxtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxSales)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxRefunds)))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
+                            .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
+                            .addComponent(jTxtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(59, 59, 59))
         );
         jPanel7Layout.setVerticalGroup(
@@ -418,8 +415,7 @@ public class JTicketsFinder extends javax.swing.JDialog implements EditorCreator
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1)
                     .addComponent(jtxtTicketID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBoxSales)
-                    .addComponent(jCheckBoxRefunds))
+                    .addComponent(jComboBoxTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel3)
@@ -617,8 +613,7 @@ private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JButton btnDateStart;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBoxRefunds;
-    private javax.swing.JCheckBox jCheckBoxSales;
+    private javax.swing.JComboBox jComboBoxTicket;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
