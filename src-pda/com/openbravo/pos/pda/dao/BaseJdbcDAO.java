@@ -43,7 +43,6 @@ public abstract class BaseJdbcDAO {
     protected Connection getConnection() throws Exception {
         try {
             Class.forName(properties.getDriverName());
-            boolean ju = isPostgre();
             return DriverManager.getConnection(properties.getUrl(), properties.getDBUser(), properties.getDBPassword());
         } catch (SQLException sqlex) {
             sqlex.printStackTrace();
