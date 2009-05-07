@@ -25,7 +25,7 @@ import java.io.Serializable;
  *
  * @author jaroslawwozniak
  */
-public class TaxCategoryInfo implements Serializable{
+public class TaxCategoryInfo implements Serializable {
 
     private static final long serialVersionUID = 8959679342805L;
     private String m_sID;
@@ -57,8 +57,7 @@ public class TaxCategoryInfo implements Serializable{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return m_sName;
     }
-
 }

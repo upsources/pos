@@ -39,22 +39,22 @@ public class LoginDAO extends BaseJdbcDAO {
         UserInfo user = null;
         String sqlStr = "SELECT NAME, APPPASSWORD FROM PEOPLE WHERE NAME = ? AND APPPASSWORD ";
         String end = "";
-        if(password.equals("")){
+        if (password.equals("")) {
             end = "IS NULL";
         } else {
             end = " = ?";
         }
-         
+
         try {
             //get connection
             con = getConnection();
             //prepare statement
             ps = con.prepareStatement(sqlStr + end);
             ps.setString(1, login);
-            if(!password.equals("")){
+            if (!password.equals("")) {
                 ps.setString(2, StringUtils.hashString(password));
             }
-            
+
             //execute
             rs = ps.executeQuery();
             //transform to VO
@@ -84,8 +84,8 @@ public class LoginDAO extends BaseJdbcDAO {
         UserInfo user = new UserInfo();
         rs.next();
         user.setLogin(rs.getString("name"));
-        if(rs.getString("apppassword") == null){
-             user.setPassword("");
+        if (rs.getString("apppassword") == null) {
+            user.setPassword("");
         } else {
             user.setPassword(rs.getString("apppassword"));
         }

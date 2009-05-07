@@ -106,13 +106,13 @@ public class PlaceAction extends org.apache.struts.action.Action {
                 array = floorForm.getParameters();
                 int var = Integer.parseInt(array[0]);
                 linesList.remove(var);
-                if(linesList.size() > var && manager.findProductById(linesList.get(var).getProductid()).isCom()) {
+                if (linesList.size() > var && manager.findProductById(linesList.get(var).getProductid()).isCom()) {
                     linesList.remove(var);
-                    while(linesList.size() > var && manager.findProductById(linesList.get(var).getProductid()).isCom()){
-                       linesList.remove(var);
-                       if(linesList.size() == var) {
+                    while (linesList.size() > var && manager.findProductById(linesList.get(var).getProductid()).isCom()) {
+                        linesList.remove(var);
+                        if (linesList.size() == var) {
                             break;
-                       }
+                        }
                     }
                 }
                 manager.updateLineFromTicket(place, ticket);
@@ -187,7 +187,6 @@ public class PlaceAction extends org.apache.struts.action.Action {
 
         request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
         request.setAttribute("place", place);
-
         request.setAttribute("placeName", manager.findPlaceNameById(place));
         request.setAttribute("floorId", floorId);
         request.setAttribute("lines", linesList);

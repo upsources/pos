@@ -20,7 +20,6 @@
 package com.openbravo.pos.pda.struts.actions;
 
 import com.openbravo.pos.pda.bo.RestaurantManager;
-import com.openbravo.pos.pda.struts.forms.AddedProductForm;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +58,7 @@ public class ProductAjaxAction extends org.apache.struts.action.Action {
         List products = new ArrayList<ProductInfoExt>();
         products = manager.findProductsByCategory((String) inputFormPlace.get("categoryId"));
         request.getSession().setAttribute("products", products);
-        if(inputFormPlace.get("mode").equals("1")){
+        if (inputFormPlace.get("mode").equals("1")) {
             request.setAttribute("subcategories", manager.findAllSubcategories(inputFormPlace.getString("categoryId")));
             return mapping.findForward(NEXTLEVEL);
         }

@@ -44,7 +44,7 @@ public class ProductDAO extends BaseJdbcDAO {
             con = getConnection();
             //prepare statement
             ps = con.prepareStatement(sqlStr);
-            ps.setString(1,id);
+            ps.setString(1, id);
             //execute
             rs = ps.executeQuery();
             //transform to VO
@@ -113,9 +113,9 @@ public class ProductDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<ProductInfo> vos = null;
-        String sqlStr = isPostgre() ? "SELECT * FROM PRODUCTS P, PRODUCTS_CAT PCAT WHERE P.CATEGORY= ? AND P.ID = PCAT.PRODUCT"+
-               " AND P.ISCOM = FALSE ORDER BY PCAT.CATORDER, P.NAME" : "SELECT * FROM PRODUCTS P, PRODUCTS_CAT PCAT WHERE P.CATEGORY= ? AND P.ID = PCAT.PRODUCT"+
-               " AND P.ISCOM = 0 ORDER BY PCAT.CATORDER, P.NAME";
+        String sqlStr = isPostgre() ? "SELECT * FROM PRODUCTS P, PRODUCTS_CAT PCAT WHERE P.CATEGORY= ? AND P.ID = PCAT.PRODUCT" +
+                " AND P.ISCOM = FALSE ORDER BY PCAT.CATORDER, P.NAME" : "SELECT * FROM PRODUCTS P, PRODUCTS_CAT PCAT WHERE P.CATEGORY= ? AND P.ID = PCAT.PRODUCT" +
+                " AND P.ISCOM = 0 ORDER BY PCAT.CATORDER, P.NAME";
 
         try {
             //get connection

@@ -19,22 +19,11 @@
 
 var floorId;
 
-function getIndexBackByEditing(nr, place){
-    var value = parseFloat(document.getElementById('input'+nr).value);
-    if(isNaN(value)){
-        alert('Please enter a valid number!');
-    } else {
-        var score = 'id=' + place +'&mode=2&parameters=' + nr + '&parameters=' + value;
-        window.location ='showPlace.do?' + score;
-    }
-    
-}
-
 function saveFloorId(id){
     floorId = id;   
 }
 
 function getLocation(place){
-   window.location = 'sec/showPlace.do?id='+ place + '&floorId=' +floorId;
+    window.location = 'sec/showPlace.do?id='+ place + '&floorId=' +floorId;
 }
 

@@ -57,7 +57,6 @@ public class addProductAction extends org.apache.struts.action.Action {
 
         bo.addLineToTicket(place, productId);
 
-        List li = bo.findAuxiliars(productId);
         request.setAttribute("place", place);
         request.setAttribute("auxiliars", bo.findAuxiliars(productId));
 

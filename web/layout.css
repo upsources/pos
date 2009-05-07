@@ -19,8 +19,8 @@
     along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
  */
   /*
-  Document   : CSS layout for PDA module
-  Version    : Qtek 200, iPhone
+  Document   : CSS layout for PDA module for
+  Version    : iPhone, iPod Touch
   Created on : Nov 20, 2008, 10:31:08 AM
   Author     : jaroslawwozniak
   */
@@ -206,14 +206,7 @@ a:hover {
       background:#51990F;
       color:#fff;
   }
-/*
-  tr.odd:hover {
-      background:#b4f9a6;
-  }
-  tr.even:hover {
-      background:#b4f9a6;
-  }
-*/
+
   td+td+td {
       text-align:right;
   }

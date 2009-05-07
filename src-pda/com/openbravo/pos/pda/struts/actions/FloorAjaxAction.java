@@ -54,22 +54,12 @@ public class FloorAjaxAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-
-        /*     HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
-        ActionMessages errors = new ActionErrors();
-        ActionMessage msg = new ActionMessage("errors.nologon", "nouser");
-        errors.add(ActionMessages.GLOBAL_MESSAGE, msg);
-        saveErrors(request, errors);
-        return mapping.findForward(FAILURE);
-        } 
-         */
         DynaActionForm aform = (DynaActionForm) form;
         RestaurantManager manager = new RestaurantManager();
         List busyTables = new ArrayList<Floor>();
         List places = new ArrayList<Place>();
         String floorId = (String) aform.get("floorId");
-        if(((String)aform.get("floorId")).equals("")) {
+        if (((String) aform.get("floorId")).equals("")) {
             places = manager.findAllPlaces(manager.findTheFirstFloor());
             busyTables = manager.findAllBusyTable(floorId);
         } else {

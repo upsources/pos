@@ -114,7 +114,7 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
         }
     }
 
-    public void insertTicket(TicketInfo ticket){
+    public void insertTicket(TicketInfo ticket) {
 
         Connection con = null;
         PreparedStatement ps = null;
@@ -125,7 +125,7 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
             con = getConnection();
             //prepare statement
             ps = con.prepareStatement(sqlStr);
-            ps.setString(1,ticket.getM_sId());
+            ps.setString(1, ticket.getM_sId());
             ps.setString(2, ticket.getName());
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bytes);
@@ -157,7 +157,6 @@ public class TicketDAO extends BaseJdbcDAO implements Serializable {
         }
     }
 
-    
     @Override
     protected TicketInfo map2VO(ResultSet rs) throws SQLException {
         ObjectInputStream in = null;

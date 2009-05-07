@@ -69,12 +69,12 @@ public class ModifyProductAction extends org.apache.struts.action.Action {
                 linesList.get(Integer.valueOf(array[i]) - 0).setMultiply(linesList.get(Integer.valueOf(array[i]) - 0).getMultiply() + 1);    //strange
             }
         }
-         manager.updateLineFromTicket(floorForm.getId(), ticket);
+        manager.updateLineFromTicket(floorForm.getId(), ticket);
         for (Object line : linesList) {
             TicketLineInfo li = (TicketLineInfo) line;
             products.add(manager.findProductById(li.getProductid()));
         }
-       
+
 
         request.setAttribute("floorName", manager.findFloorById(manager.findPlaceById(place).getFloor()).getName());
         request.setAttribute("place", place);
@@ -84,7 +84,7 @@ public class ModifyProductAction extends org.apache.struts.action.Action {
         request.setAttribute("lines", linesList);
         request.setAttribute("products", products);
         request.setAttribute("total", manager.getTotalOfaTicket(place));
-        
+
         return mapping.findForward(SUCCESS);
     }
 }

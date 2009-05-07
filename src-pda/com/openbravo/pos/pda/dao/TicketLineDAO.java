@@ -19,10 +19,8 @@
 
 package com.openbravo.pos.pda.dao;
 
-
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

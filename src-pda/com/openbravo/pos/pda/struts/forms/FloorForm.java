@@ -92,8 +92,5 @@ public class FloorForm extends org.apache.struts.action.ActionForm {
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
         return null;
-    // TODO: add 'error.name.required' key to your resources
-
-
     }
 }

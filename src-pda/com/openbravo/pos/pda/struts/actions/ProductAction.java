@@ -54,15 +54,6 @@ public class ProductAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        /*  HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
-        ActionMessages errors = new ActionErrors();
-        ActionMessage msg = new ActionMessage("errors.nologon", "nouser");
-        errors.add(ActionMessages.GLOBAL_MESSAGE, msg);
-        saveErrors(request, errors);
-        return mapping.findForward(FAILURE);
-        }
-         * */
         DynaActionForm inputFormPlace = (DynaActionForm) form;
         RestaurantManager manager = new RestaurantManager();
         List<CategoryInfo> categories = new ArrayList<CategoryInfo>();
@@ -71,14 +62,14 @@ public class ProductAction extends org.apache.struts.action.Action {
         products = manager.findProductsByCategory(categories.get(0).getId());
         List subcategories = new ArrayList<CategoryInfo>();
         subcategories = manager.findAllSubcategories(categories.get(0).getId());
+
         request.setAttribute("products", products);
         request.getSession().setAttribute("place", (String) inputFormPlace.get("place"));
         request.setAttribute("placeName", manager.findPlaceNameById((String) inputFormPlace.get("place")));
         request.setAttribute("categories", categories);
         request.setAttribute("subcategories", subcategories);
-        request.getSession().setAttribute("floorId",  (String) inputFormPlace.get("floorId"));
+        request.getSession().setAttribute("floorId", (String) inputFormPlace.get("floorId"));
 
         return mapping.findForward(SUCCESS);
-
     }
 }

@@ -25,45 +25,50 @@ var notification;
 var mem = new Array;
 var count = 0;
 var first = 1;
+var params;
+var url = 'showPlace.do?id=';
+var flag;
 
   function ajaxCall(mode, aplace, index){
        indexGlobal = index;
-       var url = 'showPlace.do?id=';
-       var params;
-       var flag = true;
+       flag = true;
        place = aplace;
        switch(mode) {
         //add
         case 3: params = aplace + '&mode=3&parameters='+index;
                 break;
-         //remove
+        //remove
         case 1: if(document.getElementsByTagName('table')[0].getElementsByTagName('tr')[parseInt(index)+1].getElementsByTagName('td')[2].getElementsByTagName('input')[0].value == 1){
                     params = aplace + '&mode=4&parameters='+index;
                     flag = false;
-                    var string = window.location.toString();
-                    if(string.indexOf(params) != -1){
-                        window.location.reload(true);
-                    } else {
-                        window.location = url + params;
-                    }                        
+                    reloadTheWindowIfRequired();
                 } else {
                     params = aplace + '&mode=1&parameters='+index;
                     break;
                 }
        }
-       
-            if (window.XMLHttpRequest) { // Non-IE browsers
-                req = new XMLHttpRequest();
-                if(flag) {
-                    req.onreadystatechange = startWorking;
-                }
-                try {
-                    req.open("GET", url + params, true); //was get
-                } catch (e) {
-                    alert("Problem Communicating with Server\n"+e);
-                }
-                req.send(null);
-                }          
+
+        if (window.XMLHttpRequest) { // Non-IE browsers
+            req = new XMLHttpRequest();
+            if(flag) {
+            req.onreadystatechange = startWorking;
+            }
+            try {
+                req.open("GET", url + params, true); //was get
+            } catch (e) {
+            alert("Problem Communicating with Server\n"+e);
+            }
+        req.send(null);
+        }
+  }
+
+  function reloadTheWindowIfRequired(){
+        var string = window.location.toString();
+        if(string.indexOf(params) != -1){
+            window.location.reload(true);
+        } else {
+            window.location = url + params;
+        }
   }
 
   function startWorking(){     
@@ -76,7 +81,6 @@ var first = 1;
                 }
       }
   }
-
 
 function updatePlace(newTextElements, place, place3){
         
@@ -110,8 +114,6 @@ function updatePlace(newTextElements, place, place3){
 
  function retrieveURL(url, place2) {
 
-    //get the (form based) params to push up as part of the get request
-    //url=url+getFormAsString(nameOfFormToPost);
     place = place2;
     //Do the Ajax call
     if (window.XMLHttpRequest) { // Non-IE browsers
@@ -135,9 +137,7 @@ function updatePlace(newTextElements, place, place3){
   }
  
   function retrieveURLforCategories(url, place2) {
-    
-    //get the (form based) params to push up as part of the get request
-    //url=url+getFormAsString(nameOfFormToPost);
+
     if(wrapupCategories(place2) == 1){
         place = place2;
         //Do the Ajax call
@@ -152,8 +152,7 @@ function updatePlace(newTextElements, place, place3){
             req.send(null);
         }
     }
-     else {
-         
+     else {       
          text = new Array();
          text[0]='<span>';
          replaceExistingWithNewHtml(text, place2);
@@ -180,14 +179,11 @@ function updatePlace(newTextElements, place, place3){
    * Set as the callback method for when XmlHttpRequest State Changes 
    * used by retrieveUrl
   */
-  function processStateChange() {
-  //document.getElementById("jsLog").innerHTML += req.responseText;
-  
+  function processStateChange() {  
           if (req.readyState == 4) { // Complete
                 if (req.status == 200) { // OK response
                         //Split the text response into Span elements
-                        spanElements = splitTextIntoSpan(req.responseText);
-                        
+                        spanElements = splitTextIntoSpan(req.responseText);                        
                         //Use these span elements to update the page
                         replaceExistingWithNewHtml(spanElements, place);
                 } else {
@@ -208,8 +204,7 @@ function updatePlace(newTextElements, place, place3){
                 //if we find a match , take out everything before the span
                 if(aspanPos>0){
                         subString=returnElements[i].substring(aspanPos);
-                        returnElements[i]=subString;
-                
+                        returnElements[i]=subString;                
                 } 
         }
       return returnElements;
@@ -258,7 +253,6 @@ var mode;
         }
         req.send(null);
         }
-
         showNotifications(index, not);
   }
 
@@ -276,10 +270,7 @@ var mode;
   }
 
   function showNotifications(index, not) {
-      document.getElementById('notification').innerHTML = not + ' has been added to the receipt';
-     // alert(document.getElementsByTagName('table')[0].getElementsByTagName('tr')[index + 1].getElementsByTagName('td')[3].innerHTML+' co kets');
-    // row = document.getElementsByTagName('table')[0].getElementsByTagName('tr')[index + 1].getElementsByTagName('td')[2];
-    
+      document.getElementById('notification').innerHTML = not + ' has been added to the receipt';  
       if(row.value == null) {
            row.value = 1;
            row.innerHTML = 1;
@@ -299,5 +290,20 @@ function confirmDeleting(floor, place) {
 
 function refreshListIncementing(plac, line) {
     window.location = 'showPlace.do?id='+plac+'&mode=3&parameters='+line;
+}
+
+function getIndexBackByEditing(nr, place){
+    var value = parseFloat(document.getElementById('input'+nr).value);
+    if(isNaN(value)){
+        alert('Please enter a valid number!');
+        params = place + '&mode=0';
+        reloadTheWindowIfRequired();
+    } else if (value > 0){
+        var score = 'id=' + place +'&mode=2&parameters=' + nr + '&parameters=' + value;
+        window.location ='showPlace.do?' + score;
+    } else {
+        params = place + '&mode=4&parameters='+nr;
+        reloadTheWindowIfRequired();
+    }
 }
  

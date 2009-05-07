@@ -43,7 +43,7 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static byte [] hex2byte(String sinput) {
+    public static byte[] hex2byte(String sinput) {
         int length = sinput.length();
 
         if ((length & 0x01) != 0) {
@@ -79,5 +79,4 @@ public class StringUtils {
             }
         }
     }
-
 }

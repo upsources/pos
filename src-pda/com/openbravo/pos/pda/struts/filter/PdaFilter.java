@@ -1,7 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//   Openbravo POS is a point of sales application designed for touch screens.
+//   Copyright (C) 2007-2009 Openbravo, S.L.
+//   http://sourceforge.net/projects/openbravopos
+//
+//    This file is part of Openbravo POS.
+//
+//    Openbravo POS is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    Openbravo POS is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.pda.struts.filter;
 
@@ -22,7 +36,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author openbravo
+ * @author jaroslawwozniak
  */
 public class PdaFilter implements Filter {
 
@@ -35,59 +49,23 @@ public class PdaFilter implements Filter {
     private String loginForm;
 
     public PdaFilter() {
-    } 
+    }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-	throws IOException, ServletException {
-	if (debug) log("PdaFilter:DoBeforeProcessing");
+            throws IOException, ServletException {
+        if (debug) {
+            log("PdaFilter:DoBeforeProcessing");
+        }
 
-    loginForm = this.filterConfig.getInitParameter("login");
-	// Write code here to process the request and/or response before
-	// the rest of the filter chain is invoked.
-
-	// For example, a logging filter might log items on the request object,
-	// such as the parameters.
-	/*
-	for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    String values[] = request.getParameterValues(name);
-	    int n = values.length;
-	    StringBuffer buf = new StringBuffer();
-	    buf.append(name);
-	    buf.append("=");
-	    for(int i=0; i < n; i++) {
-	        buf.append(values[i]);
-	        if (i < n-1)
-	            buf.append(",");
-	    }
-	    log(buf.toString());
-	}
-	*/
-    } 
+        loginForm = this.filterConfig.getInitParameter("login");
+    }
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
-	throws IOException, ServletException {
-	if (debug) log("PdaFilter:DoAfterProcessing");
+            throws IOException, ServletException {
+        if (debug) {
+            log("PdaFilter:DoAfterProcessing");
+        }
 
-	// Write code here to process the request and/or response after
-	// the rest of the filter chain is invoked.
-	
-	// For example, a logging filter might log the attributes on the
-	// request object after the request has been processed. 
-	/*
-	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    Object value = request.getAttribute(name);
-	    log("attribute: " + name + "=" + value.toString());
-
-	}
-	*/
-
-	// For example, a filter might append something to the response.
-	/*
-	PrintWriter respOut = new PrintWriter(response.getWriter());
-	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-	*/
     }
 
     /**
@@ -100,53 +78,58 @@ public class PdaFilter implements Filter {
      * @exception ServletException if a servlet error occurs
      */
     public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain)
-	throws IOException, ServletException {
+            FilterChain chain)
+            throws IOException, ServletException {
 
-	if (debug) log("PdaFilter:doFilter()");
-
-	doBeforeProcessing(request, response);
-	
-	Throwable problem = null;
-	try {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = httpRequest.getSession(false);
-
-        if (session != null) {
-            UserInfo currentUser = (UserInfo) session.getAttribute("user");
-            if (currentUser == null) {
-                 filterConfig.getServletContext().getRequestDispatcher(loginForm).forward(httpRequest, httpResponse);
-            }
-        } else {
-             filterConfig.getServletContext().getRequestDispatcher(loginForm).forward(httpRequest, httpResponse);
+        if (debug) {
+            log("PdaFilter:doFilter()");
         }
-	    chain.doFilter(request, response);
-	}
-	catch(Throwable t) {
-	    // If an exception is thrown somewhere down the filter chain,
-	    // we still want to execute our after processing, and then
-	    // rethrow the problem after that.
-	    problem = t;
-	    t.printStackTrace();
-	}
 
-	doAfterProcessing(request, response);
+        doBeforeProcessing(request, response);
 
-	// If there was a problem, we want to rethrow it if it is
-	// a known type, otherwise log it.
-	if (problem != null) {
-	    if (problem instanceof ServletException) throw (ServletException)problem;
-	    if (problem instanceof IOException) throw (IOException)problem;
-	    sendProcessingError(problem, response);
-	}
+        Throwable problem = null;
+        try {
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            HttpSession session = httpRequest.getSession(false);
+
+            if (session != null) {
+                UserInfo currentUser = (UserInfo) session.getAttribute("user");
+                if (currentUser == null) {
+                    filterConfig.getServletContext().getRequestDispatcher(loginForm).forward(httpRequest, httpResponse);
+                }
+            } else {
+                filterConfig.getServletContext().getRequestDispatcher(loginForm).forward(httpRequest, httpResponse);
+            }
+            chain.doFilter(request, response);
+        } catch (Throwable t) {
+            // If an exception is thrown somewhere down the filter chain,
+            // we still want to execute our after processing, and then
+            // rethrow the problem after that.
+            problem = t;
+            t.printStackTrace();
+        }
+
+        doAfterProcessing(request, response);
+
+        // If there was a problem, we want to rethrow it if it is
+        // a known type, otherwise log it.
+        if (problem != null) {
+            if (problem instanceof ServletException) {
+                throw (ServletException) problem;
+            }
+            if (problem instanceof IOException) {
+                throw (IOException) problem;
+            }
+            sendProcessingError(problem, response);
+        }
     }
-    
+
     /**
      * Return the filter configuration object for this filter.
      */
     public FilterConfig getFilterConfig() {
-	return (this.filterConfig);
+        return (this.filterConfig);
     }
 
     /**
@@ -155,25 +138,25 @@ public class PdaFilter implements Filter {
      * @param filterConfig The filter configuration object
      */
     public void setFilterConfig(FilterConfig filterConfig) {
-	this.filterConfig = filterConfig;
+        this.filterConfig = filterConfig;
     }
 
     /**
      * Destroy method for this filter 
      */
-    public void destroy() { 
+    public void destroy() {
     }
 
     /**
      * Init method for this filter 
      */
-    public void init(FilterConfig filterConfig) { 
-	this.filterConfig = filterConfig;
-	if (filterConfig != null) {
-	    if (debug) { 
-		log("PdaFilter:Initializing filter");
-	    }
-	}
+    public void init(FilterConfig filterConfig) {
+        this.filterConfig = filterConfig;
+        if (filterConfig != null) {
+            if (debug) {
+                log("PdaFilter:Initializing filter");
+            }
+        }
     }
 
     /**
@@ -181,60 +164,60 @@ public class PdaFilter implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("PdaFilter()");
-	StringBuffer sb = new StringBuffer("PdaFilter(");
-	sb.append(filterConfig);
-	sb.append(")");
-	return (sb.toString());
+        if (filterConfig == null) {
+            return ("PdaFilter()");
+        }
+        StringBuffer sb = new StringBuffer("PdaFilter(");
+        sb.append(filterConfig);
+        sb.append(")");
+        return (sb.toString());
     }
 
     private void sendProcessingError(Throwable t, ServletResponse response) {
-	String stackTrace = getStackTrace(t); 
+        String stackTrace = getStackTrace(t);
 
-	if(stackTrace != null && !stackTrace.equals("")) {
-	    try {
-		response.setContentType("text/html");
-		PrintStream ps = new PrintStream(response.getOutputStream());
-		PrintWriter pw = new PrintWriter(ps); 
-		pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-		    
-		// PENDING! Localize this for next official release
-		pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n"); 
-		pw.print(stackTrace); 
-		pw.print("</pre></body>\n</html>"); //NOI18N
-		pw.close();
-		ps.close();
-		response.getOutputStream().close();
-	    }
-	    catch(Exception ex) {}
-	}
-	else {
-	    try {
-		PrintStream ps = new PrintStream(response.getOutputStream());
-		t.printStackTrace(ps);
-		ps.close();
-		response.getOutputStream().close();
-	    }
-	    catch(Exception ex) {}
-	}
+        if (stackTrace != null && !stackTrace.equals("")) {
+            try {
+                response.setContentType("text/html");
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                PrintWriter pw = new PrintWriter(ps);
+                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+
+                // PENDING! Localize this for next official release
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
+                pw.print("</pre></body>\n</html>"); //NOI18N
+                pw.close();
+                ps.close();
+                response.getOutputStream().close();
+            } catch (Exception ex) {
+            }
+        } else {
+            try {
+                PrintStream ps = new PrintStream(response.getOutputStream());
+                t.printStackTrace(ps);
+                ps.close();
+                response.getOutputStream().close();
+            } catch (Exception ex) {
+            }
+        }
     }
 
     public static String getStackTrace(Throwable t) {
-	String stackTrace = null;
-	try {
-	    StringWriter sw = new StringWriter();
-	    PrintWriter pw = new PrintWriter(sw);
-	    t.printStackTrace(pw);
-	    pw.close();
-	    sw.close();
-	    stackTrace = sw.getBuffer().toString();
-	}
-	catch(Exception ex) {}
-	return stackTrace;
+        String stackTrace = null;
+        try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            pw.close();
+            sw.close();
+            stackTrace = sw.getBuffer().toString();
+        } catch (Exception ex) {
+        }
+        return stackTrace;
     }
 
     public void log(String msg) {
-	filterConfig.getServletContext().log(msg); 
+        filterConfig.getServletContext().log(msg);
     }
-
 }

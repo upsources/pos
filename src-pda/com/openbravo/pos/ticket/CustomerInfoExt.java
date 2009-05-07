@@ -26,7 +26,8 @@ import java.util.Date;
  * @author jaroslawwozniak
  */
 public class CustomerInfoExt {
-     protected String taxcustomerid;
+
+    protected String taxcustomerid;
     protected String notes;
     protected boolean visible;
     protected String card;
@@ -87,10 +88,10 @@ public class CustomerInfoExt {
         return maxdebt;
     }
 
-  /*  public String printMaxDebt() {
-        return Formats.CURRENCY.formatValue(RoundUtils.getValue(getMaxdebt()));
+    /*  public String printMaxDebt() {
+    return Formats.CURRENCY.formatValue(RoundUtils.getValue(getMaxdebt()));
     }
-  */
+     */
     public void setMaxdebt(Double maxdebt) {
         this.maxdebt = maxdebt;
     }
@@ -107,10 +108,10 @@ public class CustomerInfoExt {
         return curdebt;
     }
 
-  /*  public String printCurDebt() {
-        return Formats.CURRENCY.formatValue(RoundUtils.getValue(getCurdebt()));
+    /*  public String printCurDebt() {
+    return Formats.CURRENCY.formatValue(RoundUtils.getValue(getCurdebt()));
     }
-    */
+     */
     public void setCurdebt(Double curdebt) {
         this.curdebt = curdebt;
     }

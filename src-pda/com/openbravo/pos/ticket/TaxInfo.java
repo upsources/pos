@@ -101,7 +101,7 @@ public class TaxInfo implements Serializable {
         this.taxcustcategoryid = taxcustcategoryid;
     }
 
-     public Integer getApplicationOrder() {
+    public Integer getApplicationOrder() {
         return order == null ? Integer.MAX_VALUE : order.intValue();
     }
 }

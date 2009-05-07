@@ -19,7 +19,6 @@
 
 package com.openbravo.pos.ticket;
 
-import com.openbravo.pos.pda.util.FormatUtils;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Properties;
@@ -147,6 +146,4 @@ public class ProductInfoExt implements Serializable {
     public void setTaxcategoryid(String taxcategoryid) {
         this.taxcategoryid = taxcategoryid;
     }
-
-  
 }

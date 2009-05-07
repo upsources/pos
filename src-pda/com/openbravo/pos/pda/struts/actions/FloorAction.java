@@ -23,11 +23,9 @@ import com.openbravo.pos.pda.bo.RestaurantManager;
 import com.openbravo.pos.ticket.Floor;
 import com.openbravo.pos.ticket.Place;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionForward;
@@ -57,15 +55,6 @@ public class FloorAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        /*HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
-        ActionMessages errors = new ActionErrors();
-        ActionMessage msg = new ActionMessage("errors.nologon", "nouser");
-        errors.add(ActionMessages.GLOBAL_MESSAGE, msg);
-        saveErrors(request, errors);
-        return mapping.findForward(FAILURE);
-        }
-         */
         DynaActionForm inputFormPlace = (DynaActionForm) form;
         RestaurantManager manager = new RestaurantManager();
         //gets floors

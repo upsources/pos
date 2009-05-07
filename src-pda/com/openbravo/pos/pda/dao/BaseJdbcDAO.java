@@ -35,7 +35,7 @@ import java.util.List;
 public abstract class BaseJdbcDAO {
 
     private PropertyUtils properties;
-    
+
     public BaseJdbcDAO() {
         properties = new PropertyUtils();
     }
@@ -65,7 +65,7 @@ public abstract class BaseJdbcDAO {
     }
 
     protected boolean isPostgre() {
-       return  properties.getDriverName().contains("postgre");
+        return properties.getDriverName().contains("postgre");
     }
 
     protected abstract Object map2VO(ResultSet rs) throws SQLException;
