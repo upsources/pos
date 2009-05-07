@@ -37,7 +37,7 @@ public class ProductDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<ProductInfo> vos = null;
-        String sqlStr = "SELECT * FROM PRODUCTS P, PRODUCTS_COM COM WHERE COM.PRODUCT=? AND P.ID = COM.PRODUCT2";
+        String sqlStr = "SELECT * FROM PRODUCTS P, PRODUCTS_COM COM WHERE COM.PRODUCT=? AND P.ID = COM.PRODUCT2 ORDER BY P.NAME";
 
         try {
             //get connection

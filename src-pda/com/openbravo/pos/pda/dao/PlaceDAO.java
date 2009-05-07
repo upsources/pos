@@ -38,7 +38,7 @@ public class PlaceDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Place> vos = null;
-        String sqlStr = "Select * from PLACES where Floor = ?";
+        String sqlStr = "Select * from PLACES where Floor = ? order by NAME";
 
         try {
             //get connection
@@ -69,7 +69,7 @@ public class PlaceDAO extends BaseJdbcDAO {
         return vos;
     }
 
-    public List<Place> findAllBusyPlaceByFloor(String floorId) {
+    public List<Place> findAllBusyPlacesByFloor(String floorId) {
 
         Connection con = null;
         PreparedStatement ps = null;

@@ -93,7 +93,7 @@ public class RestaurantManager {
     public List<Place> findAllBusyTable(String floor) {
         place = new PlaceDAO();
 
-        return place.findAllBusyPlaceByFloor(floor);
+        return place.findAllBusyPlacesByFloor(floor);
     }
 
     public String findTheFirstFloor() {

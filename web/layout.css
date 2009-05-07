@@ -109,7 +109,7 @@ a:hover {
       padding:5px;
       height:40px;
       width:70px;
-      font:bold 11px Arial;
+      font:bold 12px Arial;
       margin-top:3px;
       background-image: url("images/edit_group.png");
       background-repeat: no-repeat;
@@ -123,7 +123,6 @@ a:hover {
       background-image: url("images/edit_group.png");
       background-repeat: no-repeat;
       background-position: center;
-      
       margin-top:3px;
   }
 

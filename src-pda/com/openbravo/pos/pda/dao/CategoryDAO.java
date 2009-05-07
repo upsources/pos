@@ -38,7 +38,7 @@ public class CategoryDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<CategoryInfo> vos = null;
-        String sqlStr = "select * from CATEGORIES where PARENTID IS NULL";
+        String sqlStr = "select * from CATEGORIES where PARENTID IS NULL order by NAME";
 
         try {
             //get connection
@@ -73,7 +73,7 @@ public class CategoryDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<CategoryInfo> vos = null;
-        String sqlStr = "select * from CATEGORIES where PARENTID = ?";
+        String sqlStr = "select * from CATEGORIES where PARENTID = ? order by NAME";
 
         try {
             //get connection
@@ -109,7 +109,7 @@ public class CategoryDAO extends BaseJdbcDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<CategoryInfo> vos = null;
-        String sqlStr = "select * from CATEGORIES where PARENTID IS NULL";
+        String sqlStr = "select * from CATEGORIES where PARENTID IS NULL order by NAME";
 
         try {
             //get connection
