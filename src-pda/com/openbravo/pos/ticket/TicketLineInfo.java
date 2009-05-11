@@ -97,7 +97,11 @@ public class TicketLineInfo implements Serializable {
     }
 
     public double getPrice() {
-        return price;
+        try {
+            return price +(price * getTax().getRate());
+        } catch (NullPointerException ex){
+            return price;
+        }
     }
 
     public void setPrice(double price) {
@@ -131,7 +135,7 @@ public class TicketLineInfo implements Serializable {
     }
 
     public double getValue() {
-        return price * multiply;
+        return getPrice() * multiply;
     }
 
     public String getProductTaxCategoryID() {

@@ -172,7 +172,7 @@ public class RestaurantManager {
 
         TicketInfo obj = ticket.getTicket(ticketId);
         ProductInfo productObj = product.findProductById(productId);
-        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getCategoryId()));
+        TicketLineInfo line = new TicketLineInfo(productObj, productObj.getPriceSell(), taxesLogic.getTaxInfo(productObj.getTaxcat()));
         obj.addLine(line);
         ticket.updateTicket(ticketId, obj);
         refreshTax(obj);
@@ -186,11 +186,7 @@ public class RestaurantManager {
     public BigDecimal getTotalOfaTicket(String place) {
         double total = 0;
         for (TicketLineInfo line : findTicket(place).getM_aLines()) {
-            try {
-                total += line.getMultiply() * (line.getPrice() + line.getPrice() * line.getTax().getRate());
-            } catch (NullPointerException e) {
-                total += line.getMultiply() * line.getPrice();
-            }
+            total += line.getMultiply() * line.getPrice();
         }
         return BigDecimal.valueOf(total);
     }
