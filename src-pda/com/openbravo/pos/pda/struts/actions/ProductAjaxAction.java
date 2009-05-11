@@ -57,7 +57,10 @@ public class ProductAjaxAction extends org.apache.struts.action.Action {
         RestaurantManager manager = new RestaurantManager();
         List products = new ArrayList<ProductInfoExt>();
         products = manager.findProductsByCategory((String) inputFormPlace.get("categoryId"));
+        List rates = new ArrayList<String>();
+        rates = manager.findAllTaxRatesByCategory(products);
         request.getSession().setAttribute("products", products);
+        request.getSession().setAttribute("rates", rates);
         if (inputFormPlace.get("mode").equals("1")) {
             request.setAttribute("subcategories", manager.findAllSubcategories(inputFormPlace.getString("categoryId")));
             return mapping.findForward(NEXTLEVEL);

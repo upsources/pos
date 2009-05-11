@@ -21,6 +21,8 @@ package com.openbravo.pos.pda.struts.actions;
 
 import com.openbravo.pos.pda.bo.RestaurantManager;
 import com.openbravo.pos.pda.struts.forms.AddedProductForm;
+import com.openbravo.pos.ticket.ProductInfo;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,9 +58,11 @@ public class addProductAction extends org.apache.struts.action.Action {
         String productId = aForm.getProductId();
 
         bo.addLineToTicket(place, productId);
-
+        List auxiliars = new ArrayList<ProductInfo>();
+        auxiliars = bo.findAuxiliars(productId);
         request.setAttribute("place", place);
-        request.setAttribute("auxiliars", bo.findAuxiliars(productId));
+        request.setAttribute("auxiliars", auxiliars);
+        request.setAttribute("rates", bo.findAllTaxRatesByCategory(auxiliars));
 
         return mapping.findForward(SUCCESS);
     }

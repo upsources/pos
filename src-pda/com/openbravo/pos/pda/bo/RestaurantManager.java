@@ -31,10 +31,12 @@ import com.openbravo.pos.ticket.CategoryInfo;
 import com.openbravo.pos.ticket.Floor;
 import com.openbravo.pos.ticket.Place;
 import com.openbravo.pos.ticket.ProductInfo;
+import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 import com.openbravo.pos.ticket.UserInfo;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -143,6 +145,17 @@ public class RestaurantManager {
         product = new ProductDAO();
 
         return product.findProductsByCategory(categoryId);
+    }
+
+    public List<String> findAllTaxRatesByCategory(List<ProductInfo> products) {
+        List<String> list = new ArrayList<String>();
+        tax = new TaxDAO();
+        taxesLogic = new TaxesLogic(tax.getTaxList());
+        for(ProductInfo prod: products) {
+            list.add(String.valueOf(taxesLogic.getTaxInfo(prod.getTaxcat()).getRate()));
+        }
+
+        return list;
     }
 
     public List<CategoryInfo> findAllCategories() {

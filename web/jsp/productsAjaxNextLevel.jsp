@@ -48,7 +48,7 @@
         <% rowodd = !rowodd; %>
         <tr id="${nr.count - 1}" class="<%= rowodd ? "odd" : "even" %>">
             <td class="name">${product.name}</td>
-            <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell + product.priceSell * rates[nr.count - 1]}" maxFractionDigits="2" minFractionDigits="2"/></td>
             <td class="normal"></td>
             <td><input value="Add" type="submit" class="floor" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', ${nr.count - 1}, '${product.name}', '${product.id}', 0);"/></td>
         </tr>

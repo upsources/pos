@@ -39,7 +39,7 @@
     <c:forEach var="product" items="${auxiliars}" varStatus="nr">
         <tr id="${nr.count - 1}" class="<%= rowodd ? "odd" : "even" %>">
             <td class="name" style="background-color:#ffb7b3;">* ${product.name}</td>
-            <td class="normal" style="background-color:#ffb7b3;"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="normal" style="background-color:#ffb7b3;"><fmt:formatNumber type="currency" value="${product.priceSell + product.priceSell * rates[nr.count - 1]}" maxFractionDigits="2" minFractionDigits="2"/></td>
             <td class="normal" style="background-color:#ffb7b3;"></td>
             <td style="background-color:#ffb7b3;"><input value="Add" type="submit" class="floor" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', ${nr.count - 1}, '${product.name}', '${product.id}', 1);"/></td>
         </tr>

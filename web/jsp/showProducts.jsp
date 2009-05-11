@@ -46,6 +46,7 @@
     </head>
     <body>
         <jsp:useBean id="placeName" scope="request" type="java.lang.String"/>
+        <jsp:useBean id="rates" scope="request" type="java.util.List"/>
         <div class="logo">
             <center>
             <img src="../images/logo.gif" alt="Openbravo" class="logo"/>
@@ -87,12 +88,13 @@
                         </tr>
                     </c:forEach>
                     <% ArrayList products = (ArrayList) request.getSession().getAttribute("products");%>
+                    
                     <c:forEach var="product" items="${products}" varStatus="nr">
                         <% rowodd = !rowodd; %>
                         <tr class="<%= rowodd ? "odd" : "even" %>">
                             <div id="pro${nr.count - 1}">
                             <td class="name">${product.name}</td>
-                            <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td class="normal"><fmt:formatNumber type="currency" value="${product.priceSell + product.priceSell * rates[nr.count - 1]}" maxFractionDigits="2" minFractionDigits="2"/></td>
                             <td class="normal"></td>
                             <td><input value="Add" type="submit" class="floor" onclick="ajaxAddProduct('<%=request.getSession().getAttribute("place")%>', ${nr.count - 1}, '${product.name}', '${product.id}', 0);"/></td>
                             </div>
