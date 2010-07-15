@@ -27,7 +27,7 @@
     <!-- program name -->
     <property name="name" value="openbravopos"/>
     <!-- project version -->
-    <property name="version" value="2.30"/>
+    <property name="version" value="2.35"/>
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
     <property name="javac.optimize" value="on"/>
@@ -430,10 +430,7 @@
         <!-- synch -->
         
         <copy todir="${basedir}/build/zip/transformations">
-            <fileset dir="${basedir}/transformations"/>
-        </copy>
-        <copy todir="${basedir}/build/zip/org.openbravo.service.pos">
-            <fileset dir="${basedir}/org.openbravo.service.pos"/>
+            <fileset dir="${basedir}/src-erp/com/openbravo/sync/transformations"/>
         </copy>
 
         <!-- pda -->
@@ -459,23 +456,16 @@
         <delete dir="${basedir}/build/zip" />
     </target>
 
-    <target name="dist.sync" depends="init.dist" description="Create .obx module and zip all kettle transformations" >
+    <target name="dist.sync" depends="init.dist" description="Package kettle transformations" >
 
         <mkdir dir="${dest.dist}" />
 
         <mkdir dir="${basedir}/build/transformations"/>
         <copy todir="${basedir}/build/transformations">
-            <fileset dir="${basedir}/transformations"/>
+            <fileset dir="${basedir}/src-erp/com/openbravo/sync/transformations"/>
         </copy>
         <zip zipfile="${dest.dist}/${name}_${version}_int.zip" basedir="${basedir}/build/transformations" />
         <delete dir="${basedir}/build/transformations"/>
-
-        <mkdir dir="${basedir}/build/org.openbravo.service.pos"/>
-        <copy todir="${basedir}/build/org.openbravo.service.pos">
-            <fileset dir="${basedir}/org.openbravo.service.pos"/>
-        </copy>
-        <zip zipfile="${dest.dist}/${name}_${version}_web.obx" basedir="${basedir}/build/org.openbravo.service.pos"/>
-        <delete dir="${basedir}/build/org.openbravo.service.pos" />
     </target>
 
     <!-- ================================================================= -->

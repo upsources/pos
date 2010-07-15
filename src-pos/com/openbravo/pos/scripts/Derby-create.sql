@@ -1,5 +1,5 @@
 --    Openbravo POS is a point of sales application designed for touch screens.
---    Copyright (C) 2008-2009 Openbravo, S.L.
+--    Copyright (C) 2008-2010 Openbravo, S.L.
 --    http://sourceforge.net/projects/openbravopos
 --
 --    This file is part of Openbravo POS.
@@ -18,7 +18,7 @@
 --    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Database initial script for DERBY
--- v2.30
+-- v2.35
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR(256) NOT NULL,
@@ -161,6 +161,7 @@ INSERT INTO TAXCATEGORIES(ID, NAME) VALUES ('001', 'Tax Standard');
 CREATE TABLE TAXES (
     ID VARCHAR(256) NOT NULL,
     NAME VARCHAR(1024) NOT NULL,
+    VALIDFROM TIMESTAMP DEFAULT '2001-01-01 00:00:00' NOT NULL,
     CATEGORY VARCHAR(256) NOT NULL,
     CUSTCATEGORY VARCHAR(256),
     PARENTID VARCHAR(256),

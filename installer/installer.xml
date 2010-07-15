@@ -1,7 +1,7 @@
 <project>
     <shortName>openbravopos</shortName>
     <fullName>Openbravo POS</fullName>
-    <version>2.30</version>
+    <version>2.35</version>
     <readmeFile>../README</readmeFile>
     <licenseFile>../licensing/gpl-3.0.txt</licenseFile>
     <leftImage>images/left.png</leftImage>
