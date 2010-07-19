@@ -19,7 +19,7 @@
 
 -- Database upgrade script for MYSQL
 
--- v2.30 - v2.35
+-- v2.30 - v2.30.1
 
 ALTER TABLE TAXES ADD COLUMN VALIDFROM DATETIME DEFAULT '2001-01-01 00:00:00' NOT NULL;
 

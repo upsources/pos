@@ -18,7 +18,7 @@
 --    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Database initial script for DERBY
--- v2.35
+-- v2.30.1
 
 CREATE TABLE APPLICATIONS (
     ID VARCHAR(256) NOT NULL,

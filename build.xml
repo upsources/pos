@@ -27,7 +27,7 @@
     <!-- program name -->
     <property name="name" value="openbravopos"/>
     <!-- project version -->
-    <property name="version" value="2.35"/>
+    <property name="version" value="2.30.1"/>
     <!-- javac properties -->
     <property name="javac.deprecation" value="off"/>
     <property name="javac.optimize" value="on"/>
