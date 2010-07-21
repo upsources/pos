@@ -325,7 +325,7 @@
     <!-- D I S T R I B U T I O N  F I L E S                                -->
     <!-- ================================================================= -->
     
-    <target name="dist" depends="dist.bin,dist.src,dist.pda,dist.sync" description="Generate the release files">
+    <target name="dist" depends="dist.bin,dist.src,dist.pda" description="Generate the release files">
     </target>
   
     <target name="dist.bin" depends="init.dist,jar" description="Generate the bin zip file.">
