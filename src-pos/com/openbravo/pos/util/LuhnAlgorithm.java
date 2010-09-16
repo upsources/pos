@@ -52,7 +52,6 @@ public class LuhnAlgorithm {
         return (sum % 10 == 0);
     }
 
-
 //    public static void main(String[] args) {
 //
 //        // Testing sample numbers
@@ -64,5 +63,8 @@ public class LuhnAlgorithm {
 //        System.out.println(LuhnAlgorithm.checkCC("30000000000004")); // Carte blanche
 //        System.out.println(LuhnAlgorithm.checkCC("6011000000000004")); // Discover
 //        System.out.println(LuhnAlgorithm.checkCC("201400000000009")); // EnRoute
+//        System.out.println(LuhnAlgorithm.checkCC("2131000000000008")); // JCB
+//        System.out.println(LuhnAlgorithm.checkCC("6334000000000004")); // Solo
+//        System.out.println(LuhnAlgorithm.checkCC("4903010000000009")); // Switch
 //    }
 }
