@@ -116,7 +116,7 @@ FROM PRODUCTS LEFT OUTER JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID LE
 					<font size="36" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue(
-new Double($F{PRICESELL}.doubleValue() * (1.0 + $P{TAXESLOGIC}.getTaxRate($F{TAXCAT}))))]]></textFieldExpression>
+new Double($F{PRICESELL}.doubleValue() * (1.0 + $P{TAXESLOGIC}.getTaxRate($F{TAXCAT}, new Date()))))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-1" x="14" y="25" width="149" height="16"/>
@@ -178,7 +178,7 @@ new Double($F{PRICESELL}.doubleValue() * (1.0 + $P{TAXESLOGIC}.getTaxRate($F{TAX
 				</box>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.openbravo.format.Formats.CURRENCY.formatValue(
-new Double($F{PRICESELL}.doubleValue() * $P{TAXESLOGIC}.getTaxRate($F{TAXCAT})))]]></textFieldExpression>
+new Double($F{PRICESELL}.doubleValue() * $P{TAXESLOGIC}.getTaxRate($F{TAXCAT}, new Date())))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
