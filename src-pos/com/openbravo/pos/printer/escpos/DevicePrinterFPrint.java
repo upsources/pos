@@ -72,28 +72,28 @@ public class DevicePrinterFPrint implements DevicePrinter {
         int index = 0;
         while( index < lines.size() ) {
             if(lines.get(index).equals("Receipt:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Date:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Table:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Items count:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Subtotal."))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
             if(lines.get(index).equals("Total."))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
             if(lines.get(index).equals("Tendered:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
             if(lines.get(index).equals("Change:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
             if(lines.get(index).equals("Cashier:"))
-                ticket.put(lines.get(index), lines.get(index++));
+                ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Item") && lines.get(index+1).equals("Price"))
                 parseItems(index+4);
             index++;
         }
-        //System.out.print(ticket.toString());
+        System.out.print(ticket.toString());
         //System.out.print(items.toString());
         formattedPrint();
         ticket.clear();
