@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Opentpv is a point of sales application designed for touch screens.
+    Copyright (C) 2008 Open Sistemas de Información Internet, S.L.
+    Copyright (C) 2007-2008 Openbravo, S.L.
+    http://www.opensistemas.com
+    e-mail: imasd@opensistemas.com
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ -->
+ 
+<output>
+
+    <fiscalreceipt>
+        #foreach ($ticketline in $ticket.getLines())
+             #if ($ticketline.getProduct().isCom()) 
+                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">*${ticketline.getProduct().printName()}</line>
+             #else
+                 <line price="${ticketline.getValue()}" units="${ticketline.getModify()}">${ticketline.getProduct().printName()}</line>
+             #end
+        #end
+
+        <message>Items count: ${ticket.printArticlesCount()}</message>
+
+        #foreach ($paymentline in $ticket.payment)      
+         #if ($paymentline.name == "cash")
+            <total paid="${paymentline.getPaid()}">Cash</total>
+         #end
+         #if ($paymentline.name == "cashrefund")
+            <total paid="${paymentline.getTotal()}">Refund</total>  
+         #end
+         #if ($paymentline.name == "magcard")
+            <total paid="${paymentline.getTotal()}">Mag card</total>  
+         #end  
+         #if ($paymentline.name == "magcardrefund")
+            <total paid="${paymentline.getTotal()}">Mag card refund</total>     
+         #end
+         #if ($paymentline.name == "cheque")
+            <total paid="${paymentline.getTotal()}">Cheque</total>    
+         #end
+         #if ($paymentline.name == "chequerefund")
+            <total paid="${paymentline.getTotal()}">Cheque refund</total>    
+         #end
+        #end 
+    
+    </fiscalreceipt>
+    
+<!-- Other commands -->
+<!--
+    <fiscalzreport/>
+    <fiscalxreport/>
+-->    
+
+</output>

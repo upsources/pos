@@ -1,0 +1,40 @@
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007-2008 Openbravo, S.L.
+//    http://sourceforge.net/projects/openbravopos
+//
+//    This program is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation; either version 2 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program; if not, write to the Free Software
+//    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+bean = new com.openbravo.pos.reports.PanelReportBean();
+
+bean.setTitleKey("Menu.Catalog");
+bean.setReport("/com/openbravo/reports/products");
+bean.setResourceBundle("com/openbravo/reports/productscatalog_messages");
+
+bean.setSentence("SELECT PRODUCTS.ID, PRODUCTS.REFERENCE, PRODUCTS.CODE, PRODUCTS.NAME, PRODUCTS.PRICEBUY, PRODUCTS.PRICESELL, (PRODUCTS.PRICESELL * (1 + TAXES.RATE)) AS PRICESELLTAX, TAXES.NAME AS TAXNAME, TAXES.RATE AS TAXRATE, PRODUCTS.CATEGORY, CATEGORIES.NAME AS CATEGORYNAME " +
+                 "FROM PRODUCTS_CAT, PRODUCTS LEFT OUTER JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID LEFT OUTER JOIN TAXES ON PRODUCTS.TAX = TAXES.ID " +
+                 "WHERE PRODUCTS_CAT.PRODUCT = PRODUCTS.ID " +
+                 "ORDER BY CATEGORIES.NAME, PRODUCTS_CAT.CATORDER, PRODUCTS.NAME");
+
+bean.addField("ID", com.openbravo.data.loader.Datas.STRING);
+bean.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
+bean.addField("CODE", com.openbravo.data.loader.Datas.STRING);
+bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("PRICEBUY", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("PRICESELL", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("PRICESELLTAX", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("TAXNAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("TAXRATE", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("CATEGORY", com.openbravo.data.loader.Datas.STRING);
+bean.addField("CATEGORYNAME", com.openbravo.data.loader.Datas.STRING);
