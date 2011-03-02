@@ -121,6 +121,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         jcboMachinePrinter.addItem("ithaca");
         jcboMachinePrinter.addItem("surepos");
         jcboMachinePrinter.addItem("javapos");
+        jcboMachinePrinter.addItem("fprint");
         jcboMachinePrinter.addItem("Not defined");
         
         jcboConnPrinter.addItem("serial");

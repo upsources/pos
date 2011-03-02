@@ -151,6 +151,8 @@ public class DeviceTicket {
                     addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesSurePOS(), new UnicodeTranslatorSurePOS()));                
                 } else if ("javapos".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterJavaPOS(sPrinterParam1, sPrinterParam2));
+                } else if ("fprint".equals(sPrinterType)) {
+                    addPrinter(sPrinterIndex, new DevicePrinterFPrint());
                 }
             } catch (TicketPrinterException e){
                 // m_deviceprinters.add(new DevicePrinterNull(e.getMessage()));
