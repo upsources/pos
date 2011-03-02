@@ -8,10 +8,19 @@ package com.openbravo.pos.printer.escpos;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.printer.DevicePrinter;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
+import org.apache.axis.configuration.FileProvider;
 
 /**
  *
@@ -24,12 +33,17 @@ public class DevicePrinterFPrint implements DevicePrinter {
     private Map<String,String> ticket;
     private ArrayList<String> lines;
     private ArrayList items;
+    private ArrayList<String> formattedTicket;
+    private boolean toFile;
+    private String fileName = "bon.inp";
 
     public DevicePrinterFPrint() {
         m_sName = AppLocal.getIntString("Printer.Serial");
         ticket = new HashMap<String,String>();
         lines = new ArrayList<String>();
         items = new ArrayList();
+        formattedTicket = new ArrayList<String>();
+        toFile = true;
     }
 
     public String getPrinterName() {
@@ -83,6 +97,12 @@ public class DevicePrinterFPrint implements DevicePrinter {
                 ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
             if(lines.get(index).equals("Total."))
                 ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
+            if(lines.get(index).equals("Cash"))
+                ticket.put("PaymentType", "0");
+            if(lines.get(index).equals("Mag card"))
+                ticket.put("PaymentType", "2");
+            if(lines.get(index).equals("Cheque"))
+                ticket.put("PaymentType", "3");
             if(lines.get(index).equals("Tendered:"))
                 ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
             if(lines.get(index).equals("Change:"))
@@ -93,10 +113,9 @@ public class DevicePrinterFPrint implements DevicePrinter {
                 parseItems(index+4);
             index++;
         }
-        System.out.print(ticket.toString());
+        //System.out.print(ticket.toString());
         //System.out.print(items.toString());
         formattedPrint();
-        ticket.clear();
     }
 
     public void openDrawer() {
@@ -125,22 +144,71 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     private void formattedPrint() {
-        String endMsg = "P,1,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;";
+        String endMsg = String.format("P,%s,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;", ticket.get("Receipt:"));
 
-        for( int index = 0; index < items.size(); index++ ) {
-            output( formatItem(ticket.get("Receipt:"), (String[]) items.get(index)) );
-        }
+        for( int index = 0; index < items.size(); index++ )
+            saveForPrint( formatItem((String[]) items.get(index)) );
 
-        output(endMsg);
+        items.clear();
+        saveForPrint( formatTotal() );
+        saveForPrint( endMsg );
+        output();
     }
 
-    private void output( String text ) {
-        System.out.println( text );
+    private void saveForPrint( String text ) {
+        //System.out.print(text);
+        formattedTicket.add(text);
     }
 
-    private String formatItem(String id, String[] item) {
-        String msg = String.format( "S,%s,______,_,__;%s;%s;%s;0;0;0;0;0;", id, item[0], item[2], item[1] );
+    private void output() {
+        ticket.clear();
+        lines.clear();
+        
+        if( toFile )
+            try {
+            printToFile();
+            } catch (FileNotFoundException ex) {
+                System.out.println( ex.toString() );
+            } catch (IOException ex) {
+                System.out.println( ex.toString() );
+            }
+        
+        // TODO: Add serial handler
+    }
+
+    private String formatItem(String[] item) {
+        String msg = String.format( 
+            "S,%s,______,_,__;%s;%s;%s;0;0;0;0;0;",
+            ticket.get("Receipt:"),
+            item[0],
+            item[2],
+            item[1]
+        );
         return msg;
     }
 
+    private String formatTotal() {
+        String msg = String.format(
+            "T,%s,______,_,__;%s;%s;;;;",
+            ticket.get("Receipt:"),
+            ticket.get("PaymentType"),
+            ticket.get("Total.")
+        );
+        return msg;
+    }
+
+    private void printToFile() throws FileNotFoundException, IOException {
+        File bon = new File(fileName);
+        
+        bon.delete();
+        bon.createNewFile();
+
+        PrintStream printer = new PrintStream(bon);
+        for( String line: formattedTicket )
+            printer.println( line );
+        
+        printer.flush();
+        printer.close();
+        formattedTicket.clear();
+    }
 }
