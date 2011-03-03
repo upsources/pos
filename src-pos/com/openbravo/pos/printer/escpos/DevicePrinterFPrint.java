@@ -7,6 +7,7 @@ package com.openbravo.pos.printer.escpos;
 
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.printer.DevicePrinter;
+import com.openbravo.pos.printer.TicketPrinterException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,14 +32,18 @@ public class DevicePrinterFPrint implements DevicePrinter {
     private ArrayList<String> formattedTicket;
     private boolean toFile;
     private String fileName = "bon.inp";
+    private PrinterWritter m_CommOutputPrinter;
+    private UnicodeTranslator m_trans;
 
-    public DevicePrinterFPrint() {
+    public DevicePrinterFPrint(PrinterWritter CommOutputPrinter, UnicodeTranslator trans) throws TicketPrinterException {
         m_sName = AppLocal.getIntString("Printer.Serial");
         ticket = new HashMap<String,String>();
         lines = new ArrayList<String>();
         items = new ArrayList();
         formattedTicket = new ArrayList<String>();
-        toFile = true;
+        toFile = false;
+        m_CommOutputPrinter = CommOutputPrinter;
+        m_trans = trans;
     }
 
     public String getPrinterName() {
@@ -167,7 +172,8 @@ public class DevicePrinterFPrint implements DevicePrinter {
             } catch (IOException ex) {
                 System.out.println( ex.toString() );
             }
-        
+        else
+            printToSerial();
         // TODO: Add serial handler
     }
 
@@ -203,5 +209,14 @@ public class DevicePrinterFPrint implements DevicePrinter {
         printer.flush();
         printer.close();
         formattedTicket.clear();
+    }
+
+    private void printToSerial() {
+        for( String line: formattedTicket ) {
+            m_CommOutputPrinter.write( m_trans.transString(line + "\n") );
+            System.out.print(line);
+        }
+        
+        m_CommOutputPrinter.flush();
     }
 }

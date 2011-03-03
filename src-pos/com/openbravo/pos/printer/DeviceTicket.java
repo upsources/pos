@@ -152,7 +152,7 @@ public class DeviceTicket {
                 } else if ("javapos".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterJavaPOS(sPrinterParam1, sPrinterParam2));
                 } else if ("fprint".equals(sPrinterType)) {
-                    addPrinter(sPrinterIndex, new DevicePrinterFPrint());
+                    addPrinter(sPrinterIndex, new DevicePrinterFPrint(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new UnicodeTranslatorInt()));
                 }
             } catch (TicketPrinterException e){
                 // m_deviceprinters.add(new DevicePrinterNull(e.getMessage()));
