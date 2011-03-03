@@ -139,7 +139,7 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     private void formattedPrint() {
-        String endMsg = String.format("P,%s,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;", ticket.get("Receipt:"));
+        String endMsg = String.format("P,1,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;");
 
         for( int index = 0; index < items.size(); index++ )
             saveForPrint( formatItem((String[]) items.get(index)) );
@@ -173,21 +173,19 @@ public class DevicePrinterFPrint implements DevicePrinter {
 
     private String formatItem(String[] item) {
         String msg = String.format( 
-            "S,%s,______,_,__;%s;%s;%s;0;0;0;0;0;",
-            ticket.get("Receipt:"),
-            item[0],
-            item[2],
-            item[1]
+            "S,1,______,_,__;%s;%s;%s;1;1;1;0;0;",
+            item[0].toUpperCase(),
+            item[2].replace(",", "."),
+            item[1].replace(",", ".")
         );
         return msg;
     }
 
     private String formatTotal() {
         String msg = String.format(
-            "T,%s,______,_,__;%s;%s;;;;",
-            ticket.get("Receipt:"),
+            "T,1,______,_,__;%s;%s;;;;",
             ticket.get("PaymentType"),
-            ticket.get("Total.")
+            ticket.get("Total.").replace(",", ".")
         );
         return msg;
     }
