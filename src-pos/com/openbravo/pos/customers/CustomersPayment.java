@@ -18,7 +18,6 @@
 
 package com.openbravo.pos.customers;
 
-import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.user.DirtyManager;
@@ -55,7 +54,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private DataLogicCustomers dlcustomers;
     private DataLogicSales dlsales;
     private DataLogicSystem dlsystem;
-    private TicketParser ttp;    
+    private TicketParser ttp;
     private JPaymentSelect paymentdialog;
     
     private CustomerInfoExt customerext;
@@ -526,12 +525,12 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
                 msg.show(this);
             }
-
+            
             printTicket(paymentdialog.isPrintSelected()
                     ? "Printer.CustomerPaid"
                     : "Printer.CustomerPaid2",
                     ticket, c);
-
+            
             editorcard.reset();
             editorcard.activate();
         }        

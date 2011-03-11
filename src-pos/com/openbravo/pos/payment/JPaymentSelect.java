@@ -31,7 +31,6 @@ import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.customers.DataLogicCustomers;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.forms.DataLogicSystem;
-import com.openbravo.pos.payment.JPaymentInterface;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     
     private PaymentInfoList m_aPaymentInfo;
     private boolean printselected;
-    
+    private boolean printselectedFisc;
+
     private boolean accepted;
     
     private AppView app;
@@ -55,7 +55,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private DataLogicCustomers dlcustomers;    
     
     private Map<String, JPaymentInterface> payments = new HashMap<String, JPaymentInterface>();
-
+   
     
     /** Creates new form JPaymentSelect */
     protected JPaymentSelect(java.awt.Frame parent, boolean modal) {
@@ -75,14 +75,23 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystemCreate");
         dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomersCreate");
         printselected = true;
+        printselectedFisc = true;
     }
     
     public void setPrintSelected(boolean value) {
         printselected = value;
     }
+
+    public void setPrintFiscalSelected(boolean value) {
+        printselectedFisc = value;
+    }
     
     public boolean isPrintSelected() {
         return printselected;
+    }
+
+    public boolean isPrintFiscalSelected() {
+        return printselectedFisc;
     }
 
     public List<PaymentInfo> getSelectedPayments() {
@@ -108,6 +117,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         }         
 
         m_jButtonPrint.setSelected(printselected);
+        m_jButtonPrint1.setSelected(printselectedFisc);
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
         
         addTabs();
@@ -123,6 +133,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         
         // gets the print button state
         printselected = m_jButtonPrint.isSelected();
+        printselectedFisc = m_jButtonPrint1.isSelected();
         
         // remove all tabs        
         m_jTabPayment.removeAll();
@@ -302,6 +313,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         jPanel3 = new javax.swing.JPanel();
         m_jTabPayment = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
+        m_jButtonPrint1 = new javax.swing.JToggleButton();
         m_jButtonPrint = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
         m_jButtonOK = new javax.swing.JButton();
@@ -374,8 +386,19 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+        m_jButtonPrint1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileprint.png"))); // NOI18N
+        m_jButtonPrint1.setSelected(true);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
+        m_jButtonPrint1.setText(bundle.getString("label.printerFiscalSelection")); // NOI18N
+        m_jButtonPrint1.setFocusPainted(false);
+        m_jButtonPrint1.setFocusable(false);
+        m_jButtonPrint1.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        m_jButtonPrint1.setRequestFocusEnabled(false);
+        jPanel2.add(m_jButtonPrint1);
+
         m_jButtonPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileprint.png"))); // NOI18N
         m_jButtonPrint.setSelected(true);
+        m_jButtonPrint.setText(bundle.getString("label.printerTicketSelection")); // NOI18N
         m_jButtonPrint.setFocusPainted(false);
         m_jButtonPrint.setFocusable(false);
         m_jButtonPrint.setMargin(new java.awt.Insets(8, 16, 8, 16));
@@ -467,6 +490,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private javax.swing.JButton m_jButtonCancel;
     private javax.swing.JButton m_jButtonOK;
     private javax.swing.JToggleButton m_jButtonPrint;
+    private javax.swing.JToggleButton m_jButtonPrint1;
     private javax.swing.JButton m_jButtonRemove;
     private javax.swing.JLabel m_jLblRemainingEuros;
     private javax.swing.JLabel m_jLblTotalEuros1;

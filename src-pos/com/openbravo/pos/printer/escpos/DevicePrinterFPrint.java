@@ -44,8 +44,6 @@ public class DevicePrinterFPrint implements DevicePrinter {
     private ArrayList<String> lines;
     private ArrayList items;
     private ArrayList<String> formattedTicket;
-    private boolean toFile;
-    private String fileName = "bon.inp";
     private PrinterWritter m_CommOutputPrinter;
     private UnicodeTranslator m_trans;
 
@@ -55,7 +53,6 @@ public class DevicePrinterFPrint implements DevicePrinter {
         lines = new ArrayList<String>();
         items = new ArrayList();
         formattedTicket = new ArrayList<String>();
-        toFile = false;
         m_CommOutputPrinter = CommOutputPrinter;
         m_trans = trans;
     }
@@ -96,7 +93,6 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     public void endReceipt() {
-        //System.out.println(lines.toString());
         int index = 0;
         while( index < lines.size() ) {
             if(lines.get(index).equals("Receipt:"))
@@ -127,8 +123,7 @@ public class DevicePrinterFPrint implements DevicePrinter {
                 parseItems(index+4);
             index++;
         }
-        //System.out.print(ticket.toString());
-        //System.out.print(items.toString());
+        lines.clear();
         formattedPrint();
     }
 
@@ -158,36 +153,21 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     private void formattedPrint() {
-        //String endMsg = String.format("P,1,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;");
-
         for( int index = 0; index < items.size(); index++ )
             saveForPrint( formatItem((String[]) items.get(index)) );
 
         items.clear();
         saveForPrint( formatTotal() );
-        //saveForPrint( endMsg );
         output();
     }
 
     private void saveForPrint( String text ) {
-        //System.out.print(text);
         formattedTicket.add(text);
     }
 
     private void output() {
         ticket.clear();
-        lines.clear();
-        
-        if( toFile )
-            try {
-            printToFile();
-            } catch (FileNotFoundException ex) {
-                System.out.println( ex.toString() );
-            } catch (IOException ex) {
-                System.out.println( ex.toString() );
-            }
-        else
-            printToSerial();
+        write();
         // TODO: Add serial handler
     }
 
@@ -210,24 +190,14 @@ public class DevicePrinterFPrint implements DevicePrinter {
         return msg;
     }
 
-    private void printToFile() throws FileNotFoundException, IOException {
-        File bon = new File(fileName);
-        
-        bon.delete();
-        bon.createNewFile();
-
-        PrintStream printer = new PrintStream(bon);
+    private void write() {
+        String data = "";
         for( String line: formattedTicket )
-            printer.println( line );
-        
-        printer.flush();
-        printer.close();
-        formattedTicket.clear();
-    }
-
-    private void printToSerial() {
-        for( String line: formattedTicket )
-            m_CommOutputPrinter.write( m_trans.transString(line + "\n") );
+            data = data + line + "\n";
+            
+        m_CommOutputPrinter.write( m_trans.transString(data) );
         m_CommOutputPrinter.flush();
+
+        formattedTicket.clear();
     }
 }
