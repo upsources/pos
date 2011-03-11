@@ -186,7 +186,7 @@ public class JRootApp extends JPanel implements AppView {
         }
         
         // Inicializo la impresora...
-        m_TP = new DeviceTicket(m_props);   
+        m_TP = new DeviceTicket(this, m_props);
         
         // Inicializamos 
         m_TTP = new TicketParser(getDeviceTicket(), m_dlSystem);
