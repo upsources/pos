@@ -1146,7 +1146,7 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
     private void jcboMachinePrinter3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcboMachinePrinter3ActionPerformed
         CardLayout cl = (CardLayout) (m_jPrinterParams3.getLayout());
 
-        if ("epson".equals(jcboMachinePrinter3.getSelectedItem()) || "tmu220".equals(jcboMachinePrinter3.getSelectedItem()) || "star".equals(jcboMachinePrinter3.getSelectedItem()) || "ithaca".equals(jcboMachinePrinter3.getSelectedItem()) || "surepos".equals(jcboMachinePrinter3.getSelectedItem())) {
+        if ("epson".equals(jcboMachinePrinter3.getSelectedItem()) || "tmu220".equals(jcboMachinePrinter3.getSelectedItem()) || "star".equals(jcboMachinePrinter3.getSelectedItem()) || "fprint".equals(jcboMachinePrinter3.getSelectedItem()) || "ithaca".equals(jcboMachinePrinter3.getSelectedItem()) || "surepos".equals(jcboMachinePrinter3.getSelectedItem())) {
             cl.show(m_jPrinterParams3, "comm");
         } else if ("javapos".equals(jcboMachinePrinter3.getSelectedItem())) {
             cl.show(m_jPrinterParams3, "javapos");
