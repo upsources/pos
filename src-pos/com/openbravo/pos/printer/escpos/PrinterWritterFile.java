@@ -19,7 +19,6 @@
 package com.openbravo.pos.printer.escpos;
 
 import java.io.*;
-import com.openbravo.pos.printer.*;
 
 public class PrinterWritterFile extends PrinterWritter {
     

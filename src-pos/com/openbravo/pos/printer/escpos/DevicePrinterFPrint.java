@@ -23,10 +23,6 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.printer.DevicePrinter;
 import com.openbravo.pos.printer.TicketPrinterException;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +58,7 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     public String getPrinterDescription() {
-        return null;
+        return "fprint";
     }
 
     public JComponent getPrinterComponent() {
@@ -158,17 +154,12 @@ public class DevicePrinterFPrint implements DevicePrinter {
 
         items.clear();
         saveForPrint( formatTotal() );
-        output();
+        ticket.clear();
+        write();
     }
 
     private void saveForPrint( String text ) {
-        formattedTicket.add(text);
-    }
-
-    private void output() {
-        ticket.clear();
-        write();
-        // TODO: Add serial handler
+            formattedTicket.add(text);
     }
 
     private String formatItem(String[] item) {
@@ -194,7 +185,7 @@ public class DevicePrinterFPrint implements DevicePrinter {
         String data = "";
         for( String line: formattedTicket )
             data = data + line + "\n";
-            
+
         m_CommOutputPrinter.write( m_trans.transString(data) );
         m_CommOutputPrinter.flush();
 
