@@ -42,13 +42,13 @@ public class JNumberKeys extends javax.swing.JPanel {
         m_jMultiply.addActionListener(new MyKeyNumberListener('*'));
         m_jCE.addActionListener(new MyKeyNumberListener('\u007f'));
         m_jPlus.addActionListener(new MyKeyNumberListener('+'));        
-        m_jMinus.addActionListener(new MyKeyNumberListener('-'));        
+        //m_jMinus.addActionListener(new MyKeyNumberListener('-'));
         m_jEquals.addActionListener(new MyKeyNumberListener('='));
     }
 
     public void setNumbersOnly(boolean value) {
         m_jEquals.setVisible(value);
-        m_jMinus.setVisible(value);
+        //m_jMinus.setVisible(value);
         m_jPlus.setVisible(value);
         m_jMultiply.setVisible(value);
     }
@@ -70,7 +70,7 @@ public class JNumberKeys extends javax.swing.JPanel {
         m_jMultiply.setEnabled(b);
         m_jCE.setEnabled(b);
         m_jPlus.setEnabled(b);       
-        m_jMinus.setEnabled(b);   
+        //m_jMinus.setEnabled(b);
         m_jEquals.setEnabled(b);   
     }
     
