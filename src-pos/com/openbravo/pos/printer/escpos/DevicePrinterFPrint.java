@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.openbravo.pos.printer.escpos;
 
 import com.openbravo.pos.forms.AppLocal;
@@ -19,8 +14,8 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 /**
- *
- * @author Administrator
+ * FPrint driver for Datecs devices
+ * @author Stas
  */
 public class DevicePrinterFPrint implements DevicePrinter {
 
@@ -144,14 +139,14 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     private void formattedPrint() {
-        String endMsg = String.format("P,1,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;");
+        //String endMsg = String.format("P,1,______,_,__;VA MULTUMIM!;VA DORIM O ZI BUNA;;;;");
 
         for( int index = 0; index < items.size(); index++ )
             saveForPrint( formatItem((String[]) items.get(index)) );
 
         items.clear();
         saveForPrint( formatTotal() );
-        saveForPrint( endMsg );
+        //saveForPrint( endMsg );
         output();
     }
 
@@ -212,11 +207,8 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     private void printToSerial() {
-        for( String line: formattedTicket ) {
+        for( String line: formattedTicket )
             m_CommOutputPrinter.write( m_trans.transString(line + "\n") );
-            System.out.print(line);
-        }
-        
         m_CommOutputPrinter.flush();
     }
 }

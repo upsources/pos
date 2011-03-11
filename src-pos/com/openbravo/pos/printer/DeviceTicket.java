@@ -1,6 +1,5 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
-//    Copyright (C) 2007-2008 Openbravo, S.L.
-//    http://sourceforge.net/projects/openbravopos
+//    OpenTPV POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2011 UpSources.
 //
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
