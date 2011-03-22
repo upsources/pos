@@ -1032,12 +1032,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
             // assign the payments selected.
             ticket.setPayments(paymentdialog.getSelectedPayments());
-
+				
+				if (ticket != null) {
             // Asigno los valores definitivos del ticket...
-            ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
-            ticket.setActiveCash(m_App.getActiveCashIndex());
-            ticket.setDate(new Date()); // Le pongo la fecha de cobro
-
+            	ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
+           		ticket.setActiveCash(m_App.getActiveCashIndex());
+            	ticket.setDate(new Date()); // Le pongo la fecha de cobro
+				}
+				
             // Save the receipt and assign a receipt number
             try {
                 dlSales.saveTicket(ticket, m_App.getInventoryLocation());                       
