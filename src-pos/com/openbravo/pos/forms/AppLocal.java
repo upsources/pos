@@ -34,8 +34,8 @@ import com.openbravo.beans.LocaleResources;
  */
 public class AppLocal {
     
-    public static final String APP_NAME = "Opentpv";
-    public static final String APP_ID = "opentpv";
+    public static final String APP_NAME = "upsourcesPOS";
+    public static final String APP_ID = "upsourcespos";
     public static final String APP_VERSION = "2.10";
   
     // private static List<ResourceBundle> m_messages;
