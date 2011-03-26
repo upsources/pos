@@ -43,7 +43,9 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
     private ComboBoxValModel m_CodetypeModel;
     
     private SentenceList m_sentunit;
+    private SentenceList m_sentcat;
     private ComboBoxValModel m_UnitModel;
+    private ComboBoxValModel m_CategoryModel;
     
     private Object m_id;
     private Object m_code;
@@ -63,7 +65,9 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         
         // El modelo de unidades
         m_sentunit = dlSales.getUnitsList();
+        m_sentcat = dlSales.getCategoriesMaterialsList();
         m_UnitModel = new ComboBoxValModel();
+        m_CategoryModel = new ComboBoxValModel();
 
         m_jName.getDocument().addDocumentListener(dirty);
         m_jScale.addActionListener(dirty);
@@ -74,6 +78,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jAmount.getDocument().addDocumentListener(dirty);
         m_jUnitPrice.getDocument().addDocumentListener(dirty);
         m_jCboUnit.addActionListener(dirty);
+        m_jCategory.addActionListener(dirty);
         txtAttributes.getDocument().addDocumentListener(dirty);
         
         m_jPriceBuy.getDocument().addDocumentListener(new PriceManager());
@@ -86,6 +91,9 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
     public void activate() throws BasicException {
         m_UnitModel = new ComboBoxValModel(m_sentunit.list());
         m_jCboUnit.setModel(m_UnitModel);
+        
+        m_CategoryModel = new ComboBoxValModel(m_sentcat.list());
+        m_jCategory.setModel(m_CategoryModel);
     }
     
     public void writeValueEOF() {
@@ -100,6 +108,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
         m_UnitModel.setSelectedKey(null);
+        m_CategoryModel.setSelectedKey(null);
         m_jAmount.setText(null);
         m_jUnitPrice.setText(null);
         txtAttributes.setText(null);
@@ -113,6 +122,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setEnabled(false);
         m_jstockvolume.setEnabled(false);
         m_jCboUnit.setEnabled(false);
+        m_jCategory.setEnabled(false);
         m_jAmount.setEnabled(false);
         txtAttributes.setEnabled(false);
     }
@@ -129,6 +139,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setText(null);
         m_jstockvolume.setText(null);
         m_UnitModel.setSelectedKey(null);
+        m_CategoryModel.setSelectedKey(null);
         m_jAmount.setText(null);
         m_jUnitPrice.setText(null);
         txtAttributes.setText(null);
@@ -142,6 +153,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setEnabled(true);
         m_jstockvolume.setEnabled(true);
         m_jCboUnit.setEnabled(true);
+        m_jCategory.setEnabled(true);
         m_jAmount.setEnabled(true);
         txtAttributes.setEnabled(true);
    }
@@ -158,6 +170,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setText(Formats.CURRENCY.formatValue(myprod[11]));
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[12]));
         m_UnitModel.setSelectedKey(myprod[13]);
+        m_CategoryModel.setSelectedKey(myprod[8]);
         m_jAmount.setText(Formats.DOUBLE.formatValue(myprod[14]));
         m_jPriceBuy.setText(Formats.CURRENCY.formatValue(myprod[15]));
         txtAttributes.setText(Formats.BYTEA.formatValue(myprod[16]));
@@ -171,6 +184,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setEnabled(false);
         m_jstockvolume.setEnabled(false);
         m_jCboUnit.setEnabled(false);
+        m_jCategory.setEnabled(false);
         m_jAmount.setEnabled(false);
         txtAttributes.setEnabled(false);
     }    
@@ -188,6 +202,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jstockcost.setText(Formats.CURRENCY.formatValue(myprod[11]));
         m_jstockvolume.setText(Formats.DOUBLE.formatValue(myprod[12]));
         m_UnitModel.setSelectedKey(myprod[13]);
+        m_CategoryModel.setSelectedKey(myprod[8]);
         m_jAmount.setText(Formats.DOUBLE.formatValue(myprod[14]));
         m_jPriceBuy.setText(Formats.CURRENCY.formatValue(myprod[15]));
         txtAttributes.setText(Formats.BYTEA.formatValue(myprod[16]));
@@ -200,7 +215,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(true);
         m_jstockcost.setEnabled(true);
         m_jstockvolume.setEnabled(true);
-        m_jCboUnit.setEnabled(true);
+        m_jCategory.setEnabled(true);
         m_jAmount.setEnabled(true);
         txtAttributes.setEnabled(true);
     }
@@ -208,6 +223,9 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
     public Object createValue() throws BasicException {
         if (m_UnitModel.getSelectedKey() == null) {
             throw new BasicException(AppLocal.getIntString("message.unitnotselect"));
+        }
+        if (m_CategoryModel.getSelectedKey() == null) {
+            throw new BasicException(AppLocal.getIntString("message.categorynotselect"));
         }
         
         Object[] myprod = new Object[17];
@@ -219,7 +237,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         myprod[5] = Boolean.valueOf(m_jScale.isSelected());
         myprod[6] = dUnitPrice;
         myprod[7] = 0.0; //Price sell
-        myprod[8] = "-1"; //Categoria BOM 
+        myprod[8] = m_CategoryModel.getSelectedKey(); //Category!
         myprod[9] = "-1"; //Tax NOTAX
         myprod[10] = m_jImage.getImage();
         myprod[11] = readCurrency(m_jstockcost.getText());
@@ -305,6 +323,8 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         m_jAmount = new javax.swing.JTextField();
         m_jCboUnit = new javax.swing.JComboBox();
         jLabel12 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        m_jCategory = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         m_jstockcost = new javax.swing.JTextField();
@@ -320,7 +340,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
 
         jLabel2.setText(AppLocal.getIntString("label.prodname")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 50, 70, 17);
+        jLabel2.setBounds(20, 50, 70, 18);
         add(m_jName);
         m_jName.setBounds(90, 50, 220, 20);
 
@@ -338,13 +358,13 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
 
         jLabel3.setText(AppLocal.getIntString("label.prodpricebuy")); // NOI18N
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 30, 150, 17);
+        jLabel3.setBounds(10, 30, 150, 18);
 
         m_jPriceBuy.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jPriceBuy);
         m_jPriceBuy.setBounds(160, 30, 80, 20);
         jPanel1.add(m_jCodetype);
-        m_jCodetype.setBounds(300, 0, 80, 19);
+        m_jCodetype.setBounds(300, 0, 80, 28);
 
         m_jUnitPrice.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jUnitPrice);
@@ -352,17 +372,29 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
 
         jLabel4.setText(AppLocal.getIntString("label.unitprice")); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(10, 90, 150, 17);
+        jLabel4.setBounds(10, 90, 150, 18);
 
         m_jAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jAmount);
         m_jAmount.setBounds(160, 60, 50, 20);
         jPanel1.add(m_jCboUnit);
-        m_jCboUnit.setBounds(220, 60, 110, 19);
+        m_jCboUnit.setBounds(220, 60, 110, 28);
 
         jLabel12.setText(AppLocal.getIntString("label.prodamount")); // NOI18N
         jPanel1.add(jLabel12);
         jLabel12.setBounds(10, 80, 150, 0);
+
+        jLabel5.setText(AppLocal.getIntString("label.unitprice")); // NOI18N
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(10, 130, 150, 18);
+
+        m_jCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jCategoryActionPerformed(evt);
+            }
+        });
+        jPanel1.add(m_jCategory);
+        m_jCategory.setBounds(160, 130, 170, 28);
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.prodgeneral"), jPanel1); // NOI18N
 
@@ -370,7 +402,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
 
         jLabel9.setText(AppLocal.getIntString("label.prodstockcost")); // NOI18N
         jPanel2.add(jLabel9);
-        jLabel9.setBounds(10, 20, 150, 17);
+        jLabel9.setBounds(10, 20, 150, 18);
 
         m_jstockcost.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel2.add(m_jstockcost);
@@ -378,7 +410,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
 
         jLabel10.setText(AppLocal.getIntString("label.prodstockvol")); // NOI18N
         jPanel2.add(jLabel10);
-        jLabel10.setBounds(10, 50, 150, 17);
+        jLabel10.setBounds(10, 50, 150, 18);
 
         m_jstockvolume.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel2.add(m_jstockvolume);
@@ -386,9 +418,9 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
 
         jLabel13.setText(AppLocal.getIntString("label.prodscale")); // NOI18N
         jPanel2.add(jLabel13);
-        jLabel13.setBounds(10, 80, 150, 17);
+        jLabel13.setBounds(10, 80, 150, 18);
         jPanel2.add(m_jScale);
-        m_jScale.setBounds(160, 80, 80, 22);
+        m_jScale.setBounds(160, 80, 80, 21);
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.prodstock"), jPanel2); // NOI18N
 
@@ -406,6 +438,10 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         jTabbedPane1.setBounds(10, 90, 560, 290);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void m_jCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jCategoryActionPerformed
+        // TODO add your handling code here:
+}//GEN-LAST:event_m_jCategoryActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel10;
@@ -414,6 +450,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -421,6 +458,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField m_jAmount;
+    private javax.swing.JComboBox m_jCategory;
     private javax.swing.JComboBox m_jCboUnit;
     private javax.swing.JComboBox m_jCodetype;
     private com.openbravo.data.gui.JImageEditor m_jImage;

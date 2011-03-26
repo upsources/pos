@@ -261,6 +261,14 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , null
             , new SerializerReadClass(CategoryInfo.class));
     }
+
+    public final SentenceList getCategoriesMaterialsList() {
+        return new StaticSentence(s
+                , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID < 0 ORDER BY NAME"
+                , null
+                , new SerializerReadClass(CategoryInfo.class));
+    }
+    
     public final SentenceList getLocationsList() {
         return new StaticSentence(s
             , "SELECT ID, NAME, ADDRESS FROM LOCATIONS ORDER BY NAME"
