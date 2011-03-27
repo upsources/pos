@@ -170,7 +170,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public final List<ProductInfoExt> getProductCatalog(String category) throws BasicException  {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
-              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ?" +
+              "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY > 0 AND P.CATEGORY = ?" +
               "ORDER BY C.NAME, O.CATORDER, P.REFERENCE"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).list(category);
@@ -180,7 +180,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
             , "SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O " + 
-              "WHERE P.ID NOT IN (SELECT DISTINCT PRODUCT FROM PRODUCTS_MAT) AND P.CATEGORY = ? " +
+              "WHERE P.ID NOT IN (SELECT DISTINCT PRODUCT FROM PRODUCTS_MAT) AND P.CATEGORY > 0 AND P.CATEGORY = ? " +
               "ORDER BY P.CATEGORY, P.NAME"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).list(category);
@@ -198,8 +198,8 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     //Productos de un grupo de tarifas
     public final List<MaterialProdInfo> getMaterialsProd(String prodID) throws BasicException  {
         String sAmount = "1 AS AMOUNT";
-        String sWhere = "WHERE P.CATEGORY = ? ";
-        String param = "-1";
+        String sWhere = "WHERE P.CATEGORY < ? ";
+        String param = "0";
         
         if (prodID != null && !prodID.equals("") ) {
             sAmount = "PM.AMOUNT";
@@ -218,7 +218,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Products list
     public final SentenceList getProductList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID, PRODUCTS PR LEFT OUTER JOIN CATEGORIES C ON PR.CATEGORY = C.ID WHERE P.CATEGORY NOT LIKE '0' AND P.CATEGORY NOT LIKE '-1' AND ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new QBFBuilder("SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID, PRODUCTS PR LEFT OUTER JOIN CATEGORIES C ON PR.CATEGORY = C.ID WHERE P.CATEGORY > 0 AND ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerReadClass(ProductInfoExt.class));
     }
@@ -235,7 +235,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Listados para combo de materiales
     public final SentenceList getMaterialList() {
         return new StaticSentence(s
-            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID WHERE P.CATEGORY = '-1'ORDER BY P.NAME"
+            , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID WHERE P.CATEGORY < 0 ORDER BY P.NAME"
             , null
             , new SerializerReadClass(ProductInfoExt.class));
     }
@@ -257,7 +257,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     
     public final SentenceList getCategoriesList() {
         return new StaticSentence(s
-            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID >= 0 ORDER BY NAME"
+            , "SELECT ID, NAME, IMAGE FROM CATEGORIES ORDER BY NAME"
             , null
             , new SerializerReadClass(CategoryInfo.class));
     }
