@@ -42,7 +42,7 @@ public class ProductFilterWithMaterials extends ProductFilter {
         // El modelo de categorias
         m_CategoryModel = new ComboBoxValModel();    
         List catlist = m_dlSales.getCategoriesList().list();
-        catlist.addAll(m_dlSales.getCategoryMaterial());
+        catlist.addAll(m_dlSales.getCategoryMaterials());
         //Eliminamos de la lista de categorias la categoria Composiciones
         for (int i=0; i < catlist.size(); i++) {
             catinfo = (CategoryInfo)catlist.get(i);

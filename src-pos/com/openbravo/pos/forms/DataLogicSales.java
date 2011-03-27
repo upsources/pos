@@ -111,7 +111,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Catalogo de productos
     public final List<CategoryInfo> getRootCategories() throws BasicException {
         return new PreparedSentence(s
-            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID >= 0 AND PARENTID IS NULL ORDER BY NAME"
+            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID < 0 AND PARENTID IS NULL ORDER BY NAME"
             , null
             , new SerializerReadClass(CategoryInfo.class)).list();
     }
@@ -160,9 +160,9 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerReadClass(CategoryInfo.class)).list();
     }
     
-    public final List<CategoryInfo> getCategoryMaterial() throws BasicException {
+    public final List<CategoryInfo> getCategoryMaterials() throws BasicException {
         return new PreparedSentence(s
-            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID = '-1'"
+            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID < 0"
             , null
             , new SerializerReadClass(CategoryInfo.class)).list();
     }

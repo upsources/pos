@@ -111,10 +111,10 @@ public class JCatalogSinglesAndMaterials extends JPanel implements ListSelection
         }
         
         // Add material category
-        java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList()).list();
-        if (materials.size() > 0) {
-            categories.add(m_dlSales.getCategoryMaterial().get(0));
-        }
+        //java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList()).list();
+        //if (materials.size() > 0) {
+        //    categories.add(m_dlSales.getCategoryMaterials().get(0));
+        //}
         
         // Select the first category
         m_jListCategories.setCellRenderer(new SmallCategoryRenderer());
@@ -183,7 +183,7 @@ public class JCatalogSinglesAndMaterials extends JPanel implements ListSelection
                 m_jProducts.add(jcurrTab, catid);
                 m_categoriesset.add(catid);
                 
-                if (catid.equals("-1")) {
+                if (Integer.parseInt(catid.trim()) < 0) {
                     // Add materials
                     java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList()).list();
                     for (ProductInfoExt m : materials) {
