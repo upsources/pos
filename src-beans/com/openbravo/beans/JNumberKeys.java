@@ -42,7 +42,7 @@ public class JNumberKeys extends javax.swing.JPanel {
         m_jMultiply.addActionListener(new MyKeyNumberListener('*'));
         m_jCE.addActionListener(new MyKeyNumberListener('\u007f'));
         m_jPlus.addActionListener(new MyKeyNumberListener('+'));        
-        //m_jMinus.addActionListener(new MyKeyNumberListener('-'));
+        m_jMinus.addActionListener(new MyKeyNumberListener('-'));
         m_jEquals.addActionListener(new MyKeyNumberListener('='));
     }
 
