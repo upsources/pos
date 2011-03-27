@@ -279,10 +279,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (m_oTicket != null) {
             // Asign preeliminary properties to the receipt
-            	m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo());
-           		m_oTicket.setActiveCash(m_App.getActiveCashIndex());
-            	m_oTicket.setDate(new Date());
-		  }
+            m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo());
+            m_oTicket.setActiveCash(m_App.getActiveCashIndex());
+            m_oTicket.setDate(new Date());
+        }
         
         CardLayout cl = (CardLayout)(getLayout());
         
