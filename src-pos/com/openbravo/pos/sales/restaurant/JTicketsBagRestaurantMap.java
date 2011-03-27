@@ -43,7 +43,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     private java.util.List<Floor> m_afloors;
     
     private JTicketsBagRestaurant m_restaurantmap;  
-    private JTicketsBagRestaurantRes m_jreservations;   
+    private JTicketsBagRestaurantRes m_jreservations;
     
     private Place m_PlaceCurrent;
     
@@ -310,7 +310,20 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                 m_jText.setText(null);
                 // Enable all tables
                 for (Place place : m_aplaces) {
-                    place.getButton().setEnabled(true);
+                    if (place.hasPeople()) {
+                        try {
+                            if (dlReceipts.getUserId(place.getId()).equals(m_App.getAppUserView().getUser().getUserInfo().getId()) || (m_App.getAppUserView().getUser().getRole().equals("0")) || (m_App.getAppUserView().getUser().getRole().equals("1"))) {
+                                place.getButton().setEnabled(true);
+                            } else {
+                                place.getButton().setEnabled(false);
+                            }
+                        } catch (BasicException e) {
+                            place.getButton().setEnabled(false);
+                        }
+                    } else {
+                            place.getButton().setEnabled(true);
+
+                    }
                 }
                 m_jbtnReservations.setEnabled(true);
             } else {
@@ -327,7 +340,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
             m_jText.setText(AppLocal.getIntString("label.restaurantmove", new Object[] {m_PlaceClipboard.getName()}));
             // Enable all empty tables and origin table.
             for (Place place : m_aplaces) {
-                place.getButton().setEnabled(true);
+                 place.getButton().setEnabled(true);
             }  
             m_jbtnReservations.setEnabled(false);
         }
@@ -377,6 +390,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
 
                         // table occupied
                         ticket = new TicketInfo();
+                        ticket.setUser(m_App.getAppUserView().getUser().getUserInfo());
                         try {
                             dlReceipts.insertSharedTicket(m_place.getId(), ticket);
                         } catch (BasicException e) {
@@ -397,8 +411,15 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
 
                     } else { // both != null
                         // Full table                
-                        // m_place.setPeople(true); // already true                           
-                        setActivePlace(m_place, ticket);                   
+                        // m_place.setPeople(true); // already true
+                        try {
+                            String cuid = m_App.getAppUserView().getUser().getUserInfo().getId();
+                            if (dlReceipts.getUserId(m_place.getId()).equals(m_App.getAppUserView().getUser().getUserInfo().getId()) || (m_App.getAppUserView().getUser().getRole().equals("0")) || (m_App.getAppUserView().getUser().getRole().equals("1"))) {
+                                setActivePlace(m_place, ticket);
+                            }
+                        } catch (BasicException e) {
+                            new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.tablefull")).show(JTicketsBagRestaurantMap.this);
+                        }
                     }
                 } else {
                     // receiving customer.
