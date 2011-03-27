@@ -120,17 +120,17 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         dp.setInt(2, new Integer(m_iLine));
         dp.setString(3, product.getId());
         dp.setString(4, product.getName());
-        dp.setBoolean(6, new Boolean(product.isCom()));
-        dp.setBoolean(7, new Boolean(m_bIsDiscount));
-        dp.setDouble(8, new Double(m_dMultiply));
-        dp.setDouble(9, new Double(m_dPrice));
-        dp.setString(10, tax.getId());
+        dp.setBoolean(5, new Boolean(product.isCom()));
+        dp.setBoolean(6, new Boolean(m_bIsDiscount));
+        dp.setDouble(7, new Double(m_dMultiply));
+        dp.setDouble(8, new Double(m_dPrice));
+        dp.setString(9, tax.getId());
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
             attributes.storeToXML(o, AppLocal.APP_NAME, "UTF-8");
-            dp.setBytes(12, o.toByteArray());
+            dp.setBytes(10, o.toByteArray());
         } catch (IOException e) {
-            dp.setBytes(12, null);
+            dp.setBytes(10, null);
         } 
     }
     
