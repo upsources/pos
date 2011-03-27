@@ -29,13 +29,22 @@ public class TicketProductInfo implements Serializable {
     
     private String id;
     private String name;
+    private String cat;
     private boolean com;
     
     public TicketProductInfo(String id, String name, boolean com) {
         this.id = id;
         this.name = name;
         this.com = com;
-    } 
+        this.cat = null;
+    }
+
+    public TicketProductInfo(String id, String name, boolean com, String prodCat) {
+        this.id = id;
+        this.name = name;
+        this.cat = prodCat;
+        this.com = com;
+    }
     
     public TicketProductInfo(String name) {
         this(null, name, false);
@@ -64,7 +73,11 @@ public class TicketProductInfo implements Serializable {
     public String getName() {
         return name;
     }     
-    
+
+    public String getCat() {
+        return cat;
+    }
+
     public void setName(String value) {
         if (id == null) {
             name = value;
@@ -83,5 +96,9 @@ public class TicketProductInfo implements Serializable {
         
     public String printName() {
          return name == null ? "" : StringUtils.encodeXML(name);
-    }    
+    }
+
+    public String printCat() {
+         return cat == null ? "" : StringUtils.encodeXML(cat);
+    }
 }

@@ -120,17 +120,17 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         dp.setInt(2, new Integer(m_iLine));
         dp.setString(3, product.getId());
         dp.setString(4, product.getName());
-        dp.setBoolean(5, new Boolean(product.isCom()));
-        dp.setBoolean(6, new Boolean(m_bIsDiscount));
-        dp.setDouble(7, new Double(m_dMultiply));
-        dp.setDouble(8, new Double(m_dPrice));
-        dp.setString(9, tax.getId());
+        dp.setBoolean(6, new Boolean(product.isCom()));
+        dp.setBoolean(7, new Boolean(m_bIsDiscount));
+        dp.setDouble(8, new Double(m_dMultiply));
+        dp.setDouble(9, new Double(m_dPrice));
+        dp.setString(10, tax.getId());
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
             attributes.storeToXML(o, AppLocal.APP_NAME, "UTF-8");
-            dp.setBytes(10, o.toByteArray()); 
+            dp.setBytes(12, o.toByteArray());
         } catch (IOException e) {
-            dp.setBytes(10, null);
+            dp.setBytes(12, null);
         } 
     }
     
@@ -139,20 +139,21 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_iLine = dr.getInt(2).intValue();
         String prodid = dr.getString(3);
         String prodname = dr.getString(4);
-        boolean prodcom = dr.getBoolean(5).booleanValue();
-        m_bIsDiscount = dr.getBoolean(6).booleanValue();
-        m_dMultiply = dr.getDouble(7).doubleValue();
-        m_dPrice = dr.getDouble(8).doubleValue();
-        tax = new TaxInfo(dr.getString(9), "", dr.getDouble(10).doubleValue());
+        String prodcat = dr.getString(5);
+        boolean prodcom = dr.getBoolean(6).booleanValue();
+        m_bIsDiscount = dr.getBoolean(7).booleanValue();
+        m_dMultiply = dr.getDouble(8).doubleValue();
+        m_dPrice = dr.getDouble(9).doubleValue();
+        tax = new TaxInfo(dr.getString(10), "", dr.getDouble(11).doubleValue());
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(11);
+            byte[] img = dr.getBytes(12);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
         } catch (IOException e) {
         }         
-        product = new TicketProductInfo(prodid, prodname, prodcom);
+        product = new TicketProductInfo(prodid, prodname, prodcom, prodcat);
     }
     
     public TicketLineInfo copyTicketLine() {
