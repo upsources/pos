@@ -100,9 +100,9 @@ public class DevicePrinterFPrint implements DevicePrinter {
             if(lines.get(index).equals("Items count:"))
                 ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Subtotal."))
-                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", "").replace(" LEI", ""));
             if(lines.get(index).equals("Total."))
-                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", "").replace(" LEI", ""));
             if(lines.get(index).equals("Cash"))
                 ticket.put("PaymentType", "0");
             if(lines.get(index).equals("Mag card"))
@@ -110,13 +110,13 @@ public class DevicePrinterFPrint implements DevicePrinter {
             if(lines.get(index).equals("Cheque"))
                 ticket.put("PaymentType", "3");
             if(lines.get(index).equals("Tendered:"))
-                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", "").replace(" LEI", ""));
             if(lines.get(index).equals("Change:"))
-                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", ""));
+                ticket.put(lines.get(index), lines.get(index+1).replace("¤ ", "").replace(" LEI", ""));
             if(lines.get(index).equals("Cashier:"))
                 ticket.put(lines.get(index), lines.get(index+1));
             if(lines.get(index).equals("Item") && lines.get(index+1).equals("Price"))
-                parseItems(index+4);
+                parseItems(index+5);
             index++;
         }
         lines.clear();
@@ -128,7 +128,6 @@ public class DevicePrinterFPrint implements DevicePrinter {
 
     private void parseItems(int startIndex) {
         int index = startIndex;
-        
         if(!lines.get(index).startsWith("---")) // Search for first line!
             return;
         else
@@ -141,10 +140,12 @@ public class DevicePrinterFPrint implements DevicePrinter {
             String[] item = {
                 lines.get(index), // name
                 lines.get(index+2).replace("x", ""), // count
-                lines.get(index+3).replace("¤ ", "") // price
+                lines.get(index+3).replace("¤ ", "").replace(" LEI", ""), // price
+                lines.get(index+4) // CMID
             };
+            
             items.add(item);
-            index+=4;
+            index+=5;
         }
     }
 
@@ -164,10 +165,11 @@ public class DevicePrinterFPrint implements DevicePrinter {
 
     private String formatItem(String[] item) {
         String msg = String.format( 
-            "S,1,______,_,__;%s;%s;%s;1;1;1;0;0;",
+            "S,1,______,_,__;%s;%s;%s;1;%s;1;0;0;",
             item[0].toUpperCase(),
             item[2].replace(",", "."),
-            item[1].replace(",", ".")
+            item[1].replace(",", "."),
+            item[3]
         );
         return msg;
     }
