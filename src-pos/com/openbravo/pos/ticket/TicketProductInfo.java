@@ -90,7 +90,11 @@ public class TicketProductInfo implements Serializable {
             com = value;
         }
     }    
-      
+
+    public String printName() {
+         return name == null ? "" : StringUtils.encodeXML(name);
+    }
+
     public String getMatCatId() {
         return matcatid;
     }    

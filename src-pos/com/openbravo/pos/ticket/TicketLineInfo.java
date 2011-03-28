@@ -330,6 +330,6 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
 
     public String printMatCat() {
-         return product.getMatCatId() == null ? "" : StringUtils.encodeXML(product.getMatCatId());
+        return product.getMatCatId() == null ? "" : StringUtils.encodeXML(product.getMatCatId());
     }
 }
