@@ -477,6 +477,9 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                         
                         if (ticket == null) {
                             try {
+                                if (ticketclip.getUser() == null) {
+                                    ticketclip.setUser(m_App.getAppUserView().getUser().getUserInfo());
+                                }
                                 dlReceipts.insertSharedTicket(m_place.getId(), ticketclip);
                                 m_place.setPeople(true);
                                 dlReceipts.deleteSharedTicket(m_PlaceClipboard.getId());

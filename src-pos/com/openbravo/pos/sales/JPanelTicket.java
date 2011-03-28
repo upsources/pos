@@ -1043,7 +1043,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 				if (ticket != null) {
             // Asigno los valores definitivos del ticket...
             	ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
-           		ticket.setActiveCash(m_App.getActiveCashIndex());
+           	ticket.setActiveCash(m_App.getActiveCashIndex());
             	ticket.setDate(new Date()); // Le pongo la fecha de cobro
 				}
 				
