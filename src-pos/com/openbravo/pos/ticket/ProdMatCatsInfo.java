@@ -17,14 +17,14 @@ public class ProdMatCatsInfo implements SerializableRead, IKeyed {
     }
 
     public void readValues(DataRead dr) throws BasicException {
-        c_ID = dr.getString(0);
+        c_ID = dr.getString(1);
     }
 
     public Object getKey() {
         return c_ID;
     }
 
-    public String getID() {
+    public String getMatCatID() {
         return c_ID;
     }
     

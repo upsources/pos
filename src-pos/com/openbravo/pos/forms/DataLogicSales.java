@@ -200,7 +200,8 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
 
     public final List<ProdMatCatsInfo> getProductMatCat( String id ) throws BasicException {
         return new PreparedSentence(s
-            , "SELECT PRODUCTS.CATEGORY FROM PRODUCTS_MAT, PRODUCTS WHERE PRODUCTS_MAT.MATERIAL = PRODUCTS.ID AND PRODUCTS_MAT.PRODUCT = ?"
+            , "SELECT P.CATEGORY FROM PRODUCTS P LEFT OUTER JOIN PRODUCTS_MAT PM ON " +
+              "PM.MATERIAL = P.ID WHERE PM.PRODUCT = ?"
             , SerializerWriteString.INSTANCE 
             , new SerializerReadClass(ProdMatCatsInfo.class)).list(id);
     }
