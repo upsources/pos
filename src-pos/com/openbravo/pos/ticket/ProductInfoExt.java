@@ -39,12 +39,14 @@ public class ProductInfoExt extends ProductInfo {
     
     protected BufferedImage m_Image;
     protected Properties attributes;
+    protected String matCatId;
     
     /** Creates new ProductInfo */
     public ProductInfoExt() {
         super();
         m_Image = null;
         attributes = new Properties();
+        matCatId = null;
     }
     
     @Override
@@ -88,5 +90,13 @@ public class ProductInfoExt extends ProductInfo {
     }
     public Properties getProperties() {
         return attributes;
+    }
+
+    public void setMatCat( String id ) {
+        matCatId = id;
+    }
+
+     public String getMatCat() {
+        return matCatId;
     }
 }

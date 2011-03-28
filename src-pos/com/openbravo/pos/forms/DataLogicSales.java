@@ -41,6 +41,7 @@ import com.openbravo.pos.ticket.SubgroupInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.DiscountInfo;
+import com.openbravo.pos.ticket.ProdMatCatsInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 
@@ -66,6 +67,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     protected Datas[] tariffprodDatas;
     protected Datas[] materialDatas;
     protected Datas[] categoryDatas;
+    protected Datas[] prodMatCatsDatas;
     
     /** Creates a new instance of SentenceContainerGeneric */
     public DataLogicSales() {
@@ -80,6 +82,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         tariffprodDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.DOUBLE};
         materialDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.BOOLEAN, Datas.DOUBLE, Datas.DOUBLE, Datas.STRING, Datas.STRING, Datas.IMAGE, Datas.DOUBLE, Datas.DOUBLE, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.BYTES};
         categoryDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.IMAGE};
+        prodMatCatsDatas = new Datas[] {Datas.STRING};
     }
     public void init(Session s){        
         this.s = s;  
@@ -193,6 +196,13 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE 
             , new SerializerReadClass(ProductInfoExt.class)).list(id);
+    }
+
+    public final List<ProdMatCatsInfo> getProductMatCat( String id ) throws BasicException {
+        return new PreparedSentence(s
+            , "SELECT PRODUCTS.CATEGORY FROM PRODUCTS_MAT, PRODUCTS WHERE PRODUCTS_MAT.MATERIAL = PRODUCTS.ID AND PRODUCTS_MAT.PRODUCT = ?"
+            , SerializerWriteString.INSTANCE 
+            , new SerializerReadClass(ProdMatCatsInfo.class)).list(id);
     }
     
     //Productos de un grupo de tarifas

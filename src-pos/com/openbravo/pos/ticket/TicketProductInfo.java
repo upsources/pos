@@ -29,21 +29,21 @@ public class TicketProductInfo implements Serializable {
     
     private String id;
     private String name;
-    private String cat;
     private boolean com;
+    private String matcatid;
     
     public TicketProductInfo(String id, String name, boolean com) {
         this.id = id;
         this.name = name;
         this.com = com;
-        this.cat = null;
+        this.matcatid = null;
     }
 
-    public TicketProductInfo(String id, String name, boolean com, String prodCat) {
+    public TicketProductInfo(String id, String name, boolean com, String matCatId) {
         this.id = id;
         this.name = name;
-        this.cat = prodCat;
         this.com = com;
+        this.matcatid = matCatId;
     }
     
     public TicketProductInfo(String name) {
@@ -55,7 +55,7 @@ public class TicketProductInfo implements Serializable {
     }
     
     public TicketProductInfo(ProductInfoExt product) {
-        this(product.getID(), product.getName(), product.isCom());
+        this(product.getID(), product.getName(), product.isCom(), product.getMatCat());
     }
     
     public TicketProductInfo copyTicketProduct() {
@@ -63,6 +63,7 @@ public class TicketProductInfo implements Serializable {
         p.id = id;
         p.name = name;
         p.com = com;
+        p.matcatid = matcatid;
         return p;        
     }
     
@@ -73,11 +74,7 @@ public class TicketProductInfo implements Serializable {
     public String getName() {
         return name;
     }     
-
-    public String getCat() {
-        return cat;
-    }
-
+    
     public void setName(String value) {
         if (id == null) {
             name = value;
@@ -93,12 +90,8 @@ public class TicketProductInfo implements Serializable {
             com = value;
         }
     }    
-        
-    public String printName() {
-         return name == null ? "" : StringUtils.encodeXML(name);
-    }
-
-    public String printCat() {
-         return cat == null ? "" : StringUtils.encodeXML(cat);
-    }
+      
+    public String getMatCatId() {
+        return matcatid;
+    }    
 }
