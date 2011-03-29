@@ -312,7 +312,9 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                 for (Place place : m_aplaces) {
                     if (place.hasPeople()) {
                         try {
-                            if (dlReceipts.getUserId(place.getId()).equals(m_App.getAppUserView().getUser().getUserInfo().getId()) || (m_App.getAppUserView().getUser().getRole().equals("0")) || (m_App.getAppUserView().getUser().getRole().equals("1"))) {
+                            String userId = m_App.getAppUserView().getUser().getUserInfo().getId();
+                            String receiptUserId = dlReceipts.getUserId(place.getId());
+                            if ( ( userId != null && receiptUserId != null && receiptUserId.equals( userId ) ) || (m_App.getAppUserView().getUser().getRole().equals("0")) || (m_App.getAppUserView().getUser().getRole().equals("1"))) {
                                 place.getButton().setEnabled(true);
                             } else {
                                 place.getButton().setEnabled(false);
@@ -414,7 +416,9 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
                         // m_place.setPeople(true); // already true
                         try {
                             String cuid = m_App.getAppUserView().getUser().getUserInfo().getId();
-                            if (dlReceipts.getUserId(m_place.getId()).equals(m_App.getAppUserView().getUser().getUserInfo().getId()) || (m_App.getAppUserView().getUser().getRole().equals("0")) || (m_App.getAppUserView().getUser().getRole().equals("1"))) {
+                            String userId = m_App.getAppUserView().getUser().getUserInfo().getId();
+                            String receiptUserId = dlReceipts.getUserId(m_place.getId());
+                            if ( ( userId != null && receiptUserId != null && receiptUserId.equals( userId ) ) || (m_App.getAppUserView().getUser().getRole().equals("0")) || (m_App.getAppUserView().getUser().getRole().equals("1"))) {
                                 setActivePlace(m_place, ticket);
                             }
                         } catch (BasicException e) {

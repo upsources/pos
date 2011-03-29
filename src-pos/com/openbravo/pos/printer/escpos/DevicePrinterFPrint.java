@@ -175,11 +175,17 @@ public class DevicePrinterFPrint implements DevicePrinter {
     }
 
     private String formatTotal() {
-        String msg = String.format(
-            "T,1,______,_,__;%s;%s;;;;",
-            ticket.get("PaymentType"),
-            ticket.get("Total.").replace(",", ".")
-        );
+        String payType = ticket.get("PaymentType");
+        String total = ticket.get("Total.");
+        String msg = null;
+
+        if( payType != null && total != null )
+            msg = String.format(
+                "T,1,______,_,__;%s;%s;;;;",
+                payType,
+                total.replace(",", ".")
+            );
+        
         return msg;
     }
 
