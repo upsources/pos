@@ -1,0 +1,18 @@
+bean = new com.openbravo.pos.reports.PanelReportBean();
+
+bean.setTitleKey("Menu.UserSell");
+bean.setReport("/com/openbravo/reports/usersale");
+bean.setResourceBundle("com/openbravo/reports/usersales_messages");
+
+bean.setSentence("SELECT PEOPLE.NAME, DATE_FORMAT(CURDATE(), '%d.%m.%Y %H:%i') AS STARTDATE, DATE_FORMAT(MAX(RECEIPTS.DATENEW), '%d.%m.%Y %H:%i') AS ENDDATE, " +
+                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) + SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * TAXES.RATE) AS TOTAL " +
+                "FROM PEOPLE, RECEIPTS, TICKETS, TICKETLINES, TAXES WHERE " +
+                "PEOPLE.ID = TICKETS.PERSON AND RECEIPTS.ID = TICKETS.ID " +
+                "AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID " +
+                "AND RECEIPTS.DATENEW >= CURDATE() " +
+                "GROUP BY PEOPLE.NAME ORDER BY PEOPLE.NAME");
+
+bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+bean.addField("STARTDATE", com.openbravo.data.loader.Datas.STRING);
+bean.addField("ENDDATE", com.openbravo.data.loader.Datas.STRING);
+bean.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
