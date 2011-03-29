@@ -141,7 +141,7 @@ public class DevicePrinterFPrint implements DevicePrinter {
                 lines.get(index), // name
                 lines.get(index+2).replace("x", ""), // count
                 lines.get(index+3).replace("¤ ", "").replace(" LEI", ""), // price
-                lines.get(index+4) // CMID
+                lines.get(index+4).replace("-", "") // CMID
             };
             
             items.add(item);
