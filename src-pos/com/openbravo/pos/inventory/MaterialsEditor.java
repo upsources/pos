@@ -373,7 +373,6 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         jLabel4.setText(AppLocal.getIntString("label.unitprice")); // NOI18N
         jPanel1.add(jLabel4);
         jLabel4.setBounds(10, 90, 150, 17);
-        jLabel4.getAccessibleContext().setAccessibleName("Price");
 
         m_jAmount.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel1.add(m_jAmount);
@@ -385,7 +384,7 @@ public class MaterialsEditor extends JPanel implements EditorRecord {
         jPanel1.add(jLabel12);
         jLabel12.setBounds(10, 80, 150, 0);
 
-        jLabel5.setText(AppLocal.getIntString("label.unitprice")); // NOI18N
+        jLabel5.setText(AppLocal.getIntString("label.catname")); // NOI18N
         jPanel1.add(jLabel5);
         jLabel5.setBounds(10, 130, 150, 17);
 
