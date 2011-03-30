@@ -28,6 +28,7 @@
     <class name="com.openbravo.pos.panels.JPanelPayments"/>
     <class name="com.openbravo.pos.panels.JPanelCloseMoney"/>
     <class name="/com/openbravo/reports/closedpos.bs"/>
+    <class name="/com/openbravo/reports/usersale.bs"/>
 
     <class name="payment.cash"/>
     <class name="payment.cheque"/>

@@ -23,6 +23,7 @@
  
 <permissions>
     <class name="com.openbravo.pos.sales.JPanelTicketSales"/>
+    <class name="/com/openbravo/reports/usersale.bs"/>
     
     <class name="payment.cash"/>
     <class name="payment.cheque"/>

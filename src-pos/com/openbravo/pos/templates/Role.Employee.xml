@@ -25,6 +25,7 @@
     <class name="com.openbravo.pos.sales.JPanelTicketSales"/>
     <class name="com.openbravo.pos.sales.JPanelTicketEdits"/>
     <class name="com.openbravo.pos.panels.JPanelPayments"/>
+    <class name="/com/openbravo/reports/usersale.bs"/>
     
     <class name="payment.cash"/>
     <class name="payment.cheque"/>
