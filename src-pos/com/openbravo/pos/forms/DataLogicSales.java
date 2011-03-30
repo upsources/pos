@@ -41,6 +41,7 @@ import com.openbravo.pos.ticket.SubgroupInfo;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import com.openbravo.pos.ticket.TaxInfo;
 import com.openbravo.pos.ticket.DiscountInfo;
+import com.openbravo.pos.ticket.ProdMatCatsInfo;
 import com.openbravo.pos.ticket.TicketInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 
@@ -66,6 +67,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     protected Datas[] tariffprodDatas;
     protected Datas[] materialDatas;
     protected Datas[] categoryDatas;
+    protected Datas[] prodMatCatsDatas;
     
     /** Creates a new instance of SentenceContainerGeneric */
     public DataLogicSales() {
@@ -80,6 +82,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         tariffprodDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.DOUBLE};
         materialDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.BOOLEAN, Datas.DOUBLE, Datas.DOUBLE, Datas.STRING, Datas.STRING, Datas.IMAGE, Datas.DOUBLE, Datas.DOUBLE, Datas.STRING, Datas.DOUBLE, Datas.DOUBLE, Datas.BYTES};
         categoryDatas = new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.IMAGE};
+        prodMatCatsDatas = new Datas[] {Datas.STRING};
     }
     public void init(Session s){        
         this.s = s;  
@@ -193,6 +196,14 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
               "ORDER BY O.CATORDER, P.NAME"
             , SerializerWriteString.INSTANCE 
             , new SerializerReadClass(ProductInfoExt.class)).list(id);
+    }
+
+    public final List<ProdMatCatsInfo> getProductMatCat( String id ) throws BasicException {
+        return new PreparedSentence(s
+            , "SELECT P.CATEGORY FROM PRODUCTS P LEFT OUTER JOIN PRODUCTS_MAT PM ON " +
+              "PM.MATERIAL = P.ID WHERE PM.PRODUCT = ?"
+            , SerializerWriteString.INSTANCE 
+            , new SerializerReadClass(ProdMatCatsInfo.class)).list(id);
     }
     
     //Productos de un grupo de tarifas
@@ -311,7 +322,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         
         for (TicketInfo t : tickets) {
             t.setLines(new PreparedSentence(s
-                , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.NAME, L.ISCOM, L.ISDISCOUNT, L.UNITS, L.PRICE, T.ID, T.RATE, L.ATTRIBUTES FROM TICKETLINES L, TAXES T WHERE L.TAXID = T.ID AND L.TICKET = ? ORDER BY L.TICKET, L.LINE"
+                , "SELECT L.TICKET, L.LINE, L.PRODUCT, L.NAME, L.CATEGORY, L.ISCOM, L.ISDISCOUNT, L.UNITS, L.PRICE, T.ID, T.RATE, L.ATTRIBUTES FROM TICKETLINES L, TAXES T WHERE L.TAXID = T.ID AND L.TICKET = ? ORDER BY L.TICKET, L.LINE"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(TicketLineInfo.class)).list(t.getId()));
             
@@ -645,7 +656,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
 
     public final SentenceList getMaterialQBF() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.CATEGORY, P.TAX, P.IMAGE, P.STOCKCOST, P.STOCKVOLUME, MU.UNIT, MU.AMOUNT, MU.PRICEBUY, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN MATERIALS_UNITS MU ON P.ID = MU.MATERIAL LEFT OUTER JOIN PRODUCTS_MAT PM ON P.ID = PM.MATERIAL WHERE P.CATEGORY = '-1' AND ?(QBF_FILTER) ORDER BY P.NAME", new String[] {"P.NAME", "P.PRICEBUY", "PM.PRODUCT"})
+            , new QBFBuilder("SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.CATEGORY, P.TAX, P.IMAGE, P.STOCKCOST, P.STOCKVOLUME, MU.UNIT, MU.AMOUNT, MU.PRICEBUY, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN MATERIALS_UNITS MU ON P.ID = MU.MATERIAL LEFT OUTER JOIN PRODUCTS_MAT PM ON P.ID = PM.MATERIAL WHERE P.CATEGORY < 0 AND ?(QBF_FILTER) ORDER BY P.NAME", new String[] {"P.NAME", "P.PRICEBUY", "PM.PRODUCT"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING})
             , new SerializerReadBasic(materialDatas));
     }

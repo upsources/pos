@@ -30,12 +30,21 @@ public class TicketProductInfo implements Serializable {
     private String id;
     private String name;
     private boolean com;
+    private String matcatid;
     
     public TicketProductInfo(String id, String name, boolean com) {
         this.id = id;
         this.name = name;
         this.com = com;
-    } 
+        this.matcatid = null;
+    }
+
+    public TicketProductInfo(String id, String name, boolean com, String matCatId) {
+        this.id = id;
+        this.name = name;
+        this.com = com;
+        this.matcatid = matCatId;
+    }
     
     public TicketProductInfo(String name) {
         this(null, name, false);
@@ -46,7 +55,7 @@ public class TicketProductInfo implements Serializable {
     }
     
     public TicketProductInfo(ProductInfoExt product) {
-        this(product.getID(), product.getName(), product.isCom());
+        this(product.getID(), product.getName(), product.isCom(), product.getMatCat());
     }
     
     public TicketProductInfo copyTicketProduct() {
@@ -54,6 +63,7 @@ public class TicketProductInfo implements Serializable {
         p.id = id;
         p.name = name;
         p.com = com;
+        p.matcatid = matcatid;
         return p;        
     }
     
@@ -80,8 +90,12 @@ public class TicketProductInfo implements Serializable {
             com = value;
         }
     }    
-        
+
     public String printName() {
          return name == null ? "" : StringUtils.encodeXML(name);
+    }
+
+    public String getMatCatId() {
+        return matcatid;
     }    
 }

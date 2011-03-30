@@ -128,7 +128,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         try {
             ByteArrayOutputStream o = new ByteArrayOutputStream();
             attributes.storeToXML(o, AppLocal.APP_NAME, "UTF-8");
-            dp.setBytes(10, o.toByteArray()); 
+            dp.setBytes(10, o.toByteArray());
         } catch (IOException e) {
             dp.setBytes(10, null);
         } 
@@ -139,20 +139,21 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_iLine = dr.getInt(2).intValue();
         String prodid = dr.getString(3);
         String prodname = dr.getString(4);
-        boolean prodcom = dr.getBoolean(5).booleanValue();
-        m_bIsDiscount = dr.getBoolean(6).booleanValue();
-        m_dMultiply = dr.getDouble(7).doubleValue();
-        m_dPrice = dr.getDouble(8).doubleValue();
-        tax = new TaxInfo(dr.getString(9), "", dr.getDouble(10).doubleValue());
+        String prodcat = dr.getString(5);
+        boolean prodcom = dr.getBoolean(6).booleanValue();
+        m_bIsDiscount = dr.getBoolean(7).booleanValue();
+        m_dMultiply = dr.getDouble(8).doubleValue();
+        m_dPrice = dr.getDouble(9).doubleValue();
+        tax = new TaxInfo(dr.getString(10), "", dr.getDouble(11).doubleValue());
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(11);
+            byte[] img = dr.getBytes(12);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
         } catch (IOException e) {
         }         
-        product = new TicketProductInfo(prodid, prodname, prodcom);
+        product = new TicketProductInfo(prodid, prodname, prodcom, prodcat);
     }
     
     public TicketLineInfo copyTicketLine() {
@@ -326,5 +327,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     }
     public String printValue() {
         return Formats.CURRENCY.formatValue(new Double(getValue()));
+    }
+
+    public String printMatCat() {
+        return product.getMatCatId() == null ? "" : StringUtils.encodeXML(product.getMatCatId());
     }
 }
