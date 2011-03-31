@@ -30,17 +30,18 @@ import com.openbravo.data.loader.SerializerWriteBasic;
 public class JParamsPeople extends javax.swing.JPanel implements ReportEditorCreator {
 
     public String userName;
+    private AppView app;
 
     /** Creates new form JParamsClosedPos */
     public JParamsPeople() {
-        initComponents();
     }
 
     public void init(AppView app) {
-        userName = app.getAppUserView().getUser().getId();
+        this.app = app;
     }
 
     public void activate() throws BasicException {
+        userName = app.getAppUserView().getUser().getId();
     }
     
     public SerializerWrite getSerializerWrite() {
@@ -59,8 +60,5 @@ public class JParamsPeople extends javax.swing.JPanel implements ReportEditorCre
             user
         };
     }    
-    
-    private void initComponents() {
-    }
 }
 

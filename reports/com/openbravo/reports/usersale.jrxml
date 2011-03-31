@@ -37,10 +37,6 @@ GROUP BY PAYMENTS.PAYMENT]]>
 		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
-	<variable name="PARTIALTOTAL" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
-		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
-	</variable>
 	<background>
 		<band isSplitAllowed="true"/>
 	</background>
