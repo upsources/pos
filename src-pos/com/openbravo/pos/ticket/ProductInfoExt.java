@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.ImageUtils;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -92,8 +93,9 @@ public class ProductInfoExt extends ProductInfo {
         return attributes;
     }
 
-    public void setMatCat( String id ) {
-        matCatId = id;
+    public void setMatCat( List<ProdMatCatsInfo> id ) {
+        if( id.size() > 0 )
+            matCatId = id.get(0).getMatCatID();
     }
 
      public String getMatCat() {
