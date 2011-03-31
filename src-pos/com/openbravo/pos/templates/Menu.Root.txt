@@ -58,6 +58,7 @@
     submenu = group.addSubmenu("/com/openbravo/images/contents.png", "Menu.SalesManagement", "com.openbravo.pos.forms.MenuSalesManagement");
         submenu.addTitle("Menu.SalesManagement.Reports");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.UserSells", "/com/openbravo/reports/usersales.bs");
+        submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.UserSale", "/com/openbravo/reports/usersale.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.ClosedProducts", "/com/openbravo/reports/closedproducts.bs");
         submenu.addPanel("/com/openbravo/images/appointment.png", "Menu.ReportTaxes", "/com/openbravo/reports/taxes.bs");
         submenu.addPanel("/com/openbravo/images/cakes3d.png", "Menu.SalesChart", "/com/openbravo/reports/chartsales.bs");
