@@ -1,6 +1,6 @@
 bean = new com.openbravo.pos.reports.PanelReportBean();
 
-bean.setTitleKey("Menu.UserSell");
+bean.setTitleKey("Menu.UserSale");
 bean.setReport("/com/openbravo/reports/usersale");
 bean.setResourceBundle("com/openbravo/reports/usersales_messages");
 
