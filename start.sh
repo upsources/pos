@@ -22,7 +22,7 @@
 
 DIRNAME=`dirname $0`
 
-CP=$DIRNAME/opentpv.jar
+CP=$DIRNAME/upsourcesPOS.jar
 
 CP=$CP:$DIRNAME/lib/jasperreports-3.0.0.jar
 CP=$CP:$DIRNAME/lib/jcommon-1.0.0.jar

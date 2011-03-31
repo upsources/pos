@@ -27,7 +27,7 @@ REM    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
 set DIRNAME=%~dp0
 
-set CP="%DIRNAME%opentpv.jar"
+set CP="%DIRNAME%upsourcesPOS.jar"
 
 set CP=%CP%;"%DIRNAME%lib/jasperreports-3.0.0.jar"
 set CP=%CP%;"%DIRNAME%lib/jcommon-1.0.0.jar"
