@@ -116,7 +116,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
             }
         }         
 
-        m_jButtonPrint.setSelected(printselected);
+        m_jButtonPrint.setSelected(true);
+        m_jButtonPrint.setEnabled(false); // Do not allow changing it's state
         m_jButtonPrint1.setSelected(printselectedFisc);
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
         
@@ -132,7 +133,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         }
         
         // gets the print button state
-        printselected = m_jButtonPrint.isSelected();
+        printselected = true; // This one shoul always be enabled
         printselectedFisc = m_jButtonPrint1.isSelected();
         
         // remove all tabs        
