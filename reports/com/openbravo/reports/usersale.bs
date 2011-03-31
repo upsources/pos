@@ -10,7 +10,6 @@ bean.setSentence("SELECT PEOPLE.NAME, PAYMENTS.PAYMENT, SUM(PAYMENTS.TOTAL) AS T
                  "DATE(RECEIPTS.DATENEW) = DATE(NOW()) AND PAYMENTS.RECEIPT = RECEIPTS.ID AND ?(QBF_FILTER) " +
                  "GROUP BY PAYMENTS.PAYMENT");
 
-bean.addParameter("PEOPLE.ID");
 bean.addParameter("TICKETS.PERSON");
 param = new com.openbravo.pos.reports.JParamsPeople();
 bean.addQBFFilter(param);
