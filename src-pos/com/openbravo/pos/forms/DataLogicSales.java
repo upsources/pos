@@ -275,7 +275,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
 
     public final SentenceList getCategoriesProductsList() {
         return new StaticSentence(s
-            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID > 0 AND PARENTID IS NOT NULL ORDER BY NAME"
+            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID IS NOT NULL AND PARENTID IS NOT NULL ORDER BY NAME"
             , null
             , new SerializerReadClass(CategoryInfo.class));
     }
