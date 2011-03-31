@@ -84,7 +84,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         m_matlist = new ArrayList();
              
         // El modelo de categorias
-        m_sentcat = dlSales.getCategoriesList();
+        m_sentcat = dlSales.getCategoriesProductsList();
         m_CategoryModel = new ComboBoxValModel();
         
         // El modelo de impuestos
