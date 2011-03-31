@@ -6,11 +6,12 @@ bean.setResourceBundle("com/openbravo/reports/usersales_messages");
 
 bean.setSentence("SELECT PEOPLE.NAME, PAYMENTS.PAYMENT, SUM(PAYMENTS.TOTAL) AS TOTAL, NOW() AS DATE " +
                  "FROM PEOPLE, PAYMENTS, RECEIPTS, TICKETS WHERE " +
-                 "PEOPLE.ID = TICKETS.PERSON AND TICKETS.ID = RECEIPTS.ID AND " +
+                 "PEOPLE.ID = TICKETS.PERSON AND PAYMENTS.RECEIPT = RECEIPTS.ID AND TICKETS.ID = RECEIPTS.ID AND " +
                  "DATE(RECEIPTS.DATENEW) = DATE(NOW()) AND PAYMENTS.RECEIPT = RECEIPTS.ID AND ?(QBF_FILTER) " +
                  "GROUP BY PAYMENTS.PAYMENT");
 
 bean.addParameter("PEOPLE.ID");
+bean.addParameter("TICKETS.PERSON");
 param = new com.openbravo.pos.reports.JParamsPeople();
 bean.addQBFFilter(param);
 

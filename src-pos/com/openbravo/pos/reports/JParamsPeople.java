@@ -54,11 +54,11 @@ public class JParamsPeople extends javax.swing.JPanel implements ReportEditorCre
     
     public Object createValue() throws BasicException {
         Object user = Formats.STRING.parseValue(userName);
-        System.out.println( user.toString() );
-        return new Object[] {
-            user == null ? QBFCompareEnum.COMP_NONE : QBFCompareEnum.COMP_GREATEROREQUALS,
-            user
-        };
+        if (user == null) {
+            return new Object[] {QBFCompareEnum.COMP_NONE, null};
+        } else {
+            return new Object[] {QBFCompareEnum.COMP_RE, user};
+        }
     }    
 }
 
