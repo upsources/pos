@@ -182,8 +182,14 @@ public class JCatalogSinglesAndMaterials extends JPanel implements ListSelection
                 JCatalogTab jcurrTab = new JCatalogTab();
                 m_jProducts.add(jcurrTab, catid);
                 m_categoriesset.add(catid);
-                
-                if (Integer.parseInt(catid.trim()) < 0) {
+
+                Integer catId = null;
+                try {
+                     catId = Integer.parseInt(catid.trim());
+                } catch (NumberFormatException e) {
+                }
+
+                if ( catId != null && catId < 0) {
                     // Add materials
                     java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList()).list();
                     for (ProductInfoExt m : materials) {
