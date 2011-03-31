@@ -4,16 +4,18 @@ bean.setTitleKey("Menu.UserSale");
 bean.setReport("/com/openbravo/reports/usersale");
 bean.setResourceBundle("com/openbravo/reports/usersales_messages");
 
-bean.setSentence("SELECT PEOPLE.NAME, DATE_FORMAT(CURDATE(), '%d.%m.%Y %H:%i') AS STARTDATE, " +
-                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) + SUM(TICKETLINES.UNITS * TICKETLINES.PRICE * TAXES.RATE) AS TOTAL, " +
-                "PAYMENTS.PAYMENT " +
-                "FROM PEOPLE, RECEIPTS, TICKETS, TICKETLINES, TAXES, PAYMENTS WHERE " +
-                "PEOPLE.ID = TICKETS.PERSON AND RECEIPTS.ID = TICKETS.ID " +
-                "AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.TAXID = TAXES.ID AND PAYMENTS.RECEIPT = RECEIPTS.ID " +
-                "AND RECEIPTS.DATENEW >= CURDATE() " +
-                "GROUP BY PEOPLE.NAME, PAYMENTS.PAYMENT ORDER BY PEOPLE.NAME, PAYMENTS.PAYMENT");
+bean.setSentence("SELECT PEOPLE.NAME, PAYMENTS.PAYMENT, SUM(PAYMENTS.TOTAL) AS TOTAL, NOW() AS DATE " +
+                 "FROM PEOPLE, PAYMENTS, RECEIPTS, TICKETS WHERE " +
+                 "PEOPLE.ID = TICKETS.PERSON AND TICKETS.ID = RECEIPTS.ID AND " +
+                 "DATE(RECEIPTS.DATENEW) = DATE(NOW()) AND ?(QBF_FILTER) " +
+                 "GROUP BY PAYMENTS.PAYMENT");
+
+bean.addParameter("PEOPLE.ID");
+param = new com.openbravo.pos.reports.JParamsPeople();
+bean.addQBFFilter(param);
+
 
 bean.addField("NAME", com.openbravo.data.loader.Datas.STRING);
-bean.addField("STARTDATE", com.openbravo.data.loader.Datas.STRING);
 bean.addField("PAYMENT", com.openbravo.data.loader.Datas.STRING);
 bean.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+bean.addField("DATE", com.openbravo.data.loader.Datas.TIMESTAMP);
