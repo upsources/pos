@@ -183,12 +183,12 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
         return new PreparedSentence(s
             , "SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
               "FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID LEFT OUTER JOIN CATEGORIES C ON P.CATEGORY = C.ID, PRODUCTS_CAT O " + 
-              "WHERE P.ID NOT IN (SELECT DISTINCT PRODUCT FROM PRODUCTS_MAT) AND P.CATEGORY > 0 AND P.CATEGORY = ? " +
+              "WHERE P.ID NOT IN (SELECT DISTINCT PRODUCT FROM PRODUCTS_MAT) AND P.CATEGORY = ? " +
               "ORDER BY P.CATEGORY, P.NAME"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(ProductInfoExt.class)).list(category);
     }
-    
+
     public final List<ProductInfoExt> getProductComments(String id) throws BasicException {
         return new PreparedSentence(s
             , "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES " +
@@ -229,7 +229,7 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     // Products list
     public final SentenceList getProductList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID, PRODUCTS PR LEFT OUTER JOIN CATEGORIES C ON PR.CATEGORY = C.ID WHERE P.CATEGORY > 0 AND ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
+            , new QBFBuilder("SELECT DISTINCT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAX, T.NAME, T.RATE, P.CATEGORY, P.IMAGE, P.ATTRIBUTES FROM PRODUCTS P LEFT OUTER JOIN TAXES T ON P.TAX = T.ID, PRODUCTS PR LEFT OUTER JOIN CATEGORIES C ON PR.CATEGORY = C.ID WHERE ?(QBF_FILTER) ORDER BY P.REFERENCE", new String[] {"P.NAME", "P.PRICEBUY", "P.PRICESELL", "P.CATEGORY", "P.CODE"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerReadClass(ProductInfoExt.class));
     }

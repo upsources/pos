@@ -100,20 +100,20 @@ public class JCatalogSinglesAndMaterials extends JPanel implements ListSelection
         showingcategory = null;
 
         // Load all categories.
-        java.util.List<CategoryInfo> categories = m_dlSales.getRootCategories(); 
+        java.util.List<CategoryInfo> categories = m_dlSales.getCategoryMaterials();
         
         //Erase Composition category from list
-        for (int i=0; i < categories.size(); i++) {
-            if ( ((CategoryInfo)categories.get(i)).getID().equals("0")) {
-                categories.remove(i);
-                break;
-            } 
-        }
+        //for (int i=0; i < categories.size(); i++) {
+        //    if ( ((CategoryInfo)categories.get(i)).getID().equals("0")) {
+        //        categories.remove(i);
+        //        break;
+        //    }
+        //}
         
         // Add material category
         //java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList()).list();
         //if (materials.size() > 0) {
-        //    categories.add(m_dlSales.getCategoryMaterials().get(0));
+        //    categories.add(m_dlSales.getCategoryMaterials());
         //}
         
         // Select the first category
@@ -189,24 +189,24 @@ public class JCatalogSinglesAndMaterials extends JPanel implements ListSelection
                 } catch (NumberFormatException e) {
                 }
 
-                if ( catId != null && catId < 0) {
+                if ( catId != null) {
                     // Add materials
-                    java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList()).list();
+                    java.util.List<ProductInfoExt> materials = (m_dlSales.getProductStockable(catid));
                     for (ProductInfoExt m : materials) {
                         jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(m.getImage(), m.getName())), new SelectedAction(m));
                     }
-                } else {
+                //} else {
                     // Add subcategories
-                    java.util.List<CategoryInfo> categories = m_dlSales.getSubcategories(catid);
-                    for (CategoryInfo cat : categories) {
-                        jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(cat.getImage(), cat.getName())), new SelectedCategory(cat));
-                    }
-
+                //    java.util.List<CategoryInfo> categories = m_dlSales.getSubcategories(catid);
+                //    for (CategoryInfo cat : categories) {
+                //        jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(cat.getImage(), cat.getName())), new SelectedCategory(cat));
+                //    }
+                //
                     // Add products
-                    java.util.List<ProductInfoExt> products = m_dlSales.getProductStockable(catid);
-                    for (ProductInfoExt prod : products) {
-                        jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(prod.getImage(), getProductLabel(prod))), new SelectedAction(prod));
-                    }
+                //    java.util.List<ProductInfoExt> products = m_dlSales.getProductStockable(catid);
+                //    for (ProductInfoExt prod : products) {
+                //        jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(prod.getImage(), getProductLabel(prod))), new SelectedAction(prod));
+                //    }
                 }
             }
             
