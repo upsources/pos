@@ -164,7 +164,7 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         List l;
         
         // El modelo de categorias
-        m_sentcat = m_dlSales.getCategoriesList();
+        m_sentcat = m_dlSales.getCategoriesListWOM();
         try {
             l = m_sentcat.list();
         } catch (BasicException ex) {

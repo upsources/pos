@@ -69,7 +69,7 @@ public class CategoriesPanel extends JPanelTable {
     }
     
     public ListProvider getListProvider() {
-        return new ListProviderCreator(m_dlSales.getCategories(), null);
+        return new ListProviderCreator(m_dlSales.getCategoriesWOM(), null);
     }
     
     public SaveProvider getSaveProvider() {

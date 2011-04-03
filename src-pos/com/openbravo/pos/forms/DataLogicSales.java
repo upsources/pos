@@ -273,6 +273,13 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerReadClass(CategoryInfo.class));
     }
 
+    public final SentenceList getCategoriesListWOM() { //Without materials
+        return new StaticSentence(s
+            , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID >= 0 ORDER BY NAME"
+            , null
+            , new SerializerReadClass(CategoryInfo.class));
+    }
+
     public final SentenceList getCategoriesProductsList() {
         return new StaticSentence(s
             , "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID IS NOT NULL AND PARENTID IS NOT NULL ORDER BY NAME"
@@ -1006,6 +1013,13 @@ public abstract class DataLogicSales extends BeanFactoryDataSingle {
     public final SentenceList getCategories() {
         return new PreparedSentence(s
             , "SELECT ID, NAME, PARENTID, IMAGE FROM CATEGORIES"
+            , null
+            , new SerializerReadBasic(categoryDatas));
+    }
+
+    public final SentenceList getCategoriesWOM() { //Without materials
+        return new PreparedSentence(s
+            , "SELECT ID, NAME, PARENTID, IMAGE FROM CATEGORIES WHERE ID >= 0"
             , null
             , new SerializerReadBasic(categoryDatas));
     }
