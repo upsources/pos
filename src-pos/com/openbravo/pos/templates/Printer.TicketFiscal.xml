@@ -14,12 +14,12 @@
     <ticket printer = "2">
         #foreach ($ticketline in $ticket.getLines())
         <line>
-            <text>S,1,______,_,__;${ticketline.getProduct().printName().toUpperCase()};${ticketline.getPrice()};${ticketline.printMultiply().replace(",", ".")};1;${ticketline.printMatCat().replace("-", "")};1;0;0;</text>
+            <text>S,1,______,_,__;${ticketline.getProduct().printName().toUpperCase()};${ticketline.getPriceTax()};${ticketline.printMultiply().replace(",", ".")}.000;1;${ticketline.printMatCat().replace("-", "")};1;0;0;</text>
         </line>
         #end
 
         <line>
-            <text>T,1,______,_,__;${ticket.printTotal().replace(",", ".").replace(" LEI", "")};#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0#end#if ($paymentline.name == "paperin")3#end#if ($paymentline.name == "magcard")2#end#if ($paymentline.name == "cheque")1#end#end;;;</text>
+            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0#end#if ($paymentline.name == "paperin")3#end#if ($paymentline.name == "magcard")2#end#if ($paymentline.name == "cheque")1#end#end;;;</text>
         </line>
     </ticket>
 
