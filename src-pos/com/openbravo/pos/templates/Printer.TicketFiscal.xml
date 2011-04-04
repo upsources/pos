@@ -14,7 +14,7 @@
     <ticket printer = "2">
         #foreach ($ticketline in $ticket.getLines())
         <line>
-            <text>S,1,______,_,__;${ticketline.getProduct().printName().toUpperCase()};${ticketline.getPriceTax()};${ticketline.printMultiply().replace(",", ".")}.000;1;${ticketline.printMatCat().replace("-", "")};1;0;0;</text>
+            <text>S,1,______,_,__;${ticketline.getProduct().printName().toUpperCase()};${ticketline.getPriceTax()};${ticketline.printMultiply().replace(",", ".")}.000;${ticketline.printMatCat().replace("-", "")};1;1;0;0;</text>
         </line>
         #end
 
