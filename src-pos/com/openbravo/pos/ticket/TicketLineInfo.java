@@ -139,21 +139,20 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_iLine = dr.getInt(2).intValue();
         String prodid = dr.getString(3);
         String prodname = dr.getString(4);
-        String prodcat = dr.getString(5);
-        boolean prodcom = dr.getBoolean(6).booleanValue();
-        m_bIsDiscount = dr.getBoolean(7).booleanValue();
-        m_dMultiply = dr.getDouble(8).doubleValue();
-        m_dPrice = dr.getDouble(9).doubleValue();
-        tax = new TaxInfo(dr.getString(10), "", dr.getDouble(11).doubleValue());
+       boolean prodcom = dr.getBoolean(5).booleanValue();
+        m_bIsDiscount = dr.getBoolean(6).booleanValue();
+        m_dMultiply = dr.getDouble(7).doubleValue();
+        m_dPrice = dr.getDouble(8).doubleValue();
+        tax = new TaxInfo(dr.getString(9), "", dr.getDouble(10).doubleValue());
         attributes = new Properties();
         try {
-            byte[] img = dr.getBytes(12);
+            byte[] img = dr.getBytes(11);
             if (img != null) {
                 attributes.loadFromXML(new ByteArrayInputStream(img));
             }
         } catch (IOException e) {
         }         
-        product = new TicketProductInfo(prodid, prodname, prodcom, prodcat);
+        product = new TicketProductInfo(prodid, prodname, prodcom);
     }
     
     public TicketLineInfo copyTicketLine() {
