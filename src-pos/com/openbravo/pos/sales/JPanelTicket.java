@@ -23,6 +23,8 @@
 
 package com.openbravo.pos.sales;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -279,6 +281,12 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         if (m_oTicket != null) {
             // Asign preeliminary properties to the receipt
+            if (m_oTicket.getTicketId() == 0) {
+                    try {
+                        m_oTicket.setTicketId(dlSales.getNextTicketIndex().intValue());
+                    } catch (BasicException e) {
+                    }
+            }
             m_oTicket.setUser(m_App.getAppUserView().getUser().getUserInfo());
             m_oTicket.setActiveCash(m_App.getActiveCashIndex());
             m_oTicket.setDate(new Date());
