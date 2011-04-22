@@ -73,8 +73,8 @@ public class JCatalogSinglesAndMaterials extends JPanel implements ListSelection
         m_jListCategories.addListSelectionListener(this);                
         m_jscrollcat.getVerticalScrollBar().setPreferredSize(new Dimension(35, 35));
         
-        tnbcat = new ThumbNailBuilder(32, 32, "com/openbravo/images/folder_yellow.png");           
-        tnbbutton = new ThumbNailBuilder(width, height, "com/openbravo/images/package.png");
+        tnbcat = new ThumbNailBuilder(32, 32, "com/openbravo/images/folder_yellow.png");
+        tnbbutton = new ThumbNailBuilder(180, 32, "com/openbravo/images/package.png");
     }
     
     public Component getComponent() {
