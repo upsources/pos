@@ -1068,9 +1068,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     ? "Printer.Ticket"
                     : "Printer.Ticket2", ticket, ticketext);
             // Fiscal
-            printTicket(paymentdialog.isPrintFiscalSelected()
-                    ? "Printer.TicketFiscal"
-                    : "Printer.TicketFiscal2", ticket, ticketext);
+            if (paymentdialog.isPrintFiscalSelected())
+                printTicket("Printer.TicketFiscal", ticket, ticketext);
 
             ticket.resetPayments();
             ticketext = "";

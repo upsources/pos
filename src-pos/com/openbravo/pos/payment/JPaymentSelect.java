@@ -67,7 +67,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     protected JPaymentSelect(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
         initComponents();       
-        getRootPane().setDefaultButton(m_jButtonOK); 
+        getRootPane().setDefaultButton(m_jButtonOK);
     }    
     
     public void init(AppView app) {
@@ -115,7 +115,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
                 customerext = null;      
             }
         }         
-
+        
         m_jButtonPrint.setSelected(true);
         m_jButtonPrint.setEnabled(false); // Do not allow changing it's state
         m_jButtonPrint1.setSelected(printselectedFisc);
@@ -460,6 +460,15 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         
         if (m_jTabPayment.getSelectedComponent() != null) {
             ((JPaymentInterface) m_jTabPayment.getSelectedComponent()).activate(customerext, m_dTotal - m_aPaymentInfo.getTotal());
+            String activePayment = m_jTabPayment.getSelectedComponent().getClass().getName().replace("com.openbravo.pos.payment.", "");
+            if (activePayment.equals("JPaymentFree")) {
+                 m_jButtonPrint1.setSelected(false);
+                 m_jButtonPrint1.setEnabled(false);
+            }
+            else {
+                m_jButtonPrint1.setSelected(true);
+                m_jButtonPrint1.setEnabled(true);
+            }
         }
         
     }//GEN-LAST:event_m_jTabPaymentStateChanged
