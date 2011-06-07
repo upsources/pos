@@ -51,8 +51,8 @@ public class MaterialFilter extends javax.swing.JPanel implements EditorCreator 
         m_sentprods = dlSales.getProductList();
         m_ProdsModel = new ComboBoxValModel();
          
-        m_jCboName.setModel(new ListQBFModelNumber());
-        m_jCboPriceBuy.setModel(new ListQBFModelNumber());
+        m_jCboName.setModel(ListQBFModelNumber.getMandatoryNumber());
+        m_jCboPriceBuy.setModel(ListQBFModelNumber.getMandatoryNumber());
     }
     
     public void activate() throws BasicException {

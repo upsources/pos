@@ -262,11 +262,12 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                         dr.getString(1), 
                         dr.getString(2),
                         dr.getString(3),
-                        dr.getString(4),
+                        dr.getTimestamp(4),
                         dr.getString(5),
-                        dr.getDouble(6).doubleValue(),
-                        dr.getBoolean(7).booleanValue(),
-                        dr.getInt(8));
+                        dr.getString(6),
+                        dr.getDouble(7).doubleValue(),
+                        dr.getBoolean(8).booleanValue(),
+                        dr.getInt(9));
             }});
     }
     public final SentenceList getCategoriesList() {
