@@ -45,7 +45,8 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     private Properties attributes;
     private String productid;
     private String attsetinstid;
-
+    private ProductInfoExt m_Product;
+    private boolean m_bSubproduct;
     /** Creates new TicketLineInfo */
     public TicketLineInfo(String productid, double dMultiply, double dPrice, TaxInfo tax, Properties props) {
         init(productid, null, dMultiply, dPrice, tax, props);
@@ -81,6 +82,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         if (product == null) {
             pid = null;
         } else {
+            // MSL : add Product object
+            m_Product = product;
+
             pid = product.getID();
             attributes.setProperty("product.name", product.getName());
             attributes.setProperty("product.com", product.isCom() ? "true" : "false");
@@ -90,6 +94,10 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             attributes.setProperty("product.taxcategoryid", product.getTaxCategoryID());
             if (product.getCategoryID() != null) {
                 attributes.setProperty("product.categoryid", product.getCategoryID());
+            }
+            // MSL : get reference
+            if (product.getReference() != null) {
+                attributes.setProperty("product.reference", product.getReference());
             }
         }
         init(pid, null, dMultiply, dPrice, tax, attributes);
@@ -145,10 +153,8 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         m_iLine = dr.getInt(2).intValue();
         productid = dr.getString(3);
         attsetinstid = dr.getString(4);
-
         multiply = dr.getDouble(5);
         price = dr.getDouble(6);
-
         tax = new TaxInfo(dr.getString(7), dr.getString(8), dr.getString(9), dr.getTimestamp(10), dr.getString(11), dr.getString(12), dr.getDouble(13), dr.getBoolean(14), dr.getInt(15));
         attributes = new Properties();
         try {
@@ -180,6 +186,30 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String getProductID() {
         return productid;
     }
+
+    // MSL : get Product object
+    public ProductInfoExt getProduct() {
+        //m_Product = new ProductInfoExt(productid);
+        return m_Product;
+    }
+    
+    public void setProduct(ProductInfoExt argProduct) {
+        m_Product = argProduct;
+         
+    }
+
+    /*public void setUnit(String sName) {
+        m_sUOM = sName;
+    }
+
+    public String getUnit() {
+        return StringUtils.encodeXML(m_sUOM);
+    }*/
+
+    public String printReference() {
+        return StringUtils.encodeXML(attributes.getProperty("product.reference"));
+    }
+    // -- MSL
 
     public String getProductName() {
         return attributes.getProperty("product.name");
@@ -288,6 +318,22 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String printName() {
         return StringUtils.encodeXML(attributes.getProperty("product.name"));
     }
+
+    // MSL : add Unit
+
+    //public String printUnit() {
+    //    return getUnit();
+        //return m_Product.getUnit();
+    //}
+
+    //Subgrupos
+    public boolean isSubproduct() {
+        return m_bSubproduct;
+    }
+    public void setSubproduct(boolean bValue) {
+        m_bSubproduct = bValue;
+    }
+    // -- Subgrupos
 
     public String printMultiply() {
         return Formats.DOUBLE.formatValue(multiply);

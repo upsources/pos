@@ -25,6 +25,16 @@ import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.customers.CustomerInfoExt;
 import com.openbravo.pos.util.RoundUtils;
+//Botão data
+import java.util.Date;
+import com.openbravo.basic.BasicException;
+import com.openbravo.beans.JCalendarDialog;
+
+import com.openbravo.pos.forms.DataLogicSales;
+import com.openbravo.data.gui.ComboBoxValModel;
+import com.openbravo.data.loader.SentenceList;
+import com.openbravo.pos.mant.BankInfo;
+
 
 public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterface {
     
@@ -32,31 +42,60 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
 
     private double m_dPaid;
     private double m_dTotal;
-    
+
+    private ComboBoxValModel m_BankModel;
+    private SentenceList m_sentbank;
+    private DataLogicSales  m_dlSales;
+   
     /** Creates new form JPaymentCash */
-    public JPaymentCheque(JPaymentNotifier notifier) {
+    public JPaymentCheque(JPaymentNotifier notifier, DataLogicSales dlSales) {
         
         m_notifier = notifier;
-        
+
         initComponents();  
         
         m_jTendered.addPropertyChangeListener("Edition", new RecalculateState());
         m_jTendered.addEditorKeys(m_jKeys);
+        m_jChequeNumberBox.addPropertyChangeListener("Edition", new RecalculateState());
+        m_jChequeNumberBox.addEditorKeys(m_jKeys);
+
+        // MSL
+
+        DataLogicSales m_dlSales = null;
+        m_dlSales = dlSales;
+
+        m_sentbank = m_dlSales.getBanksList();
+        m_BankModel = new ComboBoxValModel();
+
     }
     
     public void activate(CustomerInfoExt customerext, double dTotal, String transID) {
-        
+
         m_dTotal = dTotal;
-        
-        
         m_jTendered.reset();
         m_jTendered.activate();
+        m_jChequeNumberBox.reset();
         
+
+        // MSL
+        try {
+            m_BankModel = new ComboBoxValModel(m_sentbank.list());
+            jBankNameCombo.setModel(m_BankModel);
+            String bank = ((BankInfo) m_BankModel.getElementAt(0)).getName();
+        } catch (BasicException e) {
+            
+        }
+        
+
+
+
+
         printState();
         
     }
+    //Adicionar campos ao pagamento por cheque
     public PaymentInfo executePayment() {
-        return new PaymentInfoTicket(m_dPaid, "cheque");      
+        return new PaymentInfoTicket(m_jChequeDate.getText(), jBankNameCombo.getSelectedItem(), m_jChequeNumberBox.getText(), m_dPaid, "cheque");
     }
     public Component getComponent() {
         return this;
@@ -101,6 +140,13 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         m_jMoneyEuros = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        m_jChequeDate = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        m_jbtndate = new javax.swing.JButton();
+        m_jChequeNumberBox = new com.openbravo.editor.JEditorStringNumber();
+        jBankNameCombo = new javax.swing.JComboBox();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -123,7 +169,7 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
 
         jLabel8.setText(AppLocal.getIntString("Label.InputCash")); // NOI18N
         jPanel4.add(jLabel8);
-        jLabel8.setBounds(20, 20, 100, 15);
+        jLabel8.setBounds(20, 20, 120, 25);
 
         m_jMoneyEuros.setBackground(new java.awt.Color(153, 153, 255));
         m_jMoneyEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -131,21 +177,82 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
         m_jMoneyEuros.setOpaque(true);
         m_jMoneyEuros.setPreferredSize(new java.awt.Dimension(150, 25));
         jPanel4.add(m_jMoneyEuros);
-        m_jMoneyEuros.setBounds(120, 20, 150, 25);
+        m_jMoneyEuros.setBounds(140, 20, 150, 25);
+
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
+        jLabel1.setText(bundle.getString("label.chequenumber")); // NOI18N
+        jPanel4.add(jLabel1);
+        jLabel1.setBounds(20, 50, 120, 25);
+
+        jLabel2.setText(bundle.getString("label.bankname")); // NOI18N
+        jPanel4.add(jLabel2);
+        jLabel2.setBounds(20, 80, 120, 25);
+        jPanel4.add(m_jChequeDate);
+        m_jChequeDate.setBounds(140, 110, 100, 25);
+
+        jLabel3.setText(bundle.getString("label.chequedate")); // NOI18N
+        jPanel4.add(jLabel3);
+        jLabel3.setBounds(20, 110, 120, 25);
+
+        m_jbtndate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        m_jbtndate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jbtndateActionPerformed(evt);
+            }
+        });
+        jPanel4.add(m_jbtndate);
+        m_jbtndate.setBounds(250, 110, 40, 25);
+        jPanel4.add(m_jChequeNumberBox);
+        m_jChequeNumberBox.setBounds(140, 50, 180, 25);
+
+        jBankNameCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBankNameComboActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jBankNameCombo);
+        jBankNameCombo.setBounds(140, 80, 150, 25);
 
         add(jPanel4, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void m_jbtndateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jbtndateActionPerformed
+
+        Date date;
+        try {
+            date = (Date) Formats.DATE.parseValue(m_jChequeDate.getText());
+        } catch (BasicException e) {
+            date = null;
+        }
+        date = JCalendarDialog.showCalendar(this, date);
+        if (date != null) {
+            m_jChequeDate.setText(Formats.DATE.formatValue(date));
+        }
+}//GEN-LAST:event_m_jbtndateActionPerformed
+
+    private void jBankNameComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBankNameComboActionPerformed
+        // TODO add your handling code here:
+        // MSL
+        String bank = ((BankInfo) m_BankModel.getSelectedItem()).getName();
+    }//GEN-LAST:event_jBankNameComboActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox jBankNameCombo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JTextField m_jChequeDate;
+    private com.openbravo.editor.JEditorStringNumber m_jChequeNumberBox;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JLabel m_jMoneyEuros;
     private com.openbravo.editor.JEditorCurrencyPositive m_jTendered;
+    private javax.swing.JButton m_jbtndate;
     // End of variables declaration//GEN-END:variables
     
 }

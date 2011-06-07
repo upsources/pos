@@ -247,10 +247,11 @@ public class JTicketsBagTicket extends JTicketsBag {
         m_jButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         m_jTicketId.setBackground(java.awt.Color.white);
+        m_jTicketId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
-        m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 25));
+        m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 36));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
 

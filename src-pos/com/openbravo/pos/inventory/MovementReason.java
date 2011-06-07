@@ -37,6 +37,8 @@ public class MovementReason extends ComboItemLocal {
     public static final MovementReason OUT_MOVEMENT = new MovementReason(-4, "stock.out.movement");
     
     public static final MovementReason OUT_CROSSING = new MovementReason(1000, "stock.out.crossing");
+
+    
    
     private MovementReason(Integer iKey, String sKeyValue) {
         super(iKey, sKeyValue);

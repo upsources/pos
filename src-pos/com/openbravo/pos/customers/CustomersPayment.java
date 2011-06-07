@@ -45,6 +45,11 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+// MSL
+
+import com.openbravo.data.loader.*;
+import com.openbravo.pos.ticket.FindTicketsInfoCustomer;
+
 /**
  *
  * @author  adrianromero
@@ -60,6 +65,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     
     private CustomerInfoExt customerext;
     private DirtyManager dirty;
+
+    // MSL
+    private SentenceList m_sentticket;
 
     /** Creates new form CustomersPayment */
     public CustomersPayment() {
@@ -137,7 +145,21 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         dirty.setDirty(false);
 
         btnSave.setEnabled(true);    
-        btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);
+        //btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);
+
+        // MSL : get active not paid tickets
+
+        m_sentticket = dlsales.getTicketsListCustomer(customer.getId(), 9);
+
+
+
+        try {
+            //m_TicketModel = new ComboBoxValModel(m_sentticket.list());
+            btnPay.setEnabled( m_sentticket.list().isEmpty() == false);
+            jList1.setModel(new MyListData(m_sentticket.list()));
+        } catch (BasicException e) {
+
+        }
     }
 
     private void resetCustomer() {
@@ -217,6 +239,27 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         }
     }
 
+    // MSL
+
+    private static class MyListData extends javax.swing.AbstractListModel {
+
+        private java.util.List m_data;
+
+        public MyListData(java.util.List data) {
+            m_data = data;
+        }
+
+        @Override
+        public Object getElementAt(int index) {
+            return m_data.get(index);
+        }
+
+        @Override
+        public int getSize() {
+            return m_data.size();
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -253,6 +296,9 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
         txtNotes = new com.openbravo.editor.JEditorString();
         txtTaxId = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
+        jLabel4 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -381,6 +427,10 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
 
         jLabel7.setText(AppLocal.getIntString("label.taxid")); // NOI18N
 
+        jScrollPane1.setViewportView(jList1);
+
+        jLabel4.setText("Due Invoices");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -403,7 +453,7 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -415,41 +465,52 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                        .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(93, 93, 93))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txtTaxId, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTaxId, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCard, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCard, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtMaxdebt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMaxdebt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtCurdebt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCurdebt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(89, Short.MAX_VALUE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCurdate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -494,11 +555,26 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
 
         paymentdialog.setPrintSelected(true);
+        // MSL : get total of selected tickets
+        double tt = 0;
+        for ( Object tl : jList1.getSelectedValues()) {
+
+                FindTicketsInfoCustomer sTicket = (FindTicketsInfoCustomer) tl;
+                TicketInfo t = new TicketInfo();
+                try {
+                    t = dlsales.loadTicket(0, sTicket.getTicketId());
+                    tt = tt + t.getTotal() ; //- t.getTotalPaid();
+                } catch (BasicException e) {
+
+                }
+        }
+        // -------------
         
-        if (paymentdialog.showDialog(customerext.getCurdebt(), null)) {
+        //if (paymentdialog.showDialog(customerext.getCurdebt(), null)) {
+        if (paymentdialog.showDialog(tt, null)) {
 
             // Save the ticket
-            TicketInfo ticket = new TicketInfo();
+            /*TicketInfo ticket = new TicketInfo();
             ticket.setTicketType(TicketInfo.RECEIPT_PAYMENT);
 
             List<PaymentInfo> payments = paymentdialog.getSelectedPayments();
@@ -523,7 +599,81 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
                 MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
                 msg.show(this);
             }
+             *
+             */
 
+            // Save the ticket
+            TicketInfo ticket = new TicketInfo();
+            ticket.setTicketType(TicketInfo.RECEIPT_PAYMENT);
+
+            List<PaymentInfo> payments = paymentdialog.getSelectedPayments();
+
+            double total = 0.0;
+            for (PaymentInfo p : payments) {
+                total += p.getTotal();
+            }
+            double reste = total;
+
+            for ( Object tl : jList1.getSelectedValues()) {
+                FindTicketsInfoCustomer sTicket = (FindTicketsInfoCustomer) tl;
+                TicketInfo t = new TicketInfo();
+
+                if (reste > 0) {
+                    try {
+                        t = dlsales.loadTicket(0, sTicket.getTicketId());
+
+                        payments.add(new PaymentInfoTicket(-t.getTotal(), "debtpaid"));
+                        reste = total - t.getTotal();
+
+                        ticket.setPayments(payments);
+                        ticket.setUser(app.getAppUserView().getUser().getUserInfo());
+                        ticket.setActiveCash(app.getActiveCashIndex());
+                        ticket.setDate(new Date());
+                        ticket.setCustomer(customerext);
+                        dlsales.saveTicket(ticket, app.getInventoryLocation());
+                        new StaticSentence(this.app.getSession()
+                                    , "UPDATE TICKETS Set STATUS=9 WHERE ID = ?"
+                                    , SerializerWriteString.INSTANCE).exec(t.getId());
+
+                        // MSL : break the system : set the receipt with original one
+                        // TODO : split the amount paid to the ticket values
+                        /*new StaticSentence(this.app.getSession()
+                                    , "UPDATE RECEIPTS Set ID=? WHERE ID = ?"
+                                    , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING}))
+                                    .exec(new Object[] {t.getId(), ticket.getId()});
+                        */
+                        new StaticSentence(this.app.getSession()
+                                    , "UPDATE PAYMENTS Set TICKETID=? WHERE RECEIPT = ?"
+                                    , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING}))
+                                    .exec(new Object[] {t.getId(), ticket.getId()});
+
+                    } catch (BasicException eData) {
+                        MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                        msg.show(this);
+                    }
+                }
+            }
+
+            // MSL : no tickets selected
+            if ((jList1.getSelectedValues() == null) || (reste > 0)) {
+
+                payments.add(new PaymentInfoTicket(-reste, "debtpaid"));
+
+                ticket.setPayments(payments);
+
+                ticket.setUser(app.getAppUserView().getUser().getUserInfo());
+                ticket.setActiveCash(app.getActiveCashIndex());
+                ticket.setDate(new Date());
+                ticket.setCustomer(customerext);
+
+                try {
+                    dlsales.saveTicket(ticket, app.getInventoryLocation());
+                } catch (BasicException eData) {
+                    MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
+                    msg.show(this);
+                }
+
+            }
 
             // reload customer
             CustomerInfoExt c;
@@ -572,15 +722,18 @@ public class CustomersPayment extends javax.swing.JPanel implements JPanelView, 
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private com.openbravo.editor.JEditorKeys m_jKeys;
     private javax.swing.JTextField txtCard;

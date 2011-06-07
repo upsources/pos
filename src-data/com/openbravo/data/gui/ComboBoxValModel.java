@@ -54,6 +54,10 @@ public class ComboBoxValModel extends AbstractListModel implements ComboBoxModel
         m_aData.add(c);
     }
 
+    public void del(Object c) {
+        m_aData.remove(c);
+    }
+
     public void add(int index, Object c) {
         m_aData.add(index, c);
     }

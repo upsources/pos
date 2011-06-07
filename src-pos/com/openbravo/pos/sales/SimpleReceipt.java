@@ -87,7 +87,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
     private void refreshTicketTaxes() {
         
         for (TicketLineInfo line : ticket.getLines()) {
-            line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(),  ticket.getDate(), ticket.getCustomer()));
+            line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), ticket.getCustomer()));
         }
     }
     
@@ -252,7 +252,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
         m_jPanTotals.setLayout(new java.awt.GridBagLayout());
 
         m_jTotalEuros.setBackground(java.awt.Color.white);
-        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14));
+        m_jTotalEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         m_jTotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         m_jTotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTotalEuros.setOpaque(true);
@@ -269,6 +269,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
         m_jPanTotals.add(m_jTotalEuros, gridBagConstraints);
 
         m_jLblTotalEuros1.setText(AppLocal.getIntString("label.totalcash")); // NOI18N
+        m_jLblTotalEuros1.setPreferredSize(new java.awt.Dimension(24, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -309,6 +310,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
         m_jPanTotals.add(m_jTaxesEuros, gridBagConstraints);
 
         m_jLblTotalEuros2.setText(AppLocal.getIntString("label.taxcash")); // NOI18N
+        m_jLblTotalEuros2.setPreferredSize(new java.awt.Dimension(29, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -317,6 +319,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
         m_jPanTotals.add(m_jLblTotalEuros2, gridBagConstraints);
 
         m_jLblTotalEuros3.setText(AppLocal.getIntString("label.subtotalcash")); // NOI18N
+        m_jLblTotalEuros3.setPreferredSize(new java.awt.Dimension(40, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -341,6 +344,7 @@ public class SimpleReceipt extends javax.swing.JPanel {
         btnCustomer.setFocusPainted(false);
         btnCustomer.setFocusable(false);
         btnCustomer.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        btnCustomer.setPreferredSize(new java.awt.Dimension(48, 25));
         btnCustomer.setRequestFocusEnabled(false);
         btnCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

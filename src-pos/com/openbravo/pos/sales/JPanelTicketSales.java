@@ -29,6 +29,9 @@ import com.openbravo.pos.catalog.JCatalog;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.ticket.ProductInfoExt;
 import java.awt.Dimension;
+//Subgrupos
+import com.openbravo.pos.catalog.JCatalogSubgroups;
+import com.openbravo.pos.ticket.TicketLineInfo;
 
 public class JPanelTicketSales extends JPanelTicket {
 
@@ -61,6 +64,22 @@ public class JPanelTicketSales extends JPanelTicket {
         return m_cat.getComponent();
     }
 
+    //Subgrupos
+
+    protected Component getSouthAuxComponent() {
+        m_cat = new JCatalogSubgroups(dlSales,
+                "true".equals(m_jbtnconfig.getProperty("pricevisible")),
+                "true".equals(m_jbtnconfig.getProperty("taxesincluded")),
+                Integer.parseInt(m_jbtnconfig.getProperty("img-width", "64")),
+                Integer.parseInt(m_jbtnconfig.getProperty("img-height", "54")));
+        m_cat.getComponent().setPreferredSize(new Dimension(
+                0,
+                Integer.parseInt(m_jbtnconfig.getProperty("cat-height", "245"))));
+        m_cat.addActionListener(new CatalogListener());
+        ((JCatalogSubgroups)m_cat).setGuideMode(true);
+        return m_cat.getComponent();
+    }
+
     protected void resetSouthComponent() {
         m_cat.showCatalogPanel(null);
     }
@@ -76,8 +95,58 @@ public class JPanelTicketSales extends JPanelTicket {
     }      
     
     private class CatalogListener implements ActionListener {
+
+        //Subgrupos
+
+        private void reloadCatalog () {
+            changeCatalog();
+            try {
+                m_cat.loadCatalog();
+            } catch (BasicException ex) {}
+        }
+
         public void actionPerformed(ActionEvent e) {
-            buttonTransition((ProductInfoExt) e.getSource());
+            //Subgrupos
+            //buttonTransition((ProductInfoExt) e.getSource());
+            //Si se ha seleccionado un producto...
+            if ( (e.getSource()).getClass().equals(ProductInfoExt.class) ) {
+                ProductInfoExt prod = ((ProductInfoExt) e.getSource());
+
+                // Terminamos de procesar una composición.
+                if (e.getActionCommand().equals("-1")) {
+                    m_iProduct = PRODUCT_SINGLE;
+                    reloadCatalog();
+
+                } else {
+                    if (prod.getCategoryID().equals("0")) { //Empezamos a procesar una composicion
+                        m_iProduct = PRODUCT_COMPOSITION;
+                        buttonTransition(prod);
+                        reloadCatalog();
+                        m_cat.showCatalogPanel(prod.getID());
+                    } else
+                        buttonTransition(prod);
+                }
+            } else {
+                // Si es una orden de cancelar la venta de una composición
+                if ( e.getActionCommand().equals("cancelSubgroupSale")){
+                    int i=m_oTicket.getLinesCount();
+                    TicketLineInfo line = m_oTicket.getLine(--i);
+                    //Quito todas las líneas que son subproductos (puesto que está recién añadido, pertenecen al menú que estamos cancelando
+                    while( (i>0) && (line.isSubproduct()) ){
+                        m_oTicket.removeLine(i);
+                        m_ticketlines.removeTicketLine(i);
+                        line= m_oTicket.getLine(--i);
+                    }
+                    // Quito la línea siguiente, perteneciente al menú en sí
+                    if(i >= 0){
+                        m_oTicket.removeLine(i);
+                        m_ticketlines.removeTicketLine(i);
+                    }
+                    // Actualizo el interfaz
+                    m_iProduct = PRODUCT_SINGLE;
+                    reloadCatalog();
+                }
+            }
         }  
     }
     

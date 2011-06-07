@@ -158,7 +158,7 @@ public class ProductFilterSales extends javax.swing.JPanel implements EditorCrea
         add(m_jCboPriceBuy);
         m_jCboPriceBuy.setBounds(130, 100, 150, 24);
         add(m_jPriceBuy);
-        m_jPriceBuy.setBounds(290, 100, 130, 25);
+        m_jPriceBuy.setBounds(290, 100, 128, 25);
 
         jLabel3.setText(AppLocal.getIntString("label.prodpricesell")); // NOI18N
         add(jLabel3);
@@ -166,7 +166,7 @@ public class ProductFilterSales extends javax.swing.JPanel implements EditorCrea
         add(m_jCboPriceSell);
         m_jCboPriceSell.setBounds(130, 130, 150, 24);
         add(m_jPriceSell);
-        m_jPriceSell.setBounds(290, 130, 130, 25);
+        m_jPriceSell.setBounds(290, 130, 128, 25);
         add(m_jtxtBarCode);
         m_jtxtBarCode.setBounds(130, 10, 290, 25);
 

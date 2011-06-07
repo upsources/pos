@@ -63,6 +63,24 @@ public class JCatalogTab extends javax.swing.JPanel {
         btn.addActionListener(al);
         flowpanel.add(btn);        
     }
+
+    //Subgrupos
+    public void delButton(String id) {
+        JButton btn = checkButton(id);
+        if (btn != null)
+            flowpanel.remove(btn);
+    }
+
+    private JButton checkButton(String id) {
+        int count = flowpanel.getComponentCount();
+        JButton btn = null;
+
+        for (int i = 0; i < count; i++) {
+            if ( ((JButton)flowpanel.getComponent(i)).getName().equals(id) )
+                btn = (JButton)flowpanel.getComponent(i);
+        }
+        return btn;
+    }
     
     /** This method is called from within the constructor to
      * initialize the form.

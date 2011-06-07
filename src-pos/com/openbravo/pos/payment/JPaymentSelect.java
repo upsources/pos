@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// MSL
+import com.openbravo.pos.forms.DataLogicSales;
+
 /**
  *
  * @author adrianromero
@@ -45,14 +48,19 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
     private boolean printselected;
     
     private boolean accepted;
-    
-    private AppView app;
+
+    // MSL : change privaate to protected
+    protected AppView app;
     private double m_dTotal; 
     private CustomerInfoExt customerext;
     private DataLogicSystem dlSystem;
     
     private Map<String, JPaymentInterface> payments = new HashMap<String, JPaymentInterface>();
     private String m_sTransactionID;
+
+
+    // MSL
+    private DataLogicSales dlSales;
     
     
     /** Creates new form JPaymentSelect */
@@ -76,6 +84,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         this.app = app;
         dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");
         printselected = true;
+        // MSL
+        dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
     }
     
     public void setPrintSelected(boolean value) {
@@ -168,10 +178,12 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         public String getLabelKey() { return "tab.cash"; }
         public String getIconKey() { return "/com/openbravo/images/cash.png"; }
     }
-        
+
+
+    // MSL : add DatalogicSales object
     public class JPaymentChequeCreator implements JPaymentCreator {
         public JPaymentInterface createJPayment() {
-            return new JPaymentCheque(JPaymentSelect.this);
+            return new JPaymentCheque(JPaymentSelect.this, dlSales );
         }
         public String getKey() { return "payment.cheque"; }
         public String getLabelKey() { return "tab.cheque"; }
@@ -311,6 +323,9 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         setResizable(false);
 
         m_jLblTotalEuros1.setText(AppLocal.getIntString("label.totalcash")); // NOI18N
+        m_jLblTotalEuros1.setMaximumSize(new java.awt.Dimension(35, 25));
+        m_jLblTotalEuros1.setMinimumSize(new java.awt.Dimension(35, 25));
+        m_jLblTotalEuros1.setPreferredSize(new java.awt.Dimension(35, 25));
         jPanel4.add(m_jLblTotalEuros1);
 
         m_jTotalEuros.setBackground(java.awt.Color.white);
@@ -322,10 +337,12 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jTotalEuros.setRequestFocusEnabled(false);
         jPanel4.add(m_jTotalEuros);
 
-        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 0));
+        jPanel6.setPreferredSize(new java.awt.Dimension(310, 25));
 
         m_jLblRemainingEuros.setText(AppLocal.getIntString("label.remainingcash")); // NOI18N
-        jPanel6.add(m_jLblRemainingEuros);
+        m_jLblRemainingEuros.setMaximumSize(new java.awt.Dimension(60, 25));
+        m_jLblRemainingEuros.setMinimumSize(new java.awt.Dimension(55, 14));
+        m_jLblRemainingEuros.setPreferredSize(new java.awt.Dimension(60, 25));
 
         m_jRemaininglEuros.setBackground(java.awt.Color.white);
         m_jRemaininglEuros.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -334,23 +351,47 @@ public abstract class JPaymentSelect extends javax.swing.JDialog
         m_jRemaininglEuros.setOpaque(true);
         m_jRemaininglEuros.setPreferredSize(new java.awt.Dimension(125, 25));
         m_jRemaininglEuros.setRequestFocusEnabled(false);
-        jPanel6.add(m_jRemaininglEuros);
 
         m_jButtonAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/btnplus.png"))); // NOI18N
+        m_jButtonAdd.setPreferredSize(new java.awt.Dimension(47, 25));
         m_jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jButtonAddActionPerformed(evt);
             }
         });
-        jPanel6.add(m_jButtonAdd);
 
         m_jButtonRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/btnminus.png"))); // NOI18N
+        m_jButtonRemove.setPreferredSize(new java.awt.Dimension(47, 25));
         m_jButtonRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jButtonRemoveActionPerformed(evt);
             }
         });
-        jPanel6.add(m_jButtonRemove);
+
+        org.jdesktop.layout.GroupLayout jPanel6Layout = new org.jdesktop.layout.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel6Layout.createSequentialGroup()
+                .add(2, 2, 2)
+                .add(m_jLblRemainingEuros, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(m_jRemaininglEuros, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(10, 10, 10)
+                .add(m_jButtonAdd, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(5, 5, 5)
+                .add(m_jButtonRemove, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel6Layout.createSequentialGroup()
+                .add(jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(m_jButtonAdd, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(m_jButtonRemove, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(m_jRemaininglEuros, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(m_jLblRemainingEuros, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         jPanel4.add(jPanel6);
 

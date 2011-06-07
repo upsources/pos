@@ -100,9 +100,9 @@ public class TaxCustCategoriesEditor extends JPanel implements EditorRecord {
 
         jLabel2.setText(AppLocal.getIntString("Label.Name")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 20, 80, 15);
+        jLabel2.setBounds(20, 20, 80, 25);
         add(m_jName);
-        m_jName.setBounds(100, 20, 200, 19);
+        m_jName.setBounds(100, 20, 200, 25);
     }// </editor-fold>//GEN-END:initComponents
 
 

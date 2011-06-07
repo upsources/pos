@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
     Openbravo POS is a point of sales application designed for touch screens.
-    Copyright (C) 2008-2009 Openbravo, S.L.
+    Copyright (C) 2008-2011 Openbravo, S.L.
     http://sourceforge.net/projects/openbravopos
 
     This file is part of Openbravo POS.
@@ -20,18 +20,39 @@
     along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
  -->
 <permissions>
+    <class name="/com/openbravo/reports/dailypresencereport.bs"/>
+    <class name="/com/openbravo/reports/dailyschedulereport.bs"/>
+    <class name="/com/openbravo/reports/performancereport.bs"/>
+    <class name="com.openbravo.pos.suppliers.SuppliersPayment"/>
+    <class name="com.openbravo.pos.forms.MenuSuppliers"/>
+    <class name="com.openbravo.pos.suppliers.SuppliersPanel"/>
+    <class name="/com/openbravo/reports/suppliers.bs"/>
+    <class name="/com/openbravo/reports/suppliersb.bs"/>
+    <class name="/com/openbravo/reports/suppliersdiary.bs"/>
+    <class name="com.openbravo.pos.forms.MenuEmployees"/>
+    <class name="com.openbravo.pos.epm.BreaksPanel"/>
+    <class name="com.openbravo.pos.epm.LeavesPanel"/>
+    <class name="com.openbravo.pos.mant.BankPanel"/>
+    <class name="com.openbravo.pos.inventory.CompositionsPanel"/>
+    <class name="com.openbravo.pos.inventory.MaterialsPanel"/>
+    <class name="com.openbravo.pos.inventory.UnitsMeasurePanel"/>
+    <class name="com.openbravo.pos.forms.MenuThirdParties"/>
+    <class name="com.openbravo.pos.thirdparties.ThirdPartiesPanel"/>
+    <class name="com.openbravo.pos.panels.JCompany"/>
     <class name="com.openbravo.pos.sales.JPanelTicketSales"/>
     <class name="com.openbravo.pos.sales.JPanelTicketEdits"/>
     <class name="com.openbravo.pos.customers.CustomersPayment"/>
     <class name="com.openbravo.pos.panels.JPanelPayments"/>
     <class name="com.openbravo.pos.panels.JPanelCloseMoney"/>
     <class name="/com/openbravo/reports/closedpos.bs"/>
+    <class name="sales.discount"/>
+    <class name="sales.discountmulti"/>
     <class name="sales.EditLines"/>
     <class name="sales.EditTicket"/>
     <class name="sales.RefundTicket"/>
     <class name="sales.PrintTicket"/>
     <class name="sales.Total"/>
-    <!-- <class name="sales.ChangeTaxOptions"/> -->
+    <class name="sales.ChangeTaxOptions"/>
     <class name="payment.cash"/>
     <class name="payment.cheque"/>
     <class name="payment.paper"/>
@@ -47,6 +68,8 @@
     <class name="/com/openbravo/reports/customers.bs"/>
     <class name="/com/openbravo/reports/customersb.bs"/>
     <class name="/com/openbravo/reports/customersdiary.bs"/>
+    <class name="/com/openbravo/reports/customersstatement.bs"/>
+    <class name="/com/openbravo/reports/salebycustomer.bs"/>
     <class name="com.openbravo.pos.inventory.TaxCustCategoriesPanel"/>
     <class name="com.openbravo.pos.forms.MenuStockManagement"/>
     <class name="com.openbravo.pos.inventory.ProductsPanel"/>

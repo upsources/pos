@@ -22,7 +22,12 @@ package com.openbravo.pos.payment;
 import com.openbravo.format.Formats;
 
 public class PaymentInfoCash extends PaymentInfo {
-    
+    //Número do cheque
+    private String m_dChequeNo;
+    //Nome do Banco
+    private Object m_dBankName;
+    //Data do Cheque
+    private String m_dChequeDate;
     private double m_dPaid;
     private double m_dTotal;
     
@@ -48,7 +53,18 @@ public class PaymentInfoCash extends PaymentInfo {
     public String getTransactionID(){
         return "no ID";
     }
-    
+    //Número do cheque
+    public String getChequeNumber() {
+        return m_dChequeNo;
+    }
+    //Nome do Banco
+    public Object getBankName() {
+        return m_dBankName;
+    }
+    //Data do Cheque
+    public String getChequeDate() {
+        return m_dChequeDate;
+    }
     public String printPaid() {
         return Formats.CURRENCY.formatValue(new Double(m_dPaid));
     }   

@@ -229,109 +229,103 @@ public class ThirdPartiesView extends javax.swing.JPanel implements EditorRecord
 
         setLayout(null);
 
-        jLabel2.setText("CIF");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
+        jLabel2.setText(bundle.getString("label.thirdpartiescif")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 20, 90, 15);
-
+        jLabel2.setBounds(20, 20, 120, 25);
         add(m_jCIF);
-        m_jCIF.setBounds(110, 20, 270, 19);
+        m_jCIF.setBounds(140, 20, 256, 25);
 
-        jLabel3.setText("Nombre");
+        jLabel3.setText(bundle.getString("label.thirdpartiesname")); // NOI18N
         add(jLabel3);
-        jLabel3.setBounds(20, 50, 90, 15);
-
+        jLabel3.setBounds(20, 50, 120, 25);
         add(m_jName);
-        m_jName.setBounds(110, 50, 270, 19);
+        m_jName.setBounds(140, 50, 256, 25);
 
-        jLabel4.setText("Comercial");
+        jLabel4.setText(bundle.getString("label.thirdpartiessalesrep")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 190, 90, 15);
-
+        jLabel4.setBounds(20, 150, 120, 25);
         add(m_jContactComm);
-        m_jContactComm.setBounds(110, 190, 160, 19);
+        m_jContactComm.setBounds(140, 150, 160, 25);
 
-        jLabel5.setText("Facturaci\u00f3n");
+        jLabel5.setText(bundle.getString("label.thirdpartiesbilling")); // NOI18N
         add(jLabel5);
-        jLabel5.setBounds(290, 190, 90, 15);
-
+        jLabel5.setBounds(305, 150, 90, 25);
         add(m_jContactFact);
-        m_jContactFact.setBounds(380, 190, 160, 19);
+        m_jContactFact.setBounds(395, 150, 160, 25);
 
-        jLabel6.setText("Forma de pago");
+        jLabel6.setText(bundle.getString("label.thirdpartiespaymenttype")); // NOI18N
         add(jLabel6);
-        jLabel6.setBounds(20, 340, 90, 15);
-
+        jLabel6.setBounds(20, 310, 120, 25);
         add(m_jPayRule);
-        m_jPayRule.setBounds(110, 340, 160, 19);
+        m_jPayRule.setBounds(140, 310, 160, 25);
 
-        jLabel7.setText("N\u00ba de fax");
+        jLabel7.setText(bundle.getString("label.thirdpartiesfax")); // NOI18N
         add(jLabel7);
-        jLabel7.setBounds(20, 250, 90, 15);
-
+        jLabel7.setBounds(20, 210, 120, 25);
         add(m_jFaxNumber);
-        m_jFaxNumber.setBounds(110, 250, 160, 19);
+        m_jFaxNumber.setBounds(140, 210, 160, 25);
 
-        jLabel8.setText("N\u00ba de tel\u00e9fono");
+        jLabel8.setText(bundle.getString("label.thirdpartiesphone")); // NOI18N
         add(jLabel8);
-        jLabel8.setBounds(20, 220, 90, 15);
-
+        jLabel8.setBounds(20, 180, 120, 25);
         add(m_jPhoneNumber);
-        m_jPhoneNumber.setBounds(110, 220, 160, 19);
+        m_jPhoneNumber.setBounds(140, 180, 160, 25);
 
-        jLabel9.setText("N\u00ba de m\u00f3vil");
+        jLabel9.setText(bundle.getString("label.thirdpartiesmobile")); // NOI18N
         add(jLabel9);
-        jLabel9.setBounds(290, 220, 90, 15);
-
+        jLabel9.setBounds(305, 180, 90, 25);
         add(m_jMobileNumber);
-        m_jMobileNumber.setBounds(380, 220, 160, 19);
+        m_jMobileNumber.setBounds(395, 180, 160, 25);
 
-        jLabel10.setText("E Mail");
+        jLabel10.setText(bundle.getString("label.thirdpartiesemail")); // NOI18N
         add(jLabel10);
-        jLabel10.setBounds(290, 250, 90, 15);
-
+        jLabel10.setBounds(305, 210, 90, 25);
         add(m_jEMail);
-        m_jEMail.setBounds(380, 250, 160, 19);
+        m_jEMail.setBounds(395, 210, 160, 25);
 
-        jLabel11.setText("P\u00e1gina web");
+        jLabel11.setText(bundle.getString("label.thirdpartiesweb")); // NOI18N
         add(jLabel11);
-        jLabel11.setBounds(20, 280, 90, 15);
-
+        jLabel11.setBounds(20, 240, 120, 25);
         add(m_jWebPage);
-        m_jWebPage.setBounds(110, 280, 270, 19);
+        m_jWebPage.setBounds(140, 240, 256, 25);
 
-        jLabel12.setText("Notas");
+        jLabel12.setText(bundle.getString("label.thirdpartiesnotes")); // NOI18N
         add(jLabel12);
-        jLabel12.setBounds(20, 410, 90, 15);
+        jLabel12.setBounds(20, 380, 120, 25);
 
-        jLabel13.setText("Direcci\u00f3n");
+        jLabel13.setText(bundle.getString("label.thirdpartiesaddress")); // NOI18N
         add(jLabel13);
-        jLabel13.setBounds(20, 80, 90, 15);
+        jLabel13.setBounds(20, 80, 120, 25);
 
+        m_jNotes.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        m_jNotes.setLineWrap(true);
         jScrollPane1.setViewportView(m_jNotes);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(110, 410, 270, 70);
+        jScrollPane1.setBounds(140, 380, 250, 80);
 
+        m_jAddress.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        m_jAddress.setLineWrap(true);
         jScrollPane2.setViewportView(m_jAddress);
 
         add(jScrollPane2);
-        jScrollPane2.setBounds(110, 80, 270, 70);
+        jScrollPane2.setBounds(140, 80, 256, 40);
 
-        jLabel14.setText("Contacto");
+        jLabel14.setText(bundle.getString("title.thirdpartiescontact")); // NOI18N
         jLabel14.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         add(jLabel14);
-        jLabel14.setBounds(20, 160, 520, 16);
+        jLabel14.setBounds(20, 120, 535, 15);
 
-        jLabel15.setText("Pagos");
+        jLabel15.setText(bundle.getString("title.thirdpartiespayments")); // NOI18N
         jLabel15.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         add(jLabel15);
-        jLabel15.setBounds(20, 310, 520, 16);
+        jLabel15.setBounds(20, 280, 535, 15);
 
-        jLabel16.setText("Notas");
+        jLabel16.setText(bundle.getString("title.thirdpartiesnotes")); // NOI18N
         jLabel16.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
         add(jLabel16);
-        jLabel16.setBounds(20, 380, 520, 16);
-
+        jLabel16.setBounds(20, 350, 535, 15);
     }// </editor-fold>//GEN-END:initComponents
     
     

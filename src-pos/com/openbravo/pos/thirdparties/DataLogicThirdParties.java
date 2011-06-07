@@ -24,6 +24,8 @@ import com.openbravo.data.loader.Session;
 import com.openbravo.data.loader.TableDefinition;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.BeanFactoryDataSingle;
+import com.openbravo.pos.forms.AppLocal;
+
 
 public class DataLogicThirdParties extends BeanFactoryDataSingle {
     
@@ -38,6 +40,7 @@ public class DataLogicThirdParties extends BeanFactoryDataSingle {
         m_tthirdparties = new TableDefinition(s,
             "THIRDPARTIES"
             , new String[] {"ID", "CIF", "NAME", "ADDRESS", "CONTACTCOMM", "CONTACTFACT", "PAYRULE", "FAXNUMBER", "PHONENUMBER", "MOBILENUMBER", "EMAIL", "WEBPAGE", "NOTES"}
+            , new String[] {"ID", AppLocal.getIntString("label.thirdpartiescif"), AppLocal.getIntString("label.thirdpartiesname"), AppLocal.getIntString("label.thirdpartiesaddress"), AppLocal.getIntString("label.thirdpartiessalesrep"), "CONTACTFACT", "PAYRULE", "FAXNUMBER", "PHONENUMBER", "MOBILENUMBER", "EMAIL", "WEBPAGE", "NOTES"}
             , new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}
             , new Formats[] {Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING}
             , new int[] {0}

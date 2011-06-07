@@ -70,6 +70,28 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import com.openbravo.pos.util.AltEncrypter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
+import com.openbravo.pos.ticket.TicketTaxInfo;
+import com.openbravo.format.Formats;
+import com.openbravo.data.loader.StaticSentence;
+import com.openbravo.data.loader.SerializerWriteBasic;
+import com.openbravo.data.loader.Datas;
+import java.util.UUID;
+import com.openbravo.pos.customers.CustomerInfo;
+import com.openbravo.data.loader.SerializerReadBasic;
+import com.openbravo.data.loader.SerializerWriteString;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.List;
+
+// MSL
+import com.openbravo.beans.JCalendarDialog;
+import java.util.*;
 
 /**
  *
@@ -116,7 +138,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private TaxesLogic taxeslogic;
     
-//    private ScriptObject scriptobjinst;
+    //private ScriptObject scriptobjinst;
     protected JPanelButtons m_jbtnconfig;
     
     protected AppView m_App;
@@ -127,6 +149,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private JPaymentSelect paymentdialogreceipt;
     private JPaymentSelect paymentdialogrefund;
 
+    private final String STRING_ALL = new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/all.png")).toString();
+    private final String STRING_LINE = new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/line.png")).toString();
+
+    //Subgrupos
+
+    protected final static int PRODUCT_SINGLE = 0;
+    protected final static int PRODUCT_COMPOSITION = 1;
+    protected final static int PRODUCT_SUBGROUP = 2;
+
+    private boolean m_bIsSubproduct;
+    protected int m_iProduct;
+    protected Component m_catalog;
+    protected double m_dMultiply;
     /** Creates new form JTicketView */
     public JPanelTicket() {
         
@@ -160,6 +195,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
        
         // El panel de los productos o de las lineas...        
         catcontainer.add(getSouthComponent(), BorderLayout.CENTER);
+        //Subgrupos
+        m_catalog = getSouthComponent();
+        catcontainer.add(m_catalog, BorderLayout.CENTER);
         
         // El modelo de impuestos
         senttax = dlSales.getTaxList();
@@ -172,7 +210,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
         // inicializamos
         m_oTicket = null;
-        m_oTicketExt = null;      
+        m_oTicketExt = null;
+        //Subgrupos
+        m_iProduct = PRODUCT_SINGLE;
     }
     
     public Object getBean() {
@@ -182,6 +222,43 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     public JComponent getComponent() {
         return this;
     }
+
+
+    
+    
+    //Subgrupos
+    public void changeCatalog() {
+        catcontainer.remove(m_catalog);
+        setSubgroupMode(m_iProduct == PRODUCT_SUBGROUP);
+
+        m_catalog = (m_iProduct == PRODUCT_SUBGROUP)? getSouthAuxComponent(): getSouthComponent();
+        catcontainer.add(m_catalog, BorderLayout.CENTER);
+        catcontainer.updateUI();
+    }
+
+
+    private void setSubgroupMode(boolean value) {
+        m_jOptions.setEnabled(!value);
+        m_jPanTicket.setEnabled(!value);
+        m_jContEntries.setEnabled(!value);
+
+        enableComponents(m_jOptions, !value);
+        enableComponents(m_jPanTicket, !value);
+        enableComponents(m_jContEntries, !value);
+    }
+
+    private void enableComponents(Container cont, boolean value) {
+
+        for (Component c: cont.getComponents()) {
+            try {
+                c.setEnabled(value);
+                enableComponents((Container) c, value);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    // -- Subgrupos
 
     public void activate() throws BasicException {
 
@@ -227,7 +304,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jDelete.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
         m_jNumberKeys.setMinusEnabled(m_App.getAppUserView().getUser().hasPermission("sales.EditLines"));
         m_jNumberKeys.setEqualsEnabled(m_App.getAppUserView().getUser().hasPermission("sales.Total"));
-        m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());  
+        m_jbtnconfig.setPermissions(m_App.getAppUserView().getUser());
+
+        // Permissões para desconto
+        m_jDiscount1.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.discount"));
+        m_jDiscount2.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.discount"));
+        m_jDiscount3.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.discount"));
+        m_jKeypadDiscount.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.discountmulti"));
+        m_jbtnDiscount.setEnabled(m_App.getAppUserView().getUser().hasPermission("sales.discount") || m_App.getAppUserView().getUser().hasPermission("sales.discountmulti"));
+
+        // Valores para descontos
+        m_jDiscount1.setText(m_jbtnconfig.getProperty("discount-1") + "%");
+        m_jDiscount2.setText(m_jbtnconfig.getProperty("discount-2") + "%");
+        m_jDiscount3.setText(m_jbtnconfig.getProperty("discount-3") + "%");
                
         m_ticketsbag.activate();        
     }
@@ -240,6 +329,9 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     protected abstract JTicketsBag getJTicketsBag();
     protected abstract Component getSouthComponent();
     protected abstract void resetSouthComponent();
+
+    //Subgrupos
+    protected abstract Component getSouthAuxComponent();
      
     public void setActiveTicket(TicketInfo oTicket, Object oTicketExt) {
        
@@ -289,7 +381,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             // Refresh ticket taxes
             for (TicketLineInfo line : m_oTicket.getLines()) {
-                line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getDate(), m_oTicket.getCustomer()));
+                line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getCustomer()));
             }  
         
             // The ticket name
@@ -350,7 +442,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void addTicketLine(ProductInfoExt oProduct, double dMul, double dPrice) {   
         
-        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(),  m_oTicket.getDate(), m_oTicket.getCustomer());
+        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
         
         addTicketLine(new TicketLineInfo(oProduct, dMul, dPrice, tax, (java.util.Properties) (oProduct.getProperties().clone())));
     }
@@ -436,7 +528,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private double includeTaxes(String tcid, double dValue) {
         if (m_jaddtax.isSelected()) {
-            TaxInfo tax = taxeslogic.getTaxInfo(tcid,  m_oTicket.getDate(), m_oTicket.getCustomer());
+            TaxInfo tax = taxeslogic.getTaxInfo(tcid, m_oTicket.getCustomer());
             double dTaxRate = tax == null ? 0.0 : tax.getRate();           
             return dValue / (1.0 + dTaxRate);      
         } else {
@@ -504,7 +596,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 // Se anade directamente una unidad con el precio y todo
                 if (m_jaddtax.isSelected()) {
                     // debemos quitarle los impuestos ya que el precio es con iva incluido...
-                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(),  m_oTicket.getDate(), m_oTicket.getCustomer());
+                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
                     addTicketLine(oProduct, 1.0, dPriceSell / (1.0 + tax.getRate()));
                 } else {
                     addTicketLine(oProduct, 1.0, dPriceSell);
@@ -542,6 +634,24 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
        
     protected void buttonTransition(ProductInfoExt prod) {
     // precondicion: prod != null
+
+        //Subgrupos
+        if (m_iProduct == PRODUCT_SUBGROUP && prod != null) {
+            prod.setCom(true);
+            prod.setPriceSell(0.0);
+            m_bIsSubproduct = true;
+
+            if (m_dMultiply != 1.0) {
+                m_iNumberStatusInput = NUMBERVALID;
+                m_iNumberStatusPor = NUMBERZERO;
+                m_jPrice.setText( String.valueOf(m_dMultiply));
+            }
+        } else if (m_iProduct == PRODUCT_COMPOSITION) {
+            m_dMultiply = (getInputValue()==0)? 1.0: getInputValue();
+            m_iProduct = PRODUCT_SUBGROUP;
+        }
+
+        // --Subgrupos
         
          if (m_iNumberStatusInput == NUMBERZERO && m_iNumberStatusPor == NUMBERZERO) {
             incProduct(prod);
@@ -890,6 +1000,52 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                         ticket.setUser(m_App.getAppUserView().getUser().getUserInfo()); // El usuario que lo cobra
                         ticket.setActiveCash(m_App.getActiveCashIndex());
                         ticket.setDate(new Date()); // Le pongo la fecha de cobro
+                        ticket.setDueDate(ticket.getDate());
+
+                        // MSL : get customer mode of payment and calc duedate
+                        if (ticket.getCustomerId() != null) {
+                            Calendar calendar = Calendar.getInstance();
+                            String modeDay = ticket.getCustomer().getDebtMode();
+                            String mode = ticket.getCustomer().getDebtDateLimit();
+                            if (modeDay != null) {
+                                modeDay = modeDay.substring(0,1).trim();
+                            } else {
+                                modeDay = "";
+                            }
+                            if (mode != null) {
+                                mode = mode.substring(0,2).trim();
+                                if (mode.equals("CO"))
+                                    ticket.setDueDate(ticket.getDate());
+                                else {
+                                    if (mode.equals("1"))
+                                        mode = "30";
+                                    if (modeDay.equals("I")) {
+                                        calendar.setTime(ticket.getDate());
+                                        calendar.add(Calendar.DAY_OF_YEAR, Integer.parseInt(mode.trim()));
+                                    }else {
+                                        //Calendar now = Calendar.getInstance();
+                                        calendar.setTime(ticket.getDate());
+                                        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
+                                        if (weekday != Calendar.MONDAY)
+                                        {
+                                            // calculate how much to add
+                                            // the 2 is the difference between Saturday and Monday
+                                            int days = (Calendar.SATURDAY - weekday + 2) % 7;
+                                            calendar.add(Calendar.DAY_OF_YEAR, days);
+                                            calendar.add(Calendar.DAY_OF_YEAR, Integer.parseInt(mode.trim())- 6);
+                                        } else {
+                                            calendar.add(Calendar.DAY_OF_YEAR, Integer.parseInt(mode.trim()));
+                                        }
+
+                                    }
+                                    ticket.setDueDate(calendar.getTime());
+
+                                }
+                            }
+
+                        }
+
+                        // --------------------------
 
                         if (executeEvent(ticket, ticketext, "ticket.save") == null) {
                             // Save the receipt and assign a receipt number
@@ -1086,7 +1242,71 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             m_ticketlines.setSelectedIndex(m_oTicket.getLinesCount() - 1);
         }    
     }
-     
+
+    private void performDiscount(String button) {
+        int index = m_ticketlines.getSelectedIndex();
+        double total = m_oTicket.getTotal();
+        double discountrate = 0.0;
+
+        if (button != null) {
+            discountrate = Double.parseDouble(m_jbtnconfig.getProperty(button)) / 100;
+        } else {
+            discountrate = getInputValue() / 100;
+        }
+
+        if (STRING_LINE.equals(m_jbtnDiscount.getIcon().toString())) {
+            if (index >= 0) {
+                TicketLineInfo line = m_oTicket.getLine(index);
+                    if (line.getPrice() > 0.0 && discountrate > 0.0) {
+
+                        String sdiscount = Formats.PERCENT.formatValue(discountrate);
+                        m_oTicket.insertLine(index + 1,
+                            new TicketLineInfo(
+                                "DISC." + sdiscount,
+                                line.getProductTaxCategoryID(),
+                                line.getMultiply(),
+                                -line.getPrice () * discountrate,
+                                line.getTaxInfo()));
+                        m_ticketlines.setSelectedIndex(index + 1);
+                    } else {
+                        java.awt.Toolkit.getDefaultToolkit().beep();
+                    }
+            } else {
+                java.awt.Toolkit.getDefaultToolkit().beep();
+            }
+        } else if (STRING_ALL.equals(m_jbtnDiscount.getIcon().toString())) {
+            if (total > 0.0) {
+                String sdiscount = Formats.PERCENT.formatValue(discountrate);
+
+                TicketTaxInfo[] taxes = m_oTicket.getTaxLines();
+                for (int i = 0; i < taxes.length; i++) {
+                    TicketTaxInfo taxline = taxes[i];
+                    m_oTicket.insertLine(m_oTicket.getLinesCount(),
+                    new TicketLineInfo(
+                        "DISC. " + sdiscount + " OF " + taxline.printSubTotal(),
+                        taxline.getTaxInfo().getTaxCategoryID(),
+                        1.0,
+                        -taxline.getSubTotal() * discountrate,
+                        taxline.getTaxInfo()));
+                }
+                m_ticketlines.setSelectedIndex(m_oTicket.getLinesCount() - 1);
+            } else {
+                java.awt.Toolkit.getDefaultToolkit().beep();
+            }
+        }
+        refreshTicket();
+    }
+
+    private void performCustomerAdd(String id, String name, String nif, String address, String address2, String postal, String city) throws BasicException {
+       
+        new StaticSentence(m_App.getSession()
+            , "INSERT INTO CUSTOMERS (ID, SEARCHKEY, NAME, TAXID, ADDRESS, ADDRESS2, POSTAL, CITY) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING}))
+            .exec(new Object[] {id.toString(), name, name, nif, address, address2, postal, city});
+
+            m_oTicket.setCustomer(dlSales.loadCustomerExt(id));
+    }
+
     public static class ScriptArg {
         private String key;
         private Object value;
@@ -1157,6 +1377,32 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             return script.eval(code);
         }            
     }
+        //Subgrupos
+
+        private class CatalogSelectionListener implements ListSelectionListener {
+
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                int i = m_ticketlines.getSelectedIndex();
+
+                if (i >= 0) {
+                    try {
+                        String sProduct = m_oTicket.getLine(i).getProductID();
+                        if (sProduct != null) {
+                            ProductInfoExt prod = JPanelTicket.this.dlSales.getProductInfo(sProduct);
+                            //if (prod.getImage() != null) {
+                            //    m_jImage.setImage(prod.getImage());
+                            //} else {
+                            //    m_jImage.setImage(null);
+                            //}
+                        }
+                    } catch (BasicException ex) {
+                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }
      
 /** This method is called from within the constructor to
      * initialize the form.
@@ -1182,11 +1428,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         m_jUp = new javax.swing.JButton();
+        m_jbtnDiscount = new javax.swing.JButton();
         m_jDown = new javax.swing.JButton();
+        m_jDiscount1 = new javax.swing.JButton();
         m_jDelete = new javax.swing.JButton();
+        m_jDiscount2 = new javax.swing.JButton();
         m_jList = new javax.swing.JButton();
+        m_jDiscount3 = new javax.swing.JButton();
         m_jEditLine = new javax.swing.JButton();
+        m_jKeypadDiscount = new javax.swing.JButton();
         jEditAttributes = new javax.swing.JButton();
+        m_jQuickCustomer = new javax.swing.JButton();
         m_jPanelCentral = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         m_jPanTotals = new javax.swing.JPanel();
@@ -1216,10 +1468,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jOptions.setLayout(new java.awt.BorderLayout());
 
         m_jTicketId.setBackground(java.awt.Color.white);
+        m_jTicketId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
-        m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 25));
+        m_jTicketId.setPreferredSize(new java.awt.Dimension(160, 36));
         m_jTicketId.setRequestFocusEnabled(false);
         m_jButtons.add(m_jTicketId);
 
@@ -1283,7 +1536,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        jPanel2.setLayout(new java.awt.GridLayout(0, 1, 5, 5));
+        jPanel2.setLayout(new java.awt.GridLayout(0, 2, 5, 5));
 
         m_jUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1uparrow22.png"))); // NOI18N
         m_jUp.setFocusPainted(false);
@@ -1297,6 +1550,18 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         jPanel2.add(m_jUp);
 
+        m_jbtnDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/line.png"))); // NOI18N
+        m_jbtnDiscount.setFocusPainted(false);
+        m_jbtnDiscount.setFocusable(false);
+        m_jbtnDiscount.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jbtnDiscount.setRequestFocusEnabled(false);
+        m_jbtnDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jbtnDiscountActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jbtnDiscount);
+
         m_jDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1downarrow22.png"))); // NOI18N
         m_jDown.setFocusPainted(false);
         m_jDown.setFocusable(false);
@@ -1308,6 +1573,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
         jPanel2.add(m_jDown);
+
+        m_jDiscount1.setFocusPainted(false);
+        m_jDiscount1.setFocusable(false);
+        m_jDiscount1.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDiscount1.setRequestFocusEnabled(false);
+        m_jDiscount1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jDiscount1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jDiscount1);
 
         m_jDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/locationbar_erase.png"))); // NOI18N
         m_jDelete.setFocusPainted(false);
@@ -1321,6 +1597,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         jPanel2.add(m_jDelete);
 
+        m_jDiscount2.setFocusPainted(false);
+        m_jDiscount2.setFocusable(false);
+        m_jDiscount2.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDiscount2.setRequestFocusEnabled(false);
+        m_jDiscount2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jDiscount2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jDiscount2);
+
         m_jList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search22.png"))); // NOI18N
         m_jList.setFocusPainted(false);
         m_jList.setFocusable(false);
@@ -1332,6 +1619,17 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
         jPanel2.add(m_jList);
+
+        m_jDiscount3.setFocusPainted(false);
+        m_jDiscount3.setFocusable(false);
+        m_jDiscount3.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDiscount3.setRequestFocusEnabled(false);
+        m_jDiscount3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jDiscount3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jDiscount3);
 
         m_jEditLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/color_line.png"))); // NOI18N
         m_jEditLine.setFocusPainted(false);
@@ -1345,6 +1643,18 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         jPanel2.add(m_jEditLine);
 
+        m_jKeypadDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/keypad.png"))); // NOI18N
+        m_jKeypadDiscount.setFocusPainted(false);
+        m_jKeypadDiscount.setFocusable(false);
+        m_jKeypadDiscount.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jKeypadDiscount.setRequestFocusEnabled(false);
+        m_jKeypadDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jKeypadDiscountActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jKeypadDiscount);
+
         jEditAttributes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/colorize.png"))); // NOI18N
         jEditAttributes.setFocusPainted(false);
         jEditAttributes.setFocusable(false);
@@ -1356,6 +1666,18 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             }
         });
         jPanel2.add(jEditAttributes);
+
+        m_jQuickCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/yast_group_add.png"))); // NOI18N
+        m_jQuickCustomer.setFocusPainted(false);
+        m_jQuickCustomer.setFocusable(false);
+        m_jQuickCustomer.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jQuickCustomer.setRequestFocusEnabled(false);
+        m_jQuickCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jQuickCustomerActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jQuickCustomer);
 
         jPanel5.add(jPanel2, java.awt.BorderLayout.NORTH);
 
@@ -1392,6 +1714,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTotals.add(m_jLblTotalEuros1, gridBagConstraints);
 
         m_jSubtotalEuros.setBackground(java.awt.Color.white);
+        m_jSubtotalEuros.setFont(new java.awt.Font("Dialog", 1, 14));
         m_jSubtotalEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jSubtotalEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jSubtotalEuros.setOpaque(true);
@@ -1407,6 +1730,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jPanTotals.add(m_jSubtotalEuros, gridBagConstraints);
 
         m_jTaxesEuros.setBackground(java.awt.Color.white);
+        m_jTaxesEuros.setFont(new java.awt.Font("Dialog", 1, 14));
         m_jTaxesEuros.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         m_jTaxesEuros.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTaxesEuros.setOpaque(true);
@@ -1449,12 +1773,31 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanEntries.setLayout(new javax.swing.BoxLayout(m_jPanEntries, javax.swing.BoxLayout.Y_AXIS));
 
+        m_jKeyFactory.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        m_jKeyFactory.setForeground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        m_jKeyFactory.setBorder(null);
+        m_jKeyFactory.setCaretColor(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+        m_jKeyFactory.setPreferredSize(new java.awt.Dimension(1, 1));
+        m_jKeyFactory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jKeyFactoryActionPerformed(evt);
+            }
+        });
+        m_jKeyFactory.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                m_jKeyFactoryKeyTyped(evt);
+            }
+        });
+        m_jPanEntries.add(m_jKeyFactory);
+
+        m_jContEntries.add(m_jPanEntries, java.awt.BorderLayout.NORTH);
+
         m_jNumberKeys.addJNumberEventListener(new com.openbravo.beans.JNumberEventListener() {
             public void keyPerformed(com.openbravo.beans.JNumberEvent evt) {
                 m_jNumberKeysKeyPerformed(evt);
             }
         });
-        m_jPanEntries.add(m_jNumberKeys);
+        m_jContEntries.add(m_jNumberKeys, java.awt.BorderLayout.CENTER);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         jPanel9.setLayout(new java.awt.GridBagLayout());
@@ -1533,21 +1876,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
         jPanel9.add(m_jaddtax, gridBagConstraints);
 
-        m_jPanEntries.add(jPanel9);
-
-        m_jKeyFactory.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
-        m_jKeyFactory.setForeground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
-        m_jKeyFactory.setBorder(null);
-        m_jKeyFactory.setCaretColor(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
-        m_jKeyFactory.setPreferredSize(new java.awt.Dimension(1, 1));
-        m_jKeyFactory.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                m_jKeyFactoryKeyTyped(evt);
-            }
-        });
-        m_jPanEntries.add(m_jKeyFactory);
-
-        m_jContEntries.add(m_jPanEntries, java.awt.BorderLayout.NORTH);
+        m_jContEntries.add(jPanel9, java.awt.BorderLayout.PAGE_END);
 
         m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.LINE_END);
 
@@ -1592,7 +1921,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private void m_jNumberKeysKeyPerformed(com.openbravo.beans.JNumberEvent evt) {//GEN-FIRST:event_m_jNumberKeysKeyPerformed
 
         stateTransition(evt.getKey());
-
     }//GEN-LAST:event_m_jNumberKeysKeyPerformed
 
     private void m_jKeyFactoryKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_m_jKeyFactoryKeyTyped
@@ -1696,6 +2024,77 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         
 }//GEN-LAST:event_jEditAttributesActionPerformed
 
+    private void m_jbtnDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jbtnDiscountActionPerformed
+        if (STRING_LINE.equals(m_jbtnDiscount.getIcon().toString())){
+            m_jbtnDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/all.png")));
+        } else if (STRING_ALL.equals(m_jbtnDiscount.getIcon().toString())){
+            m_jbtnDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/line.png")));
+        }
+    }//GEN-LAST:event_m_jbtnDiscountActionPerformed
+
+    private void m_jDiscount1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDiscount1ActionPerformed
+        performDiscount("discount-1");
+    }//GEN-LAST:event_m_jDiscount1ActionPerformed
+
+    private void m_jDiscount2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDiscount2ActionPerformed
+        performDiscount("discount-2");
+
+    }//GEN-LAST:event_m_jDiscount2ActionPerformed
+
+    private void m_jDiscount3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jDiscount3ActionPerformed
+        performDiscount("discount-3");
+
+    }//GEN-LAST:event_m_jDiscount3ActionPerformed
+
+    private void m_jKeypadDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeypadDiscountActionPerformed
+        performDiscount(null);
+    }//GEN-LAST:event_m_jKeypadDiscountActionPerformed
+
+    private void m_jQuickCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jQuickCustomerActionPerformed
+        String name = JOptionPane.showInputDialog("Customers name: ");
+        String nif = JOptionPane.showInputDialog("Customers tax ID: ");
+        String address = JOptionPane.showInputDialog("Customers address: ");
+        String address2 = JOptionPane.showInputDialog("Customers address 2: ");
+        String postal = JOptionPane.showInputDialog("Customers postal code: ");
+        String city = JOptionPane.showInputDialog("Customers city: ");
+        String id = UUID.randomUUID().toString();
+
+        if ((name == null || name.equals("")) && (nif == null || nif.equals(""))) {
+            // Display message "You must enter a name and tax ID"
+            JOptionPane.showMessageDialog(null, "You must enter a name and tax ID");
+        } else if (name != null && (nif == null || nif.equals(""))) {
+            nif = "999" + UUID.randomUUID().toString();
+            try {
+                performCustomerAdd(id, name, nif, address, address2, postal, city);
+            } catch (BasicException e) {
+
+            }
+        } else if ((name == null || name.equals("")) && nif != null) {
+            // Display message "You must enter a name"
+            JOptionPane.showMessageDialog(null, "You must enter a name");
+        } else {
+            try {
+                performCustomerAdd(id, name, nif, address, address2, postal, city);
+            } catch (BasicException e) {
+                try {
+                    Object[] oid = (Object []) new StaticSentence(m_App.getSession()
+                        , "SELECT ID FROM CUSTOMERS WHERE SEARCHKEY = ?"
+                        , SerializerWriteString.INSTANCE
+                        , new SerializerReadBasic(new Datas[] {Datas.STRING}))
+                        .find(name);
+                    id = (String) oid[0];
+                } catch (BasicException eX) {
+
+                }
+            }
+        }
+        refreshTicket();
+    }//GEN-LAST:event_m_jQuickCustomerActionPerformed
+
+    private void m_jKeyFactoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeyFactoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m_jKeyFactoryActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustomer;
@@ -1711,10 +2110,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JPanel m_jButtonsExt;
     private javax.swing.JPanel m_jContEntries;
     private javax.swing.JButton m_jDelete;
+    private javax.swing.JButton m_jDiscount1;
+    private javax.swing.JButton m_jDiscount2;
+    private javax.swing.JButton m_jDiscount3;
     private javax.swing.JButton m_jDown;
     private javax.swing.JButton m_jEditLine;
     private javax.swing.JButton m_jEnter;
     private javax.swing.JTextField m_jKeyFactory;
+    private javax.swing.JButton m_jKeypadDiscount;
     private javax.swing.JLabel m_jLblTotalEuros1;
     private javax.swing.JLabel m_jLblTotalEuros2;
     private javax.swing.JLabel m_jLblTotalEuros3;
@@ -1730,6 +2133,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JPanel m_jPanelScripts;
     private javax.swing.JLabel m_jPor;
     private javax.swing.JLabel m_jPrice;
+    private javax.swing.JButton m_jQuickCustomer;
     private javax.swing.JLabel m_jSubtotalEuros;
     private javax.swing.JComboBox m_jTax;
     private javax.swing.JLabel m_jTaxesEuros;
@@ -1737,6 +2141,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private javax.swing.JLabel m_jTotalEuros;
     private javax.swing.JButton m_jUp;
     private javax.swing.JToggleButton m_jaddtax;
+    private javax.swing.JButton m_jbtnDiscount;
     private javax.swing.JButton m_jbtnScale;
     // End of variables declaration//GEN-END:variables
 

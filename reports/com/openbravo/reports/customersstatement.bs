@@ -1,0 +1,47 @@
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Modified by: Common Grounds Technologies, Inc Modification Date: April 2, 2010. Forked from Openbravo POS. Copyright (C) 2007-2009 Openbravo, S.L.
+//    http://www.netsuitepos.com
+//
+//    This file is part of Openbravo POS.
+//
+//    Openbravo POS is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    Openbravo POS is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+
+report = new com.openbravo.pos.reports.PanelReportBean();
+
+report.setTitleKey("Menu.CustomersStatement");
+report.setReport("/com/openbravo/reports/customersstatement");
+report.setResourceBundle("com/openbravo/reports/customersstatement_messages");
+
+report.setSentence("select * from cust_statement Where ?(QBF_FILTER) order by  CUSTOMERID, DATENEW,ID ");
+report.addParameter("CUSTOMERSID");
+report.addParameter("NAME");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsCustomer());
+
+report.addParameter("RECEIPTS.DATENEW");
+report.addParameter("RECEIPTS.DATENEW");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+
+
+report.addField("CUSTOMERID", com.openbravo.data.loader.Datas.STRING);
+report.addField("ID", com.openbravo.data.loader.Datas.STRING);
+report.addField("DATENEW", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("TICKETID", com.openbravo.data.loader.Datas.INT);
+report.addField("PAYMENT", com.openbravo.data.loader.Datas.STRING);
+report.addField("debit", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("credit", com.openbravo.data.loader.Datas.DOUBLE);
+//report.addField("TAXID", com.openbravo.data.loader.Datas.STRING);
+report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+
+report;
+

@@ -27,6 +27,12 @@ public abstract class PaymentInfo {
     public abstract double getTotal();
     public abstract PaymentInfo copyPayment();
     public abstract String getTransactionID();
+    //Número do cheque
+    public abstract String getChequeNumber();
+    //Nome do Banco
+    public abstract Object getBankName();
+    //Data do Cheque
+    public abstract String getChequeDate();
     
     public String printTotal() {
         return Formats.CURRENCY.formatValue(new Double(getTotal()));

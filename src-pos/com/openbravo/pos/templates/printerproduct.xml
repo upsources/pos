@@ -30,7 +30,7 @@
         </line>
         <line></line>
         <line size="3">
-            <text>Eur.</text>
+            <text>EUR</text>
             <text align ="right" length="6">${product.printPriceEur()}</text>
         </line>
         <line size="2">

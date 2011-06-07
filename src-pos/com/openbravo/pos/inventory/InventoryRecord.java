@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import com.openbravo.format.Formats;
-import com.openbravo.pos.util.StringUtils;
 
 /**
  *
@@ -76,10 +75,10 @@ public class InventoryRecord {
         return Formats.TIMESTAMP.formatValue(m_dDate);
     }    
     public String printLocation() {
-        return StringUtils.encodeXML(m_locationOri.toString());
+        return m_locationOri.toString();
     }
     public String printReason() {
-        return StringUtils.encodeXML(m_reason.toString());
+        return m_reason.toString();
     }    
     public String printSubTotal() {
         return Formats.CURRENCY.formatValue(new Double(getSubTotal()));

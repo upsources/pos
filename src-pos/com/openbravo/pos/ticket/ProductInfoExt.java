@@ -26,13 +26,16 @@ import com.openbravo.data.loader.ImageUtils;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.format.Formats;
 import java.util.Properties;
+import com.openbravo.data.loader.SerializableImage;
+import java.io.Serializable;
 
 /**
  *
  * @author adrianromero
  *
  */
-public class ProductInfoExt {
+// MSL : add serializable
+public class ProductInfoExt implements Serializable {
 
     private static final long serialVersionUID = 7587696873036L;
 
@@ -47,7 +50,9 @@ public class ProductInfoExt {
     protected String attributesetid;
     protected double m_dPriceBuy;
     protected double m_dPriceSell;
-    protected BufferedImage m_Image;
+    //protected BufferedImage m_Image;
+    // MSL
+    protected SerializableImage m_Image;
     protected Properties attributes;
     
     /** Creates new ProductInfo */
@@ -63,7 +68,9 @@ public class ProductInfoExt {
         attributesetid = null;
         m_dPriceBuy = 0.0;
         m_dPriceSell = 0.0;
-        m_Image = null;
+        //m_Image = null;
+        // MSL : set image serializable
+        m_Image = new SerializableImage();
         attributes = new Properties();
     }
 
@@ -167,10 +174,16 @@ public class ProductInfoExt {
     }
     
     public BufferedImage getImage() {
-        return m_Image;
+        //return m_Image;
+        // MSL : use serialialbe image
+        return m_Image.getImage();
     }
     public void setImage(BufferedImage img) {
-        m_Image = img;
+        //m_Image = img;
+        // MSL : use serialialbe image
+        if (img != null) {
+            m_Image.setImage(img);
+        }
     }
     
     public String getProperty(String key) {
@@ -200,7 +213,9 @@ public class ProductInfoExt {
             product.taxcategoryid = dr.getString(9);
             product.categoryid = dr.getString(10);
             product.attributesetid = dr.getString(11);
-            product.m_Image = ImageUtils.readImage(dr.getBytes(12));
+            //product.m_Image = ImageUtils.readImage(dr.getBytes(12));
+            // MSL : use serialialbe image
+            product.setImage( ImageUtils.readImage(dr.getBytes(12)));
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
             return product;
         }};

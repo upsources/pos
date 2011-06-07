@@ -30,11 +30,26 @@ public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  
     private double m_dTicket;
     private String m_sName;
     private String m_transactionID;
+    //Campo Número do cheque
+    private String m_dChequeNo;
+    //Campo Nome do banco
+    private Object m_dBankName;
+    //Data do Cheque
+    private String m_dChequeDate;
     
     /** Creates a new instance of PaymentInfoCash */
     public PaymentInfoTicket(double dTicket, String sName) {
         m_sName = sName;
         m_dTicket = dTicket;
+        
+    }
+    //Adicionado campos para cheque
+    public PaymentInfoTicket(String dChequeDate, Object dBankName, String dChequeNo, double dTicket, String sName) {
+        m_sName = sName;
+        m_dTicket = dTicket;
+        m_dChequeNo = dChequeNo;
+        m_dBankName = dBankName;
+        m_dChequeDate = dChequeDate;
     }
     
     public PaymentInfoTicket(double dTicket, String sName, String transactionID) {
@@ -53,6 +68,7 @@ public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  
         m_sName = dr.getString(1);
         m_dTicket = dr.getDouble(2).doubleValue();
         m_transactionID = dr.getString(3);
+        m_dChequeNo = dr.getString(4);
     }
     
     public PaymentInfo copyPayment(){
@@ -66,6 +82,18 @@ public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  
     }
     public String getTransactionID(){
         return m_transactionID;
+    }
+    //Número do cheque
+    public String getChequeNumber() {
+        return m_dChequeNo;
+    }
+    //Nome do Banco
+    public Object getBankName() {
+        return m_dBankName;
+    }
+    //Data do Cheque
+    public String getChequeDate() {
+        return m_dChequeDate;
     }
     public String printPaid() {
         return Formats.CURRENCY.formatValue(new Double(m_dTicket));

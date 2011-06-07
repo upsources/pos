@@ -20,10 +20,28 @@
 package com.openbravo.pos.payment;
 
 public class PaymentInfoFree extends PaymentInfo {
-    
+    //Número do cheque
+    private String m_dChequeNo;
+    //Nome do Banco
+    private Object m_dBankName;
+    //Data do Cheque
+    private String m_dChequeDate;
+
     private double m_dTotal;
    
     /** Creates a new instance of PaymentInfoFree */
+    //Número do cheque
+    public String getChequeNumber() {
+        return m_dChequeNo;
+    }
+    //Nome do Banco
+    public Object getBankName() {
+        return m_dBankName;
+    }
+    //Data do Cheque
+    public String getChequeDate() {
+        return m_dChequeDate;
+    }
     public PaymentInfoFree(double dTotal) {
         m_dTotal = dTotal;
     }
@@ -40,4 +58,4 @@ public class PaymentInfoFree extends PaymentInfo {
     public String getTransactionID(){
         return "no ID";
     }
-}
+  }

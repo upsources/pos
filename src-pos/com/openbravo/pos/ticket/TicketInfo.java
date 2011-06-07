@@ -59,6 +59,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private List<TicketTaxInfo> taxes;
     private String m_sResponse;
 
+    // MSL
+    private java.util.Date m_dDueDate;
+
     /** Creates new TicketModel */
     public TicketInfo() {
         m_sId = UUID.randomUUID().toString();
@@ -74,6 +77,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         payments = new ArrayList<PaymentInfo>();
         taxes = null;
         m_sResponse = null;
+        m_dDueDate = m_dDate;
     }
 
     public void writeExternal(ObjectOutput out) throws IOException {
@@ -85,6 +89,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
         out.writeObject(m_dDate);
         out.writeObject(attributes);
         out.writeObject(m_aLines);
+
+        // MSL
+        //out.writeObject(m_dDueDate);
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
@@ -101,6 +108,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
         payments = new ArrayList<PaymentInfo>();
         taxes = null;
+
+         // MSL
+        //m_dDueDate = (Date) in.readObject();
     }
 
     public void readValues(DataRead dr) throws BasicException {
@@ -122,6 +132,12 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
         payments = new ArrayList<PaymentInfo>();
         taxes = null;
+
+        // MSL
+        if (dr.getTimestamp(10).toString().equals("0000-00-00 00:00:00"))
+            m_dDueDate = m_dDate;
+        else
+            m_dDueDate = dr.getTimestamp(10);
     }
 
     public TicketInfo copyTicket() {
@@ -147,6 +163,9 @@ public class TicketInfo implements SerializableRead, Externalizable {
         }
 
         // taxes are not copied, must be calculated again.
+
+        // MSL
+        t.m_dDueDate = m_dDueDate;
 
         return t;
     }
@@ -205,6 +224,15 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public void setDate(java.util.Date dDate) {
         m_dDate = dDate;
     }
+
+    // MSL
+    public void setDueDate(java.util.Date dDate) {
+        m_dDueDate = dDate;
+    }
+    public java.util.Date getDueDate() {
+        return m_dDueDate;
+    }
+    // --------------------
 
     public UserInfo getUser() {
         return m_User;
@@ -307,11 +335,16 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
         for (Iterator<TicketLineInfo> i = m_aLines.iterator(); i.hasNext();) {
             oLine = i.next();
-            dArticles += oLine.getMultiply();
-        }
 
+            if (oLine.getProductName().contains("DISC.")) {
+                // Do nothing
+            } else {
+                dArticles += oLine.getMultiply();
+            }
+        }
         return dArticles;
     }
+
 
     public double getSubTotal() {
         double sum = 0.0;

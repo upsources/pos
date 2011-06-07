@@ -20,7 +20,13 @@
 package com.openbravo.pos.payment;
 
 public class PaymentInfoMagcard extends PaymentInfo {
-     
+    //Número do cheque
+    private String m_dChequeNo;
+    //Nome do Banco
+    private Object m_dBankName;
+    //Data do Cheque
+    private String m_dChequeDate;
+
     protected double m_dTotal;
     
     protected String m_sHolderName;
@@ -87,7 +93,18 @@ public class PaymentInfoMagcard extends PaymentInfo {
     public String getTransactionID() {
         return m_sTransactionID;
     }
-    
+    //Número do cheque
+    public String getChequeNumber() {
+        return m_dChequeNo;
+    }
+    //Nome do Banco
+    public Object getBankName() {
+        return m_dBankName;
+    }
+    //Data do Cheque
+    public String getChequeDate() {
+        return m_dChequeDate;
+    }
     /**
      * Get tracks of magnetic card.
      *   Framing characters: 

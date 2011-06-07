@@ -59,10 +59,19 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
     private ThumbNailBuilder tnbcat;
     
     private CategoryInfo showingcategory = null;
+
+    private boolean  withBOM=false;
         
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales) {
         this(dlSales, false, false, 64, 54);
+    }
+
+     /** Creates new form JCatalog */
+    public JCatalog(DataLogicSales dlSales, boolean  withBOM) {
+        this(dlSales, false, false, 64, 54);
+        this.withBOM=withBOM;
+
     }
     
     public JCatalog(DataLogicSales dlSales, boolean pricevisible, boolean taxesincluded, int width, int height) {
@@ -191,6 +200,18 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
                     jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(cat.getImage(), cat.getName())), new SelectedCategory(cat));
                 }
+
+
+                if(withBOM)
+                {
+                 if (catid.equals("-1")) {
+                    // Add materials
+                    java.util.List<ProductInfoExt> materials = (m_dlSales.getMaterialList());
+                    for (ProductInfoExt m : materials) {
+                       jcurrTab.addButton(new ImageIcon(tnbbutton.getThumbNailText(m.getImage(), getProductLabel(m))), new SelectedAction(m));
+                    }
+                 }
+            }
                 
                 // Add products
                 java.util.List<ProductInfoExt> products = m_dlSales.getProductCatalog(catid);
@@ -211,7 +232,7 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
         if (pricevisible) {
             if (taxesincluded) {
-                TaxInfo tax = taxeslogic.getTaxInfo(product.getTaxCategoryID(), new Date());
+                TaxInfo tax = taxeslogic.getTaxInfo(product.getTaxCategoryID());
                 return "<html><center>" + product.getName() + "<br>" + product.printPriceSellTax(tax);
             } else {
                 return "<html><center>" + product.getName() + "<br>" + product.printPriceSell();

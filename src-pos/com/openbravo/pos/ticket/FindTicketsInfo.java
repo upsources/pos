@@ -31,12 +31,21 @@ import java.util.Date;
  */
 public class FindTicketsInfo implements SerializableRead {
     
-    private int ticketid;
+    /*private int ticketid;
     private int tickettype;
     private Date date;
     private String name;
     private String customer;
     private double total;
+     *
+     */
+    // MSL : change private to protected
+    protected int ticketid;
+    protected int tickettype;
+    protected Date date;
+    protected String name;
+    protected String customer;
+    protected double total;
     
     /** Creates new ProductInfo */
     public FindTicketsInfo() {

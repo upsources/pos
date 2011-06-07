@@ -204,8 +204,9 @@ public class JRootApp extends JPanel implements AppView {
         m_Scanner = DeviceScannerFactory.createInstance(m_props);
             
         // Leemos los recursos basicos
-        BufferedImage imgicon = m_dlSystem.getResourceAsImage("Window.Logo");
-        m_jLblTitle.setIcon(imgicon == null ? null : new ImageIcon(imgicon));
+        //Removed the icon to accomadate a digital clock
+        //BufferedImage imgicon = m_dlSystem.getResourceAsImage("Window.Logo");
+        //m_jLblTitle.setIcon(imgicon == null ? null : new ImageIcon(imgicon));
         m_jLblTitle.setText(m_dlSystem.getResourceAsText("Window.Title"));  
         
         String sWareHouse;
@@ -421,9 +422,9 @@ public class JRootApp extends JPanel implements AppView {
                 btn.setFocusable(false);
                 btn.setRequestFocusEnabled(false);
                 btn.setHorizontalAlignment(SwingConstants.LEADING);
-                btn.setMaximumSize(new Dimension(150, 50));
-                btn.setPreferredSize(new Dimension(150, 50));
-                btn.setMinimumSize(new Dimension(150, 50));
+                btn.setMaximumSize(new Dimension(155, 50));
+                btn.setPreferredSize(new Dimension(155, 50));
+                btn.setMinimumSize(new Dimension(155, 50));
         
                 jPeople.add(btn);                    
             }
@@ -617,16 +618,8 @@ public class JRootApp extends JPanel implements AppView {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/logo.png"))); // NOI18N
-        jLabel1.setText("<html><center>Openbravo POS is a point of sale application designed for touch screens.<br>" +
-            "Copyright \u00A9 2007-2009 Openbravo, S.L.<br>" +
-            "http://www.openbravo.com/product/pos<br>" +
-            "<br>" +
-            "Openbravo POS is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.<br>" +
-            "<br>" +
-            "Openbravo POS is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.<br>" +
-            "<br>" +
-            "You should have received a copy of the GNU General Public License along with Openbravo POS.  If not, see http://www.gnu.org/licenses/.<br>" +
-            "</center>");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("pos_messages"); // NOI18N
+        jLabel1.setText(bundle.getString("license.splash")); // NOI18N
         jLabel1.setAlignmentX(0.5F);
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel1.setMaximumSize(new java.awt.Dimension(800, 1024));
@@ -640,7 +633,7 @@ public class JRootApp extends JPanel implements AppView {
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(510, 118));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(523, 118));
         m_jLogonName.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));

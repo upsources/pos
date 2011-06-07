@@ -33,26 +33,25 @@ public class TaxInfo implements Serializable, IKeyed {
     private String id;
     private String name;
     private String taxcategoryid;
-    private Date validfrom;
+    private Date validFrom;
     private String taxcustcategoryid;
     private String parentid;
-    
     private double rate;
     private boolean cascade;
     private Integer order;
     
     /** Creates new TaxInfo */
-    public TaxInfo(String id, String name, String taxcategoryid, Date validfrom, String taxcustcategoryid, String parentid, double rate, boolean cascade, Integer order) {
+    public TaxInfo(String id, String name, String taxcategoryid, Date validFrom, String taxcustcategoryid, String parentid, double rate, boolean cascade, Integer order) {
         this.id = id;
         this.name = name;
         this.taxcategoryid = taxcategoryid;
-        this.validfrom = validfrom;
+        this.validFrom = validFrom;
         this.taxcustcategoryid = taxcustcategoryid;
         this.parentid = parentid;
-        
         this.rate = rate;
         this.cascade = cascade;
         this.order = order;
+
     }
     
     public Object getKey() {
@@ -84,7 +83,11 @@ public class TaxInfo implements Serializable, IKeyed {
     }
 
     public Date getValidFrom() {
-        return validfrom;
+        return validFrom;
+    }
+
+    public void setValidFrom(Date value) {
+        validFrom = value;
     }
 
     public String getTaxCustCategoryID() {
@@ -102,7 +105,7 @@ public class TaxInfo implements Serializable, IKeyed {
     public void setParentID(String value) {
         parentid = value;
     }
-    
+
     public double getRate() {
         return rate;
     }

@@ -36,4 +36,7 @@
     <!-- <printselected value="true"/> -->    
     <!-- <taxcategoryid value="001"/> -->
     <!-- <pricevisible value="true" /> -->
+    <discount-1 value="10"/>
+    <discount-2 value="20"/>
+    <discount-3 value="50"/>
 </configuration>

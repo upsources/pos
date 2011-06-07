@@ -61,6 +61,10 @@ public class JPanelTicketEdits extends JPanelTicket {
         return new JTicketsBagTicket(m_App, this);
     }
 
+    //Subgrupos
+    protected Component getSouthAuxComponent() {
+        return getSouthComponent();
+    }
     protected Component getSouthComponent() {
 
         m_catandlines = new JTicketCatalogLines(m_App, this,                

@@ -48,6 +48,10 @@ public class CustomerInfoExt extends CustomerInfo {
     protected String city;
     protected String region;
     protected String country;
+
+     // MSL
+    protected String DebtDateLimit;
+    protected String DebtMode;
     
     /** Creates a new instance of UserInfoBasic */
     public CustomerInfoExt(String id) {
@@ -229,5 +233,21 @@ public class CustomerInfoExt extends CustomerInfo {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    // MSL
+    public String getDebtDateLimit() {
+        return DebtDateLimit;
+    }
+
+    public void setDebtDateLimit(String argValue) {
+        this.DebtDateLimit = argValue;
+    }
+    public String getDebtMode() {
+        return DebtMode;
+    }
+
+    public void setDebtMode(String argValue) {
+        this.DebtMode = argValue;
     }
 }
