@@ -3,6 +3,7 @@ derby.log
 manifest.mf
 nbbuild.xml
 nbproject/
+dist/
 .classpath
 .hgignore
 .hgtags
