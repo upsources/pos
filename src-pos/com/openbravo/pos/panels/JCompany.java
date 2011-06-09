@@ -41,7 +41,6 @@ public class JCompany extends JPanel implements JPanelView, BeanFactoryApp {
         CompanyName = new javax.swing.JLabel();
         AddressDetail = new javax.swing.JLabel();
         City = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jTextCompanyName = new javax.swing.JTextField();
         PostalCode = new javax.swing.JLabel();
         Country = new javax.swing.JLabel();
@@ -123,7 +122,6 @@ public class JCompany extends JPanel implements JPanelView, BeanFactoryApp {
             .addGroup(jPanelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
                     .addGroup(jPanelHeaderLayout.createSequentialGroup()
                         .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(CompanyID, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,8 +159,7 @@ public class JCompany extends JPanel implements JPanelView, BeanFactoryApp {
         jPanelHeaderLayout.setVerticalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelHeaderLayout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(16, 16, 16)
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CompanyID, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextCompanyID, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -309,7 +306,6 @@ public class JCompany extends JPanel implements JPanelView, BeanFactoryApp {
     private javax.swing.JLabel Telephone;
     private javax.swing.JButton jButtonSubmit;
     private javax.swing.JPanel jPanelHeader;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextAddressDetail;
     private javax.swing.JTextField jTextBuildingNumber;
     private javax.swing.JTextField jTextBusinessName;

@@ -26,6 +26,7 @@ import javax.swing.*;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
+import com.openbravo.beans.JCalendarDialog;
 import com.openbravo.data.gui.ComboBoxValModel;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.loader.SentenceList;
@@ -34,6 +35,7 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.DataLogicSales;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TaxEditor extends JPanel implements EditorRecord {
@@ -67,6 +69,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
 
         m_jName.getDocument().addDocumentListener(dirty);
         m_jTaxCategory.addActionListener(dirty);
+        txtValidFrom.getDocument().addDocumentListener(dirty);
         m_jCustTaxCategory.addActionListener(dirty);
         m_jRate.getDocument().addDocumentListener(dirty);
         jCascade.addActionListener(dirty);
@@ -108,6 +111,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_oId = null;
         m_jName.setText(null);
         taxcatmodel.setSelectedKey(null);
+        txtValidFrom.setText(null);
         taxcustcatmodel.setSelectedKey(null);
         taxparentmodel.setSelectedKey(null);
         m_jRate.setText(null);
@@ -116,6 +120,8 @@ public class TaxEditor extends JPanel implements EditorRecord {
         
         m_jName.setEnabled(false);
         m_jTaxCategory.setEnabled(false);
+        txtValidFrom.setEnabled(false);
+        btnValidFrom.setEnabled(false);
         m_jCustTaxCategory.setEnabled(false);
         m_jRate.setEnabled(false);
         jCascade.setEnabled(false);
@@ -125,6 +131,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_oId = UUID.randomUUID().toString();
         m_jName.setText(null);
         taxcatmodel.setSelectedKey(null);
+        txtValidFrom.setText(null);
         taxcustcatmodel.setSelectedKey(null);
         taxparentmodel.setSelectedKey(null);
         m_jRate.setText(null);
@@ -133,6 +140,8 @@ public class TaxEditor extends JPanel implements EditorRecord {
         
         m_jName.setEnabled(true);
         m_jTaxCategory.setEnabled(true);
+        txtValidFrom.setEnabled(true);
+        btnValidFrom.setEnabled(true);
         m_jCustTaxCategory.setEnabled(true);
         m_jRate.setEnabled(true);
         jCascade.setEnabled(true);    
@@ -144,14 +153,17 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_oId = tax[0];
         m_jName.setText(Formats.STRING.formatValue(tax[1]));
         taxcatmodel.setSelectedKey(tax[2]);
-        taxcustcatmodel.setSelectedKey(tax[3]);
-        taxparentmodel.setSelectedKey(tax[4]);
-        m_jRate.setText(Formats.PERCENT.formatValue(tax[5]));
-        jCascade.setSelected((Boolean) tax[6]);
-        jOrder.setText(Formats.INT.formatValue(tax[7]));
+        txtValidFrom.setText(Formats.TIMESTAMP.formatValue(tax[3]));
+        taxcustcatmodel.setSelectedKey(tax[4]);
+        taxparentmodel.setSelectedKey(tax[5]);
+        m_jRate.setText(Formats.PERCENT.formatValue(tax[6]));
+        jCascade.setSelected((Boolean) tax[7]);
+        jOrder.setText(Formats.INT.formatValue(tax[8]));
         
         m_jName.setEnabled(false);
         m_jTaxCategory.setEnabled(false);
+        txtValidFrom.setEnabled(false);
+        btnValidFrom.setEnabled(false);
         m_jCustTaxCategory.setEnabled(false);
         m_jRate.setEnabled(false);
         jCascade.setEnabled(false);
@@ -163,15 +175,18 @@ public class TaxEditor extends JPanel implements EditorRecord {
         m_oId = tax[0];
         m_jName.setText(Formats.STRING.formatValue(tax[1]));
         taxcatmodel.setSelectedKey(tax[2]);
-        taxcustcatmodel.setSelectedKey(tax[3]);
-        taxparentmodel.setSelectedKey(tax[4]);
-        m_jRate.setText(Formats.PERCENT.formatValue(tax[5]));
-        jCascade.setSelected((Boolean) tax[6]);
-        jOrder.setText(Formats.INT.formatValue(tax[7]));
+        txtValidFrom.setText(Formats.TIMESTAMP.formatValue(tax[3]));
+        taxcustcatmodel.setSelectedKey(tax[4]);
+        taxparentmodel.setSelectedKey(tax[5]);
+        m_jRate.setText(Formats.PERCENT.formatValue(tax[6]));
+        jCascade.setSelected((Boolean) tax[7]);
+        jOrder.setText(Formats.INT.formatValue(tax[8]));
 
         
         m_jName.setEnabled(true);
         m_jTaxCategory.setEnabled(true);
+        txtValidFrom.setEnabled(true);
+        btnValidFrom.setEnabled(true);
         m_jCustTaxCategory.setEnabled(true);
         m_jRate.setEnabled(true);
         jCascade.setEnabled(true);
@@ -180,15 +195,16 @@ public class TaxEditor extends JPanel implements EditorRecord {
 
     public Object createValue() throws BasicException {
         
-        Object[] tax = new Object[8];
+        Object[] tax = new Object[9];
         tax[0] = m_oId;
         tax[1] = m_jName.getText();
         tax[2] = taxcatmodel.getSelectedKey();
-        tax[3] = taxcustcatmodel.getSelectedKey(); 
-        tax[4] = taxparentmodel.getSelectedKey();
-        tax[5] = Formats.PERCENT.parseValue(m_jRate.getText());
-        tax[6] = Boolean.valueOf(jCascade.isSelected());
-        tax[7] = Formats.INT.parseValue(jOrder.getText());
+        tax[3] = Formats.TIMESTAMP.parseValue(txtValidFrom.getText());
+        tax[4] = taxcustcatmodel.getSelectedKey();
+        tax[5] = taxparentmodel.getSelectedKey();
+        tax[6] = Formats.PERCENT.parseValue(m_jRate.getText());
+        tax[7] = Boolean.valueOf(jCascade.isSelected());
+        tax[8] = Formats.INT.parseValue(jOrder.getText());
         return tax;
     }    
      
@@ -217,6 +233,9 @@ public class TaxEditor extends JPanel implements EditorRecord {
         jOrder = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         m_jTaxParent1 = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        txtValidFrom = new javax.swing.JTextField();
+        btnValidFrom = new javax.swing.JButton();
 
         setLayout(null);
         add(m_jName);
@@ -226,7 +245,7 @@ public class TaxEditor extends JPanel implements EditorRecord {
         add(jLabel2);
         jLabel2.setBounds(20, 20, 220, 25);
         add(m_jRate);
-        m_jRate.setBounds(240, 140, 60, 25);
+        m_jRate.setBounds(240, 170, 60, 25);
 
         jLabel1.setText(AppLocal.getIntString("label.taxcategory")); // NOI18N
         add(jLabel1);
@@ -234,35 +253,64 @@ public class TaxEditor extends JPanel implements EditorRecord {
 
         jLabel4.setText(AppLocal.getIntString("label.custtaxcategory")); // NOI18N
         add(jLabel4);
-        jLabel4.setBounds(20, 80, 220, 25);
+        jLabel4.setBounds(20, 110, 220, 25);
 
         jLabel5.setText(AppLocal.getIntString("label.taxparent")); // NOI18N
         add(jLabel5);
-        jLabel5.setBounds(20, 110, 220, 25);
+        jLabel5.setBounds(20, 140, 220, 25);
 
         jCascade.setText(AppLocal.getIntString("label.cascade")); // NOI18N
         add(jCascade);
-        jCascade.setBounds(320, 140, 110, 25);
+        jCascade.setBounds(320, 170, 110, 25);
         add(m_jTaxCategory);
         m_jTaxCategory.setBounds(240, 50, 200, 25);
         add(m_jCustTaxCategory);
-        m_jCustTaxCategory.setBounds(240, 80, 200, 25);
+        m_jCustTaxCategory.setBounds(240, 110, 200, 25);
 
         jLabel6.setText(AppLocal.getIntString("label.order")); // NOI18N
         add(jLabel6);
-        jLabel6.setBounds(20, 170, 220, 25);
+        jLabel6.setBounds(20, 200, 220, 25);
         add(jOrder);
-        jOrder.setBounds(240, 170, 60, 25);
+        jOrder.setBounds(240, 200, 60, 25);
 
         jLabel7.setText(AppLocal.getIntString("label.dutyrate")); // NOI18N
         add(jLabel7);
-        jLabel7.setBounds(20, 140, 220, 25);
+        jLabel7.setBounds(20, 170, 220, 25);
         add(m_jTaxParent1);
-        m_jTaxParent1.setBounds(240, 110, 200, 25);
+        m_jTaxParent1.setBounds(240, 140, 200, 25);
+
+        jLabel8.setText(AppLocal.getIntString("Label.ValidFrom")); // NOI18N
+        add(jLabel8);
+        jLabel8.setBounds(20, 80, 220, 25);
+        add(txtValidFrom);
+        txtValidFrom.setBounds(240, 80, 200, 25);
+
+        btnValidFrom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
+        btnValidFrom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnValidFromActionPerformed(evt);
+            }
+        });
+        add(btnValidFrom);
+        btnValidFrom.setBounds(450, 80, 49, 25);
     }// </editor-fold>//GEN-END:initComponents
     
+    private void btnValidFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidFromActionPerformed
+
+        Date date;
+        try {
+            date = (Date) Formats.TIMESTAMP.parseValue(txtValidFrom.getText());
+        } catch (BasicException e) {
+            date = null;
+        }
+        date = JCalendarDialog.showCalendarTimeHours(this, date);
+        if (date != null) {
+            txtValidFrom.setText(Formats.TIMESTAMP.formatValue(date));
+        }
+    }//GEN-LAST:event_btnValidFromActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnValidFrom;
     private javax.swing.JCheckBox jCascade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -270,12 +318,14 @@ public class TaxEditor extends JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField jOrder;
     private javax.swing.JComboBox m_jCustTaxCategory;
     private javax.swing.JTextField m_jName;
     private javax.swing.JTextField m_jRate;
     private javax.swing.JComboBox m_jTaxCategory;
     private javax.swing.JComboBox m_jTaxParent1;
+    private javax.swing.JTextField txtValidFrom;
     // End of variables declaration//GEN-END:variables
     
 }
