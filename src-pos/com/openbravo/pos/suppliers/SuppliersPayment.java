@@ -19,11 +19,11 @@
 
 package com.openbravo.pos.suppliers;
 
-import com.openbravo.pos.customers.*;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
 import com.openbravo.data.user.DirtyManager;
 import com.openbravo.format.Formats;
+import com.openbravo.pos.suppliers.SupplierInfoExt;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
 import com.openbravo.pos.forms.BeanFactoryApp;
@@ -32,7 +32,7 @@ import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.forms.DataLogicSystem;
 import com.openbravo.pos.forms.JPanelView;
 import com.openbravo.pos.payment.JPaymentSelect;
-import com.openbravo.pos.payment.JPaymentSelectCustomer;
+import com.openbravo.pos.payment.JPaymentSelectSupplier;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.pos.payment.PaymentInfoTicket;
 import com.openbravo.pos.printer.TicketParser;
@@ -53,13 +53,13 @@ import javax.swing.JOptionPane;
 public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, BeanFactoryApp {
 
     private AppView app;
-    private DataLogicCustomers dlcustomers;
+    private DataLogicSuppliers dlsuppliers;
     private DataLogicSales dlsales;
     private DataLogicSystem dlsystem;
     private TicketParser ttp;    
     private JPaymentSelect paymentdialog;
     
-    private CustomerInfoExt customerext;
+    private SupplierInfoExt supplierext;
     private DirtyManager dirty;
 
     /** Creates new form CustomersPayment */
@@ -77,7 +77,7 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
     public void init(AppView app) throws BeanFactoryException {
 
         this.app = app;
-        dlcustomers = (DataLogicCustomers) app.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+        dlsuppliers = (DataLogicSuppliers) app.getBean("com.openbravo.pos.suppliers.DataLogicSuppliers");
         dlsales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
         dlsystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");
         ttp = new TicketParser(app.getDeviceTicket(), dlsystem);
@@ -88,15 +88,15 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
     }
 
     public String getTitle() {
-        return AppLocal.getIntString("Menu.CustomersPayment");
+        return AppLocal.getIntString("Menu.SuppliersPayment");
     }
 
     public void activate() throws BasicException {
 
-        paymentdialog = JPaymentSelectCustomer.getDialog(this);        
+        paymentdialog = JPaymentSelectSupplier.getDialog(this);
         paymentdialog.init(app);
 
-        resetCustomer();
+        resetSupplier();
 
         editorcard.reset();
         editorcard.activate();
@@ -120,30 +120,30 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
         return this;
     }
 
-    private void editCustomer(CustomerInfoExt customer) {
+    private void editSupplier(SupplierInfoExt supplier) {
 
-        customerext = customer;
+        supplierext = supplier;
 
-        txtTaxId.setText(customer.getTaxid());
-        txtName.setText(customer.getName());
-        txtCard.setText(customer.getCard());
+        txtTaxId.setText(supplier.getTaxid());
+        txtName.setText(supplier.getName());
+        txtCard.setText(supplier.getCard());
         txtNotes.reset();
-        txtNotes.setText(customer.getNotes());
-        txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer.getMaxdebt()));
-        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer.getCurdebt()));
-        txtCurdate.setText(Formats.DATE.formatValue(customer.getCurdate()));
+        txtNotes.setText(supplier.getNotes());
+        txtMaxdebt.setText(Formats.CURRENCY.formatValue(supplier.getMaxdebt()));
+        txtCurdebt.setText(Formats.CURRENCY.formatValue(supplier.getCurdebt()));
+        txtCurdate.setText(Formats.DATE.formatValue(supplier.getCurdate()));
 
         txtNotes.setEnabled(true);
 
         dirty.setDirty(false);
 
         btnSave.setEnabled(true);    
-        btnPay.setEnabled(customer.getCurdebt() != null && customer.getCurdebt().doubleValue() > 0.0);
+        btnPay.setEnabled(supplier.getCurdebt() != null && supplier.getCurdebt().doubleValue() > 0.0);
     }
 
-    private void resetCustomer() {
+    private void resetSupplier() {
 
-        customerext = null;
+        supplierext = null;
 
         txtTaxId.setText(null);
         txtName.setText(null);
@@ -162,19 +162,19 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
 
     }
 
-    private void readCustomer() {
+    private void readSupplier() {
 
         try {
-            CustomerInfoExt customer = dlsales.findCustomerExt(editorcard.getText());
-            if (customer == null) {
-                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
+            SupplierInfoExt supplier = dlsales.findSupplierExt(editorcard.getText());
+            if (supplier == null) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindsupplier"));
                 msg.show(this);
             } else {
-                editCustomer(customer);
+                editSupplier(supplier);
             }
 
         } catch (BasicException ex) {
-            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindsupplier"), ex);
             msg.show(this);
         }
 
@@ -184,11 +184,11 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
 
     private void save() {
 
-        customerext.setNotes(txtNotes.getText());
+        supplierext.setNotes(txtNotes.getText());
 
         try {
-            dlcustomers.updateCustomerExt(customerext);
-            editCustomer(customerext);
+            dlsuppliers.updateSupplierExt(supplierext);
+            editSupplier(supplierext);
         } catch (BasicException e) {
             MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosave"), e);
             msg.show(this);
@@ -196,7 +196,7 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
 
     }
 
-    private void printTicket(String resname, TicketInfo ticket, CustomerInfoExt customer) {
+    private void printTicket(String resname, TicketInfo ticket, SupplierInfoExt supplier) {
 
         String resource = dlsystem.getResourceAsXML(resname);
         if (resource == null) {
@@ -206,7 +206,7 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
             try {
                 ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
                 script.put("ticket", ticket);
-                script.put("customer", customer);
+                script.put("customer", supplier);
                 ttp.printTicket(script.eval(resource).toString());
             } catch (ScriptException e) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
@@ -457,30 +457,30 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
     }// </editor-fold>//GEN-END:initComponents
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        readCustomer();
+        readSupplier();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void m_jKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jKeysActionPerformed
 
-        readCustomer();
+        readSupplier();
         
     }//GEN-LAST:event_m_jKeysActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
 
-        JCustomerFinder finder = JCustomerFinder.getCustomerFinder(this, dlcustomers);
+        JSupplierFinder finder = JSupplierFinder.getSupplierFinder(this, dlsuppliers);
         finder.search(null);
         finder.setVisible(true);
-        CustomerInfo customer = finder.getSelectedCustomer();
-        if (customer != null) {
+        SupplierInfo supplier = finder.getSelectedSupplier();
+        if (supplier != null) {
             try {
-                CustomerInfoExt c = dlsales.loadCustomerExt(customer.getId());
-                if (c == null) {
+                SupplierInfoExt s = dlsales.loadSupplierExt(supplier.getId());
+                if (s == null) {
                     MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
                     msg.show(this);
                 } else {
-                    editCustomer(c);
+                    editSupplier(s);
                 }
             } catch (BasicException ex) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"), ex);
@@ -496,11 +496,11 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
 
         paymentdialog.setPrintSelected(true);
         
-        if (paymentdialog.showDialog(customerext.getCurdebt(), null)) {
+        if (paymentdialog.showDialog(supplierext.getCurdebt(), null)) {
 
             // Save the ticket
             TicketInfo ticket = new TicketInfo();
-            ticket.setTicketType(TicketInfo.RECEIPT_PAYMENT);
+            ticket.setTicketType(TicketInfo.SUPPLIER_PAYMENT);
 
             List<PaymentInfo> payments = paymentdialog.getSelectedPayments();
 
@@ -509,32 +509,33 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
                 total += p.getTotal();
             }
 
-            payments.add(new PaymentInfoTicket(-total, "debtpaid"));
+            payments.add(new PaymentInfoTicket(total, "debtpaid"));
 
             ticket.setPayments(payments);
 
             ticket.setUser(app.getAppUserView().getUser().getUserInfo());
             ticket.setActiveCash(app.getActiveCashIndex());
             ticket.setDate(new Date());
-            ticket.setCustomer(customerext);
+            ticket.setSupplier(supplierext);
 
             try {
-                dlsales.saveTicket(ticket, app.getInventoryLocation());
+                //create new method for supplier paymentyou
+                dlsales.saveSupplierPayment(ticket, app.getInventoryLocation());
             } catch (BasicException eData) {
                 MessageInf msg = new MessageInf(MessageInf.SGN_NOTICE, AppLocal.getIntString("message.nosaveticket"), eData);
                 msg.show(this);
             }
 
 
-            // reload customer
-            CustomerInfoExt c;
+            // reload supplier
+            SupplierInfoExt c;
             try {
-                c = dlsales.loadCustomerExt(customerext.getId());
+                c = dlsales.loadSupplierExt(supplierext.getId());
                 if (c == null) {
                     MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotfindcustomer"));
                     msg.show(this);
                 } else {
-                    editCustomer(c);
+                    editSupplier(c);
                 }
             } catch (BasicException ex) {
                 c = null;
@@ -543,7 +544,7 @@ public class SuppliersPayment extends javax.swing.JPanel implements JPanelView, 
             }
 
             printTicket(paymentdialog.isPrintSelected()
-                    ? "Printer.CustomerPaid"
+                    ? "Printer.SupplierPaid"
                     : "Printer.CustomerPaid2",
                     ticket, c);
         }

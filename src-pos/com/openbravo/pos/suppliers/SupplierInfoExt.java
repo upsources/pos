@@ -122,7 +122,7 @@ public class SupplierInfoExt extends SupplierInfo {
     
     public void updateCurDebt(Double amount, Date d) {
         
-        curdebt = curdebt == null ? amount : curdebt + amount;
+        curdebt = curdebt == null ? amount : curdebt - amount;
 
         if (RoundUtils.compare(curdebt, 0.0) > 0) {
             if (curdate == null) {
