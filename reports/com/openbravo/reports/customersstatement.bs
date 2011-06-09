@@ -23,7 +23,7 @@ report.setTitleKey("Menu.CustomersStatement");
 report.setReport("/com/openbravo/reports/customersstatement");
 report.setResourceBundle("com/openbravo/reports/customersstatement_messages");
 
-report.setSentence("select * from cust_statement Where ?(QBF_FILTER) order by  CUSTOMERID, DATENEW,ID ");
+report.setSentence("SELECT CUSTOMERS.ID AS CUSTOMERID, TICKETS.ID, RECEIPTS.DATENEW, TICKETS.TICKETID, PAYMENTS.PAYMENT, 0 AS debit, PAYMENTS.TOTAL AS credit, CUSTOMERS.NAME FROM RECEIPTS, TICKETS, CUSTOMERS, PAYMENTS WHERE (RECEIPTS.ID = TICKETS.ID) AND (RECEIPTS.ID = PAYMENTS.RECEIPT) AND (TICKETS.CUSTOMER = CUSTOMERS.ID) AND ( PAYMENTS.PAYMENT =  'debt' OR PAYMENTS.PAYMENT =  'cash' ) AND TICKETTYPE = 0 UNION SELECT CUSTOMER, p.TICKETID, DATENEW, t.TICKETID, PAYMENT, TOTAL, 0, '' FROM RECEIPTS r, PAYMENTS p, TICKETS t WHERE p.RECEIPT = r.ID AND (PAYMENT <> 'debt' AND PAYMENT <>  'debtpaid' ) AND r.ID = t.ID AND p.TICKETID IN ( SELECT ID FROM TICKETS WHERE TICKETTYPE = 0 AND STATUS = 9 ) ORDER BY CUSTOMERID, DATENEW, ID");
 report.addParameter("CUSTOMERSID");
 report.addParameter("NAME");
 report.addQBFFilter(new com.openbravo.pos.reports.JParamsCustomer());
