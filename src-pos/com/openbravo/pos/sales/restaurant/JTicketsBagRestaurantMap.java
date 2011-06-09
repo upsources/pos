@@ -30,7 +30,10 @@ import com.openbravo.data.loader.StaticSentence;
 import com.openbravo.data.loader.SerializerReadClass;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.gui.MessageInf;
+import com.openbravo.data.loader.Datas;
 import com.openbravo.data.loader.SentenceList;
+import com.openbravo.data.loader.SerializerReadBasic;
+import com.openbravo.data.loader.SerializerWriteString;
 import com.openbravo.pos.customers.CustomerInfo;
 import com.openbravo.pos.ticket.TicketLineInfo;
 
@@ -41,6 +44,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         
     private java.util.List<Place> m_aplaces;
     private java.util.List<Floor> m_afloors;
+    private AppView app;
     
     private JTicketsBagRestaurant m_restaurantmap;  
     private JTicketsBagRestaurantRes m_jreservations;   
@@ -59,6 +63,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
         
         super(app, panelticket);
         
+        this.app = app;
         dlReceipts = (DataLogicReceipts) app.getBean("com.openbravo.pos.sales.DataLogicReceipts");
         dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
         
@@ -373,6 +378,7 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
     private class MyActionListener implements ActionListener {
         
         private Place m_place;
+        private String userID = null;
         
         public MyActionListener(Place place) {
             m_place = place;
@@ -394,6 +400,8 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
 
                         // table occupied
                         ticket = new TicketInfo();
+                        //add user infor to the table
+                        ticket.setUser(app.getAppUserView().getUser().getUserInfo());
                         try {
                             dlReceipts.insertSharedTicket(m_place.getId(), ticket);
                         } catch (BasicException e) {
@@ -414,9 +422,36 @@ public class JTicketsBagRestaurantMap extends JTicketsBag {
 
                     } else { // both != null
                         // Full table                
-                        // m_place.setPeople(true); // already true                           
-                        setActivePlace(m_place, ticket);                   
+                        // m_place.setPeople(true); // already true  
+                        try {
+                            Object[] userID = (Object []) new StaticSentence(app.getSession(),
+                            "SELECT USERID " +
+                            "FROM SHAREDTICKETS WHERE ID = ?",
+                            SerializerWriteString.INSTANCE,
+                            new SerializerReadBasic(new Datas[] {Datas.STRING})).find(m_place.getId());
+                            if( userID == null ) {
+                                this.userID = null;
+                            } else {
+                                this.userID = (String) userID[0];
+                            }
+                        } catch (BasicException e) {
+                           new MessageInf(e).show(JTicketsBagRestaurantMap.this); // Glup. But It was empty.
+                        }
+                        //each waiter has his own table
+                        if(!app.getAppUserView().getUser().hasPermission("sales.EditTicket")) {
+                            if(!userID.equals("")) {
+                                if(!userID.equals(app.getAppUserView().getUser().getUserInfo().getId())) {
+                                    m_place.setPeople(true);
+                                    m_place.getButton().setEnabled(false);
+                                } else {
+                                    setActivePlace(m_place, ticket);                   
+                                }
+                            }
+                        } else {
+                           setActivePlace(m_place, ticket);
+                        }
                     }
+
                 } else {
                     // receiving customer.
                     

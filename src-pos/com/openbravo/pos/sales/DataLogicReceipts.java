@@ -80,12 +80,12 @@ public class DataLogicReceipts extends BeanFactoryDataSingle {
     
     public final void insertSharedTicket(final String id, final TicketInfo ticket) throws BasicException {
         
-        Object[] values = new Object[] {id, ticket.getName(), ticket};
-        Datas[] datas = new Datas[] {Datas.STRING, Datas.STRING, Datas.SERIALIZABLE};
+        Object[] values = new Object[] {id, ticket.getName(), ticket, ticket.getUser().getId()};
+        Datas[] datas = new Datas[] {Datas.STRING, Datas.STRING, Datas.SERIALIZABLE, Datas.STRING};
         
         new PreparedSentence(s
-            , "INSERT INTO SHAREDTICKETS (ID, NAME,CONTENT) VALUES (?, ?, ?)"
-            , new SerializerWriteBasicExt(datas, new int[] {0, 1, 2})).exec(values);
+            , "INSERT INTO SHAREDTICKETS (ID, NAME,CONTENT, USERID) VALUES (?, ?, ?, ?)"
+            , new SerializerWriteBasicExt(datas, new int[] {0, 1, 2, 3})).exec(values);
     }
     
     public final void deleteSharedTicket(final String id) throws BasicException {
