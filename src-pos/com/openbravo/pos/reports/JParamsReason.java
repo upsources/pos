@@ -80,20 +80,19 @@ public class JParamsReason extends javax.swing.JPanel implements ReportEditorCre
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         jLabel2 = new javax.swing.JLabel();
         m_jreason = new javax.swing.JComboBox();
 
+        setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.byreason"))); // NOI18N
+        setPreferredSize(new java.awt.Dimension(400, 60));
         setLayout(null);
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(AppLocal.getIntString("label.byreason")));
-        setPreferredSize(new java.awt.Dimension(400, 60));
-        jLabel2.setText(AppLocal.getIntString("label.stockreason"));
+        jLabel2.setText(AppLocal.getIntString("label.stockreason")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 20, 100, 14);
-
+        jLabel2.setBounds(20, 20, 100, 25);
         add(m_jreason);
-        m_jreason.setBounds(150, 20, 220, 20);
-
+        m_jreason.setBounds(150, 20, 220, 25);
     }// </editor-fold>//GEN-END:initComponents
     
     

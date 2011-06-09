@@ -157,9 +157,9 @@ public class JParamsText extends javax.swing.JPanel implements ReportEditorCreat
 
         lblField.setText("***");
         add(lblField);
-        lblField.setBounds(20, 10, 120, 14);
+        lblField.setBounds(20, 10, 120, 25);
         add(txtField);
-        txtField.setBounds(140, 10, 200, 18);
+        txtField.setBounds(140, 10, 200, 25);
     }// </editor-fold>//GEN-END:initComponents
     
     

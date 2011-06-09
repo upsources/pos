@@ -109,9 +109,9 @@ public class JParamsCustomer extends javax.swing.JPanel implements ReportEditorC
 
         jLabel1.setText(AppLocal.getIntString("label.customer")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 20, 120, 15);
+        jLabel1.setBounds(20, 20, 120, 25);
         add(jTextField1);
-        jTextField1.setBounds(140, 20, 200, 20);
+        jTextField1.setBounds(140, 20, 200, 25);
 
         btnCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/kuser.png"))); // NOI18N
         btnCustomer.addActionListener(new java.awt.event.ActionListener() {
@@ -120,7 +120,7 @@ public class JParamsCustomer extends javax.swing.JPanel implements ReportEditorC
             }
         });
         add(btnCustomer);
-        btnCustomer.setBounds(350, 20, 50, 26);
+        btnCustomer.setBounds(350, 20, 49, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed

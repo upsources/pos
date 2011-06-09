@@ -47,6 +47,7 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
     }
 
     public void init(AppView app) {
+        this.setStartDate(new Date());
     }
 
     public void activate() throws BasicException {
@@ -92,15 +93,15 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
 
         jLabel1.setText(AppLocal.getIntString("Label.StartDate")); // NOI18N
         add(jLabel1);
-        jLabel1.setBounds(20, 20, 120, 15);
+        jLabel1.setBounds(20, 20, 120, 25);
         add(jTxtStartDate);
-        jTxtStartDate.setBounds(140, 20, 200, 19);
+        jTxtStartDate.setBounds(140, 20, 200, 25);
 
         jLabel2.setText(AppLocal.getIntString("Label.EndDate")); // NOI18N
         add(jLabel2);
-        jLabel2.setBounds(20, 50, 120, 15);
+        jLabel2.setBounds(20, 50, 120, 25);
         add(jTxtEndDate);
-        jTxtEndDate.setBounds(140, 50, 200, 19);
+        jTxtEndDate.setBounds(140, 50, 200, 25);
 
         btnDateStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
         btnDateStart.addActionListener(new java.awt.event.ActionListener() {
@@ -109,7 +110,7 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
             }
         });
         add(btnDateStart);
-        btnDateStart.setBounds(350, 20, 50, 26);
+        btnDateStart.setBounds(350, 20, 49, 25);
 
         btnDateEnd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/date.png"))); // NOI18N
         btnDateEnd.addActionListener(new java.awt.event.ActionListener() {
@@ -118,7 +119,7 @@ public class JParamsDatesInterval extends javax.swing.JPanel implements ReportEd
             }
         });
         add(btnDateEnd);
-        btnDateEnd.setBounds(350, 50, 50, 26);
+        btnDateEnd.setBounds(350, 50, 49, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDateStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateStartActionPerformed
