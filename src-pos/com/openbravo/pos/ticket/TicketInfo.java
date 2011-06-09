@@ -29,6 +29,7 @@ import com.openbravo.format.Formats;
 import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.LocalRes;
 import com.openbravo.pos.customers.CustomerInfoExt;
+import com.openbravo.pos.suppliers.SupplierInfoExt;
 import com.openbravo.pos.payment.PaymentInfoMagcard;
 import com.openbravo.pos.util.StringUtils;
 
@@ -43,6 +44,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public static final int RECEIPT_NORMAL = 0;
     public static final int RECEIPT_REFUND = 1;
     public static final int RECEIPT_PAYMENT = 2;
+    public static final int SUPPLIER_PAYMENT = 3;
 
     private static DateFormat m_dateformat = new SimpleDateFormat("hh:mm");
 
@@ -53,12 +55,12 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private Properties attributes;
     private UserInfo m_User;
     private CustomerInfoExt m_Customer;
+    private SupplierInfoExt m_Supplier;
     private String m_sActiveCash;
     private List<TicketLineInfo> m_aLines;
     private List<PaymentInfo> payments;
     private List<TicketTaxInfo> taxes;
     private String m_sResponse;
-
     // MSL
     private java.util.Date m_dDueDate;
 
@@ -89,7 +91,6 @@ public class TicketInfo implements SerializableRead, Externalizable {
         out.writeObject(m_dDate);
         out.writeObject(attributes);
         out.writeObject(m_aLines);
-
         // MSL
         //out.writeObject(m_dDueDate);
     }
@@ -258,6 +259,22 @@ public class TicketInfo implements SerializableRead, Externalizable {
         }
     }
     
+    public SupplierInfoExt getSupplier() {
+        return m_Supplier;
+    }
+
+    public void setSupplier(SupplierInfoExt value) {
+        m_Supplier = value;
+    }
+
+    public String getSupplierId() {
+        if (m_Supplier == null) {
+            return null;
+        } else {
+            return m_Supplier.getId();
+        }
+    }
+    
     public String getTransactionID(){
         return (getPayments().size()>0)
             ? ( getPayments().get(getPayments().size()-1) ).getTransactionID()
@@ -344,7 +361,6 @@ public class TicketInfo implements SerializableRead, Externalizable {
         }
         return dArticles;
     }
-
 
     public double getSubTotal() {
         double sum = 0.0;
