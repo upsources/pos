@@ -223,9 +223,6 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         return this;
     }
 
-
-    
-    
     //Subgrupos
     public void changeCatalog() {
         catcontainer.remove(m_catalog);
@@ -381,7 +378,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             
             // Refresh ticket taxes
             for (TicketLineInfo line : m_oTicket.getLines()) {
-                line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getCustomer()));
+                line.setTaxInfo(taxeslogic.getTaxInfo(line.getProductTaxCategoryID(), m_oTicket.getDate(), m_oTicket.getCustomer()));
             }  
         
             // The ticket name
@@ -442,7 +439,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
     private void addTicketLine(ProductInfoExt oProduct, double dMul, double dPrice) {   
         
-        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
+        TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getDate(), m_oTicket.getCustomer());
         
         addTicketLine(new TicketLineInfo(oProduct, dMul, dPrice, tax, (java.util.Properties) (oProduct.getProperties().clone())));
     }
@@ -528,7 +525,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     
     private double includeTaxes(String tcid, double dValue) {
         if (m_jaddtax.isSelected()) {
-            TaxInfo tax = taxeslogic.getTaxInfo(tcid, m_oTicket.getCustomer());
+            TaxInfo tax = taxeslogic.getTaxInfo(tcid, m_oTicket.getDate(), m_oTicket.getCustomer());
             double dTaxRate = tax == null ? 0.0 : tax.getRate();           
             return dValue / (1.0 + dTaxRate);      
         } else {
@@ -596,7 +593,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 // Se anade directamente una unidad con el precio y todo
                 if (m_jaddtax.isSelected()) {
                     // debemos quitarle los impuestos ya que el precio es con iva incluido...
-                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getCustomer());
+                    TaxInfo tax = taxeslogic.getTaxInfo(oProduct.getTaxCategoryID(), m_oTicket.getDate(), m_oTicket.getCustomer());
                     addTicketLine(oProduct, 1.0, dPriceSell / (1.0 + tax.getRate()));
                 } else {
                     addTicketLine(oProduct, 1.0, dPriceSell);
@@ -1449,15 +1446,15 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jLblTotalEuros2 = new javax.swing.JLabel();
         m_jLblTotalEuros3 = new javax.swing.JLabel();
         m_jContEntries = new javax.swing.JPanel();
-        m_jPanEntries = new javax.swing.JPanel();
-        m_jNumberKeys = new com.openbravo.beans.JNumberKeys();
         jPanel9 = new javax.swing.JPanel();
         m_jPrice = new javax.swing.JLabel();
         m_jPor = new javax.swing.JLabel();
         m_jEnter = new javax.swing.JButton();
         m_jTax = new javax.swing.JComboBox();
         m_jaddtax = new javax.swing.JToggleButton();
+        m_jPanEntries = new javax.swing.JPanel();
         m_jKeyFactory = new javax.swing.JTextField();
+        m_jNumberKeys = new com.openbravo.beans.JNumberKeys();
         catcontainer = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 204, 153));
@@ -1468,7 +1465,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         m_jOptions.setLayout(new java.awt.BorderLayout());
 
         m_jTicketId.setBackground(java.awt.Color.white);
-        m_jTicketId.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        m_jTicketId.setFont(new java.awt.Font("Tahoma", 1, 11));
         m_jTicketId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         m_jTicketId.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
         m_jTicketId.setOpaque(true);
@@ -1536,7 +1533,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        jPanel2.setLayout(new java.awt.GridLayout(0, 2, 5, 5));
+        jPanel2.setPreferredSize(new java.awt.Dimension(118, 277));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         m_jUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1uparrow22.png"))); // NOI18N
         m_jUp.setFocusPainted(false);
@@ -1548,7 +1546,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jUpActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jUp);
+        jPanel2.add(m_jUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 0, 54, 42));
 
         m_jbtnDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/line.png"))); // NOI18N
         m_jbtnDiscount.setFocusPainted(false);
@@ -1560,7 +1558,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jbtnDiscountActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jbtnDiscount);
+        jPanel2.add(m_jbtnDiscount, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 0, 54, 42));
 
         m_jDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/1downarrow22.png"))); // NOI18N
         m_jDown.setFocusPainted(false);
@@ -1572,18 +1570,21 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jDownActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jDown);
+        jPanel2.add(m_jDown, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 47, 54, 42));
 
         m_jDiscount1.setFocusPainted(false);
         m_jDiscount1.setFocusable(false);
-        m_jDiscount1.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDiscount1.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        m_jDiscount1.setMaximumSize(new java.awt.Dimension(54, 42));
+        m_jDiscount1.setMinimumSize(new java.awt.Dimension(54, 42));
+        m_jDiscount1.setPreferredSize(new java.awt.Dimension(54, 42));
         m_jDiscount1.setRequestFocusEnabled(false);
         m_jDiscount1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jDiscount1ActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jDiscount1);
+        jPanel2.add(m_jDiscount1, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 47, 54, 42));
 
         m_jDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/locationbar_erase.png"))); // NOI18N
         m_jDelete.setFocusPainted(false);
@@ -1595,18 +1596,21 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jDeleteActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jDelete);
+        jPanel2.add(m_jDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 94, 54, 42));
 
         m_jDiscount2.setFocusPainted(false);
         m_jDiscount2.setFocusable(false);
-        m_jDiscount2.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDiscount2.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        m_jDiscount2.setMaximumSize(new java.awt.Dimension(54, 42));
+        m_jDiscount2.setMinimumSize(new java.awt.Dimension(54, 42));
+        m_jDiscount2.setPreferredSize(new java.awt.Dimension(54, 42));
         m_jDiscount2.setRequestFocusEnabled(false);
         m_jDiscount2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jDiscount2ActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jDiscount2);
+        jPanel2.add(m_jDiscount2, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 94, 54, 42));
 
         m_jList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/search22.png"))); // NOI18N
         m_jList.setFocusPainted(false);
@@ -1618,18 +1622,21 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jListActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jList);
+        jPanel2.add(m_jList, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 141, 54, 42));
 
         m_jDiscount3.setFocusPainted(false);
         m_jDiscount3.setFocusable(false);
-        m_jDiscount3.setMargin(new java.awt.Insets(8, 14, 8, 14));
+        m_jDiscount3.setMargin(new java.awt.Insets(8, 8, 8, 8));
+        m_jDiscount3.setMaximumSize(new java.awt.Dimension(54, 42));
+        m_jDiscount3.setMinimumSize(new java.awt.Dimension(54, 42));
+        m_jDiscount3.setPreferredSize(new java.awt.Dimension(54, 42));
         m_jDiscount3.setRequestFocusEnabled(false);
         m_jDiscount3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 m_jDiscount3ActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jDiscount3);
+        jPanel2.add(m_jDiscount3, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 141, 54, 42));
 
         m_jEditLine.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/color_line.png"))); // NOI18N
         m_jEditLine.setFocusPainted(false);
@@ -1641,7 +1648,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jEditLineActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jEditLine);
+        jPanel2.add(m_jEditLine, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 188, 54, 42));
 
         m_jKeypadDiscount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/keypad.png"))); // NOI18N
         m_jKeypadDiscount.setFocusPainted(false);
@@ -1653,7 +1660,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jKeypadDiscountActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jKeypadDiscount);
+        jPanel2.add(m_jKeypadDiscount, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 188, 54, 42));
 
         jEditAttributes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/colorize.png"))); // NOI18N
         jEditAttributes.setFocusPainted(false);
@@ -1665,7 +1672,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 jEditAttributesActionPerformed(evt);
             }
         });
-        jPanel2.add(jEditAttributes);
+        jPanel2.add(jEditAttributes, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 235, 54, 42));
 
         m_jQuickCustomer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/yast_group_add.png"))); // NOI18N
         m_jQuickCustomer.setFocusPainted(false);
@@ -1677,7 +1684,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 m_jQuickCustomerActionPerformed(evt);
             }
         });
-        jPanel2.add(m_jQuickCustomer);
+        jPanel2.add(m_jQuickCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 235, 54, 42));
 
         jPanel5.add(jPanel2, java.awt.BorderLayout.NORTH);
 
@@ -1685,6 +1692,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanelCentral.setLayout(new java.awt.BorderLayout());
 
+        jPanel4.setPreferredSize(new java.awt.Dimension(300, 60));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         m_jPanTotals.setLayout(new java.awt.GridBagLayout());
@@ -1769,8 +1777,56 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         m_jPanContainer.add(m_jPanTicket, java.awt.BorderLayout.CENTER);
 
-        m_jContEntries.setLayout(new java.awt.BorderLayout());
+        m_jContEntries.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanel9.setMaximumSize(new java.awt.Dimension(229, 60));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        m_jPrice.setBackground(java.awt.Color.white);
+        m_jPrice.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jPrice.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
+        m_jPrice.setOpaque(true);
+        m_jPrice.setPreferredSize(new java.awt.Dimension(100, 22));
+        m_jPrice.setRequestFocusEnabled(false);
+        jPanel9.add(m_jPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 107, -1));
+
+        m_jPor.setBackground(java.awt.Color.white);
+        m_jPor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        m_jPor.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
+        m_jPor.setOpaque(true);
+        m_jPor.setPreferredSize(new java.awt.Dimension(22, 22));
+        m_jPor.setRequestFocusEnabled(false);
+        jPanel9.add(m_jPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 5, 51, -1));
+
+        m_jEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/barcode.png"))); // NOI18N
+        m_jEnter.setFocusPainted(false);
+        m_jEnter.setFocusable(false);
+        m_jEnter.setMaximumSize(new java.awt.Dimension(51, 30));
+        m_jEnter.setMinimumSize(new java.awt.Dimension(51, 30));
+        m_jEnter.setPreferredSize(new java.awt.Dimension(51, 30));
+        m_jEnter.setRequestFocusEnabled(false);
+        m_jEnter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jEnterActionPerformed(evt);
+            }
+        });
+        jPanel9.add(m_jEnter, new org.netbeans.lib.awtextra.AbsoluteConstraints(173, 5, 51, 49));
+
+        m_jTax.setFocusable(false);
+        m_jTax.setRequestFocusEnabled(false);
+        jPanel9.add(m_jTax, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 32, 107, 22));
+
+        m_jaddtax.setText("+");
+        m_jaddtax.setFocusPainted(false);
+        m_jaddtax.setFocusable(false);
+        m_jaddtax.setRequestFocusEnabled(false);
+        jPanel9.add(m_jaddtax, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 32, 51, 22));
+
+        m_jContEntries.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 236, 229, 60));
+
+        m_jPanEntries.setMinimumSize(new java.awt.Dimension(0, 0));
+        m_jPanEntries.setPreferredSize(new java.awt.Dimension(0, 0));
         m_jPanEntries.setLayout(new javax.swing.BoxLayout(m_jPanEntries, javax.swing.BoxLayout.Y_AXIS));
 
         m_jKeyFactory.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
@@ -1790,93 +1846,14 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         });
         m_jPanEntries.add(m_jKeyFactory);
 
-        m_jContEntries.add(m_jPanEntries, java.awt.BorderLayout.NORTH);
+        m_jContEntries.add(m_jPanEntries, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 229, -1));
 
         m_jNumberKeys.addJNumberEventListener(new com.openbravo.beans.JNumberEventListener() {
             public void keyPerformed(com.openbravo.beans.JNumberEvent evt) {
                 m_jNumberKeysKeyPerformed(evt);
             }
         });
-        m_jContEntries.add(m_jNumberKeys, java.awt.BorderLayout.CENTER);
-
-        jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        jPanel9.setLayout(new java.awt.GridBagLayout());
-
-        m_jPrice.setBackground(java.awt.Color.white);
-        m_jPrice.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        m_jPrice.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
-        m_jPrice.setOpaque(true);
-        m_jPrice.setPreferredSize(new java.awt.Dimension(100, 22));
-        m_jPrice.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanel9.add(m_jPrice, gridBagConstraints);
-
-        m_jPor.setBackground(java.awt.Color.white);
-        m_jPor.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        m_jPor.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.darkShadow")), javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4)));
-        m_jPor.setOpaque(true);
-        m_jPor.setPreferredSize(new java.awt.Dimension(22, 22));
-        m_jPor.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanel9.add(m_jPor, gridBagConstraints);
-
-        m_jEnter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/barcode.png"))); // NOI18N
-        m_jEnter.setFocusPainted(false);
-        m_jEnter.setFocusable(false);
-        m_jEnter.setRequestFocusEnabled(false);
-        m_jEnter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m_jEnterActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanel9.add(m_jEnter, gridBagConstraints);
-
-        m_jTax.setFocusable(false);
-        m_jTax.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanel9.add(m_jTax, gridBagConstraints);
-
-        m_jaddtax.setText("+");
-        m_jaddtax.setFocusPainted(false);
-        m_jaddtax.setFocusable(false);
-        m_jaddtax.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
-        jPanel9.add(m_jaddtax, gridBagConstraints);
-
-        m_jContEntries.add(jPanel9, java.awt.BorderLayout.PAGE_END);
+        m_jContEntries.add(m_jNumberKeys, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 229, 240));
 
         m_jPanContainer.add(m_jContEntries, java.awt.BorderLayout.LINE_END);
 

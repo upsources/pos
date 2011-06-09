@@ -38,6 +38,7 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.pos.forms.DataLogicSales;
 import com.openbravo.pos.sales.TaxesLogic;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -472,7 +473,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             if (dPriceSell == null) {
                 m_jPriceSellTax.setText(null);
             } else {               
-                double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem());
+                double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem(), new Date());
                 m_jPriceSellTax.setText(Formats.CURRENCY.formatValue(new Double(dPriceSell.doubleValue() * (1.0 + dTaxRate))));
             }            
             reportlock = false;
@@ -508,7 +509,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
             if (dPriceSellTax == null) {
                 setPriceSell(null);
             } else {
-                double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem()); 
+                double dTaxRate = taxeslogic.getTaxRate((TaxCategoryInfo) taxcatmodel.getSelectedItem(), new Date()); 
                 setPriceSell(new Double(dPriceSellTax.doubleValue() / (1.0 + dTaxRate)));
             }   
                         

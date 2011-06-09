@@ -232,7 +232,7 @@ public class JCatalogMaterials extends JPanel implements ListSelectionListener, 
 
         if (pricevisible) {
             if (taxesincluded) {
-                TaxInfo tax = taxeslogic.getTaxInfo(product.getTaxCategoryID());
+                TaxInfo tax = taxeslogic.getTaxInfo(product.getTaxCategoryID(), new Date());
                 return "<html><center>" + product.getName() + "<br>" + product.printPriceSellTax(tax);
             } else {
                 return "<html><center>" + product.getName() + "<br>" + product.printPriceSell();
