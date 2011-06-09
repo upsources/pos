@@ -31,6 +31,7 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.util.Base64Encoder;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 /**
  *
@@ -45,6 +46,8 @@ public class ResourcesView extends JPanel implements EditorRecord {
     public ResourcesView(DirtyManager dirty) {
         initComponents();
         
+        m_jText.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
+
         m_ResourceModel = new ComboBoxValModel();
         m_ResourceModel.add(ResourceType.TEXT);
         m_ResourceModel.add(ResourceType.IMAGE);
@@ -188,7 +191,7 @@ public class ResourcesView extends JPanel implements EditorRecord {
         jPanel3 = new javax.swing.JPanel();
         m_jContainer = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        m_jText = new javax.swing.JTextArea();
+        m_jText = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         jPanel1 = new javax.swing.JPanel();
         m_jImage = new com.openbravo.data.gui.JImageEditor();
         jLabel2 = new javax.swing.JLabel();
@@ -199,7 +202,9 @@ public class ResourcesView extends JPanel implements EditorRecord {
 
         m_jContainer.setLayout(new java.awt.CardLayout());
 
+        m_jText.setWrapStyleWord(false);
         m_jText.setFont(new java.awt.Font("DialogInput", 0, 12));
+        m_jText.setSelectionColor(new java.awt.Color(51, 153, 255));
         jScrollPane1.setViewportView(m_jText);
 
         m_jContainer.add(jScrollPane1, "text");
@@ -271,7 +276,7 @@ public class ResourcesView extends JPanel implements EditorRecord {
     private javax.swing.ButtonGroup m_jGroupType;
     private com.openbravo.data.gui.JImageEditor m_jImage;
     private javax.swing.JTextField m_jName;
-    private javax.swing.JTextArea m_jText;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea m_jText;
     private javax.swing.JComboBox m_jType;
     // End of variables declaration//GEN-END:variables
     

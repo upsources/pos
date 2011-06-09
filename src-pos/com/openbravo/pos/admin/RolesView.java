@@ -26,6 +26,7 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.format.Formats;
 import com.openbravo.pos.forms.AppLocal;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 /**
  *
@@ -38,6 +39,8 @@ public class RolesView extends javax.swing.JPanel implements EditorRecord {
     /** Creates new form RolesEditor */
     public RolesView(DirtyManager dirty) {
         initComponents();
+        
+        m_jText.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
         
         m_jName.getDocument().addDocumentListener(dirty);
         m_jText.getDocument().addDocumentListener(dirty);
@@ -108,11 +111,13 @@ public class RolesView extends javax.swing.JPanel implements EditorRecord {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        m_jText = new javax.swing.JTextArea();
+        m_jText = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         jLabel2 = new javax.swing.JLabel();
         m_jName = new javax.swing.JTextField();
 
+        m_jText.setWrapStyleWord(false);
         m_jText.setFont(new java.awt.Font("DialogInput", 0, 12));
+        m_jText.setSelectionColor(new java.awt.Color(51, 153, 255));
         jScrollPane1.setViewportView(m_jText);
 
         jLabel2.setText(AppLocal.getIntString("Label.Name")); // NOI18N
@@ -149,7 +154,7 @@ public class RolesView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField m_jName;
-    private javax.swing.JTextArea m_jText;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea m_jText;
     // End of variables declaration//GEN-END:variables
     
 }
