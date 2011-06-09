@@ -57,18 +57,21 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
             , "CUSTOMERS"
             , new String[] { "ID", "TAXID", "SEARCHKEY", "NAME", "NOTES", "VISIBLE", "CARD", "MAXDEBT", "CURDATE", "CURDEBT"
                            , "FIRSTNAME", "LASTNAME", "EMAIL", "PHONE", "PHONE2", "FAX"
+                           , "COMPANYNAME", "CUI", "NRREG", "COMPANYNOTE"
                            , "ADDRESS", "ADDRESS2", "POSTAL", "CITY", "REGION", "COUNTRY"
                            , "TAXCATEGORY" , "SHIPPINGADDRESS", "SHIPPINGADDRESS2", "SHIPPINGPOSTAL", "SHIPPINGCITY", "SHIPPINGREGION", "SHIPPINGCOUNTRY"
                            , "DEBTDATELIMIT", "DEBTMODE"
             }
             , new String[] { "ID", AppLocal.getIntString("label.taxid"), AppLocal.getIntString("label.searchkey"), AppLocal.getIntString("label.name"), AppLocal.getIntString("label.notes"), "VISIBLE", "CARD", AppLocal.getIntString("label.maxdebt"), AppLocal.getIntString("label.curdate"), AppLocal.getIntString("label.curdebt")
                            , AppLocal.getIntString("label.firstname"), AppLocal.getIntString("label.lastname"), AppLocal.getIntString("label.email"), AppLocal.getIntString("label.phone"), AppLocal.getIntString("label.phone2"), AppLocal.getIntString("label.fax")
+                           , AppLocal.getIntString("label.companyname"), AppLocal.getIntString("label.cui"), AppLocal.getIntString("label.nrreg"), AppLocal.getIntString("label.companynote")
                            , AppLocal.getIntString("label.address"), AppLocal.getIntString("label.address2"), AppLocal.getIntString("label.postal"), AppLocal.getIntString("label.city"), AppLocal.getIntString("label.region"), AppLocal.getIntString("label.country")
                            , "Debt Limit Date", "Debt Mode"
                            , "TAXCATEGORY"
                            , AppLocal.getIntString("label.shipaddress"), AppLocal.getIntString("label.shipaddress2"), AppLocal.getIntString("label.shippostal"), AppLocal.getIntString("label.shipcity"), AppLocal.getIntString("label.shipregion"), AppLocal.getIntString("label.shipcountry")}
             , new Datas[] { Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.BOOLEAN, Datas.STRING, Datas.DOUBLE, Datas.TIMESTAMP, Datas.DOUBLE
                           , Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
+                          , Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
                           , Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
                           , Datas.STRING
                           , Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
@@ -76,6 +79,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
             }
             , new Formats[] { Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.BOOLEAN, Formats.STRING, Formats.CURRENCY, Formats.TIMESTAMP, Formats.CURRENCY
                             , Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING
+                            , Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING
                             , Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING
                             , Formats.STRING
                             , Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING, Formats.STRING

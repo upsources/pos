@@ -73,6 +73,12 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone2.getDocument().addDocumentListener(dirty);
         txtFax.getDocument().addDocumentListener(dirty);
         
+        // Company details
+        txtCompanyName.getDocument().addDocumentListener(dirty);
+        txtCui.getDocument().addDocumentListener(dirty);
+        txtNrReg.getDocument().addDocumentListener(dirty);
+        txtCompanyNote.getDocument().addDocumentListener(dirty);
+        
         txtAddress.getDocument().addDocumentListener(dirty);
         txtAddress2.getDocument().addDocumentListener(dirty);
         txtPostal.getDocument().addDocumentListener(dirty);
@@ -124,6 +130,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone.setText(null);
         txtPhone2.setText(null);
         txtFax.setText(null);
+        
+        txtCompanyName.setText(null);
+        txtCui.setText(null);
+        txtNrReg.setText(null);
+        txtCompanyNote.setText(null);
        
         txtAddress.setText(null);
         txtAddress2.setText(null);
@@ -194,6 +205,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone.setText(null);
         txtPhone2.setText(null);
         txtFax.setText(null);
+        
+        txtCompanyName.setText(null);
+        txtCui.setText(null);
+        txtNrReg.setText(null);
+        txtCompanyNote.setText(null);
        
         txtAddress.setText(null);
         txtAddress2.setText(null);
@@ -263,6 +279,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone.setText(Formats.STRING.formatValue(customer[13]));
         txtPhone2.setText(Formats.STRING.formatValue(customer[14]));
         txtFax.setText(Formats.STRING.formatValue(customer[15]));
+        txtCompanyName.setText(Formats.STRING.formatValue(customer[31]));
+        txtCui.setText(Formats.STRING.formatValue(customer[32]));
+        txtNrReg.setText(Formats.STRING.formatValue(customer[33]));
+        txtCompanyNote.setText(Formats.STRING.formatValue(customer[34]));
         txtAddress.setText(Formats.STRING.formatValue(customer[16]));
         txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
         txtPostal.setText(Formats.STRING.formatValue(customer[18]));
@@ -293,6 +313,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone.setEnabled(false);
         txtPhone2.setEnabled(false);
         txtFax.setEnabled(false);
+        
+        txtCompanyName.setEnabled(false);
+        txtCui.setEnabled(false);
+        txtNrReg.setEnabled(false);
+        txtCompanyNote.setEnabled(false);
        
         txtAddress.setEnabled(false);
         txtAddress2.setEnabled(false);
@@ -332,6 +357,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone.setText(Formats.STRING.formatValue(customer[13]));
         txtPhone2.setText(Formats.STRING.formatValue(customer[14]));
         txtFax.setText(Formats.STRING.formatValue(customer[15]));
+        txtCompanyName.setText(Formats.STRING.formatValue(customer[31]));
+        txtCui.setText(Formats.STRING.formatValue(customer[32]));
+        txtNrReg.setText(Formats.STRING.formatValue(customer[33]));
+        txtCompanyNote.setText(Formats.STRING.formatValue(customer[34]));
         txtAddress.setText(Formats.STRING.formatValue(customer[16]));
         txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
         txtPostal.setText(Formats.STRING.formatValue(customer[18]));
@@ -370,6 +399,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone2.setEnabled(true);
         txtFax.setEnabled(true);
        
+        txtCompanyName.setEnabled(true);
+        txtCui.setEnabled(true);
+        txtNrReg.setEnabled(true);
+        txtCompanyNote.setEnabled(true);
+        
         txtAddress.setEnabled(true);
         txtAddress2.setEnabled(true);
         txtPostal.setEnabled(true);
@@ -391,7 +425,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     }
     
     public Object createValue() throws BasicException {
-        Object[] customer = new Object[31];
+        Object[] customer = new Object[35];
         customer[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
         customer[1] = m_jTaxID.getText();
         customer[2] = m_jSearchkey.getText();
@@ -425,7 +459,12 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         // MSL
         customer[29] = Formats.STRING.parseValue((String) jcboDebtDateLimit.getSelectedItem());
         customer[30] = Formats.STRING.parseValue((String) jcboDebtMode.getSelectedItem());
-
+        
+        // Company Details
+        customer[31] = Formats.STRING.parseValue(txtCompanyName.getText());
+        customer[32] = Formats.STRING.parseValue(txtCui.getText());
+        customer[33] = Formats.STRING.parseValue(txtNrReg.getText());
+        customer[34] = Formats.STRING.parseValue(txtCompanyNote.getText());
         
         return customer;
     }   
@@ -471,6 +510,15 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone2 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         txtFirstName = new javax.swing.JTextField();
+        jPanelCompany = new javax.swing.JPanel();
+        txtCui = new javax.swing.JTextField();
+        txtNrReg = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        txtCompanyNote = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        txtCompanyName = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         txtAddress = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
@@ -556,7 +604,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             }
         });
         add(jButton2);
-        jButton2.setBounds(470, 104, 49, 25);
+        jButton2.setBounds(470, 104, 28, 28);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileclose.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -565,7 +613,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             }
         });
         add(jButton3);
-        jButton3.setBounds(525, 104, 49, 25);
+        jButton3.setBounds(525, 104, 28, 28);
 
         jLabel1.setText(AppLocal.getIntString("label.maxdebt")); // NOI18N
         add(jLabel1);
@@ -647,10 +695,69 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFax, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.contact"), jPanel1); // NOI18N
+
+        jLabel33.setText(AppLocal.getIntString("label.nrreg")); // NOI18N
+
+        jLabel36.setText(AppLocal.getIntString("label.cui")); // NOI18N
+
+        jLabel37.setText(AppLocal.getIntString("label.companynote")); // NOI18N
+
+        jLabel39.setText(AppLocal.getIntString("label.companyname")); // NOI18N
+
+        javax.swing.GroupLayout jPanelCompanyLayout = new javax.swing.GroupLayout(jPanelCompany);
+        jPanelCompany.setLayout(jPanelCompanyLayout);
+        jPanelCompanyLayout.setHorizontalGroup(
+            jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 538, Short.MAX_VALUE)
+            .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                        .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCompanyName, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                        .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCui, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNrReg, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                        .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCompanyNote, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(104, Short.MAX_VALUE))
+        );
+        jPanelCompanyLayout.setVerticalGroup(
+            jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 199, Short.MAX_VALUE)
+            .addGroup(jPanelCompanyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCompanyName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCui, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNrReg, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCompanyNote, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(65, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab(AppLocal.getIntString("label.company"), jPanelCompany); // NOI18N
 
         jLabel20.setText(AppLocal.getIntString("label.country")); // NOI18N
 
@@ -686,10 +793,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCountry, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                                     .addComponent(txtRegion, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)))
@@ -721,9 +828,9 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                     .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtRegion, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -804,7 +911,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                 .addGroup(m_jPanelShippingAddressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtShippingCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Shipping address", m_jPanelShippingAddress);
@@ -817,21 +924,21 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.notes"), jPanel3); // NOI18N
 
         add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 295, 533, 235);
+        jTabbedPane1.setBounds(10, 295, 546, 235);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         add(jLabel2);
@@ -907,8 +1014,12 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -918,6 +1029,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanelCompany;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jcard;
@@ -933,7 +1045,10 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtAddress2;
     private javax.swing.JTextField txtCity;
+    private javax.swing.JTextField txtCompanyName;
+    private javax.swing.JTextField txtCompanyNote;
     private javax.swing.JTextField txtCountry;
+    private javax.swing.JTextField txtCui;
     private javax.swing.JTextField txtCurdate;
     private javax.swing.JTextField txtCurdebt;
     private javax.swing.JTextField txtEmail;
@@ -941,6 +1056,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtMaxdebt;
+    private javax.swing.JTextField txtNrReg;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtPhone2;
     private javax.swing.JTextField txtPostal;
