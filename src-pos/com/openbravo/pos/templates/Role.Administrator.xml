@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Openbravo POS is a point of sales application designed for touch screens.
     Copyright (C) 2008-2011 Openbravo, S.L.
     http://sourceforge.net/projects/openbravopos
@@ -47,7 +47,7 @@
     <class name="/com/openbravo/reports/closedpos.bs"/>
     <class name="sales.discount"/>
     <class name="sales.discountmulti"/>
-    <class name="sales.EditLines"/>
+    <class name="sales.MoveAnyTable"/>
     <class name="sales.EditTicket"/>
     <class name="sales.RefundTicket"/>
     <class name="sales.PrintTicket"/>
@@ -84,8 +84,8 @@
     <class name="com.openbravo.pos.inventory.StockDiaryPanel"/>
     <class name="com.openbravo.pos.inventory.StockManagement"/>
     <class name="com.openbravo.pos.inventory.AuxiliarPanel"/>
-    <class name="/com/openbravo/reports/products.bs"/>     
-    <class name="/com/openbravo/reports/productlabels.bs"/>     
+    <class name="/com/openbravo/reports/products.bs"/>
+    <class name="/com/openbravo/reports/productlabels.bs"/>
     <class name="/com/openbravo/reports/productscatalog.bs"/>
     <class name="/com/openbravo/reports/inventory.bs"/>
     <class name="/com/openbravo/reports/inventoryb.bs"/>
@@ -97,8 +97,8 @@
     <class name="/com/openbravo/reports/usersales.bs"/>
     <class name="/com/openbravo/reports/closedproducts.bs"/>
     <class name="/com/openbravo/reports/taxes.bs"/>
-    <class name="/com/openbravo/reports/chartsales.bs"/>  
-    <class name="/com/openbravo/reports/productsales.bs"/> 
+    <class name="/com/openbravo/reports/chartsales.bs"/>
+    <class name="/com/openbravo/reports/productsales.bs"/>
     <class name="com.openbravo.pos.forms.MenuMaintenance"/>
     <class name="com.openbravo.pos.admin.PeoplePanel"/>
     <class name="com.openbravo.pos.admin.RolesPanel"/>
