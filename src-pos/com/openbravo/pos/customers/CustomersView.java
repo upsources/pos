@@ -41,22 +41,22 @@ import javax.swing.JOptionPane;
 public class CustomersView extends javax.swing.JPanel implements EditorRecord {
 
     private Object m_oId;
-    
+
     private SentenceList m_sentcat;
     private ComboBoxValModel m_CategoryModel;
-    
+
     private DirtyManager m_Dirty;
-        
+
     /** Creates new form CustomersView */
     public CustomersView(AppView app, DirtyManager dirty) {
-        
+
         DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
-        
+
         initComponents();
-        
+
         m_sentcat = dlSales.getTaxCustCategoriesList();
         m_CategoryModel = new ComboBoxValModel();
-        
+
         m_Dirty = dirty;
         m_jTaxID.getDocument().addDocumentListener(dirty);
         m_jSearchkey.getDocument().addDocumentListener(dirty);
@@ -65,20 +65,14 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jNotes.getDocument().addDocumentListener(dirty);
         txtMaxdebt.getDocument().addDocumentListener(dirty);
         m_jVisible.addActionListener(dirty);
-        
+
         txtFirstName.getDocument().addDocumentListener(dirty);
         txtLastName.getDocument().addDocumentListener(dirty);
         txtEmail.getDocument().addDocumentListener(dirty);
         txtPhone.getDocument().addDocumentListener(dirty);
         txtPhone2.getDocument().addDocumentListener(dirty);
         txtFax.getDocument().addDocumentListener(dirty);
-        
-        // Company details
-        txtCompanyName.getDocument().addDocumentListener(dirty);
-        txtCui.getDocument().addDocumentListener(dirty);
-        txtNrReg.getDocument().addDocumentListener(dirty);
-        txtCompanyNote.getDocument().addDocumentListener(dirty);
-        
+
         txtAddress.getDocument().addDocumentListener(dirty);
         txtAddress2.getDocument().addDocumentListener(dirty);
         txtPostal.getDocument().addDocumentListener(dirty);
@@ -96,21 +90,27 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         // MSL
         jcboDebtDateLimit.addActionListener(dirty);
         jcboDebtMode.addActionListener(dirty);
-        
-        writeValueEOF(); 
+
+        // Company details
+        txtCompanyName.getDocument().addDocumentListener(dirty);
+        txtCui.getDocument().addDocumentListener(dirty);
+        txtNrReg.getDocument().addDocumentListener(dirty);
+        txtCompanyNote.getDocument().addDocumentListener(dirty);
+
+        writeValueEOF();
     }
-    
+
     public void activate() throws BasicException {
-        
+
         List a = m_sentcat.list();
         a.add(0, null); // The null item
         m_CategoryModel = new ComboBoxValModel(a);
-        m_jCategory.setModel(m_CategoryModel);         
+        m_jCategory.setModel(m_CategoryModel);
     }
-    
+
     public void refresh() {
     }
-    
+
     public void writeValueEOF() {
         m_oId = null;
         m_jTaxID.setText(null);
@@ -123,19 +123,19 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdate.setText(null);
         m_jVisible.setSelected(false);
         jcard.setText(null);
-        
+
         txtFirstName.setText(null);
         txtLastName.setText(null);
         txtEmail.setText(null);
         txtPhone.setText(null);
         txtPhone2.setText(null);
         txtFax.setText(null);
-        
+
         txtCompanyName.setText(null);
         txtCui.setText(null);
         txtNrReg.setText(null);
         txtCompanyNote.setText(null);
-       
+
         txtAddress.setText(null);
         txtAddress2.setText(null);
         txtPostal.setText(null);
@@ -149,7 +149,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setText(null);
         txtShippingRegion.setText(null);
         txtShippingCountry.setText(null);
-        
+
         m_jTaxID.setEnabled(false);
         m_jSearchkey.setEnabled(false);
         m_jName.setEnabled(false);
@@ -160,14 +160,14 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdate.setEnabled(false);
         m_jVisible.setEnabled(false);
         jcard.setEnabled(false);
-        
+
         txtFirstName.setEnabled(false);
         txtLastName.setEnabled(false);
         txtEmail.setEnabled(false);
         txtPhone.setEnabled(false);
         txtPhone2.setEnabled(false);
         txtFax.setEnabled(false);
-       
+
         txtAddress.setEnabled(false);
         txtAddress2.setEnabled(false);
         txtPostal.setEnabled(false);
@@ -181,11 +181,11 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setEnabled(false);
         txtShippingRegion.setEnabled(false);
         txtShippingCountry.setEnabled(false);
-        
+
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
-    } 
-    
+    }
+
     public void writeValueInsert() {
         m_oId = null;
         m_jTaxID.setText(null);
@@ -195,22 +195,22 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jNotes.setText(null);
         txtMaxdebt.setText(null);
         txtCurdebt.setText(null);
-        txtCurdate.setText(null);        
+        txtCurdate.setText(null);
         m_jVisible.setSelected(true);
         jcard.setText(null);
-        
+
         txtFirstName.setText(null);
         txtLastName.setText(null);
         txtEmail.setText(null);
         txtPhone.setText(null);
         txtPhone2.setText(null);
         txtFax.setText(null);
-        
+
         txtCompanyName.setText(null);
         txtCui.setText(null);
         txtNrReg.setText(null);
         txtCompanyNote.setText(null);
-       
+
         txtAddress.setText(null);
         txtAddress2.setText(null);
         txtPostal.setText(null);
@@ -224,7 +224,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setText(null);
         txtShippingRegion.setText(null);
         txtShippingCountry.setText(null);
-        
+
         m_jTaxID.setEnabled(true);
         m_jSearchkey.setEnabled(true);
         m_jName.setEnabled(true);
@@ -235,14 +235,14 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdate.setEnabled(true);
         m_jVisible.setEnabled(true);
         jcard.setEnabled(true);
-               
+
         txtFirstName.setEnabled(true);
         txtLastName.setEnabled(true);
         txtEmail.setEnabled(true);
         txtPhone.setEnabled(true);
         txtPhone2.setEnabled(true);
         txtFax.setEnabled(true);
-       
+
         txtAddress.setEnabled(true);
         txtAddress2.setEnabled(true);
         txtPostal.setEnabled(true);
@@ -256,7 +256,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setEnabled(true);
         txtShippingRegion.setEnabled(true);
         txtShippingCountry.setEnabled(true);
-        
+
         jButton2.setEnabled(true);
         jButton3.setEnabled(true);
     }
@@ -271,7 +271,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jVisible.setSelected(((Boolean) customer[5]).booleanValue());
         jcard.setText((String) customer[6]);
         txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[7]));
-        txtCurdate.setText(Formats.DATE.formatValue(customer[8]));        
+        txtCurdate.setText(Formats.DATE.formatValue(customer[8]));
         txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[9]));
         txtFirstName.setText(Formats.STRING.formatValue(customer[10]));
         txtLastName.setText(Formats.STRING.formatValue(customer[11]));
@@ -279,16 +279,12 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtPhone.setText(Formats.STRING.formatValue(customer[13]));
         txtPhone2.setText(Formats.STRING.formatValue(customer[14]));
         txtFax.setText(Formats.STRING.formatValue(customer[15]));
-        txtCompanyName.setText(Formats.STRING.formatValue(customer[31]));
-        txtCui.setText(Formats.STRING.formatValue(customer[32]));
-        txtNrReg.setText(Formats.STRING.formatValue(customer[33]));
-        txtCompanyNote.setText(Formats.STRING.formatValue(customer[34]));
         txtAddress.setText(Formats.STRING.formatValue(customer[16]));
         txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
         txtPostal.setText(Formats.STRING.formatValue(customer[18]));
         txtCity.setText(Formats.STRING.formatValue(customer[19]));
         txtRegion.setText(Formats.STRING.formatValue(customer[20]));
-        txtCountry.setText(Formats.STRING.formatValue(customer[21]));      
+        txtCountry.setText(Formats.STRING.formatValue(customer[21]));
         m_CategoryModel.setSelectedKey(customer[22]);
         txtShippingAddress.setText(Formats.STRING.formatValue(customer[23]));
         txtShippingAddress2.setText(Formats.STRING.formatValue(customer[24]));
@@ -296,7 +292,13 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setText(Formats.STRING.formatValue(customer[26]));
         txtShippingRegion.setText(Formats.STRING.formatValue(customer[27]));
         txtShippingCountry.setText(Formats.STRING.formatValue(customer[28]));
-        
+
+        // Company Customer Details
+        txtCompanyName.setText(Formats.STRING.formatValue(customer[31]));
+        txtCui.setText(Formats.STRING.formatValue(customer[32]));
+        txtNrReg.setText(Formats.STRING.formatValue(customer[33]));
+        txtCompanyNote.setText(Formats.STRING.formatValue(customer[34]));
+
         m_jTaxID.setEnabled(false);
         m_jSearchkey.setEnabled(false);
         m_jName.setEnabled(false);
@@ -305,20 +307,20 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdebt.setEnabled(false);
         txtCurdate.setEnabled(false);
         m_jVisible.setEnabled(false);
-        jcard.setEnabled(false);       
-        
+        jcard.setEnabled(false);
+
         txtFirstName.setEnabled(false);
         txtLastName.setEnabled(false);
         txtEmail.setEnabled(false);
         txtPhone.setEnabled(false);
         txtPhone2.setEnabled(false);
         txtFax.setEnabled(false);
-        
+
         txtCompanyName.setEnabled(false);
         txtCui.setEnabled(false);
         txtNrReg.setEnabled(false);
         txtCompanyNote.setEnabled(false);
-       
+
         txtAddress.setEnabled(false);
         txtAddress2.setEnabled(false);
         txtPostal.setEnabled(false);
@@ -332,9 +334,9 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setEnabled(false);
         txtShippingRegion.setEnabled(false);
         txtShippingCountry.setEnabled(false);
-        
+
         m_jCategory.setEnabled(false);
-        
+
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
     }
@@ -349,24 +351,20 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         m_jVisible.setSelected(((Boolean) customer[5]).booleanValue());
         jcard.setText((String) customer[6]);
         txtMaxdebt.setText(Formats.CURRENCY.formatValue(customer[7]));
-        txtCurdate.setText(Formats.DATE.formatValue(customer[8]));        
-        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[9]));    
+        txtCurdate.setText(Formats.DATE.formatValue(customer[8]));
+        txtCurdebt.setText(Formats.CURRENCY.formatValue(customer[9]));
         txtFirstName.setText(Formats.STRING.formatValue(customer[10]));
         txtLastName.setText(Formats.STRING.formatValue(customer[11]));
         txtEmail.setText(Formats.STRING.formatValue(customer[12]));
         txtPhone.setText(Formats.STRING.formatValue(customer[13]));
         txtPhone2.setText(Formats.STRING.formatValue(customer[14]));
         txtFax.setText(Formats.STRING.formatValue(customer[15]));
-        txtCompanyName.setText(Formats.STRING.formatValue(customer[31]));
-        txtCui.setText(Formats.STRING.formatValue(customer[32]));
-        txtNrReg.setText(Formats.STRING.formatValue(customer[33]));
-        txtCompanyNote.setText(Formats.STRING.formatValue(customer[34]));
         txtAddress.setText(Formats.STRING.formatValue(customer[16]));
         txtAddress2.setText(Formats.STRING.formatValue(customer[17]));
         txtPostal.setText(Formats.STRING.formatValue(customer[18]));
         txtCity.setText(Formats.STRING.formatValue(customer[19]));
         txtRegion.setText(Formats.STRING.formatValue(customer[20]));
-        txtCountry.setText(Formats.STRING.formatValue(customer[21]));   
+        txtCountry.setText(Formats.STRING.formatValue(customer[21]));
         m_CategoryModel.setSelectedKey(customer[22]);
         txtShippingAddress.setText(Formats.STRING.formatValue(customer[23]));
         txtShippingAddress2.setText(Formats.STRING.formatValue(customer[24]));
@@ -379,9 +377,15 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jcboDebtDateLimit.setSelectedItem((String) customer[29]);
         jcboDebtMode.setSelectedItem((String) customer[30]);
 
+        // Company Customer Details
+        txtCompanyName.setText(Formats.STRING.formatValue(customer[31]));
+        txtCui.setText(Formats.STRING.formatValue(customer[32]));
+        txtNrReg.setText(Formats.STRING.formatValue(customer[33]));
+        txtCompanyNote.setText(Formats.STRING.formatValue(customer[34]));
+
         jcboDebtDateLimit.setEnabled(true);
         jcboDebtMode.setEnabled(true);
-        
+
         m_jTaxID.setEnabled(true);
         m_jSearchkey.setEnabled(true);
         m_jName.setEnabled(true);
@@ -391,19 +395,19 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtCurdate.setEnabled(true);
         m_jVisible.setEnabled(true);
         jcard.setEnabled(true);
-               
+
         txtFirstName.setEnabled(true);
         txtLastName.setEnabled(true);
         txtEmail.setEnabled(true);
         txtPhone.setEnabled(true);
         txtPhone2.setEnabled(true);
         txtFax.setEnabled(true);
-       
+
         txtCompanyName.setEnabled(true);
         txtCui.setEnabled(true);
         txtNrReg.setEnabled(true);
         txtCompanyNote.setEnabled(true);
-        
+
         txtAddress.setEnabled(true);
         txtAddress2.setEnabled(true);
         txtPostal.setEnabled(true);
@@ -417,13 +421,13 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         txtShippingCity.setEnabled(true);
         txtShippingRegion.setEnabled(true);
         txtShippingCountry.setEnabled(true);
-        
+
         m_jCategory.setEnabled(true);
-        
+
         jButton2.setEnabled(true);
         jButton3.setEnabled(true);
     }
-    
+
     public Object createValue() throws BasicException {
         Object[] customer = new Object[35];
         customer[0] = m_oId == null ? UUID.randomUUID().toString() : m_oId;
@@ -447,7 +451,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         customer[18] = Formats.STRING.parseValue(txtPostal.getText());
         customer[19] = Formats.STRING.parseValue(txtCity.getText());
         customer[20] = Formats.STRING.parseValue(txtRegion.getText());
-        customer[21] = Formats.STRING.parseValue(txtCountry.getText()); 
+        customer[21] = Formats.STRING.parseValue(txtCountry.getText());
         customer[22] = m_CategoryModel.getSelectedKey();
         customer[23] = Formats.STRING.parseValue(txtShippingAddress.getText());
         customer[24] = Formats.STRING.parseValue(txtShippingAddress2.getText());
@@ -459,19 +463,19 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         // MSL
         customer[29] = Formats.STRING.parseValue((String) jcboDebtDateLimit.getSelectedItem());
         customer[30] = Formats.STRING.parseValue((String) jcboDebtMode.getSelectedItem());
-        
+
         // Company Details
         customer[31] = Formats.STRING.parseValue(txtCompanyName.getText());
         customer[32] = Formats.STRING.parseValue(txtCui.getText());
         customer[33] = Formats.STRING.parseValue(txtNrReg.getText());
         customer[34] = Formats.STRING.parseValue(txtCompanyNote.getText());
-        
+
         return customer;
-    }   
-    
+    }
+
     public Component getComponent() {
         return this;
-    }    
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -976,7 +980,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {            
+        if (JOptionPane.showConfirmDialog(this, AppLocal.getIntString("message.cardnew"), AppLocal.getIntString("title.editor"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
             jcard.setText("c" + StringUtils.getCardNumber());
             m_Dirty.setDirty(true);
         }
@@ -988,8 +992,8 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             m_Dirty.setDirty(true);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1068,5 +1072,5 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JTextField txtShippingPostal;
     private javax.swing.JTextField txtShippingRegion;
     // End of variables declaration//GEN-END:variables
-    
+
 }

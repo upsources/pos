@@ -71,9 +71,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import com.openbravo.pos.ticket.TicketTaxInfo;
 import com.openbravo.format.Formats;
-import com.openbravo.data.loader.StaticSentence;
-import com.openbravo.data.loader.SerializerWriteBasic;
-import com.openbravo.data.loader.Datas;
 
 // MSL
 import java.util.*;
