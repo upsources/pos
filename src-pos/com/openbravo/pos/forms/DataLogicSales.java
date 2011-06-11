@@ -51,9 +51,10 @@ import java.io.IOException;
 import com.openbravo.pos.mant.BankInfo;
 import com.openbravo.pos.mant.UnitsInfo;
 // MSL
+import com.openbravo.pos.sales.restaurant.Floor;
+import com.openbravo.pos.sales.restaurant.Place;
 import com.openbravo.pos.suppliers.SupplierInfoExt;
 import com.openbravo.pos.ticket.FindTicketsInfoCustomer;
-import java.text.DateFormat;
 /**
  *
  * @author adrianromero
@@ -173,7 +174,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , ProductInfoExt.getSerializerRead()).list(id);
     }
 
-     //Added By Avi 
+     //Added By Avi
     public final List<MaterialProdInfo> getMaterialsProd(String prodID) throws BasicException  {
         String sAmount = "1 AS AMOUNT";
         String sWhere = "WHERE P.CATEGORY = ? ";
@@ -209,7 +210,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
     }
-    
+
     // Products list
     public SentenceList getProductListNormal() {
         return new StaticSentence(s
@@ -219,7 +220,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
     }
-    
+
     //Auxiliar list for a filter
     public SentenceList getProductListAuxiliar() {
          return new StaticSentence(s
@@ -229,18 +230,18 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , ProductInfoExt.getSerializerRead());
     }
-    
+
     //Tickets and Receipt list
     public SentenceList getTicketsList() {
          return new StaticSentence(s
             , new QBFBuilder(
-            "SELECT T.TICKETID, T.TICKETTYPE, R.DATENEW, P.NAME, C.NAME, SUM(PM.TOTAL) "+ 
+            "SELECT T.TICKETID, T.TICKETTYPE, R.DATENEW, P.NAME, C.NAME, SUM(PM.TOTAL) "+
             "FROM RECEIPTS R JOIN TICKETS T ON R.ID = T.ID LEFT OUTER JOIN PAYMENTS PM ON R.ID = PM.RECEIPT LEFT OUTER JOIN CUSTOMERS C ON C.ID = T.CUSTOMER LEFT OUTER JOIN PEOPLE P ON T.PERSON = P.ID " +
             "WHERE ?(QBF_FILTER) GROUP BY T.ID, T.TICKETID, T.TICKETTYPE, R.DATENEW, P.NAME, C.NAME ORDER BY R.DATENEW DESC, T.TICKETID", new String[] {"T.TICKETID", "T.TICKETTYPE", "PM.TOTAL", "R.DATENEW", "R.DATENEW", "P.NAME", "C.NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.INT, Datas.OBJECT, Datas.INT, Datas.OBJECT, Datas.DOUBLE, Datas.OBJECT, Datas.TIMESTAMP, Datas.OBJECT, Datas.TIMESTAMP, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerReadClass(FindTicketsInfo.class));
     }
-    
+
     //User list
     public final SentenceList getUserList() {
         return new StaticSentence(s
@@ -248,11 +249,11 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , null
             , new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
                 return new TaxCategoryInfo(
-                        dr.getString(1), 
+                        dr.getString(1),
                         dr.getString(2));
             }});
     }
-   
+
     // Listados para combo
     public final SentenceList getTaxList() {
         return new StaticSentence(s
@@ -260,7 +261,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , null
             , new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
                 return new TaxInfo(
-                        dr.getString(1), 
+                        dr.getString(1),
                         dr.getString(2),
                         dr.getString(3),
                         dr.getTimestamp(4),
@@ -318,6 +319,20 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             , "SELECT ID, NAME FROM FLOORS ORDER BY NAME"
             , null
             , new SerializerReadClass(FloorsInfo.class));
+    }
+
+    public final SentenceList getSentFloorsList() {
+        return new StaticSentence(s
+            ,"SELECT ID, NAME, IMAGE FROM FLOORS ORDER BY NAME"
+            , null
+            , new SerializerReadClass(Floor.class));
+    }
+
+    public final SentenceList getPositionFloorsList() {
+        return new StaticSentence(s
+            ,"SELECT ID, NAME, X, Y, FLOOR FROM PLACES ORDER BY FLOOR"
+            , null
+            , new SerializerReadClass(Place.class));
     }
 
     public final SentenceList getUnitsList() {
@@ -759,7 +774,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     public final Integer getNextTicketSupplierIndex() throws BasicException {
         return (Integer) s.DB.getSequenceSentence(s, "TICKETSNUM_SUPPLIER").find();
     }
-    
+
     public final SentenceList getProductCatQBF() {
         return new StaticSentence(s
             , new QBFBuilder(
@@ -785,7 +800,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                 }
                if (i > 0)
                     i = auxMaterialProd(values, s);
-                
+
                 return i;
             }
         };
@@ -1093,7 +1108,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                     price = ((Object[]) params)[7];
 
                     final Date d = new Date();
-                    
+
                     getSupplierDebtUpdate().exec(new DataParams() {
                         public void writeValues() throws BasicException {
                             setDouble(1, new Double(units.toString()) * new Double(price.toString()));
