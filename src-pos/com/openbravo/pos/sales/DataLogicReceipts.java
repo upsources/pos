@@ -37,21 +37,21 @@ import com.openbravo.pos.ticket.TicketInfo;
  * @author adrianromero
  */
 public class DataLogicReceipts extends BeanFactoryDataSingle {
-    
+
     private Session s;
-    
+
     /** Creates a new instance of DataLogicReceipts */
     public DataLogicReceipts() {
     }
-    
+
     public void init(Session s){
         this.s = s;
     }
-     
+
     public final TicketInfo getSharedTicket(String Id) throws BasicException {
-        
+
         if (Id == null) {
-            return null; 
+            return null;
         } else {
             Object[]record = (Object[]) new StaticSentence(s
                     , "SELECT CONTENT FROM SHAREDTICKETS WHERE ID = ?"
@@ -59,39 +59,51 @@ public class DataLogicReceipts extends BeanFactoryDataSingle {
                     , new SerializerReadBasic(new Datas[] {Datas.SERIALIZABLE})).find(Id);
             return record == null ? null : (TicketInfo) record[0];
         }
-    } 
-    
+    }
+
     public final List<SharedTicketInfo> getSharedTicketList() throws BasicException {
-        
+
         return (List<SharedTicketInfo>) new StaticSentence(s
                 , "SELECT ID, NAME FROM SHAREDTICKETS ORDER BY ID"
                 , null
                 , new SerializerReadClass(SharedTicketInfo.class)).list();
     }
-    
+
     public final void updateSharedTicket(final String id, final TicketInfo ticket) throws BasicException {
-         
+
         Object[] values = new Object[] {id, ticket.getName(), ticket};
         Datas[] datas = new Datas[] {Datas.STRING, Datas.STRING, Datas.SERIALIZABLE};
         new PreparedSentence(s
                 , "UPDATE SHAREDTICKETS SET NAME = ?, CONTENT = ? WHERE ID = ?"
                 , new SerializerWriteBasicExt(datas, new int[] {1, 2, 0})).exec(values);
     }
-    
+
     public final void insertSharedTicket(final String id, final TicketInfo ticket) throws BasicException {
-        
+
         Object[] values = new Object[] {id, ticket.getName(), ticket, ticket.getUser().getId()};
         Datas[] datas = new Datas[] {Datas.STRING, Datas.STRING, Datas.SERIALIZABLE, Datas.STRING};
-        
+
         new PreparedSentence(s
             , "INSERT INTO SHAREDTICKETS (ID, NAME,CONTENT, USERID) VALUES (?, ?, ?, ?)"
             , new SerializerWriteBasicExt(datas, new int[] {0, 1, 2, 3})).exec(values);
     }
-    
+
     public final void deleteSharedTicket(final String id) throws BasicException {
 
         new StaticSentence(s
             , "DELETE FROM SHAREDTICKETS WHERE ID = ?"
-            , SerializerWriteString.INSTANCE).exec(id);      
-    }    
+            , SerializerWriteString.INSTANCE).exec(id);
+    }
+
+    public final String getUserId(final String id) throws BasicException {
+       Object[] userID = (Object []) new StaticSentence(s
+                , "SELECT USERID FROM SHAREDTICKETS WHERE ID = ?"
+                , SerializerWriteString.INSTANCE
+                , new SerializerReadBasic(new Datas[] {Datas.STRING})).find(id);
+       if( userID == null ) {
+                return null;
+       } else {
+                return (String) userID[0];
+       }
+    }
 }
