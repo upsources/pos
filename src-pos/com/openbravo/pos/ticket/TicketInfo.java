@@ -210,7 +210,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
         } else {
             name.append(info.toString());
         }
-        
+
         return name.toString();
     }
 
@@ -258,7 +258,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
             return m_Customer.getId();
         }
     }
-    
+
     public SupplierInfoExt getSupplier() {
         return m_Supplier;
     }
@@ -274,13 +274,13 @@ public class TicketInfo implements SerializableRead, Externalizable {
             return m_Supplier.getId();
         }
     }
-    
+
     public String getTransactionID(){
         return (getPayments().size()>0)
             ? ( getPayments().get(getPayments().size()-1) ).getTransactionID()
             : StringUtils.getCardNumber(); //random transaction ID
     }
-    
+
     public String getReturnMessage(){
         return ( (getPayments().get(getPayments().size()-1)) instanceof PaymentInfoMagcard )
             ? ((PaymentInfoMagcard)(getPayments().get(getPayments().size()-1))).getReturnMessage()
@@ -345,7 +345,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     public int getLinesCount() {
         return m_aLines.size();
     }
-    
+
     public double getArticlesCount() {
         double dArticles = 0.0;
         TicketLineInfo oLine;
@@ -386,7 +386,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
 
     public double getTotal() {
-        
+
         return getSubTotal() + getTax();
     }
 
@@ -464,7 +464,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
             t.add(oLine.getSubValue());
         }
 
-        // return dSuma;       
+        // return dSuma;
         Collection<TicketTaxInfo> avalues = m.values();
         return avalues.toArray(new TicketTaxInfo[avalues.size()]);
     }
