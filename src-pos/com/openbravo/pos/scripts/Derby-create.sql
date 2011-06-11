@@ -28,24 +28,6 @@ CREATE TABLE APPLICATIONS (
 );
 INSERT INTO APPLICATIONS(ID, NAME, VERSION) VALUES($APP_ID{}, $APP_NAME{}, $APP_VERSION{});
 
-CREATE TABLE HEADER(
-    ID VARCHAR(255) NOT NULL,
-    companyID VARCHAR(50),
-    taxRegistrationNumber VARCHAR(9),
-    companyName VARCHAR(60),
-    businessName VARCHAR(60),
-    addressDetail VARCHAR(60),
-    buildingNumber VARCHAR(10),
-    city VARCHAR(50),
-    postalCode VARCHAR(8),
-    region VARCHAR(50),
-    country VARCHAR(50),
-    telephone VARCHAR(10),
-    fax VARCHAR(10),
-    email VARCHAR(25),
-    PRIMARY KEY(ID)
-);
-
 CREATE TABLE ROLES (
     ID VARCHAR(256) NOT NULL,
     NAME VARCHAR(1024) NOT NULL,

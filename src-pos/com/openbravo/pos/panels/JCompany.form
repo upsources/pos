@@ -18,7 +18,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanelHeader" min="-2" pref="493" max="-2" attributes="0"/>
+              <Component id="jPanelHeader" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -35,52 +35,91 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanelHeader">
-      <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="CompanyID" min="-2" pref="195" max="-2" attributes="0"/>
-                              <Component id="TaxRegistrationNumber" min="-2" pref="195" max="-2" attributes="0"/>
-                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="2" attributes="0">
-                              <Component id="jTextCompanyID" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextTaxRegistrationNumber" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextCompanyName" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextBusinessName" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextAddressDetail" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextBuildingNumber" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextCity" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextPostalCode" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextRegion" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextCountry" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextTelephone" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextFax" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jTextEmail" alignment="2" min="-2" pref="268" max="-2" attributes="1"/>
-                              <Component id="jButtonSubmit" alignment="2" min="-2" max="-2" attributes="1"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblCompanyName" pref="201" max="32767" attributes="0"/>
+                                      <Component id="lblCUI" pref="201" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lblNrReg" pref="201" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lblEmail" pref="201" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblAddress" pref="201" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblPostalCode" pref="207" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblCity" pref="201" max="32767" attributes="0"/>
+                                      <Component id="lblRegion" alignment="0" pref="201" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblCountry" pref="201" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="lblPhone" pref="207" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblFax" pref="201" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="156" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="Fax" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="Telephone" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="Email" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="BuildingNumber" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="Region" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="BusinessName" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="AddressDetail" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="CompanyName" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="City" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="PostalCode" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
-                      <Component id="Country" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                          <Component id="lblNotes" pref="210" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtEmail" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtCompanyName" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtCUI" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtFax" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtCountry" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtCity" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtPhone" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtPostalCode" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtRegion" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtAddress" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                              <Component id="txtNrReg" alignment="0" min="-2" pref="268" max="-2" attributes="2"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jScrollPane1" pref="268" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace pref="452" max="32767" attributes="0"/>
+                  <Component id="jButtonSubmit" min="-2" max="-2" attributes="1"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -88,248 +127,246 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="CompanyID" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextCompanyID" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblCompanyName" alignment="0" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtCompanyName" alignment="0" pref="25" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblCUI" alignment="0" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtCUI" alignment="0" pref="25" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblNrReg" alignment="0" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtNrReg" alignment="0" pref="25" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="TaxRegistrationNumber" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextTaxRegistrationNumber" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="lblAddress" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtAddress" alignment="3" pref="25" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="CompanyName" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextCompanyName" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="lblPostalCode" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtPostalCode" alignment="3" pref="25" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblCity" alignment="0" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtCity" alignment="0" pref="25" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="BusinessName" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextBusinessName" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="txtRegion" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="lblRegion" alignment="3" pref="25" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblCountry" alignment="0" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtCountry" alignment="0" pref="25" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="AddressDetail" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextAddressDetail" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="lblPhone" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtPhone" alignment="3" pref="25" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="BuildingNumber" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextBuildingNumber" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="txtFax" alignment="3" pref="25" max="32767" attributes="0"/>
+                      <Component id="lblFax" alignment="3" pref="25" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="City" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextCity" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblEmail" alignment="0" pref="25" max="32767" attributes="0"/>
+                      <Component id="txtEmail" alignment="0" pref="25" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="PostalCode" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextPostalCode" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="lblNotes" pref="25" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="273" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonSubmit" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Region" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextRegion" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Country" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextCountry" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Telephone" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextTelephone" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Fax" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextFax" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="Email" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="jTextEmail" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButtonSubmit" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="194" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="CompanyName">
+        <Component class="javax.swing.JLabel" name="lblAddress">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="CompanyName"/>
+              <ComponentRef name="lblAddress"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyname" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.location" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="AddressDetail">
+        <Component class="javax.swing.JLabel" name="lblCity">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="AddressDetail"/>
+              <ComponentRef name="lblCity"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyadressdetail" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.city" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="City">
+        <Component class="javax.swing.JLabel" name="lblPostalCode">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="City"/>
+              <ComponentRef name="lblPostalCode"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companycity" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.postal" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextCompanyName">
-        </Component>
-        <Component class="javax.swing.JLabel" name="PostalCode">
+        <Component class="javax.swing.JLabel" name="lblCountry">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="PostalCode"/>
+              <ComponentRef name="lblCountry"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companypostalcode" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.country" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="Country">
+        <Component class="javax.swing.JTextField" name="txtAddress">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtPostalCode">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtCity">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtCountry">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtPhone">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblPhone">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="Country"/>
+              <ComponentRef name="lblPhone"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companycountry" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.phone" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextAddressDetail">
+        <Component class="javax.swing.JTextField" name="txtFax">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextCity">
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTextPostalCode">
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTextCountry">
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTextTelephone">
-        </Component>
-        <Component class="javax.swing.JLabel" name="Telephone">
+        <Component class="javax.swing.JLabel" name="lblFax">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="Telephone"/>
+              <ComponentRef name="lblFax"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyphone" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.fax" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFax">
-        </Component>
-        <Component class="javax.swing.JLabel" name="Fax">
+        <Component class="javax.swing.JLabel" name="lblCUI">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="Fax"/>
+              <ComponentRef name="lblCUI"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyfax" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.cui" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="TaxRegistrationNumber">
-          <Properties>
-            <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="TaxRegistrationNumber"/>
-            </Property>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companytaxregnumber" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTextTaxRegistrationNumber">
+        <Component class="javax.swing.JTextField" name="txtCUI">
         </Component>
         <Component class="javax.swing.JButton" name="jButtonSubmit">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="button.companysave" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="Button.Save" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSubmitActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="CompanyID">
+        <Component class="javax.swing.JLabel" name="lblCompanyName">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="CompanyID"/>
+              <ComponentRef name="lblCompanyName"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyid" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.company" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextCompanyID">
+        <Component class="javax.swing.JTextField" name="txtCompanyName">
         </Component>
-        <Component class="javax.swing.JLabel" name="Email">
+        <Component class="javax.swing.JLabel" name="lblEmail">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="Email"/>
+              <ComponentRef name="lblEmail"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyemail" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.email" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextEmail">
+        <Component class="javax.swing.JTextField" name="txtEmail">
         </Component>
-        <Component class="javax.swing.JLabel" name="BuildingNumber">
+        <Component class="javax.swing.JLabel" name="lblRegion">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="BuildingNumber"/>
+              <ComponentRef name="lblRegion"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companybuildingnumber" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.region" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextBuildingNumber">
+        <Component class="javax.swing.JTextField" name="txtRegion">
         </Component>
-        <Component class="javax.swing.JLabel" name="Region">
+        <Component class="javax.swing.JLabel" name="lblNrReg">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="Region"/>
+              <ComponentRef name="lblCUI"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companyregion" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.nrreg" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextRegion">
+        <Component class="javax.swing.JTextField" name="txtNrReg">
         </Component>
-        <Component class="javax.swing.JLabel" name="BusinessName">
+        <Component class="javax.swing.JLabel" name="lblNotes">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="BusinessName"/>
+              <ComponentRef name="lblEmail"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="pos_messages.properties" key="label.companybusinessname" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+              <ResourceString bundle="pos_messages.properties" key="label.companynote" replaceFormat="AppLocal.getIntString(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>
-            <AuxValue name="generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
-        </Component>
-        <Component class="javax.swing.JTextField" name="jTextBusinessName">
-        </Component>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="txtNotes">
+              <Properties>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="rows" type="int" value="5"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

@@ -95,7 +95,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
     // CustomerList list
     public SentenceList getCustomerList() {
         return new StaticSentence(s
-            , new QBFBuilder("SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = " + s.DB.TRUE() + " AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"TAXID", "SEARCHKEY", "NAME"})
+            , new QBFBuilder("SELECT ID, TAXID, SEARCHKEY, NAME FROM CUSTOMERS WHERE VISIBLE = " + s.DB.TRUE() + " AND ID != '-1' AND ?(QBF_FILTER) ORDER BY NAME", new String[] {"TAXID", "SEARCHKEY", "NAME"})
             , new SerializerWriteBasic(new Datas[] {Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING, Datas.OBJECT, Datas.STRING})
             , new SerializerRead() {
                     public Object readValues(DataRead dr) throws BasicException {
@@ -185,7 +185,7 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
 
     public Object[] getCustomerList(String name) throws BasicException {
         return (Object[]) new StaticSentence(s
-            , "SELECT ID FROM CUSTOMERS WHERE SEARCHKEY = ?"
+            , "SELECT ID FROM CUSTOMERS WHERE SEARCHKEY = ? AND ID != '-1'"
             , SerializerWriteString.INSTANCE
             , new SerializerReadBasic(new Datas[] {Datas.STRING})
         ).find(name);
@@ -196,5 +196,44 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
             , "INSERT INTO CUSTOMERS (ID, SEARCHKEY, NAME, TAXID, ADDRESS, ADDRESS2, POSTAL, CITY, COMPANYNAME, CUI, NRREG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             , new SerializerWriteBasic(new Datas[] {Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING})
         ).exec(new Object[] {id.toString(), name, name, nif, address, address2, postal, city, companyname, cui, nrreg});
+    }
+
+    public void addCompany( Object[] ObjectData ) throws BasicException {
+        System.out.println( ObjectData[0] );
+        System.out.println( ObjectData[10] );
+        new StaticSentence(s
+            , "INSERT INTO CUSTOMERS (ID, SEARCHKEY, NAME, COMPANYNAME, CUI, NRREG, ADDRESS, POSTAL, CITY, REGION, COUNTRY, PHONE, FAX, EMAIL, NOTES) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            , new SerializerWriteBasic(new Datas[] {
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
+            })
+        ).exec(ObjectData);
+    }
+
+    public Object[] getCompany() throws BasicException {
+        return (Object[]) new StaticSentence(s
+            , "SELECT COMPANYNAME, CUI, NRREG, ADDRESS, POSTAL, CITY, REGION, COUNTRY, PHONE, FAX, EMAIL, NOTES FROM CUSTOMERS WHERE ID = ?"
+            , SerializerWriteString.INSTANCE
+            , new SerializerReadBasic(new Datas[] {
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+                Datas.STRING, Datas.STRING
+            })
+        ).find("-1");
+    }
+
+    public void updateCompany( Object[] ObjectData ) throws BasicException {
+        new StaticSentence(s
+            , "UPDATE CUSTOMERS SET ID = ?, SEARCHKEY = ?, NAME = ?, COMPANYNAME = ?, "
+                + "CUI = ?, NRREG = ?, ADDRESS = ?, POSTAL = ?, CITY = ?, REGION = ?, "
+                + "COUNTRY = ?, PHONE = ?, FAX = ?, EMAIL = ?, NOTES = ? WHERE ID = '-1'"
+            , new SerializerWriteBasic(new Datas[] {
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+                Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
+            })
+        ).exec(ObjectData);
     }
 }
