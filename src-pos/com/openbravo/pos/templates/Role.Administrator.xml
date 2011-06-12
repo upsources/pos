@@ -48,6 +48,7 @@
     <class name="sales.discount"/>
     <class name="sales.discountmulti"/>
     <class name="sales.MoveAnyTable"/>
+    <class name="sales.EditLines"/>
     <class name="sales.EditTicket"/>
     <class name="sales.RefundTicket"/>
     <class name="sales.PrintTicket"/>
