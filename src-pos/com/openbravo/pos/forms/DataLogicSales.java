@@ -133,11 +133,11 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
     // Catalogo de productos
     public final List<CategoryInfo> getRootCategories() throws BasicException {
-        return new PreparedSentence(s, "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID != '-1' AND PARENTID IS NULL ORDER BY NAME", null, CategoryInfo.getSerializerRead()).list();
+        return new PreparedSentence(s, "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID != '-1' AND PARENTID IS NULL AND ENDHOUR >= current_time AND STARTHOUR <= current_timestamp ORDER BY NAME", null, CategoryInfo.getSerializerRead()).list();
     }
 
     public final List<CategoryInfo> getSubcategories(String category) throws BasicException {
-        return new PreparedSentence(s, "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE PARENTID = ? ORDER BY NAME", SerializerWriteString.INSTANCE, CategoryInfo.getSerializerRead()).list(category);
+        return new PreparedSentence(s, "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE PARENTID = ? AND ENDHOUR >= current_time AND STARTHOUR <= current_timestamp ORDER BY NAME", SerializerWriteString.INSTANCE, CategoryInfo.getSerializerRead()).list(category);
     }
 
     public List<ProductInfoExt> getProductCatalog(String category) throws BasicException {
@@ -242,7 +242,11 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     }
 
     public final SentenceList getCategoriesList() {
-        return new StaticSentence(s, "SELECT ID, NAME, IMAGE FROM CATEGORIES WHERE ID != '-1' ORDER BY NAME", null, CategoryInfo.getSerializerRead());
+        return new StaticSentence(s,
+            "SELECT ID, NAME, IMAGE, STARTHOUR, ENDHOUR FROM CATEGORIES WHERE ID != '-1' ORDER BY NAME",
+            null,
+            CategoryInfo.getSerializerReadExt()
+        );
     }
 
     public final SentenceList getTaxCustCategoriesList() {
@@ -1035,7 +1039,13 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
     public final TableDefinition getTableCategories() {
         return new TableDefinition(s,
-                "CATEGORIES", new String[]{"ID", "NAME", "PARENTID", "IMAGE"}, new String[]{"ID", AppLocal.getIntString("Label.Name"), "", AppLocal.getIntString("label.image")}, new Datas[]{Datas.STRING, Datas.STRING, Datas.STRING, Datas.IMAGE}, new Formats[]{Formats.STRING, Formats.STRING, Formats.STRING, Formats.NULL}, new int[]{0});
+            "CATEGORIES",
+            new String[]{"ID", "NAME", "PARENTID", "IMAGE", "STARTHOUR", "ENDHOUR"},
+            new String[]{"ID", AppLocal.getIntString("Label.Name"), "", AppLocal.getIntString("label.image"), AppLocal.getIntString("label.starthour"), AppLocal.getIntString("label.endhour")},
+            new Datas[]{Datas.STRING, Datas.STRING, Datas.STRING, Datas.IMAGE, Datas.STRING, Datas.STRING,},
+            new Formats[]{Formats.STRING, Formats.STRING, Formats.STRING, Formats.NULL, Formats.STRING, Formats.STRING},
+            new int[]{0}
+       );
     }
 
     public final TableDefinition getTableTaxes() {

@@ -28,7 +28,7 @@ import com.openbravo.data.loader.SerializerRead;
 /**
  *
  * @author  Adrian
- * @version 
+ * @version
  */
 public class CategoryInfo implements IKeyed {
 
@@ -36,12 +36,24 @@ public class CategoryInfo implements IKeyed {
     private String m_sID;
     private String m_sName;
     private BufferedImage m_Image;
+    private String m_sStartHour;
+    private String m_sEndHour;
 
     /** Creates new CategoryInfo */
     public CategoryInfo(String id, String name, BufferedImage image) {
         m_sID = id;
         m_sName = name;
         m_Image = image;
+        m_sStartHour = null;
+        m_sEndHour = null;
+    }
+
+    public CategoryInfo(String id, String name, BufferedImage image, String sHour, String eHour) {
+        m_sID = id;
+        m_sName = name;
+        m_Image = image;
+        m_sStartHour = sHour;
+        m_sEndHour = eHour;
     }
 
     public Object getKey() {
@@ -72,14 +84,50 @@ public class CategoryInfo implements IKeyed {
         m_Image = img;
     }
 
+    public String getStartHour() {
+        return m_sStartHour;
+    }
+
+    public void setStartHour(String sHour) {
+        m_sStartHour = sHour;
+    }
+
+    public String getEndHour() {
+        return m_sEndHour;
+    }
+
+    public void setEndHour(String eHour) {
+        m_sEndHour = eHour;
+    }
+
     @Override
     public String toString() {
         return m_sName;
     }
 
     public static SerializerRead getSerializerRead() {
-        return new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
-            return new CategoryInfo(dr.getString(1), dr.getString(2), ImageUtils.readImage(dr.getBytes(3)));
-        }};
+        return new SerializerRead() {
+            public Object readValues(DataRead dr) throws BasicException {
+                return new CategoryInfo(
+                    dr.getString(1),
+                    dr.getString(2),
+                    ImageUtils.readImage(dr.getBytes(3))
+                );
+            }
+        };
+    }
+
+    public static SerializerRead getSerializerReadExt() {
+        return new SerializerRead() {
+            public Object readValues(DataRead dr) throws BasicException {
+                return new CategoryInfo(
+                    dr.getString(1),
+                    dr.getString(2),
+                    ImageUtils.readImage(dr.getBytes(3)),
+                    dr.getString(4),
+                    dr.getString(5)
+                );
+            }
+        };
     }
 }

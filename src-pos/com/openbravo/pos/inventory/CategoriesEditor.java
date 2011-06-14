@@ -44,40 +44,43 @@ import java.util.ArrayList;
  * @author adrianromero
  */
 public class CategoriesEditor extends JPanel implements EditorRecord {
-       
+
     private SentenceList m_sentcat;
     private ComboBoxValModel m_CategoryModel;
-    
+
     private SentenceExec m_sentadd;
     private SentenceExec m_sentdel;
-    
+
     private Object m_id;
-    
+
     /** Creates new form JPanelCategories */
     public CategoriesEditor(AppView app, DirtyManager dirty) {
-        
+
         DataLogicSales dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
-             
+
         initComponents();
-             
+
         // El modelo de categorias
         m_sentcat = dlSales.getCategoriesList();
         m_CategoryModel = new ComboBoxValModel();
-        
+
         m_sentadd = dlSales.getCatalogCategoryAdd();
         m_sentdel = dlSales.getCatalogCategoryDel();
-        
+
         m_jName.getDocument().addDocumentListener(dirty);
         m_jCategory.addActionListener(dirty);
         m_jImage.addPropertyChangeListener("image", dirty);
-        
+
+        m_jStartHour.getDocument().addDocumentListener(dirty);
+        m_jEndHour.getDocument().addDocumentListener(dirty);
+
         writeValueEOF();
     }
-    
+
     public void refresh() {
-        
+
         List a;
-        
+
         try {
             a = m_sentcat.list();
         } catch (BasicException eD) {
@@ -85,15 +88,18 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
             msg.show(this);
             a = new ArrayList();
         }
-        
+
         a.add(0, null); // The null item
         m_CategoryModel = new ComboBoxValModel(a);
         m_jCategory.setModel(m_CategoryModel);
     }
-    
+
     public void writeValueEOF() {
         m_id = null;
         m_jName.setText(null);
+        m_jStartHour.setText(null);
+        m_jEndHour.setText(null);
+
         m_CategoryModel.setSelectedKey(null);
         m_jImage.setImage(null);
         m_jName.setEnabled(false);
@@ -101,6 +107,8 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(false);
         m_jCatalogDelete.setEnabled(false);
         m_jCatalogAdd.setEnabled(false);
+        m_jStartHour.setEnabled(true);
+        m_jEndHour.setEnabled(true);
     }
     public void writeValueInsert() {
         m_id = UUID.randomUUID().toString();
@@ -112,6 +120,8 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(true);
         m_jCatalogDelete.setEnabled(false);
         m_jCatalogAdd.setEnabled(false);
+        m_jStartHour.setEnabled(true);
+        m_jEndHour.setEnabled(true);
     }
     public void writeValueDelete(Object value) {
         Object[] cat = (Object[]) value;
@@ -124,7 +134,9 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(false);
         m_jCatalogDelete.setEnabled(false);
         m_jCatalogAdd.setEnabled(false);
-    }    
+        m_jStartHour.setText(Formats.STRING.formatValue(cat[4]));
+        m_jEndHour.setText(Formats.STRING.formatValue(cat[5]));
+    }
     public void writeValueEdit(Object value) {
         Object[] cat = (Object[]) value;
         m_id = cat[0];
@@ -136,23 +148,27 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         m_jImage.setEnabled(true);
         m_jCatalogDelete.setEnabled(true);
         m_jCatalogAdd.setEnabled(true);
+        m_jStartHour.setText(Formats.STRING.formatValue(cat[4]));
+        m_jEndHour.setText(Formats.STRING.formatValue(cat[5]));
     }
 
     public Object createValue() throws BasicException {
-        
-        Object[] cat = new Object[4];
+
+        Object[] cat = new Object[6];
 
         cat[0] = m_id;
         cat[1] = m_jName.getText();
         cat[2] = m_CategoryModel.getSelectedKey();
         cat[3] = m_jImage.getImage();
+        cat[4] = m_jStartHour.getText();
+        cat[5] = m_jEndHour.getText();
         return cat;
-    }    
-    
+    }
+
     public Component getComponent() {
         return this;
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -169,6 +185,10 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         m_jCatalogDelete = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         m_jCategory = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        m_jStartHour = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        m_jEndHour = new javax.swing.JTextField();
 
         setLayout(null);
 
@@ -191,7 +211,7 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
             }
         });
         add(m_jCatalogAdd);
-        m_jCatalogAdd.setBounds(370, 20, 170, 25);
+        m_jCatalogAdd.setBounds(370, 80, 170, 25);
 
         m_jCatalogDelete.setText(AppLocal.getIntString("button.catalogdel")); // NOI18N
         m_jCatalogDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -200,13 +220,25 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
             }
         });
         add(m_jCatalogDelete);
-        m_jCatalogDelete.setBounds(370, 50, 170, 25);
+        m_jCatalogDelete.setBounds(370, 110, 170, 25);
 
         jLabel5.setText(AppLocal.getIntString("label.prodcategory")); // NOI18N
         add(jLabel5);
         jLabel5.setBounds(20, 50, 80, 25);
         add(m_jCategory);
         m_jCategory.setBounds(100, 50, 180, 25);
+
+        jLabel4.setText(AppLocal.getIntString("label.starthour")); // NOI18N
+        add(jLabel4);
+        jLabel4.setBounds(370, 20, 70, 25);
+        add(m_jStartHour);
+        m_jStartHour.setBounds(440, 20, 100, 25);
+
+        jLabel6.setText(AppLocal.getIntString("label.endhour")); // NOI18N
+        add(jLabel6);
+        jLabel6.setBounds(370, 50, 70, 25);
+        add(m_jEndHour);
+        m_jEndHour.setBounds(440, 50, 100, 25);
     }// </editor-fold>//GEN-END:initComponents
 
     private void m_jCatalogDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jCatalogDeleteActionPerformed
@@ -216,7 +248,7 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         } catch (BasicException e) {
             JMessageDialog.showMessage(this, new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotexecute"), e));
         }
-        
+
     }//GEN-LAST:event_m_jCatalogDeleteActionPerformed
 
     private void m_jCatalogAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jCatalogAddActionPerformed
@@ -230,17 +262,21 @@ public class CategoriesEditor extends JPanel implements EditorRecord {
         }
 
     }//GEN-LAST:event_m_jCatalogAddActionPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton m_jCatalogAdd;
     private javax.swing.JButton m_jCatalogDelete;
     private javax.swing.JComboBox m_jCategory;
+    private javax.swing.JTextField m_jEndHour;
     private com.openbravo.data.gui.JImageEditor m_jImage;
     private javax.swing.JTextField m_jName;
+    private javax.swing.JTextField m_jStartHour;
     // End of variables declaration//GEN-END:variables
-    
+
 }
