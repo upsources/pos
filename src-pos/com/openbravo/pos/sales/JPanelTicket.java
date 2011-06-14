@@ -73,6 +73,7 @@ import com.openbravo.pos.ticket.TicketTaxInfo;
 import com.openbravo.format.Formats;
 
 // MSL
+import com.openbravo.pos.logging.POSLogger;
 import java.util.*;
 
 /**
@@ -144,6 +145,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     protected int m_iProduct;
     protected Component m_catalog;
     protected double m_dMultiply;
+    private POSLogger logger;
+
     /** Creates new form JTicketView */
     public JPanelTicket() {
 
@@ -156,6 +159,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
         dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystem");
         dlSales = (DataLogicSales) m_App.getBean("com.openbravo.pos.forms.DataLogicSales");
         dlCustomers = (DataLogicCustomers) m_App.getBean("com.openbravo.pos.customers.DataLogicCustomers");
+        logger = new POSLogger( app, this.getClass().toString(), app.getAppUserView().getUser().getId() );
 
         // borramos el boton de bascula si no hay bascula conectada
         if (!m_App.getDeviceScale().existsScale()) {
@@ -1168,7 +1172,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
             MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotexecute"));
             msg.show(this);
         } else {
-            ScriptObject scr = new ScriptObject(m_oTicket, m_oTicketExt);
+            ScriptObject scr = new ScriptObject(m_oTicket, m_oTicketExt, this.logger);
             scr.setSelectedIndex(m_ticketlines.getSelectedIndex());
             evalScript(scr, resource, args);
             refreshTicket();
@@ -1302,12 +1306,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
 
         private TicketInfo ticket;
         private Object ticketext;
+        public POSLogger logger = null;
 
         private int selectedindex;
 
         private ScriptObject(TicketInfo ticket, Object ticketext) {
             this.ticket = ticket;
             this.ticketext = ticketext;
+        }
+
+        private ScriptObject(TicketInfo ticket, Object ticketext, POSLogger logger) {
+            this.ticket = ticket;
+            this.ticketext = ticketext;
+            this.logger = logger;
         }
 
         public double getInputValue() {

@@ -63,6 +63,7 @@ for(int i = ticket.getLinesCount()-1; i>= 0 ; i--){
     line = ticket.getLine(i);
     String a = line.getProperty("sendstatus");
     String b = "Cancel";
+    String toLog = null;
 
     if(((line.getProperty("product.warehouse").equals("Kitchen")) || (line.getProperty("product.warehouse").equals("Bar"))) && (line.getProperty("sendstatus").equals("No"))){
         line.setProperty("sendstatus", "Yes");
@@ -70,6 +71,13 @@ for(int i = ticket.getLinesCount()-1; i>= 0 ; i--){
 
     //Remove cancelled lines
     if (a.equals(b)) {
+        // Try to log cancels
+        toLog = "Bar/Kitchen Cancel: " + user.getName() + "\n";
+        toLog += ticket.getLine(i).getProductName() + " x " + ticket.getLine(i).getMultiply().toString();
         ticket.removeLine(i);
     }
+
+    // Log if any
+    if( toLog != null )
+        sales.logger.log( toLog );
 }
