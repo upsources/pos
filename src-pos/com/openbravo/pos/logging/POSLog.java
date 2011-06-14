@@ -1,12 +1,15 @@
 package com.openbravo.pos.logging;
 
-import java.io.Serializable;
+import com.openbravo.basic.BasicException;
+import com.openbravo.data.loader.DataRead;
+import com.openbravo.data.loader.IKeyed;
+import com.openbravo.data.loader.SerializableRead;
 
 /**
  * Log Object
  * @author stas
  */
-class POSLog implements Serializable {
+public class POSLog implements SerializableRead, IKeyed {
     private String id;
     private String component;
     private String userId;
@@ -39,6 +42,20 @@ class POSLog implements Serializable {
 
     void setTimeStamp(String ts) {
         this.ts = ts;
+    }
+
+    @Override
+    public void readValues(DataRead dr) throws BasicException {
+        this.id = dr.getString(1);
+        this.component = dr.getString(2);
+        this.userId = dr.getString(3);
+        this.content = dr.getString(4);
+        this.ts = dr.getString(5);
+    }
+
+    @Override
+    public Object getKey() {
+        return this.id;
     }
 
 }

@@ -23,7 +23,7 @@ public class DataLogicLogs extends BeanFactoryDataSingle {
                 "ID", "COMPONENT", "USERID", "CONTENT", "TS"
             }
             , new String[] {
-                "ID", AppLocal.getIntString("label.component"), AppLocal.getIntString("label.userid"), AppLocal.getIntString("label.content"), AppLocal.getIntString("label.ts")
+                "ID", AppLocal.getIntString("label.component"), "USERID", "CONTENT", AppLocal.getIntString("label.ts")
             }
             , new Datas[] {
                 Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING
@@ -37,25 +37,9 @@ public class DataLogicLogs extends BeanFactoryDataSingle {
 
     public SentenceList getLogsList() {
         return new StaticSentence(s
-            , new QBFBuilder(
-                "SELECT ID, COMPONENT, USERID, TS FROM LOGS WHERE ?(QBF_FILTER) ORDER BY NAME",
-                new String[] {"ID", "COMPONENT", "TS"}
-            )
-            , new SerializerWriteBasic(
-                new Datas[] {
-                    Datas.STRING, Datas.STRING, Datas.STRING
-                }
-            )
-            , new SerializerRead() {
-                    public Object readValues(DataRead dr) throws BasicException {
-                        POSLog l = new POSLog(dr.getString(0));
-                        l.setComponent(dr.getString(1));
-                        l.setUserId(dr.getString(2));
-                        l.setTimeStamp(dr.getString(3));
-                        return l;
-                    }
-            }
-        );
+            , "ID, COMPONENT, USERID, CONTENT, TS FROM LOGS ORDER BY NAME"
+            , null
+            , new SerializerReadClass(POSLog.class));
     }
 
     public void quickAdd(String id, String component, String uid, String content) throws BasicException {

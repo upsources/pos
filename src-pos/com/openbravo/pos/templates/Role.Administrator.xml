@@ -39,6 +39,7 @@
     <class name="com.openbravo.pos.forms.MenuThirdParties"/>
     <class name="com.openbravo.pos.thirdparties.ThirdPartiesPanel"/>
     <class name="com.openbravo.pos.panels.JCompany"/>
+    <class name="com.openbravo.pos.logging.JLogsPanel"/>
     <class name="com.openbravo.pos.sales.JPanelTicketSales"/>
     <class name="com.openbravo.pos.sales.JPanelTicketEdits"/>
     <class name="com.openbravo.pos.customers.CustomersPayment"/>
