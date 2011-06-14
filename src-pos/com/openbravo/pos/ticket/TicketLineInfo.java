@@ -99,6 +99,11 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             if (product.getReference() != null) {
                 attributes.setProperty("product.reference", product.getReference());
             }
+            // Try to fill the warehouse name here
+            if( product.getWarehouse() != null ) {
+                attributes.setProperty("product.warehouse", product.getWarehouse());
+                attributes.setProperty("sendstatus", "No");
+            }
         }
         init(pid, null, dMultiply, dPrice, tax, attributes);
     }
@@ -192,10 +197,10 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         //m_Product = new ProductInfoExt(productid);
         return m_Product;
     }
-    
+
     public void setProduct(ProductInfoExt argProduct) {
         m_Product = argProduct;
-         
+
     }
 
     /*public void setUnit(String sName) {

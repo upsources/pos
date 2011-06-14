@@ -99,6 +99,15 @@ INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('28', 'coin.2cent', 1, 
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('29', 'coin.1cent', 1, $FILE{/com/openbravo/pos/templates/coin.1cent.png});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('30', 'Printer.PartialCash', 0, $FILE{/com/openbravo/pos/templates/Printer.PartialCash.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('31', 'Printer.SupplierPaid', 0, $FILE{/com/openbravo/pos/templates/Printer.SupplierPaid.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('32', 'Printer.TicketBar', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketBar.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('33', 'Printer.TicketChange_Bar', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketChange_Bar.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('34', 'Printer.TicketChange_Kitchen', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketChange_Kitchen.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('35', 'Printer.TicketKitchen', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketKitchen.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('36', 'event.addline', 0, $FILE{/com/openbravo/pos/templates/event.addline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('37', 'event.removeline', 0, $FILE{/com/openbravo/pos/templates/event.removeline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.setline', 0, $FILE{/com/openbravo/pos/templates/event.setline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('40', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
 
 CREATE TABLE TAXCUSTCATEGORIES (
     ID VARCHAR NOT NULL,

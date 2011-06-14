@@ -54,7 +54,8 @@ public class ProductInfoExt implements Serializable {
     // MSL
     protected SerializableImage m_Image;
     protected Properties attributes;
-    
+    protected String warehouse;
+
     /** Creates new ProductInfo */
     public ProductInfoExt() {
         m_ID = null;
@@ -72,6 +73,7 @@ public class ProductInfoExt implements Serializable {
         // MSL : set image serializable
         m_Image = new SerializableImage();
         attributes = new Properties();
+        warehouse = null;
     }
 
     public final String getID() {
@@ -172,7 +174,7 @@ public class ProductInfoExt implements Serializable {
     public String printPriceSellTax(TaxInfo tax) {
         return Formats.CURRENCY.formatValue(new Double(getPriceSellTax(tax)));
     }
-    
+
     public BufferedImage getImage() {
         //return m_Image;
         // MSL : use serialialbe image
@@ -185,7 +187,7 @@ public class ProductInfoExt implements Serializable {
             m_Image.setImage(img);
         }
     }
-    
+
     public String getProperty(String key) {
         return attributes.getProperty(key);
     }
@@ -197,6 +199,9 @@ public class ProductInfoExt implements Serializable {
     }
     public Properties getProperties() {
         return attributes;
+    }
+    public final String getWarehouse() {
+        return warehouse;
     }
 
     public static SerializerRead getSerializerRead() {
@@ -217,6 +222,29 @@ public class ProductInfoExt implements Serializable {
             // MSL : use serialialbe image
             product.setImage( ImageUtils.readImage(dr.getBytes(12)));
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
+            return product;
+        }};
+    }
+
+    public static SerializerRead getSerializerReadExt() {
+        return new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
+            ProductInfoExt product = new ProductInfoExt();
+            product.m_ID = dr.getString(1);
+            product.m_sRef = dr.getString(2);
+            product.m_sCode = dr.getString(3);
+            product.m_sName = dr.getString(4);
+            product.m_bCom = dr.getBoolean(5).booleanValue();
+            product.m_bScale = dr.getBoolean(6).booleanValue();
+            product.m_dPriceBuy = dr.getDouble(7).doubleValue();
+            product.m_dPriceSell = dr.getDouble(8).doubleValue();
+            product.taxcategoryid = dr.getString(9);
+            product.categoryid = dr.getString(10);
+            product.attributesetid = dr.getString(11);
+            //product.m_Image = ImageUtils.readImage(dr.getBytes(12));
+            // MSL : use serialialbe image
+            product.setImage( ImageUtils.readImage(dr.getBytes(12)));
+            product.attributes = ImageUtils.readProperties(dr.getBytes(13));
+            product.warehouse = dr.getString(14);
             return product;
         }};
     }

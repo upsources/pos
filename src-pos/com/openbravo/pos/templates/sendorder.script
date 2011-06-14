@@ -1,0 +1,75 @@
+// Bar/Kitchen integration
+
+boolean kitchen = false;
+boolean bar = false;
+boolean change_kitchen = false;
+boolean change_bar = false;
+
+for(int i= 0; i < ticket.getLinesCount(); i++){
+    line = ticket.getLine(i);
+
+    // Set Discount(printkb=NULL) to N/A so it does not error on next section.
+    if (line.getProperty("product.warehouse") == null){
+        line.setProperty("product.warehouse", "N/A");
+    }
+    if (line.getProperty("sendstatus") == null){
+        line.setProperty("sendstatus", "No");
+    }
+
+    if((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("No"))){
+        kitchen = true; //There is something to print to kitchen
+    }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("No"))){
+        bar = true; //There is something to print to bar
+    }else if ((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("Cancel"))){
+        change_kitchen = true; //There is something to change for kitchen
+    }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("Cancel"))){
+        change_bar = true; //There is something to change for bar
+    }
+}
+
+if ((change_kitchen && kitchen) || (change_kitchen && !kitchen)) {
+    sales.printTicket("Printer.TicketChange_Kitchen"); //Print changed kitchen items to kitchen printer
+}
+if ((change_bar && bar) || (change_bar && !bar)) {
+    sales.printTicket("Printer.TicketChange_Bar"); //Print changed bar items to bar printer
+}
+if (kitchen && !change_kitchen) {
+    sales.printTicket("Printer.TicketKitchen"); //Print kitchen items to kitchen printer
+}
+if (bar && !change_bar) {
+    sales.printTicket("Printer.TicketBar"); //Print bar items to bar printer
+}
+
+//Show a nice message for confirmation
+if (kitchen && bar){
+    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccess"));
+} else if (kitchen && !bar){
+    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccesskitchen"));
+} else if (!kitchen && bar){
+    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccessbar"));
+} else if (change_kitchen || change_bar){
+    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.orderfail"));
+} else {
+    javax.swing.JOptionPane.showMessageDialog(null,
+        com.openbravo.pos.forms.AppLocal.getIntString("message.orderok"),
+        com.openbravo.pos.forms.AppLocal.getIntString("message.orderwarning"),
+        JOptionPane.WARNING_MESSAGE
+    );
+}
+
+//Set printkb property of item to Yes so it is not printed again
+for(int i = ticket.getLinesCount()-1; i>= 0 ; i--){
+
+    line = ticket.getLine(i);
+    String a = line.getProperty("sendstatus");
+    String b = "Cancel";
+
+    if(((line.getProperty("product.warehouse").equals("Kitchen")) || (line.getProperty("product.warehouse").equals("Bar"))) && (line.getProperty("sendstatus").equals("No"))){
+        line.setProperty("sendstatus", "Yes");
+    }
+
+    //Remove cancelled lines
+    if (a.equals(b)) {
+        ticket.removeLine(i);
+    }
+}

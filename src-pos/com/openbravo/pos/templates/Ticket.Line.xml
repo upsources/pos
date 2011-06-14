@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     Openbravo POS is a point of sales application designed for touch screens.
     Copyright (C) 2007-2009 Openbravo, S.L.
     http://sourceforge.net/projects/openbravopos
@@ -26,4 +26,7 @@
     <column name="label.units" width="50" align="right" value="${ticketline.printMultiply()}"/>
     <column name="label.tax" width="100" align="right" value="${ticketline.printTaxRate()}"/>
     <column name="label.value" width="80" align="right" value="${ticketline.printValue()}"/>
+    <!-- Bar/Kitchen integration -->
+    <column name="label.sendorder" width="5" align="left" value="${ticketline.getProperty('printkb','??')}"/>
+    <column name="label.sendstatus" width="5" align="left" value="${ticketline.getProperty('sendstatus','??')}"/>
 </line>

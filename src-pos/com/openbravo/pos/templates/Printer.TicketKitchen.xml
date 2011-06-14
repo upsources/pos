@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!--  
+ Openbravo POS is a point of sales application designed for touch screens. 
+ Copyright (C) 2008 Openbravo, S.L.U. 
+ http://sourceforge.net/projects/openbravopos 
+
+ This program is free software; you can redistribute it and/or modify 
+ it under the terms of the GNU General Public License as published by 
+ the Free Software Foundation; either version 2 of the License, or 
+ (at your option) any later version. 
+
+ This program is distributed in the hope that it will be useful, 
+ but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ GNU General Public License for more details. 
+
+ You should have received a copy of the GNU General Public License 
+ along with this program; if not, write to the Free Software 
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ -->
+<output> 
+
+    <display> 
+        <line> 
+            <text align="left" length="10">Order sent to Kitchen</text> 
+            <text align="right" length="10">${ticket.printTotal()}</text> 
+        </line> 
+        <line> 
+            <text align="center" length="20">Thank you.</text> 
+        </line> 
+    </display> 
+
+    <ticket printer = "2"> 
+        <line></line> 
+        <line></line> 
+        <line> 
+            <text align="center" length="42">Kitchen Order</text> 
+        </line> 
+        <line></line> 
+        <line> 
+            <text align="left" length="15">Receipt:</text> 
+            <text>${ticket.printId()}</text> 
+        </line>  
+        <line> 
+            <text align="left" length="15">Date:</text> 
+            <text>${ticket.printDate()}</text> 
+        </line>  
+        #if ($ticket.getCustomer()) 
+        <line> 
+            <text align="left" length="15">Customer:</text> 
+            <text>${ticket.getCustomer().getName()}</text> 
+        </line>  
+        <line> 
+            <text align="left" length="15"></text> 
+            <text>${ticket.getCustomer().getTaxid()}</text> 
+        </line>  
+        #end 
+
+        #if ($place != "") 
+        <line> 
+            <text align="left" length="15">Table:</text> 
+            <text>${place}</text> 
+        </line>  
+        #end 
+        <line></line>  
+        <line> 
+            <text align ="left" length="17">Item</text> 
+            <text align ="right" length="5"></text> 
+        </line>  
+        <line> 
+            <text>------------------------------------------</text> 
+        </line>  
+        #foreach ($ticketline in $ticket.getLines())  
+        #if (($ticketline.getProperty("printkb").equals("Kitchen")) && ($ticketline.getProperty("sendstatus").equals("No"))) 
+        <line> 
+            <text align ="left" length="5" bold="true">${ticketline.printMultiply()}x</text> 
+            #if ($ticketline.isProductCom())  
+            <text align ="left" length="37">--${ticketline.printName()}</text> 
+            #else 
+            <text align ="left" length="37" bold="true">${ticketline.printName()}</text> 
+            #end 
+        </line> 
+        #end
+<!-- Add the following lines only for 2.30 Attributes -->
+#if ($ticketline.productAttSetInstId)
+<line>
+    <text align ="left" length="42">    ${ticketline.productAttSetInstDesc}</text>
+</line>
+#end
+<!-- Add the previous lines only for 2.30 Attributes --> 
+#end  
+<line> 
+    <text>------------------------------------------</text> 
+</line>  
+<line> 
+    <text align="left" length="15">Cashier:</text> 
+    <text>${ticket.printUser()}</text> 
+</line>  
+</ticket> 
+</output>
