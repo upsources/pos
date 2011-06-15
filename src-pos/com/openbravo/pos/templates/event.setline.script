@@ -1,0 +1,18 @@
+// Set Discount(printkb=NULL) to N/A so it does not error on next section.
+if (line.getProperty("product.warehouse") == null){
+    line.setProperty("product.warehouse", "N/A");
+}
+if (line.getProperty("sendstatus") == null){
+    line.setProperty("sendstatus", "No");
+}
+
+//Stop the line modification of sent products
+if (!line.getProperty("sendstatus").equals("No")){
+    JOptionPane.showMessageDialog(null,
+            com.openbravo.pos.forms.AppLocal.getIntString("message.ordercantmodify"),
+            com.openbravo.pos.forms.AppLocal.getIntString("message.ordererror"),
+            JOptionPane.ERROR_MESSAGE);
+}else{
+    ticket.setLine(index, line);
+}
+cancel=true;

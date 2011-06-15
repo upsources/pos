@@ -1,0 +1,51 @@
+//    Openbravo POS is a point of sales application designed for touch screens.
+//    Copyright (C) 2007-2009 Openbravo, S.L.
+//    http://www.openbravo.com/product/pos
+//
+//    This file is part of Openbravo POS.
+//
+//    Openbravo POS is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    Openbravo POS is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+
+report = new com.openbravo.pos.reports.PanelReportBean();
+
+report.setTitleKey("Menu.CustomersBill");
+report.setReport("/com/openbravo/reports/customerbill");
+report.setResourceBundle("com/openbravo/reports/customerbill_messages");
+
+report.setSentence("SELECT CUSTOMERS.NAME, TICKETS.TICKETID, TICKETS.TICKETTYPE, T2.id, PRODUCTS.NAME AS prodNAME, ATTRIBUTESETINSTANCE.DESCRIPTION, TICKETLINES.UNITS, RECEIPTS.DATENEW, TICKETLINES.PRICE, CUSTOMERS.CURDEBT as curdebt " +
+"FROM PRODUCTS PRODUCTS INNER JOIN TICKETLINES TICKETLINES ON PRODUCTS.ID = TICKETLINES.PRODUCT " +
+"LEFT OUTER JOIN ATTRIBUTESETINSTANCE ATTRIBUTESETINSTANCE ON TICKETLINES.ATTRIBUTESETINSTANCE_ID = ATTRIBUTESETINSTANCE.ID " +
+"INNER JOIN TICKETS TICKETS ON TICKETLINES.TICKET = TICKETS.ID AND tickets.tickettype=0 " +
+"INNER JOIN PAYMENTS PAYMENTS ON TICKETLINES.TICKET = PAYMENTS.RECEIPT " +
+"INNER JOIN RECEIPTS RECEIPTS ON TICKETLINES.TICKET = RECEIPTS.ID " +
+"INNER JOIN CUSTOMERS CUSTOMERS ON TICKETS.CUSTOMER = CUSTOMERS.ID " +
+"left outer join tickets t2 on t2.ticketid = tickets.ticketid and t2.tickettype=2 " +
+"WHERE PAYMENTS.PAYMENT = 'debt' and t2.id is null AND ?(QBF_FILTER) ORDER BY CUSTOMERS.NAME AND TICKETS.TICKETID");
+report.addParameter("RECEIPTS.DATENEW");
+report.addParameter("RECEIPTS.DATENEW");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
+report.addParameter("CUSTOMERS.ID");
+report.addParameter("CUSTOMERS.NAME");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsCustomer());
+report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("TICKETID", com.openbravo.data.loader.Datas.INT);
+report.addField("TICKETTYPE", com.openbravo.data.loader.Datas.INT);
+report.addField("id", com.openbravo.data.loader.Datas.STRING);
+report.addField("prodNAME", com.openbravo.data.loader.Datas.STRING);
+report.addField("DESCRIPTION", com.openbravo.data.loader.Datas.STRING);
+report.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("DATENEW", com.openbravo.data.loader.Datas.TIMESTAMP);
+report.addField("PRICE", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("curdebt", com.openbravo.data.loader.Datas.DOUBLE);
+report;
