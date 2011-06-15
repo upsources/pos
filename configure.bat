@@ -21,7 +21,7 @@ REM    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
 
 set DIRNAME=%~dp0
 
-set CP="%DIRNAME%UpsourcesPOSpos.jar"
+set CP="%DIRNAME%UpsourcesPOS.jar"
 
 set CP=%CP%;"%DIRNAME%locales/"
 set CP=%CP%;"%DIRNAME%lib/substance.jar"

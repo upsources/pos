@@ -21,7 +21,7 @@ REM    along with Upsources POS.  If not, see <http://www.gnu.org/licenses/>.
 
 set DIRNAME=%~dp0
 
-set CP="%DIRNAME%UpsourcesPOSpos.jar"
+set CP="%DIRNAME%UpsourcesPOS.jar"
 
 set CP=%CP%;"%DIRNAME%lib/jasperreports-3.1.4.jar"
 set CP=%CP%;"%DIRNAME%lib/jcommon-1.0.15.jar"

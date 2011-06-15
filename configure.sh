@@ -21,7 +21,7 @@
 
 DIRNAME=`dirname $0`
 
-CP=$DIRNAME/UpsourcesPOSpos.jar
+CP=$DIRNAME/UpsourcesPOS.jar
 
 CP=$CP:$DIRNAME/locales/
 CP=$CP:$DIRNAME/lib/substance.jar

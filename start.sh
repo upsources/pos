@@ -21,7 +21,7 @@
 
 DIRNAME=`dirname $0`
 
-CP=$DIRNAME/UpsourcesPOSpos.jar
+CP=$DIRNAME/UpsourcesPOS.jar
 
 CP=$CP:$DIRNAME/lib/jasperreports-3.1.4.jar
 CP=$CP:$DIRNAME/lib/jcommon-1.0.15.jar
