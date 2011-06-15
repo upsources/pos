@@ -628,16 +628,16 @@ public class JRootApp extends JPanel implements AppView {
 
         m_jPanelLogin.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        jPanel5.setMinimumSize(new java.awt.Dimension(132, 300));
-        jPanel5.setPreferredSize(new java.awt.Dimension(668, 300));
+        jPanel5.setMinimumSize(new java.awt.Dimension(132, 500));
+        jPanel5.setPreferredSize(new java.awt.Dimension(668, 400));
 
         m_jLogonName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         m_jLogonName.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(25, 280));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(523, 280));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(25, 350));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(523, 380));
         m_jLogonName.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
