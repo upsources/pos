@@ -2,7 +2,7 @@
 
 #    Upsources POS is a point of sales application designed for touch screens.
 #    Copyright (C) 2008-2009 Openbravo, S.L.
-#    http://sourceforge.net/projects/openbravopos
+#    http://sourceforge.net/projects/UpsourcesPOSpos
 #
 #    This file is part of Upsources POS.
 #
@@ -21,7 +21,7 @@
 
 DIRNAME=`dirname $0`
 
-CP=$DIRNAME/openbravopos.jar
+CP=$DIRNAME/UpsourcesPOSpos.jar
 
 CP=$CP:$DIRNAME/locales/
 CP=$CP:$DIRNAME/lib/substance.jar
