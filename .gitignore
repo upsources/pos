@@ -8,3 +8,9 @@ dist/
 .hgignore
 .hgtags
 .project
+src-pda/
+src-erp/
+installer/
+licensing/
+sampledb/
+web/
