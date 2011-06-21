@@ -143,14 +143,14 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     public List<ProductInfoExt> getProductCatalog(String category) throws BasicException {
         return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES, L.NAME "
                 + "FROM PRODUCTS P LEFT JOIN STOCKDIARY S ON S.PRODUCT=P.ID LEFT JOIN LOCATIONS L ON S.LOCATION=L.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? "
-                + "ORDER BY O.CATORDER, P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerReadExt()).list(category);
+                + "GROUP BY P.NAME ORDER BY O.CATORDER, P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerReadExt()).list(category);
     }
 
     public List<ProductInfoExt> getSingleProductsCatalog(String category) throws BasicException {
         return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES "
                 + "FROM PRODUCTS P WHERE P.ID NOT IN ( SELECT PRODUCT FROM PRODUCTS_MAT ) "
                 + "AND P.ISCOM = " + s.DB.FALSE() + " "
-                + "AND P.CATEGORY = ? ORDER BY P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerRead()).list(category);
+                + "AND P.CATEGORY = ? GROUP BY P.NAME ORDER BY P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerRead()).list(category);
     }
 
     public List<ProductInfoExt> getProductComments(String id) throws BasicException {
