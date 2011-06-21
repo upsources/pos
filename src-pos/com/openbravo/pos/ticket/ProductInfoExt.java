@@ -55,6 +55,7 @@ public class ProductInfoExt implements Serializable {
     protected SerializableImage m_Image;
     protected Properties attributes;
     protected String warehouse;
+    protected String warehouseId;
 
     /** Creates new ProductInfo */
     public ProductInfoExt() {
@@ -74,6 +75,7 @@ public class ProductInfoExt implements Serializable {
         m_Image = new SerializableImage();
         attributes = new Properties();
         warehouse = null;
+        warehouseId = null;
     }
 
     public final String getID() {
@@ -204,6 +206,10 @@ public class ProductInfoExt implements Serializable {
         return warehouse;
     }
 
+    public final String getWarehouseId() {
+        return warehouseId;
+    }
+
     public static SerializerRead getSerializerRead() {
         return new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
             ProductInfoExt product = new ProductInfoExt();
@@ -245,6 +251,7 @@ public class ProductInfoExt implements Serializable {
             product.setImage( ImageUtils.readImage(dr.getBytes(12)));
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
             product.warehouse = dr.getString(14);
+            product.warehouseId = dr.getString(15);
             return product;
         }};
     }
