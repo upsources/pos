@@ -101,8 +101,12 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             }
             // Try to fill the warehouse name here
             if( product.getWarehouse() != null ) {
+                attributes.setProperty("product.warehouseId", product.getWarehouseId());
                 attributes.setProperty("product.warehouse", product.getWarehouse());
                 attributes.setProperty("sendstatus", "No");
+            } else {
+                // Fall back to General Warehouse
+                attributes.setProperty("product.warehouse", "General");
             }
         }
         init(pid, null, dMultiply, dPrice, tax, attributes);

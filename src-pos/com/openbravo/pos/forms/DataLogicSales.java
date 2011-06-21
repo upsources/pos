@@ -141,7 +141,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     }
 
     public List<ProductInfoExt> getProductCatalog(String category) throws BasicException {
-        return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES, L.NAME "
+        return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES, L.NAME, L.ID "
                 + "FROM PRODUCTS P LEFT JOIN STOCKDIARY S ON S.PRODUCT=P.ID LEFT JOIN LOCATIONS L ON S.LOCATION=L.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? "
                 + "GROUP BY P.NAME ORDER BY O.CATORDER, P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerReadExt()).list(category);
     }
@@ -421,6 +421,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
                 for (TicketLineInfo l : ticket.getLines()) {
                     ticketlineinsert.exec(l);
+                    
                     if (l.getProductID() != null) {
                         // update the stock
                         List<MaterialProdInfo> mats = getMaterialsProd(l.getProductID()); // check if the product is a composit
@@ -430,7 +431,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                         diary[2] = l.getMultiply() < 0.0
                                 ? MovementReason.IN_REFUND.getKey()
                                 : MovementReason.OUT_SALE.getKey();
-                        diary[3] = location;
+                        diary[3] = ( l.getProperty("product.warehouseId") != null )
+                                ? l.getProperty("product.warehouseId")
+                                : location;
                         diary[4] = l.getProductID();
                         diary[5] = l.getProductAttSetInstId();
                         diary[7] = new Double(l.getPrice());

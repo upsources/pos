@@ -1,16 +1,16 @@
 //Stop payment when all items not sent
 String mySent = "";
-System.out.println(mySent);
+
 for(int i= 0; i < ticket.getLinesCount(); i++){
     line = ticket.getLine(i);
-    
+
     if (line.getProperty("product.warehouse").equals("General") == false){
         if(line.getProperty("sendstatus").equals("No") || line.getProperty("sendstatus").equals("Cancel")){
             mySent = "No";
         }
     }
 }
-System.out.println(mySent);
+
 if (mySent.equals("No")){
     javax.swing.JOptionPane.showMessageDialog(null,
         com.openbravo.pos.forms.AppLocal.getIntString("message.ordernotallsent"),
