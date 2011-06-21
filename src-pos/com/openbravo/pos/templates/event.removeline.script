@@ -2,20 +2,18 @@
 
 line = ticket.getLine(index);
 
-//Remove nulls for unknown products
-if (line.getProperty("product.warehouse") == null){
-    line.setProperty("product.warehouse", "N/A");
-}
-
-//No need to send unknown products anywhere
-if (line.getProperty("sendstatus") == null){
-    line.setProperty("sendstatus", "No");
-}
-
-String a = line.getProperty("sendstatus");
+String a = "";
 String b = "Yes";
 String c = "No";
 Integer myCount = 0;
+
+if (line.getProperty("product.warehouse").equals("General") == false){
+    a = line.getProperty("sendstatus");
+} else {
+    //Removelines of not K/B items
+    a = c;
+}
+
 //get count of auxiliar after the main product
 for (i = index+1; i < ticket.getLinesCount(); i++) {
     if (ticket.getLine(i).isProductCom()){
@@ -28,19 +26,21 @@ for (i = index+1; i < ticket.getLinesCount(); i++) {
 //Set SendStatus of sent items to Cancel
 if (a.equals(b) && !line.isProductCom()) {
     for (i = index + myCount; i>= index ; i--) {
-        if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("Yes")){
-            ticket.getLine(i).setProperty("sendstatus", "Cancel");
-        }else if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("No")){
-            ticket.removeLine(i);
-        }else{
-            break;
+        if (ticket.getLine(i).getProperty("product.warehouse").equals("General") == false) {
+            if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("Yes")){
+                ticket.getLine(i).setProperty("sendstatus", "Cancel");
+            }else if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("No")){
+                ticket.removeLine(i);
+            }else{
+                break;
+            }
         }
     }
     line.setProperty("sendstatus", "Cancel");
 }
 
 //Removelines of NOT sent items
-if (a.equals(c) && !line.isProductCom()) {
+if ( a.equals(c) && !line.isProductCom()) {
     for (i = index + myCount; i>= index ; i--) {
         if (ticket.getLine(i).isProductCom()){
             ticket.removeLine(i);
@@ -49,7 +49,7 @@ if (a.equals(c) && !line.isProductCom()) {
         }
     }
     ticket.removeLine(index);
-}else if (a.equals(c) && line.isProductCom()) {
+} else if (a.equals(c) && line.isProductCom()) {
     ticket.removeLine(index);
 }
 
