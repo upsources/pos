@@ -1,23 +1,17 @@
 //Stop payment when all items not sent
-
+String mySent = "";
+System.out.println(mySent);
 for(int i= 0; i < ticket.getLinesCount(); i++){
     line = ticket.getLine(i);
-
-
-    // Set Discount(printkb=NULL) to N/A so it does not error on next section.
-    if (line.getProperty("product.warehouse") == null){
-        line.setProperty("product.warehouse", "N/A");
-    }
-    if (line.getProperty("sendstatus") == null){
-        line.setProperty("sendstatus", "No");
-    }
-
-    if(line.getProperty("sendstatus").equals("No") || line.getProperty("sendstatus").equals("Cancel")){
-        mySent = "No";
+    
+    if (line.getProperty("product.warehouse").equals("General") == false){
+        if(line.getProperty("sendstatus").equals("No") || line.getProperty("sendstatus").equals("Cancel")){
+            mySent = "No";
+        }
     }
 }
-
-if (mySent == "No"){
+System.out.println(mySent);
+if (mySent.equals("No")){
     javax.swing.JOptionPane.showMessageDialog(null,
         com.openbravo.pos.forms.AppLocal.getIntString("message.ordernotallsent"),
         com.openbravo.pos.forms.AppLocal.getIntString("message.orderwarning"),

@@ -8,22 +8,16 @@ boolean change_bar = false;
 for(int i= 0; i < ticket.getLinesCount(); i++){
     line = ticket.getLine(i);
 
-    // Set Discount(printkb=NULL) to N/A so it does not error on next section.
-    if (line.getProperty("product.warehouse") == null){
-        line.setProperty("product.warehouse", "N/A");
-    }
-    if (line.getProperty("sendstatus") == null){
-        line.setProperty("sendstatus", "No");
-    }
-
-    if((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("No"))){
-        kitchen = true; //There is something to print to kitchen
-    }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("No"))){
-        bar = true; //There is something to print to bar
-    }else if ((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("Cancel"))){
-        change_kitchen = true; //There is something to change for kitchen
-    }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("Cancel"))){
-        change_bar = true; //There is something to change for bar
+    if (line.getProperty("product.warehouse").equals("General") == false){
+        if((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("No"))){
+            kitchen = true; //There is something to print to kitchen
+        }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("No"))){
+            bar = true; //There is something to print to bar
+        }else if ((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("Cancel"))){
+            change_kitchen = true; //There is something to change for kitchen
+        }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("Cancel"))){
+            change_bar = true; //There is something to change for bar
+        }
     }
 }
 
@@ -57,23 +51,28 @@ if (kitchen && bar){
     );
 }
 
-//Set printkb property of item to Yes so it is not printed again
+//Set property of item to Yes so it is not printed again
 for(int i = ticket.getLinesCount()-1; i>= 0 ; i--){
-
-    line = ticket.getLine(i);
-    String a = line.getProperty("sendstatus");
+    String a = "";
     String b = "Cancel";
     String toLog = null;
+    line = ticket.getLine(i);
 
-    if(((line.getProperty("product.warehouse").equals("Kitchen")) || (line.getProperty("product.warehouse").equals("Bar"))) && (line.getProperty("sendstatus").equals("No"))){
-        line.setProperty("sendstatus", "Yes");
+    if (line.getProperty("product.warehouse").equals("General") == false){
+        a = line.getProperty("sendstatus");
+
+        if( (line.getProperty("product.warehouse").equals("Kitchen") ||
+             line.getProperty("product.warehouse").equals("Bar") ) &&
+            ( line.getProperty("sendstatus").equals("No") ) ) {
+            line.setProperty("sendstatus", "Yes");
+        }
     }
 
     //Remove cancelled lines
     if (a.equals(b)) {
         // Try to log cancels
         toLog = "Bar/Kitchen Cancel: " + user.getName() + "\n";
-        toLog += ticket.getLine(i).getProductName() + " x " + ticket.getLine(i).getMultiply().toString();
+        toLog += line.getProductName() + " x " + line.getMultiply().toString();
         ticket.removeLine(i);
     }
 
