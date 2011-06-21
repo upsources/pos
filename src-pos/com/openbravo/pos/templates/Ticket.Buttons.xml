@@ -41,7 +41,6 @@
     <discount-3 value="50"/>
     <!-- Bar/Kitchen integration -->
     <button key="button.sendorder" name="button.sendorder" code="sendorder"/>
-    <event key="ticket.addline" code="event.addline"/>
     <event key="ticket.removeline" code="event.removeline"/>
     <event key="ticket.setline" code="event.setline"/>
     <event key="ticket.total" code="event.total"/>
