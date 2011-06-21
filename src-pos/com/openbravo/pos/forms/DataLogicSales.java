@@ -421,7 +421,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
                 for (TicketLineInfo l : ticket.getLines()) {
                     ticketlineinsert.exec(l);
-                    
+
                     if (l.getProductID() != null) {
                         // update the stock
                         List<MaterialProdInfo> mats = getMaterialsProd(l.getProductID()); // check if the product is a composit
@@ -456,7 +456,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                                 diary[2] = l.getMultiply() < 0.0
                                         ? MovementReason.IN_REFUND.getKey()
                                         : MovementReason.OUT_SALE.getKey();
-                                diary[3] = location;
+                                diary[3] = ( l.getProperty("product.warehouseId") != null )
+                                        ? l.getProperty("product.warehouseId")
+                                        : location;
                                 diary[4] = m.getID();
                                 diary[5] = l.getProductAttSetInstId();
                                 diary[6] = new Double(-(l.getMultiply() * m.getAmount()));
