@@ -165,6 +165,8 @@ public class DeviceTicket {
                     addPrinter(sPrinterIndex, new DevicePrinterESCPOS(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new CodesSurePOS(), new UnicodeTranslatorSurePOS()));
                 } else if ("plain".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterPlain(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2)));
+                } else if ("fprint".equals(sPrinterType)) {
+                    addPrinter(sPrinterIndex, new DevicePrinterFPrint(pws.getPrinterWritter(sPrinterParam1, sPrinterParam2), new UnicodeTranslatorInt()));
                 } else if ("javapos".equals(sPrinterType)) {
                     addPrinter(sPrinterIndex, new DevicePrinterJavaPOS(sPrinterParam1, sPrinterParam2));
                 }

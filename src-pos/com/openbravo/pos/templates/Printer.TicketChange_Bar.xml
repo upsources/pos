@@ -1,91 +1,99 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?> 
 <!--  
  Upsources POS is a point of sales application designed for touch screens. 
  Copyright (C) 2008 Openbravo, S.L.U. 
  http://sourceforge.net/projects/openbravopos 
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Openbravo POS is a point of sales application designed for touch screens.
+ Copyright (C) 2008 Openbravo, S.L.U.
+ http://sourceforge.net/projects/openbravopos
+>>>>>>> stas
 
- This program is free software; you can redistribute it and/or modify 
- it under the terms of the GNU General Public License as published by 
- the Free Software Foundation; either version 2 of the License, or 
- (at your option) any later version. 
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
 
- This program is distributed in the hope that it will be useful, 
- but WITHOUT ANY WARRANTY; without even the implied warranty of 
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- GNU General Public License for more details. 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License 
- along with this program; if not, write to the Free Software 
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
- Ticket for changing a Sent Bar Order 
- --> 
-<output> 
+ Ticket for changing a Sent Bar Order
+ -->
+<output>
 
-    <display> 
-        <line> 
-            <text align="left" length="10">Change Sent</text> 
-            <text align="right" length="10">${ticket.printTotal()}</text> 
-        </line> 
-        <line> 
-            <text align="center" length="20">Thank you.</text> 
-        </line> 
-    </display> 
+    <display>
+        <line>
+            <text align="left" length="10">Change Sent</text>
+            <text align="right" length="10">${ticket.printTotal()}</text>
+        </line>
+        <line>
+            <text align="center" length="20">Thank you.</text>
+        </line>
+    </display>
 
-    <ticket printer = "2"> 
-        <line></line> 
-        <line></line> 
-        <line size="1"> 
-            <text align="center" length="42" bold="true">Changed Bar Items</text> 
-        </line> 
-        <line></line> 
-        <line> 
-            <text align="left" length="15">Receipt:</text> 
-            <text>${ticket.printId()}</text> 
-        </line>  
-        <line> 
-            <text align="left" length="15">Date:</text> 
-            <text>${ticket.printDate()}</text> 
-        </line>  
-        #if ($ticket.getCustomer()) 
-        <line> 
-            <text align="left" length="15">Customer:</text> 
-            <text>${ticket.getCustomer().getName()}</text> 
-        </line>  
-        <line> 
-            <text align="left" length="15"></text> 
-            <text>${ticket.getCustomer().getTaxid()}</text> 
-        </line>  
-        #end 
+    <ticket printer = "2">
+        <line></line>
+        <line></line>
+        <line size="1">
+            <text align="center" length="42" bold="true">Changed Bar Items</text>
+        </line>
+        <line></line>
+        <line>
+            <text align="left" length="15">Receipt:</text>
+            <text>${ticket.printId()}</text>
+        </line>
+        <line>
+            <text align="left" length="15">Date:</text>
+            <text>${ticket.printDate()}</text>
+        </line>
+        #if ($ticket.getCustomer())
+        <line>
+            <text align="left" length="15">Customer:</text>
+            <text>${ticket.getCustomer().getName()}</text>
+        </line>
+        <line>
+            <text align="left" length="15"></text>
+            <text>${ticket.getCustomer().getTaxid()}</text>
+        </line>
+        #end
 
-        #if ($place != "") 
-        <line> 
-            <text align="left" length="15">Table:</text> 
-            <text>${place}</text> 
-        </line>  
-        #end 
-        <line></line>  
-        <line> 
-            <text align ="left" length="17">Item</text> 
-            <text align ="right" length="5"></text> 
-        </line>  
-        <line> 
-            <text>------------------------------------------</text> 
-        </line>  
-        #foreach ($ticketline in $ticket.getLines())  
-        #if (($ticketline.getProperty("printkb").equals("Bar") && $ticketline.getProperty("sendstatus").equals("Cancel"))||($ticketline.getProperty("printkb").equals("Kitchen") && $ticketline.getProperty("sendstatus").equals("No"))) 
-        <line> 
-            #if ($ticketline.getProperty("sendstatus").equals("No")) 
-            <text align ="left" length="7" bold="true">Add</text> 
-            #else 
-            <text align ="left" length="7" bold="true">${ticketline.getProperty("sendstatus")}</text> 
-            #end 
-            <text align ="left" length="5" bold="true">${ticketline.printMultiply()}x</text> 
-            #if ($ticketline.isProductCom())  
-            <text align ="left" length="30">--${ticketline.printName()}</text> 
-            #else 
-            <text align ="left" length="30" bold="true">${ticketline.printName()}</text> 
-            #end 
+        #if ($place != "")
+        <line>
+            <text align="left" length="15">Table:</text>
+            <text>${place}</text>
+        </line>
+        #end
+        <line></line>
+        <line>
+            <text align ="left" length="17">Item</text>
+            <text align ="right" length="5"></text>
+        </line>
+        <line>
+            <text>------------------------------------------</text>
+        </line>
+        #foreach ($ticketline in $ticket.getLines())
+        #if (($ticketline.getProperty("product.warehouse").equals("Bar") && $ticketline.getProperty("sendstatus").equals("Cancel"))||($ticketline.getProperty("product.warehouse").equals("Kitchen") && $ticketline.getProperty("sendstatus").equals("No")))
+        <line>
+            #if ($ticketline.getProperty("sendstatus").equals("No"))
+            <text align ="left" length="7" bold="true">Add</text>
+            #else
+            <text align ="left" length="7" bold="true">${ticketline.getProperty("sendstatus")}</text>
+            #end
+            <text align ="left" length="5" bold="true">${ticketline.printMultiply()}x</text>
+            #if ($ticketline.isProductCom())
+            <text align ="left" length="30">--${ticketline.printName()}</text>
+            #else
+            <text align ="left" length="30" bold="true">${ticketline.printName()}</text>
+            #end
         </line>
 <!-- Add the following lines only for 2.30 Attributes -->
 #if ($ticketline.productAttSetInstId)
@@ -94,10 +102,10 @@
 </line>
 #end
 <!-- Add the previous lines only for 2.30 Attributes -->
-#end 
-#end  
-<line> 
-    <text>------------------------------------------</text> 
-</line>  
-</ticket> 
+#end
+#end
+<line>
+    <text>------------------------------------------</text>
+</line>
+</ticket>
 </output>
