@@ -1,8 +1,12 @@
 //Stop payment when all items not sent
 String mySent = "";
+boolean attrSelected = true;
 
 for(int i= 0; i < ticket.getLinesCount(); i++){
     line = ticket.getLine(i);
+    // If not attribute was selected ask to select one. Feel free to add check by Warehouse too.
+    if( line.getProperty("product.attsetid") != null && line.getProductAttSetInstDesc().equals("") )
+        attrSelected = false;
 
     if (line.getProperty("product.warehouse").equals("General") == false){
         if(line.getProperty("sendstatus").equals("No") || line.getProperty("sendstatus").equals("Cancel")){
@@ -11,7 +15,16 @@ for(int i= 0; i < ticket.getLinesCount(); i++){
     }
 }
 
-if (mySent.equals("No")){
+if ( attrSelected != true ) {
+    javax.swing.JOptionPane.showMessageDialog(null,
+        com.openbravo.pos.forms.AppLocal.getIntString("message.attrnotselected"),
+        com.openbravo.pos.forms.AppLocal.getIntString("message.orderwarning"),
+        JOptionPane.WARNING_MESSAGE
+    );
+    return "Cancel";
+}
+
+if ( mySent.equals("No") ){
     javax.swing.JOptionPane.showMessageDialog(null,
         com.openbravo.pos.forms.AppLocal.getIntString("message.ordernotallsent"),
         com.openbravo.pos.forms.AppLocal.getIntString("message.orderwarning"),
