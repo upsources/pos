@@ -85,7 +85,7 @@ FROM PRODUCTS LEFT OUTER JOIN CATEGORIES ON PRODUCTS.CATEGORY = CATEGORIES.ID LE
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Openbravo POS]]></text>
+				<text><![CDATA[Upsources POS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-1" x="14" y="25" width="149" height="16"/>

@@ -103,7 +103,7 @@ WHERE VISIBLE = TRUE AND CARD IS NOT NULL AND CARD <> '']]>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Openbravo POS]]></text>
+				<text><![CDATA[Upsources POS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-4" x="21" y="29" width="195" height="16"/>

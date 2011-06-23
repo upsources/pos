@@ -1,21 +1,21 @@
---    Openbravo POS is a point of sales application designed for touch screens.
+--    Upsources POS is a point of sales application designed for touch screens.
 --    Copyright (C) 2008-2011 Openbravo, S.L.
 --    http://sourceforge.net/projects/openbravopos
 --
---    This file is part of Openbravo POS.
+--    This file is part of Upsources POS.
 --
---    Openbravo POS is free software: you can redistribute it and/or modify
+--    Upsources POS is free software: you can redistribute it and/or modify
 --    it under the terms of the GNU General Public License as published by
 --    the Free Software Foundation, either version 3 of the License, or
 --    (at your option) any later version.
 --
---    Openbravo POS is distributed in the hope that it will be useful,
+--    Upsources POS is distributed in the hope that it will be useful,
 --    but WITHOUT ANY WARRANTY; without even the implied warranty of
 --    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 --    GNU General Public License for more details.
 --
 --    You should have received a copy of the GNU General Public License
---    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+--    along with Upsources POS.  If not, see <http://www.gnu.org/licenses/>.
 
 -- Database initial script for DERBY
 -- v2.30
@@ -103,11 +103,10 @@ INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('32', 'Printer.TicketBa
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('33', 'Printer.TicketChange_Bar', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketChange_Bar.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('34', 'Printer.TicketChange_Kitchen', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketChange_Kitchen.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('35', 'Printer.TicketKitchen', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketKitchen.xml});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('36', 'event.addline', 0, $FILE{/com/openbravo/pos/templates/event.addline.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('37', 'event.removeline', 0, $FILE{/com/openbravo/pos/templates/event.removeline.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.setline', 0, $FILE{/com/openbravo/pos/templates/event.setline.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('40', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('36', 'event.removeline', 0, $FILE{/com/openbravo/pos/templates/event.removeline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('37', 'event.setline', 0, $FILE{/com/openbravo/pos/templates/event.setline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
 
 CREATE TABLE TAXCUSTCATEGORIES (
     ID VARCHAR(256) NOT NULL,

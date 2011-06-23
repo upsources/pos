@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    Upsources POS is a point of sales application designed for touch screens.
 //    Copyright (C) 2007-2009 Openbravo, S.L.
 //    http://www.openbravo.com/product/pos
 //
-//    This file is part of Openbravo POS.
+//    This file is part of Upsources POS.
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    Upsources POS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//    Upsources POS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with Upsources POS.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.openbravo.pos.ticket;
 
@@ -55,6 +55,7 @@ public class ProductInfoExt implements Serializable {
     protected SerializableImage m_Image;
     protected Properties attributes;
     protected String warehouse;
+    protected String warehouseId;
 
     /** Creates new ProductInfo */
     public ProductInfoExt() {
@@ -74,6 +75,7 @@ public class ProductInfoExt implements Serializable {
         m_Image = new SerializableImage();
         attributes = new Properties();
         warehouse = null;
+        warehouseId = null;
     }
 
     public final String getID() {
@@ -204,6 +206,10 @@ public class ProductInfoExt implements Serializable {
         return warehouse;
     }
 
+    public final String getWarehouseId() {
+        return warehouseId;
+    }
+
     public static SerializerRead getSerializerRead() {
         return new SerializerRead() { public Object readValues(DataRead dr) throws BasicException {
             ProductInfoExt product = new ProductInfoExt();
@@ -245,6 +251,7 @@ public class ProductInfoExt implements Serializable {
             product.setImage( ImageUtils.readImage(dr.getBytes(12)));
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
             product.warehouse = dr.getString(14);
+            product.warehouseId = dr.getString(15);
             return product;
         }};
     }

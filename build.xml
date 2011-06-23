@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <!-- 
-    Openbravo POS is a point of sales application designed for touch screens.
+    Upsources POS is a point of sales application designed for touch screens.
     Copyright (C) 2008-2009 Openbravo, S.L.
     http://sourceforge.net/projects/openbravopos
 
-    This file is part of Openbravo POS.
+    This file is part of Upsources POS.
 
-    Openbravo POS is free software: you can redistribute it and/or modify
+    Upsources POS is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Openbravo POS is distributed in the hope that it will be useful,
+    Upsources POS is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+    along with Upsources POS.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
 <project name="openbravopos" basedir="." default="dist">
@@ -377,7 +377,7 @@
     <target name="dist.src" depends="init.dist" description="Generate the src zip file.">
         <mkdir dir="${basedir}/build/zip" />
 
-        <!-- Openbravo POS -->
+        <!-- Upsources POS -->
 
         <copy todir="${basedir}/build/zip/src-beans">
             <fileset dir="${src.beans}">
@@ -529,8 +529,8 @@
         <echo message="Going to create default keystore in ${jnlp.signjar.keystore}"/> 
 	<genkey keystore="${dest.dist}/jws/${jnlp.signjar.keystore}" alias="${dest.dist}/jws/${jnlp.signjar.alias}" storepass="${dest.dist}/jws/${jnlp.signjar.storepass}" >
   		<dname>
-    			<param name="CN" value="Openbravo POS Network"/>
-    			<param name="OU" value="Openbravo POS Network"/>
+    			<param name="CN" value="Upsources POS Network"/>
+    			<param name="OU" value="Upsources POS Network"/>
     			<param name="O"  value="Openbravo, S.L."/>
     			<param name="C"  value="ES"/>
   		</dname>

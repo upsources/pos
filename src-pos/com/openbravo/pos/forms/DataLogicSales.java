@@ -1,21 +1,21 @@
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    Upsources POS is a point of sales application designed for touch screens.
 //    Copyright (C) 2007-2009 Openbravo, S.L.
 //    http://www.openbravo.com/product/pos
 //
-//    This file is part of Openbravo POS.
+//    This file is part of Upsources POS.
 //
-//    Openbravo POS is free software: you can redistribute it and/or modify
+//    Upsources POS is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
-//    Openbravo POS is distributed in the hope that it will be useful,
+//    Upsources POS is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+//    along with Upsources POS.  If not, see <http://www.gnu.org/licenses/>.
 package com.openbravo.pos.forms;
 
 import com.openbravo.pos.ticket.CategoryInfo;
@@ -141,7 +141,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     }
 
     public List<ProductInfoExt> getProductCatalog(String category) throws BasicException {
-        return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES, L.NAME "
+        return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES, L.NAME, L.ID "
                 + "FROM PRODUCTS P LEFT JOIN STOCKDIARY S ON S.PRODUCT=P.ID LEFT JOIN LOCATIONS L ON S.LOCATION=L.ID, PRODUCTS_CAT O WHERE P.ID = O.PRODUCT AND P.CATEGORY = ? "
                 + "GROUP BY P.NAME ORDER BY O.CATORDER, P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerReadExt()).list(category);
     }
@@ -421,6 +421,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
 
                 for (TicketLineInfo l : ticket.getLines()) {
                     ticketlineinsert.exec(l);
+
                     if (l.getProductID() != null) {
                         // update the stock
                         List<MaterialProdInfo> mats = getMaterialsProd(l.getProductID()); // check if the product is a composit
@@ -430,7 +431,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                         diary[2] = l.getMultiply() < 0.0
                                 ? MovementReason.IN_REFUND.getKey()
                                 : MovementReason.OUT_SALE.getKey();
-                        diary[3] = location;
+                        diary[3] = ( l.getProperty("product.warehouseId") != null )
+                                ? l.getProperty("product.warehouseId")
+                                : location;
                         diary[4] = l.getProductID();
                         diary[5] = l.getProductAttSetInstId();
                         diary[7] = new Double(l.getPrice());
@@ -453,7 +456,9 @@ public class DataLogicSales extends BeanFactoryDataSingle {
                                 diary[2] = l.getMultiply() < 0.0
                                         ? MovementReason.IN_REFUND.getKey()
                                         : MovementReason.OUT_SALE.getKey();
-                                diary[3] = location;
+                                diary[3] = ( l.getProperty("product.warehouseId") != null )
+                                        ? l.getProperty("product.warehouseId")
+                                        : location;
                                 diary[4] = m.getID();
                                 diary[5] = l.getProductAttSetInstId();
                                 diary[6] = new Double(-(l.getMultiply() * m.getAmount()));

@@ -27,7 +27,7 @@
  */
 
 //    Portions:
-//    Openbravo POS is a point of sales application designed for touch screens.
+//    Upsources POS is a point of sales application designed for touch screens.
 //    Copyright (C) 2007-2009 Openbravo, S.L.
 //    http://www.openbravo.com/product/pos
 //    author adrian romero

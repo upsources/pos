@@ -1,27 +1,27 @@
 #!/bin/sh
 
-#    Openbravo POS is a point of sales application designed for touch screens.
+#    Upsources POS is a point of sales application designed for touch screens.
 #    Copyright (C) 2007-2009 Openbravo, S.L.
-#    http://sourceforge.net/projects/openbravopos
+#    http://sourceforge.net/projects/UpsourcesPOSpos
 #
-#    This file is part of Openbravo POS.
+#    This file is part of Upsources POS.
 #
-#    Openbravo POS is free software: you can redistribute it and/or modify
+#    Upsources POS is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    Openbravo POS is distributed in the hope that it will be useful,
+#    Upsources POS is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Openbravo POS.  If not, see <http://www.gnu.org/licenses/>.
+#    along with Upsources POS.  If not, see <http://www.gnu.org/licenses/>.
 
 DIRNAME=`dirname $0`
 
-CP=$DIRNAME/openbravopos.jar
+CP=$DIRNAME/UpsourcesPOS.jar
 
 CP=$CP:$DIRNAME/lib/jasperreports-3.1.4.jar
 CP=$CP:$DIRNAME/lib/jcommon-1.0.15.jar
@@ -72,5 +72,5 @@ Darwin) LIBRARYPATH=/lib/Mac_OS_X;;
 CYGWIN*|MINGW32*) LIBRARYPATH=/lib/Windows/i368-mingw32;;
 esac
 
-# start Openbravo POS
+# start Upsources POS
 java -cp $CP -Djava.util.logging.config.file=$DIRNAME/logging.properties -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel -Djava.library.path=$DIRNAME$LIBRARYPATH -Ddirname.path=$DIRNAME/ com.openbravo.pos.forms.StartPOS "$@"
