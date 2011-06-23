@@ -30,11 +30,13 @@ report.setSentence("SELECT " +
                 "PRODUCTS.REFERENCE, " +
                 "PRODUCTS.NAME, " +
                 "SUM(TICKETLINES.UNITS) AS UNITS, " +
-                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) AS TOTAL " +
-                "FROM CLOSEDCASH, RECEIPTS, TICKETS, TICKETLINES LEFT OUTER JOIN PRODUCTS ON TICKETLINES.PRODUCT = PRODUCTS.ID " +
-                "WHERE CLOSEDCASH.MONEY = RECEIPTS.MONEY AND RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND ?(QBF_FILTER) " +
-                "GROUP BY CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATEEND, PRODUCTS.REFERENCE, PRODUCTS.NAME " +
-                "ORDER BY PRODUCTS.NAME, CLOSEDCASH.HOST, CLOSEDCASH.DATEEND");
+                "SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) AS TOTAL, " +
+                "LOCATIONS.NAME AS WAREHOUSE, " +
+                "STOCKCURRENT.LOCATION AS LOCATIONID " +
+                "FROM CLOSEDCASH, RECEIPTS, TICKETS, LOCATIONS, STOCKCURRENT, TICKETLINES LEFT OUTER JOIN PRODUCTS ON TICKETLINES.PRODUCT = PRODUCTS.ID " +
+                "WHERE CLOSEDCASH.MONEY = RECEIPTS.MONEY AND RECEIPTS.ID = TICKETS.ID AND TICKETS.ID = TICKETLINES.TICKET AND TICKETLINES.PRODUCT = STOCKCURRENT.PRODUCT AND STOCKCURRENT.LOCATION = LOCATIONS.ID AND ?(QBF_FILTER) " +
+                "GROUP BY STOCKCURRENT.LOCATION, CLOSEDCASH.HOST, CLOSEDCASH.MONEY, CLOSEDCASH.DATEEND, PRODUCTS.REFERENCE, PRODUCTS.NAME " +
+                "ORDER BY LOCATIONS.NAME, PRODUCTS.NAME, CLOSEDCASH.HOST, CLOSEDCASH.DATEEND");
 report.addParameter("CLOSEDCASH.DATEEND");
 report.addParameter("CLOSEDCASH.DATEEND");
 report.addQBFFilter(new com.openbravo.pos.reports.JParamsDatesInterval());
@@ -44,6 +46,8 @@ report.addParameter("PRODUCTS.PRICESELL");
 report.addParameter("PRODUCTS.CATEGORY");
 report.addParameter("PRODUCTS.CODE");
 report.addQBFFilter(new com.openbravo.pos.ticket.ProductFilter());
+report.addParameter("STOCKCURRENT.LOCATION");
+report.addQBFFilter(new com.openbravo.pos.reports.JParamsLocationWithFirst());
 
 report.addField("HOST", com.openbravo.data.loader.Datas.STRING);
 report.addField("MONEY", com.openbravo.data.loader.Datas.STRING);
@@ -52,6 +56,8 @@ report.addField("REFERENCE", com.openbravo.data.loader.Datas.STRING);
 report.addField("NAME", com.openbravo.data.loader.Datas.STRING);
 report.addField("UNITS", com.openbravo.data.loader.Datas.DOUBLE);
 report.addField("TOTAL", com.openbravo.data.loader.Datas.DOUBLE);
+report.addField("WAREHOUSE", com.openbravo.data.loader.Datas.STRING);
+report.addField("LOCATIONID", com.openbravo.data.loader.Datas.STRING);
 
 report;
 

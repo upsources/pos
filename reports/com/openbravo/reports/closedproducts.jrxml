@@ -27,6 +27,9 @@ ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATEEND]]>
 	<field name="NAME" class="java.lang.String"/>
 	<field name="UNITS" class="java.lang.Double"/>
 	<field name="TOTAL" class="java.lang.Double"/>
+        <field name="WAREHOUSE" class="java.lang.String"/>
+        <field name="LOCATIONID" class="java.lang.String"/>
+
 	<variable name="BIGTOTAL" class="java.lang.Double" resetType="Group" resetGroup="byproduct" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
@@ -43,6 +46,43 @@ ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATEEND]]>
 		<variableExpression><![CDATA[$F{UNITS}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
+        
+        <group name="bylocation">
+		<groupExpression><![CDATA[$F{LOCATIONID}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<rectangle radius="0">
+					<reportElement key="rectangle-3" mode="Opaque" x="0" y="12" width="530" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
+					<graphicElement fill="Solid">
+						<pen lineWidth="0.25" lineStyle="Solid"/>
+					</graphicElement>
+				</rectangle>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-4" mode="Transparent" x="10" y="15" width="310" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Dialog" size="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{WAREHOUSE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+                <groupFooter>
+			<band height="50">
+                                <line>
+					<reportElement key="line-6" mode="Opaque" x="100" y="3" width="432" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
+					<graphicElement fill="Solid">
+						<pen lineWidth="0.25" lineStyle="Solid"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
 	<group name="byproduct">
 		<groupExpression><![CDATA[$F{REFERENCE}]]></groupExpression>
 		<groupHeader>
