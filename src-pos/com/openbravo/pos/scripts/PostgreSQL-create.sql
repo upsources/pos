@@ -103,11 +103,12 @@ INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('32', 'Printer.TicketBa
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('33', 'Printer.TicketChange_Bar', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketChange_Bar.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('34', 'Printer.TicketChange_Kitchen', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketChange_Kitchen.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('35', 'Printer.TicketKitchen', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketKitchen.xml});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('36', 'event.addline', 0, $FILE{/com/openbravo/pos/templates/event.addline.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('37', 'event.removeline', 0, $FILE{/com/openbravo/pos/templates/event.removeline.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.setline', 0, $FILE{/com/openbravo/pos/templates/event.setline.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.script});
-INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('40', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('36', 'event.removeline', 0, $FILE{/com/openbravo/pos/templates/event.removeline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('37', 'event.setline', 0, $FILE{/com/openbravo/pos/templates/event.setline.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('40', 'Printer.TicketFiscal', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketFiscal.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('41', 'Printer.TicketFPrint', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketFPrint.xml});
 
 CREATE TABLE TAXCUSTCATEGORIES (
     ID VARCHAR NOT NULL,

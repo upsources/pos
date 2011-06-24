@@ -107,6 +107,8 @@ INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('36', 'event.removeline
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('37', 'event.setline', 0, $FILE{/com/openbravo/pos/templates/event.setline.script});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.total', 0, $FILE{/com/openbravo/pos/templates/event.total.script});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('40', 'Printer.TicketFiscal', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketFiscal.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('41', 'Printer.TicketFPrint', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketFPrint.xml});
 
 CREATE TABLE TAXCUSTCATEGORIES (
     ID VARCHAR NOT NULL,
