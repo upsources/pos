@@ -30,6 +30,7 @@ import com.openbravo.data.loader.SentenceExecTransaction;
 import com.openbravo.data.loader.SentenceList;
 import com.openbravo.data.loader.SerializerRead;
 import com.openbravo.data.loader.SerializerReadBasic;
+import com.openbravo.data.loader.SerializerReadClass;
 import com.openbravo.data.loader.SerializerWriteBasic;
 import com.openbravo.data.loader.SerializerWriteBasicExt;
 import com.openbravo.data.loader.SerializerWriteParams;
@@ -235,5 +236,14 @@ public class DataLogicCustomers extends BeanFactoryDataSingle {
                 Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING, Datas.STRING,
             })
         ).exec(ObjectData);
+    }
+
+    public CompanyInfo getCompanyInfo() throws BasicException {
+        CompanyInfo record = (CompanyInfo) new StaticSentence(s
+            , "SELECT COMPANYNAME, CUI, NRREG, ADDRESS, POSTAL, CITY, REGION, COUNTRY, PHONE, FAX, EMAIL, NOTES FROM CUSTOMERS WHERE ID = ?"
+            , SerializerWriteString.INSTANCE
+            , new SerializerReadClass(CompanyInfo.class)
+        ).find("-1");
+        return record == null ? null : record;
     }
 }

@@ -65,8 +65,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRMapArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import com.openbravo.pos.ticket.TicketTaxInfo;
@@ -1048,9 +1046,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                                     : "Printer.Ticket2", ticket, ticketext);
 
                             // Fiscal printer
-                            printTicket(paymentdialog.isPrintFiscalSelected()
-                                    ? "Printer.TicketFiscal"
-                                    : "Printer.TicketFiscal2", ticket, ticketext);
+                            if( paymentdialog.isPrintFiscalSelected() )
+                                printTicket( "Printer.TicketFiscal", ticket, ticketext);
 
                             resultok = true;
                         }
@@ -1076,6 +1073,11 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
     private void printTicket(String sresourcename, TicketInfo ticket, Object ticketext) {
 
         String sresource = dlSystem.getResourceAsXML(sresourcename);
+
+        try {
+            ticket.setCompanyInfo( dlCustomers.getCompanyInfo() );
+        } catch (BasicException ex) {}
+
         if (sresource == null) {
             MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"));
             msg.show(JPanelTicket.this);
@@ -1388,9 +1390,7 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             //    m_jImage.setImage(null);
                             //}
                         }
-                    } catch (BasicException ex) {
-                        Logger.getLogger(JPanelTicket.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } catch (BasicException ex) {}
                 }
             }
         }

@@ -33,6 +33,8 @@ import com.openbravo.pos.suppliers.SupplierInfoExt;
 import com.openbravo.pos.payment.PaymentInfoMagcard;
 import com.openbravo.pos.util.StringUtils;
 
+import com.openbravo.pos.customers.CompanyInfo;
+
 /**
  *
  * @author adrianromero
@@ -63,6 +65,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     private String m_sResponse;
     // MSL
     private java.util.Date m_dDueDate;
+    private CompanyInfo m_companyInfo;
 
     /** Creates new TicketModel */
     public TicketInfo() {
@@ -508,5 +511,13 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
     public String printTotalPaid() {
         return Formats.CURRENCY.formatValue(new Double(getTotalPaid()));
+    }
+
+    public void setCompanyInfo(CompanyInfo companyInfo) {
+        this.m_companyInfo = companyInfo;
+    }
+
+    public CompanyInfo getCompanyInfo() {
+        return m_companyInfo;
     }
 }
