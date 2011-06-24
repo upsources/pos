@@ -78,6 +78,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
         this.app = app;
         dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");
         printselected = true;
+        printFiscSelected = true;
         // MSL
         dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
     }
@@ -113,6 +114,12 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
 
         m_jButtonPrint.setSelected(printselected);
         m_jButtonPrintFiscal.setSelected(printFiscSelected);
+        
+        if (!app.getAppUserView().getUser().hasPermission("sales.EditTicket")) {
+            m_jButtonPrint.setVisible(false);
+            m_jButtonPrintFiscal.setVisible(false);
+        }
+        
         m_jTotalEuros.setText(Formats.CURRENCY.formatValue(new Double(m_dTotal)));
 
         addTabs();
@@ -126,11 +133,17 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
             printState();
             setVisible(true);
         }
-
-        // gets the print button state
-        printselected = m_jButtonPrint.isSelected();
-        printFiscSelected = m_jButtonPrintFiscal.isSelected();
-
+        
+        // Always true for unprivileged users
+        if (!app.getAppUserView().getUser().hasPermission("sales.EditTicket")) {
+            printselected = true;
+            printFiscSelected = true; 
+        } else {
+            // gets the print button state
+            printselected = m_jButtonPrint.isSelected();
+            printFiscSelected = m_jButtonPrintFiscal.isSelected();
+        }
+        
         // remove all tabs
         m_jTabPayment.removeAll();
 
