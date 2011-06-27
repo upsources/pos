@@ -53,6 +53,10 @@ public class CustomerInfoExt extends CustomerInfo {
     protected String DebtDateLimit;
     protected String DebtMode;
     
+    protected String companyname;
+    protected String cui;
+    protected String nrreg;
+    
     /** Creates a new instance of UserInfoBasic */
     public CustomerInfoExt(String id) {
         super(id);
@@ -249,5 +253,29 @@ public class CustomerInfoExt extends CustomerInfo {
 
     public void setDebtMode(String argValue) {
         this.DebtMode = argValue;
+    }
+    
+    public String getCompanyName() {
+        return companyname;
+    }
+    
+    public void setCompanyName(String cname) {
+        this.companyname = cname;
+    }
+    
+    public String getCui() {
+        return cui;
+    }
+    
+    public void setCui(String cui) {
+        this.cui = cui;
+    }
+    
+    public String getNrReg() {
+        return nrreg;
+    }
+    
+    public void setNrReg(String nrreg) {
+        this.nrreg = nrreg;
     }
 }

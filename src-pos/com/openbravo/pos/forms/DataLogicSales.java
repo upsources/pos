@@ -304,7 +304,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     public CustomerInfoExt findCustomerExt(String card) throws BasicException {
         return (CustomerInfoExt) new PreparedSentence(s, "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, TAXCATEGORY, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT"
                 + ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX"
-                + ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY"
+                + ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY, COMPANYNAME, CUI, NRREG"
                 + " FROM CUSTOMERS WHERE CARD = ? AND VISIBLE = " + s.DB.TRUE(), SerializerWriteString.INSTANCE, new CustomerExtRead()).find(card);
     }
 
@@ -312,7 +312,7 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     public CustomerInfoExt loadCustomerExt(String id) throws BasicException {
         return (CustomerInfoExt) new PreparedSentence(s, "SELECT ID, TAXID, SEARCHKEY, NAME, CARD, TAXCATEGORY, NOTES, MAXDEBT, VISIBLE, CURDATE, CURDEBT"
                 + ", FIRSTNAME, LASTNAME, EMAIL, PHONE, PHONE2, FAX"
-                + ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY, DEBTDATELIMIT, DEBTMODE"
+                + ", ADDRESS, ADDRESS2, POSTAL, CITY, REGION, COUNTRY, DEBTDATELIMIT, DEBTMODE, COMPANYNAME, CUI, NRREG"
                 + " FROM CUSTOMERS WHERE ID = ?", SerializerWriteString.INSTANCE, new CustomerExtRead()).find(id);
     }
 
@@ -1113,6 +1113,10 @@ public class DataLogicSales extends BeanFactoryDataSingle {
             // MSL
             c.setDebtDateLimit(dr.getString(24));
             c.setDebtMode(dr.getString(25));
+            
+            c.setCompanyName(dr.getString(26));
+            c.setCui(dr.getString(27));
+            c.setNrReg(dr.getString(28));
             return c;
         }
     }

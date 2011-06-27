@@ -124,7 +124,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
 
         m_jButtonPrint.setSelected(printselected);
         m_jButtonPrintFiscal.setSelected(printFiscSelected);
-        m_jButtonInvoice.setSelected(printInvSelected);
+        m_jButtonInvoice.setSelected(false);
         
         if (!app.getAppUserView().getUser().hasPermission("sales.EditTicket")) {
             m_jButtonPrint.setVisible(false);
