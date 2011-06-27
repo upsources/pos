@@ -632,13 +632,13 @@ public class JRootApp extends JPanel implements AppView {
         jPanel5.setPreferredSize(new java.awt.Dimension(668, 400));
 
         m_jLogonName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        m_jLogonName.setLayout(new java.awt.BorderLayout());
+        m_jLogonName.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setMinimumSize(new java.awt.Dimension(25, 350));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(523, 380));
-        m_jLogonName.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        m_jLogonName.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 700, 330));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 5));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -659,9 +659,7 @@ public class JRootApp extends JPanel implements AppView {
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        m_jLogonName.add(jPanel2, java.awt.BorderLayout.LINE_END);
-
-        jPanel5.add(m_jLogonName);
+        m_jLogonName.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 5, -1, 380));
 
         m_jClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/exit.png"))); // NOI18N
         m_jClose.setText(AppLocal.getIntString("Button.Close")); // NOI18N
@@ -674,7 +672,9 @@ public class JRootApp extends JPanel implements AppView {
                 m_jCloseActionPerformed(evt);
             }
         });
-        jPanel5.add(m_jClose);
+        m_jLogonName.add(m_jClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, -1, -1));
+
+        jPanel5.add(m_jLogonName);
 
         m_jPanelLogin.add(jPanel5, java.awt.BorderLayout.SOUTH);
 
