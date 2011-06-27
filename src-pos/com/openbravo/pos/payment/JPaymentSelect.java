@@ -45,6 +45,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
     private PaymentInfoList m_aPaymentInfo;
     private boolean printselected;
     private boolean printFiscSelected;
+    private boolean printInvSelected;
     private boolean accepted;
     // MSL : change privaate to protected
     protected AppView app;
@@ -79,6 +80,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
         dlSystem = (DataLogicSystem) app.getBean("com.openbravo.pos.forms.DataLogicSystem");
         printselected = true;
         printFiscSelected = true;
+        printInvSelected = false;
         // MSL
         dlSales = (DataLogicSales) app.getBean("com.openbravo.pos.forms.DataLogicSales");
     }
@@ -90,6 +92,10 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
     public void setPrintFiscalSelected(boolean value) {
         printFiscSelected = value;
     }
+    
+    public void setPrintInvoiceSelected(boolean value) {
+        printInvSelected = value;
+    }
 
     public boolean isPrintSelected() {
         return printselected;
@@ -97,6 +103,10 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
 
     public boolean isPrintFiscalSelected() {
         return printFiscSelected;
+    }
+    
+    public boolean isPrintInvoiceSelected() {
+        return printInvSelected;
     }
 
     public List<PaymentInfo> getSelectedPayments() {
@@ -114,6 +124,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
 
         m_jButtonPrint.setSelected(printselected);
         m_jButtonPrintFiscal.setSelected(printFiscSelected);
+        m_jButtonInvoice.setSelected(printInvSelected);
         
         if (!app.getAppUserView().getUser().hasPermission("sales.EditTicket")) {
             m_jButtonPrint.setVisible(false);
@@ -143,6 +154,8 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
             printselected = m_jButtonPrint.isSelected();
             printFiscSelected = m_jButtonPrintFiscal.isSelected();
         }
+        
+        printInvSelected = m_jButtonInvoice.isSelected();
         
         // remove all tabs
         m_jTabPayment.removeAll();
@@ -434,6 +447,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
         m_jTabPayment = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        m_jButtonInvoice = new javax.swing.JToggleButton();
         m_jButtonPrintFiscal = new javax.swing.JToggleButton();
         m_jButtonPrint = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
@@ -536,6 +550,20 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
+        m_jButtonInvoice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileprint.png"))); // NOI18N
+        m_jButtonInvoice.setSelected(true);
+        m_jButtonInvoice.setText(AppLocal.getIntString("button.printerinvoiceselected")); // NOI18N
+        m_jButtonInvoice.setFocusPainted(false);
+        m_jButtonInvoice.setFocusable(false);
+        m_jButtonInvoice.setMargin(new java.awt.Insets(8, 16, 8, 16));
+        m_jButtonInvoice.setRequestFocusEnabled(false);
+        m_jButtonInvoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jButtonInvoiceActionPerformed(evt);
+            }
+        });
+        jPanel2.add(m_jButtonInvoice);
+
         m_jButtonPrintFiscal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/openbravo/images/fileprint.png"))); // NOI18N
         m_jButtonPrintFiscal.setSelected(true);
         m_jButtonPrintFiscal.setText(AppLocal.getIntString("button.printerfiscalselected")); // NOI18N
@@ -630,6 +658,11 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
         dispose();
 
     }//GEN-LAST:event_m_jButtonCancelActionPerformed
+
+    private void m_jButtonInvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jButtonInvoiceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m_jButtonInvoiceActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -639,6 +672,7 @@ public abstract class JPaymentSelect extends javax.swing.JDialog implements JPay
     private javax.swing.JPanel jPanel6;
     private javax.swing.JButton m_jButtonAdd;
     private javax.swing.JButton m_jButtonCancel;
+    private javax.swing.JToggleButton m_jButtonInvoice;
     private javax.swing.JButton m_jButtonOK;
     private javax.swing.JToggleButton m_jButtonPrint;
     private javax.swing.JToggleButton m_jButtonPrintFiscal;

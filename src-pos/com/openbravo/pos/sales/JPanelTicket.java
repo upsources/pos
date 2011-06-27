@@ -1048,6 +1048,10 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                             // Fiscal printer
                             if( paymentdialog.isPrintFiscalSelected() )
                                 printTicket( "Printer.TicketFiscal", ticket, ticketext);
+                            
+                            // Invoice printer
+                            if( paymentdialog.isPrintInvoiceSelected() )
+                                printReport("/com/openbravo/reports/invoice", ticket, ticketext);
 
                             resultok = true;
                         }
