@@ -716,7 +716,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         jPanelCompany.setLayout(jPanelCompanyLayout);
         jPanelCompanyLayout.setHorizontalGroup(
             jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 538, Short.MAX_VALUE)
             .addGroup(jPanelCompanyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -740,7 +739,6 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
         );
         jPanelCompanyLayout.setVerticalGroup(
             jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 199, Short.MAX_VALUE)
             .addGroup(jPanelCompanyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -758,7 +756,7 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
                 .addGroup(jPanelCompanyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCompanyNote, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.company"), jPanelCompany); // NOI18N
@@ -935,14 +933,14 @@ public class CustomersView extends javax.swing.JPanel implements EditorRecord {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab(AppLocal.getIntString("label.notes"), jPanel3); // NOI18N
 
         add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 295, 546, 235);
+        jTabbedPane1.setBounds(10, 295, 550, 235);
 
         jLabel2.setText(AppLocal.getIntString("label.curdebt")); // NOI18N
         add(jLabel2);
