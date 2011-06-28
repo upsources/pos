@@ -37,7 +37,10 @@ public class PaymentsModel {
     private String m_sHost;
     private int m_iSeq;
     private Date m_dDateStart;
-    private Date m_dDateEnd;       
+    private Date m_dDateEnd;    
+    
+    private String m_sUser;
+    private String m_sUserId;
             
     private Integer m_iPayments;
     private Double m_dPaymentsTotal;
@@ -48,6 +51,10 @@ public class PaymentsModel {
     private Integer m_iSales;
     private Double m_dSalesBase;
     private Double m_dSalesTaxes;
+    
+    private Integer m_iSalesUser;
+    private Double m_dSalesUserBase;
+    
     private java.util.List<SalesLine> m_lsales;
     
     private final static String[] SALEHEADERS = {"label.taxcash", "label.totalcash"};
@@ -65,6 +72,10 @@ public class PaymentsModel {
         
         p.m_iSales = null;
         p.m_dSalesBase = null;
+        
+        p.m_iSalesUser = null;
+        p.m_dSalesUserBase = null;
+        
         p.m_dSalesTaxes = null;
         p.m_lsales = new ArrayList<SalesLine>();
         
@@ -80,6 +91,9 @@ public class PaymentsModel {
         p.m_iSeq = app.getActiveCashSequence();
         p.m_dDateStart = app.getActiveCashDateStart();
         p.m_dDateEnd = null;
+        
+        p.m_sUser = app.getAppUserView().getUser().getName();
+        p.m_sUserId = app.getAppUserView().getUser().getId();
         
         
         // Pagos
@@ -127,7 +141,23 @@ public class PaymentsModel {
         } else {
             p.m_iSales = (Integer) recsales[0];
             p.m_dSalesBase = (Double) recsales[1];
-        }             
+        }         
+        
+        
+        // Sales by user
+        Object[] usersales = (Object []) new StaticSentence(app.getSession(),
+            "SELECT COUNT(DISTINCT RECEIPTS.ID), SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) " +
+            "FROM RECEIPTS, TICKETLINES, TICKETS WHERE RECEIPTS.ID = TICKETLINES.TICKET AND TICKETS.ID = TICKETLINES.TICKET AND TICKETS.PERSON = " + p.m_sUserId + " AND RECEIPTS.MONEY = ?",
+            SerializerWriteString.INSTANCE,
+            new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE}))
+            .find(app.getActiveCashIndex());
+        if (usersales == null) {
+            p.m_iSalesUser = null;
+            p.m_dSalesUserBase = null;
+        } else {
+            p.m_iSalesUser = (Integer) usersales[0];
+            p.m_dSalesUserBase = (Double) usersales[1];
+        }
         
         // Taxes
         Object[] rectaxes = (Object []) new StaticSentence(app.getSession(),
@@ -227,6 +257,18 @@ public class PaymentsModel {
         return m_lsales;
     }
     
+    public String printSalesUser() {
+        return Formats.INT.formatValue(m_iSalesUser);
+    }
+    
+    public String printSalesUserBase() {
+        return Formats.CURRENCY.formatValue(m_dSalesUserBase);
+    }
+    
+    public String printThisUser() {
+        return Formats.STRING.formatValue(m_sUser);
+    }
+    
     public AbstractTableModel getPaymentsModel() {
         return new AbstractTableModel() {
             public String getColumnName(int column) {
@@ -315,6 +357,6 @@ public class PaymentsModel {
         }
         public Double getValue() {
             return m_PaymentValue;
-        }        
+        }
     }
 }    
