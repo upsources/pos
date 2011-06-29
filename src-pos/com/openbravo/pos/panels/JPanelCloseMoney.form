@@ -32,7 +32,7 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="12" pref="12" max="12" attributes="0"/>
                           <Component id="m_jPrintCashByUser" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="388" max="32767" attributes="0"/>
+                          <EmptySpace pref="357" max="32767" attributes="0"/>
                           <Component id="m_jPrintCash" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="m_jCloseCash" min="-2" max="-2" attributes="0"/>
