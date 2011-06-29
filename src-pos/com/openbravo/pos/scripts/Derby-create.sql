@@ -109,6 +109,7 @@ INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('38', 'event.total', 0,
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('39', 'sendorder', 0, $FILE{/com/openbravo/pos/templates/sendorder.script});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('40', 'Printer.TicketFiscal', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketFiscal.xml});
 INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('41', 'Printer.TicketFPrint', 0, $FILE{/com/openbravo/pos/templates/Printer.TicketFPrint.xml});
+INSERT INTO RESOURCES(ID, NAME, RESTYPE, CONTENT) VALUES('42', 'Printer.CashByUser', 0, $FILE{/com/openbravo/pos/templates/Printer.CashByUser.xml});
 
 CREATE TABLE TAXCUSTCATEGORIES (
     ID VARCHAR(256) NOT NULL,

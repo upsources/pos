@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<output>
+    <ticket>
+        <image>Printer.Ticket.Logo</image>
+        <line></line>
+        <line size="1">
+            <text align ="center" length="42" bold="true">Cash by user report</text>            
+        </line>
+        <line></line>
+        <line>
+            <text bold="true">${payments.printThisUser()}</text>
+        </line>
+        <line>
+            <text align ="right" length="42">Total</text>
+        </line>
+        <line>
+            <text>------------------------------------------</text>
+        </line> 
+        #foreach ($line in $payments.getPaymentLinesByUser())
+        <line>
+            <text align ="left" length="32">${line.printType()}</text>
+            <text align ="right" length="10">${line.printValue()}</text>
+        </line> 
+        #end
+        <line>
+            <text>------------------------------------------</text>
+        </line> 
+        <line>
+            <text align ="left" length="32">Payments:</text>
+            <text align ="right" length="10">${payments.printPaymentsByUser()}</text>
+        </line>
+        <line></line>
+        <line size="1">
+            <text align ="left" length="32" bold="true">Total</text>
+            <text align ="right" length="10" bold="true">${payments.printPaymentsTotalByUser()}</text>
+        </line>
+    </ticket>
+</output>
