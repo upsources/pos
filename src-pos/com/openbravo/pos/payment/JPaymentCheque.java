@@ -45,7 +45,6 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
 
     private ComboBoxValModel m_BankModel;
     private SentenceList m_sentbank;
-    private DataLogicSales  m_dlSales;
    
     /** Creates new form JPaymentCash */
     public JPaymentCheque(JPaymentNotifier notifier, DataLogicSales dlSales) {
@@ -81,7 +80,7 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
         try {
             m_BankModel = new ComboBoxValModel(m_sentbank.list());
             jBankNameCombo.setModel(m_BankModel);
-            String bank = ((BankInfo) m_BankModel.getElementAt(0)).getName();
+            //String bank = ((BankInfo) m_BankModel.getElementAt(0)).getName();
         } catch (BasicException e) {
             
         }
@@ -233,7 +232,7 @@ public class JPaymentCheque extends javax.swing.JPanel implements JPaymentInterf
     private void jBankNameComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBankNameComboActionPerformed
         // TODO add your handling code here:
         // MSL
-        String bank = ((BankInfo) m_BankModel.getSelectedItem()).getName();
+        //String bank = ((BankInfo) m_BankModel.getSelectedItem()).getName();
     }//GEN-LAST:event_jBankNameComboActionPerformed
     
     
