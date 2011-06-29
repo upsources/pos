@@ -28,7 +28,7 @@ import com.openbravo.beans.LocaleResources;
 public class AppLocal {
     
     public static final String APP_NAME = "UpsourcesPOS";
-    public static final String APP_ID = "openbravopos";
+    public static final String APP_ID = "upsourcespos";
     public static final String APP_VERSION = "2.30.2upos";
   
     // private static List<ResourceBundle> m_messages;
