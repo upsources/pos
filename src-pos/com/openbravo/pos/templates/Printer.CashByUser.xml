@@ -18,21 +18,21 @@
         </line> 
         #foreach ($line in $payments.getPaymentLinesByUser())
         <line>
-            <text align ="left" length="32">${line.printType()}</text>
-            <text align ="right" length="10">${line.printValue()}</text>
+            <text align ="left" length="24">${line.printType()}</text>
+            <text align ="right" length="20">${line.printValue()}</text>
         </line> 
         #end
         <line>
             <text>------------------------------------------</text>
         </line> 
         <line>
-            <text align ="left" length="32">Payments:</text>
-            <text align ="right" length="10">${payments.printPaymentsByUser()}</text>
+            <text align ="left" length="24">Payments:</text>
+            <text align ="right" length="20">${payments.printPaymentsByUser()}</text>
         </line>
         <line></line>
         <line size="1">
-            <text align ="left" length="32" bold="true">Total</text>
-            <text align ="right" length="10" bold="true">${payments.printPaymentsTotalByUser()}</text>
+            <text align ="left" length="24" bold="true">Total</text>
+            <text align ="right" length="20" bold="true">${payments.printPaymentsTotalByUser()}</text>
         </line>
     </ticket>
 </output>
