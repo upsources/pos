@@ -57,12 +57,12 @@ public class JCatalog extends JPanel implements ListSelectionListener, CatalogSe
 
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales) {
-        this(dlSales, false, false, 64, 54);
+        this(dlSales, false, false, 200, 45);
     }
 
     /** Creates new form JCatalog */
     public JCatalog(DataLogicSales dlSales, boolean withBOM) {
-        this(dlSales, false, false, 64, 54);
+        this(dlSales, false, false, 200, 45);
         this.withBOM = withBOM;
 
     }
