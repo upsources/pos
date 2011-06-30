@@ -16,7 +16,7 @@
 
         #if ($ticketline.getProperty("product.name").contains("DISC."))
         <line>
-    	   	  <text>P,1,______,_,__;DISCOUNT ${ticketline.printDiscountRate()}%;;;;;</text>
+    	   	  <text>P,1,______,_,__;DISCOUNT ${ticketline.printDiscountRateFPrint()}%;;;;;</text>
     	   </line>
     	   		#if ($ticketline.getProperty("discount.for") == "all")
     	   <line>
@@ -24,7 +24,7 @@
     	   </line>
     	   		#end
     	   <line>
-    	   	  <text>C,1,______,_,__;1;${ticketline.printDiscountRate()};;;;</text>
+    	   	  <text>C,1,______,_,__;1;${ticketline.printDiscountRateFPrint()};;;;</text>
     	   </line>		
     	   #else
     	   <line>
