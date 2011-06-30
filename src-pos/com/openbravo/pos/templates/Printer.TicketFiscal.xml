@@ -14,12 +14,12 @@
     <ticket printer = "2">
     #foreach ($ticketline in $ticket.getLines())
         <line>
-            <text>S,1,______,_,__;${ticketline.printName().toUpperCase()};${ticketline.getPriceTax()};${ticketline.printMultiply().replace(",", ".")}.000;#if (${ticketline.getProperty("product.warehouse").equals("General")})1#end#if (${ticketline.getProperty("product.warehouse").equals("Bucatarie")})1#end#if (${ticketline.getProperty("product.warehouse").equals("Bar")})2#end;1;1;0;0;</text>
+            <text>S,1,______,_,__;${ticketline.printName().toUpperCase()};${ticketline.getPriceTaxFPrint()};${ticketline.printMultiplyFPrint()}.000;#if (${ticketline.getProperty("product.warehouse").equals("General")})1#end#if (${ticketline.getProperty("product.warehouse").equals("Bucatarie")})1#end#if (${ticketline.getProperty("product.warehouse").equals("Bar")})2#end;1;1;0;0;</text>
         </line>
     #end
 
         <line>
-            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0#end#if ($paymentline.name == "paperin")3#end#if ($paymentline.name == "magcard")2#end#if ($paymentline.name == "cheque")1#end#end;${ticket.getTotal()};;</text>
+            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0;;;;;#end#if ($paymentline.name == "paperin")3;${ticket.printTotalFPrint()};;;;#end#if ($paymentline.name == "magcard")2;${ticket.printTotalFPrint()};;;;#end#if ($paymentline.name == "cheque")1;${ticket.printTotalFPrint()};;;;#end#end</text>
         </line>
     </ticket>
 

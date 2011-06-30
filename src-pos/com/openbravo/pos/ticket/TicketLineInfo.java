@@ -335,6 +335,14 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     //    return getUnit();
         //return m_Product.getUnit();
     //}
+    
+    public String printDiscount() {
+        return StringUtils.encodeXML(attributes.getProperty("discount.for"));
+    }
+    
+    public String printDiscountRate() {
+        return StringUtils.encodeXML(attributes.getProperty("discount.rate"));
+    }
 
     //Subgrupos
     public boolean isSubproduct() {

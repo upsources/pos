@@ -1257,13 +1257,19 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                     if (line.getPrice() > 0.0 && discountrate > 0.0) {
 
                         String sdiscount = Formats.PERCENT.formatValue(discountrate);
-                        m_oTicket.insertLine(index + 1,
-                            new TicketLineInfo(
+                        
+                        TicketLineInfo discountline = new TicketLineInfo(
                                 "DISC." + sdiscount,
                                 line.getProductTaxCategoryID(),
                                 line.getMultiply(),
                                 -line.getPrice () * discountrate,
-                                line.getTaxInfo()));
+                                line.getTaxInfo());
+                        
+                        discountline.setProperty("discount.for", "line");
+                        discountline.setProperty("discount.rate", Double.toString(discountrate*100));
+                        
+                        m_oTicket.insertLine(index + 1, discountline);
+                        
                         m_ticketlines.setSelectedIndex(index + 1);
                     } else {
                         java.awt.Toolkit.getDefaultToolkit().beep();
@@ -1278,13 +1284,18 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                 TicketTaxInfo[] taxes = m_oTicket.getTaxLines();
                 for (int i = 0; i < taxes.length; i++) {
                     TicketTaxInfo taxline = taxes[i];
-                    m_oTicket.insertLine(m_oTicket.getLinesCount(),
-                    new TicketLineInfo(
+                    
+                    TicketLineInfo discountall = new TicketLineInfo(
                         "DISC. " + sdiscount + " OF " + taxline.printSubTotal(),
                         taxline.getTaxInfo().getTaxCategoryID(),
                         1.0,
                         -taxline.getSubTotal() * discountrate,
-                        taxline.getTaxInfo()));
+                        taxline.getTaxInfo());
+                        
+                    discountall.setProperty("discount.for", "all");
+                    discountall.setProperty("discount.rate", Double.toString(discountrate*100));
+                    
+                    m_oTicket.insertLine(m_oTicket.getLinesCount(),discountall);
                 }
                 m_ticketlines.setSelectedIndex(m_oTicket.getLinesCount() - 1);
             } else {
