@@ -1046,7 +1046,8 @@ public abstract class JPanelTicket extends JPanel implements JPanelView, BeanFac
                                     : "Printer.Ticket2", ticket, ticketext);
 
                             // Fiscal printer
-                            if( paymentdialog.isPrintFiscalSelected() )
+                            String paymentname = ticket.getPayments().get(0).getName();
+                            if(paymentdialog.isPrintFiscalSelected() && ! paymentname.equals("free") && ! paymentname.equals("debt"))
                                 printTicket( "Printer.TicketFiscal", ticket, ticketext);
                             
                             // Invoice printer
