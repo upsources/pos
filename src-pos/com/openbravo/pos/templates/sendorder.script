@@ -5,18 +5,25 @@ boolean bar = false;
 boolean change_kitchen = false;
 boolean change_bar = false;
 
+boolean attrSelected = true;
+
 for(int i= 0; i < ticket.getLinesCount(); i++){
     line = ticket.getLine(i);
-
-    if (line.getProperty("product.warehouse").equals("General") == false){
-        if((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("No"))){
-            kitchen = true; //There is something to print to kitchen
-        }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("No"))){
-            bar = true; //There is something to print to bar
-        }else if ((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("Cancel"))){
-            change_kitchen = true; //There is something to change for kitchen
-        }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("Cancel"))){
-            change_bar = true; //There is something to change for bar
+    
+    if (! line.getProperty("product.name").contains("DISC.")) {
+        if( line.getProperty("product.attsetid") != null && line.getProductAttSetInstDesc().equals("") )
+            attrSelected = false;
+        
+        if (line.getProperty("product.warehouse").equals("General") == false){
+            if((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("No"))){
+                kitchen = true; //There is something to print to kitchen
+            }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("No"))){
+                bar = true; //There is something to print to bar
+            }else if ((line.getProperty("product.warehouse").equals("Kitchen")) && (line.getProperty("sendstatus").equals("Cancel"))){
+                change_kitchen = true; //There is something to change for kitchen
+            }else if ((line.getProperty("product.warehouse").equals("Bar")) && (line.getProperty("sendstatus").equals("Cancel"))){
+                change_bar = true; //There is something to change for bar
+            }
         }
     }
 }
@@ -34,21 +41,30 @@ if (bar && !change_bar) {
     sales.printTicket("Printer.TicketBar"); //Print bar items to bar printer
 }
 
-//Show a nice message for confirmation
-if (kitchen && bar){
-    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccess"));
-} else if (kitchen && !bar){
-    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccesskitchen"));
-} else if (!kitchen && bar){
-    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccessbar"));
-} else if (change_kitchen || change_bar){
-    javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.orderfail"));
-} else {
+if ( attrSelected != true ) {
     javax.swing.JOptionPane.showMessageDialog(null,
-        com.openbravo.pos.forms.AppLocal.getIntString("message.orderok"),
+        com.openbravo.pos.forms.AppLocal.getIntString("message.attrnotselected"),
         com.openbravo.pos.forms.AppLocal.getIntString("message.orderwarning"),
         JOptionPane.WARNING_MESSAGE
     );
+    return "Cancel";
+} else {
+    //Show a nice message for confirmation
+    if (kitchen && bar){
+        javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccess"));
+    } else if (kitchen && !bar){
+        javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccesskitchen"));
+    } else if (!kitchen && bar){
+        javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccessbar"));
+    } else if (change_kitchen || change_bar){
+        javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.orderfail"));
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(null,
+            com.openbravo.pos.forms.AppLocal.getIntString("message.orderok"),
+            com.openbravo.pos.forms.AppLocal.getIntString("message.orderwarning"),
+            JOptionPane.WARNING_MESSAGE
+        );
+    }
 }
 
 //Set property of item to Yes so it is not printed again
@@ -58,14 +74,18 @@ for(int i = ticket.getLinesCount()-1; i>= 0 ; i--){
     String toLog = null;
     line = ticket.getLine(i);
 
-    if (line.getProperty("product.warehouse").equals("General") == false){
-        a = line.getProperty("sendstatus");
-
-        if( (line.getProperty("product.warehouse").equals("Kitchen") ||
-             line.getProperty("product.warehouse").equals("Bar") ) &&
-            ( line.getProperty("sendstatus").equals("No") ) ) {
-            line.setProperty("sendstatus", "Yes");
+    if (! line.getProperty("product.name").contains("DISC.")) {
+        if (line.getProperty("product.warehouse").equals("General") == false){
+            a = line.getProperty("sendstatus");
+            
+            if( (line.getProperty("product.warehouse").equals("Kitchen") ||
+                 line.getProperty("product.warehouse").equals("Bar") ) &&
+                ( line.getProperty("sendstatus").equals("No") ) ) {
+                line.setProperty("sendstatus", "Yes");
+            }
         }
+    } else {
+        line.setProperty("sendstatus", "N/A");
     }
 
     //Remove cancelled lines

@@ -6,12 +6,13 @@ String a = "";
 String b = "Yes";
 String c = "No";
 Integer myCount = 0;
-
-if (line.getProperty("product.warehouse").equals("General") == false){
-    a = line.getProperty("sendstatus");
-} else {
-    //Removelines of not K/B items
-    a = c;
+if (! line.getProperty("product.name").contains("DISC.")) {
+    if (line.getProperty("product.warehouse").equals("General") == false){
+        a = line.getProperty("sendstatus");
+    } else {
+        //Removelines of not K/B items
+        a = c;
+    }
 }
 
 //get count of auxiliar after the main product
@@ -26,13 +27,15 @@ for (i = index+1; i < ticket.getLinesCount(); i++) {
 //Set SendStatus of sent items to Cancel
 if (a.equals(b) && !line.isProductCom()) {
     for (i = index + myCount; i>= index ; i--) {
-        if (ticket.getLine(i).getProperty("product.warehouse").equals("General") == false) {
-            if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("Yes")){
-                ticket.getLine(i).setProperty("sendstatus", "Cancel");
-            }else if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("No")){
-                ticket.removeLine(i);
-            }else{
-                break;
+        if (! line.getProperty("product.name").contains("DISC.")) {
+            if (ticket.getLine(i).getProperty("product.warehouse").equals("General") == false) {
+                if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("Yes")){
+                    ticket.getLine(i).setProperty("sendstatus", "Cancel");
+                }else if (ticket.getLine(i).isProductCom() && ticket.getLine(i).getProperty("sendstatus").equals("No")){
+                    ticket.removeLine(i);
+                }else{
+                    break;
+                }
             }
         }
     }

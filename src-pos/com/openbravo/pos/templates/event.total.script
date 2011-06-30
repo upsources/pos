@@ -4,13 +4,16 @@ boolean attrSelected = true;
 
 for(int i= 0; i < ticket.getLinesCount(); i++){
     line = ticket.getLine(i);
-    // If not attribute was selected ask to select one. Feel free to add check by Warehouse too.
-    if( line.getProperty("product.attsetid") != null && line.getProductAttSetInstDesc().equals("") )
-        attrSelected = false;
 
-    if (line.getProperty("product.warehouse").equals("General") == false){
-        if(line.getProperty("sendstatus").equals("No") || line.getProperty("sendstatus").equals("Cancel")){
-            mySent = "No";
+    if (! line.getProperty("product.name").contains("DISC.")) {
+        // If not attribute was selected ask to select one. Feel free to add check by Warehouse too.
+        if( line.getProperty("product.attsetid") != null && line.getProductAttSetInstDesc().equals("") )
+            attrSelected = false;
+
+        if (line.getProperty("product.warehouse").equals("General") == false){
+            if(line.getProperty("sendstatus").equals("No") || line.getProperty("sendstatus").equals("Cancel")){
+                mySent = "No";
+            }
         }
     }
 }
@@ -31,6 +34,6 @@ if ( mySent.equals("No") ){
         JOptionPane.WARNING_MESSAGE
     );
     return "Cancel";
-}else{
+} else {
     return null;
 }
