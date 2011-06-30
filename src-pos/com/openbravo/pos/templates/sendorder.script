@@ -28,19 +28,6 @@ for(int i= 0; i < ticket.getLinesCount(); i++){
     }
 }
 
-if ((change_kitchen && kitchen) || (change_kitchen && !kitchen)) {
-    sales.printTicket("Printer.TicketChange_Kitchen"); //Print changed kitchen items to kitchen printer
-}
-if ((change_bar && bar) || (change_bar && !bar)) {
-    sales.printTicket("Printer.TicketChange_Bar"); //Print changed bar items to bar printer
-}
-if (kitchen && !change_kitchen) {
-    sales.printTicket("Printer.TicketKitchen"); //Print kitchen items to kitchen printer
-}
-if (bar && !change_bar) {
-    sales.printTicket("Printer.TicketBar"); //Print bar items to bar printer
-}
-
 if ( attrSelected != true ) {
     javax.swing.JOptionPane.showMessageDialog(null,
         com.openbravo.pos.forms.AppLocal.getIntString("message.attrnotselected"),
@@ -49,6 +36,20 @@ if ( attrSelected != true ) {
     );
     return "Cancel";
 } else {
+
+    if ((change_kitchen && kitchen) || (change_kitchen && !kitchen)) {
+        sales.printTicket("Printer.TicketChange_Kitchen"); //Print changed kitchen items to kitchen printer
+    }
+    if ((change_bar && bar) || (change_bar && !bar)) {
+        sales.printTicket("Printer.TicketChange_Bar"); //Print changed bar items to bar printer
+    }
+    if (kitchen && !change_kitchen) {
+        sales.printTicket("Printer.TicketKitchen"); //Print kitchen items to kitchen printer
+    }
+    if (bar && !change_bar) {
+        sales.printTicket("Printer.TicketBar"); //Print bar items to bar printer
+    }
+
     //Show a nice message for confirmation
     if (kitchen && bar){
         javax.swing.JOptionPane.showMessageDialog(null, com.openbravo.pos.forms.AppLocal.getIntString("message.ordersuccess"));
