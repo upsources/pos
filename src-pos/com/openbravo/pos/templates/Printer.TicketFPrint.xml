@@ -19,7 +19,7 @@
     #end
 
         <line>
-            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0#end#if ($paymentline.name == "paperin")3#end#if ($paymentline.name == "magcard")2#end#if ($paymentline.name == "cheque")1#end#end;;;</text>
+            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0#end#if ($paymentline.name == "paperin")3#end#if ($paymentline.name == "magcard")2#end#if ($paymentline.name == "cheque")1#end#end;${ticket.getTotal()};;</text>
         </line>
     </ticket>
 
