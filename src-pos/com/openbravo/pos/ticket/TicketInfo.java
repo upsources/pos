@@ -22,6 +22,7 @@ import java.util.*;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import com.openbravo.pos.payment.PaymentInfo;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
@@ -519,5 +520,11 @@ public class TicketInfo implements SerializableRead, Externalizable {
 
     public CompanyInfo getCompanyInfo() {
         return m_companyInfo;
+    }
+    
+    public String printTotalFPrint() {
+        DecimalFormat nf = new DecimalFormat("###.##");
+        nf.setMinimumFractionDigits(2);
+        return nf.format(getTotal()).replace(",", ".");
     }
 }

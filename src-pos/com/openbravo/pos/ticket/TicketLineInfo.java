@@ -20,6 +20,7 @@
 package com.openbravo.pos.ticket;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import com.openbravo.pos.util.StringUtils;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
@@ -355,7 +356,7 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String printPriceTax() {
         return Formats.CURRENCY.formatValue(getPriceTax());
     }
-
+    
     public String printTax() {
         return Formats.CURRENCY.formatValue(getTax());
     }
@@ -370,5 +371,17 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
 
     public String printValue() {
         return Formats.CURRENCY.formatValue(getValue());
+    }
+    
+    public String printPriceTaxFPrint() {
+         DecimalFormat nf = new DecimalFormat("##########.##");
+         nf.setMinimumFractionDigits(2);
+         return nf.format(getPriceTax()).replace(",", ".");
+    }
+    
+    public String printMultiplyFPrint() {
+        DecimalFormat nf = new DecimalFormat("###.###");
+        nf.setMinimumFractionDigits(3);
+        return nf.format(multiply).replace(",", ".");
     }
 }
