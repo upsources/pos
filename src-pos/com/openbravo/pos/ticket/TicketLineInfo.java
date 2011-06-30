@@ -339,10 +339,6 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
     public String printDiscount() {
         return StringUtils.encodeXML(attributes.getProperty("discount.for"));
     }
-    
-    public String printDiscountRate() {
-        return StringUtils.encodeXML(attributes.getProperty("discount.rate"));
-    }
 
     //Subgrupos
     public boolean isSubproduct() {
@@ -391,5 +387,12 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
         DecimalFormat nf = new DecimalFormat("###.###");
         nf.setMinimumFractionDigits(3);
         return nf.format(multiply).replace(",", ".");
+    }
+    
+    public String printDiscountRateFPrint() {
+        Double rate = Double.parseDouble(attributes.getProperty("discount.rate"));
+        DecimalFormat nf = new DecimalFormat("###.##");
+        nf.setMinimumFractionDigits(2);
+        return nf.format(rate).replace(",", ".");
     }
 }

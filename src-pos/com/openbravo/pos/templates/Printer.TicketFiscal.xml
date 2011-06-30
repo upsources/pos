@@ -16,7 +16,7 @@
 
         #if ($ticketline.getProperty("product.name").contains("DISC."))
         <line>
-    	   	  <text>P,1,______,_,__;DISCOUNT ${ticketline.getProperty("discount.rate")}%;;;;;</text>
+    	   	  <text>P,1,______,_,__;DISCOUNT ${ticketline.printDiscountRate()}%;;;;;</text>
     	   </line>
     	   		#if ($ticketline.getProperty("discount.for") == "all")
     	   <line>
@@ -24,7 +24,7 @@
     	   </line>
     	   		#end
     	   <line>
-    	   	  <text>C,1,______,_,__;1;${ticketline.printRate()};;;;</text>
+    	   	  <text>C,1,______,_,__;1;${ticketline.printDiscountRate()};;;;</text>
     	   </line>		
     	   #else
     	   <line>
@@ -34,7 +34,7 @@
     #end
 
         <line>
-            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments)#if ($paymentline.name == "cash")0#end#if ($paymentline.name == "paperin")3#end#if ($paymentline.name == "magcard")2#end#if ($paymentline.name == "cheque")1#end#end;;;</text>
+            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments) #if ($paymentline.name == "paperin")3;${ticketline.printPriceTaxFPrint()};;;;#end#if ($paymentline.name == "magcard")2;${ticketline.printPriceTaxFPrint()};;;;#end#if ($paymentline.name == "cheque")1;${ticketline.printPriceTaxFPrint()};;;;#end#end</text>
         </line>
     </ticket>
 
