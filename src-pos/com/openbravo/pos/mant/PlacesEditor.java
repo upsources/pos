@@ -150,6 +150,8 @@ public class PlacesEditor extends JPanel implements EditorRecord {
         m_jY = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         m_jFloor = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -163,15 +165,23 @@ public class PlacesEditor extends JPanel implements EditorRecord {
         add(jLabel3);
         jLabel3.setBounds(20, 80, 90, 25);
         add(m_jX);
-        m_jX.setBounds(110, 80, 50, 25);
+        m_jX.setBounds(130, 80, 50, 25);
         add(m_jY);
-        m_jY.setBounds(170, 80, 50, 25);
+        m_jY.setBounds(220, 80, 50, 25);
 
         jLabel1.setText(AppLocal.getIntString("label.placefloor")); // NOI18N
         add(jLabel1);
         jLabel1.setBounds(20, 50, 90, 25);
         add(m_jFloor);
         m_jFloor.setBounds(110, 50, 180, 25);
+
+        jLabel4.setText("Y");
+        add(jLabel4);
+        jLabel4.setBounds(200, 80, 20, 20);
+
+        jLabel5.setText("X");
+        add(jLabel5);
+        jLabel5.setBounds(110, 80, 20, 20);
     }// </editor-fold>//GEN-END:initComponents
     
     
@@ -179,6 +189,8 @@ public class PlacesEditor extends JPanel implements EditorRecord {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JComboBox m_jFloor;
     private javax.swing.JTextField m_jName;
     private javax.swing.JTextField m_jX;
