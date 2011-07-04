@@ -23,6 +23,7 @@ import com.openbravo.basic.BasicException;
 import com.openbravo.data.loader.DataRead;
 import com.openbravo.data.loader.SerializableRead;
 import com.openbravo.format.Formats;
+import java.text.DecimalFormat;
 
 public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  {
     
@@ -103,5 +104,11 @@ public class PaymentInfoTicket extends PaymentInfo implements SerializableRead  
     public String printPaperTotal() {
         // En una devolucion hay que cambiar el signo al total
         return Formats.CURRENCY.formatValue(new Double(-m_dTicket));
-    }          
+    }  
+    
+    public String printPaidFPrint() {
+        DecimalFormat nf = new DecimalFormat("##########.##");
+        nf.setMinimumFractionDigits(2);
+        return nf.format(new Double(m_dTicket)).replace(",", ".");
+    }
 }

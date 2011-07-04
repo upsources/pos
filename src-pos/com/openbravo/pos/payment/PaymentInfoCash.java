@@ -20,6 +20,7 @@
 package com.openbravo.pos.payment;
 
 import com.openbravo.format.Formats;
+import java.text.DecimalFormat;
 
 public class PaymentInfoCash extends PaymentInfo {
     //Número do cheque
@@ -70,5 +71,11 @@ public class PaymentInfoCash extends PaymentInfo {
     }   
     public String printChange() {
         return Formats.CURRENCY.formatValue(new Double(m_dPaid - m_dTotal));
-    }    
+    }
+    
+    public String printPaidFPrint() {
+        DecimalFormat nf = new DecimalFormat("##########.##");
+        nf.setMinimumFractionDigits(2);
+        return nf.format(new Double(m_dPaid)).replace(",", ".");
+    }
 }

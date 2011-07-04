@@ -523,7 +523,7 @@ public class TicketInfo implements SerializableRead, Externalizable {
     }
     
     public String printTotalFPrint() {
-        DecimalFormat nf = new DecimalFormat("###.##");
+        DecimalFormat nf = new DecimalFormat("##########.##");
         nf.setMinimumFractionDigits(2);
         return nf.format(getTotal()).replace(",", ".");
     }

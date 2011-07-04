@@ -11,7 +11,7 @@
         </line>
     </display>
 
-    <ticket printer = "2">
+    <ticket printer = "3">
     #foreach ($ticketline in $ticket.getLines())
 
         #if ($ticketline.getProperty("product.name").contains("DISC."))
@@ -32,10 +32,32 @@
         </line>
         #end
     #end
-
+    
+    #foreach($paymentline in $ticket.payments)
+        #if($paymentline.name == "paperin")
         <line>
-            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments) #if ($paymentline.name == "paperin")3;${ticket.printTotalFPrint()};;;;#end#if ($paymentline.name == "magcard")2;${ticket.printTotalFPrint()};;;;#end#if ($paymentline.name == "cheque")1;${ticket.printTotalFPrint()};;;;#end#end</text>
+            <text>T,1,______,_,__;3;${paymentline.printPaidFPrint()};;;;</text>
         </line>
+        #end
+        
+        #if($paymentline.name == "magcard")
+        <line>
+            <text>T,1,______,_,__;2;${ticket.printTotalFPrint()};;;;</text>
+        </line>
+        #end
+        
+        #if($paymentline.name == "cheque")
+        <line>
+            <text>T,1,______,_,__;1;${paymentline.printPaidFPrint()};;;;</text>
+        </line>
+        #end
+        
+        #if($paymentline.name == "cash")
+        <line>
+            <text>T,1,______,_,__;0;${paymentline.printPaidFPrint()};;;;</text>
+        </line>
+        #end
+    #end
     </ticket>
 
     #foreach ($paymentline in $ticket.payments)
