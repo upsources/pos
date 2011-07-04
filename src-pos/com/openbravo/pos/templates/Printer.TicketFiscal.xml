@@ -34,7 +34,7 @@
     #end
 
         <line>
-            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments) #if ($paymentline.name == "paperin")3;${ticketline.printPriceTaxFPrint()};;;;#end#if ($paymentline.name == "magcard")2;${ticketline.printPriceTaxFPrint()};;;;#end#if ($paymentline.name == "cheque")1;${ticketline.printPriceTaxFPrint()};;;;#end#end</text>
+            <text>T,1,______,_,__;#foreach ($paymentline in $ticket.payments) #if ($paymentline.name == "paperin")3;${ticket.printTotalFPrint()};;;;#end#if ($paymentline.name == "magcard")2;${ticket.printTotalFPrint()};;;;#end#if ($paymentline.name == "cheque")1;${ticket.printTotalFPrint()};;;;#end#end</text>
         </line>
     </ticket>
 
