@@ -100,6 +100,36 @@ public class JPanelConfigGeneral extends javax.swing.JPanel implements PanelConf
         printer3printerparams = new ParametersPrinter(printernames);
         printer3printerparams.addDirtyManager(dirty);
         m_jPrinterParams3.add(printer3printerparams.getComponent(), "printer");
+        
+        jcboMachinePrinter4.addActionListener(dirty);
+        jcboConnPrinter4.addActionListener(dirty);
+        jcboSerialPrinter4.addActionListener(dirty);
+        m_jtxtJPOSPrinter4.getDocument().addDocumentListener(dirty);
+        m_jtxtJPOSDrawer4.getDocument().addDocumentListener(dirty);
+
+        printer4printerparams = new ParametersPrinter(printernames);
+        printer4printerparams.addDirtyManager(dirty);
+        m_jPrinterParams4.add(printer4printerparams.getComponent(), "printer");
+        
+        jcboMachinePrinter5.addActionListener(dirty);
+        jcboConnPrinter5.addActionListener(dirty);
+        jcboSerialPrinter5.addActionListener(dirty);
+        m_jtxtJPOSPrinter5.getDocument().addDocumentListener(dirty);
+        m_jtxtJPOSDrawer5.getDocument().addDocumentListener(dirty);
+
+        printer5printerparams = new ParametersPrinter(printernames);
+        printer5printerparams.addDirtyManager(dirty);
+        m_jPrinterParams5.add(printer5printerparams.getComponent(), "printer");
+        
+        jcboMachinePrinter6.addActionListener(dirty);
+        jcboConnPrinter6.addActionListener(dirty);
+        jcboSerialPrinter6.addActionListener(dirty);
+        m_jtxtJPOSPrinter6.getDocument().addDocumentListener(dirty);
+        m_jtxtJPOSDrawer6.getDocument().addDocumentListener(dirty);
+
+        printer6printerparams = new ParametersPrinter(printernames);
+        printer6printerparams.addDirtyManager(dirty);
+        m_jPrinterParams6.add(printer6printerparams.getComponent(), "printer");
 
         jcboMachineScale.addActionListener(dirty);
         jcboSerialScale.addActionListener(dirty);
