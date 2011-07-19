@@ -129,7 +129,7 @@ public class PaymentsModel {
         Object[] valticketsbyuser = (Object []) new StaticSentence(app.getSession()
             , "SELECT COUNT(*), SUM(PAYMENTS.TOTAL) " +
               "FROM PAYMENTS, RECEIPTS, TICKETS " +
-              "WHERE PAYMENTS.RECEIPT = RECEIPTS.ID AND RECEIPTS.ID = TICKETS.ID AND TICKETS.PERSON = " + p.m_sUserId + " AND RECEIPTS.MONEY = ?"
+              "WHERE PAYMENTS.RECEIPT = RECEIPTS.ID AND RECEIPTS.ID = TICKETS.ID AND TICKETS.PERSON = '" + p.m_sUserId + "' AND RECEIPTS.MONEY = ?"
             , SerializerWriteString.INSTANCE
             , new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE}))
             .find(app.getActiveCashIndex());
@@ -161,7 +161,7 @@ public class PaymentsModel {
         List lbyuser = new StaticSentence(app.getSession()            
             , "SELECT PAYMENTS.PAYMENT, SUM(PAYMENTS.TOTAL) " +
               "FROM PAYMENTS, RECEIPTS, TICKETS " +
-              "WHERE PAYMENTS.RECEIPT = RECEIPTS.ID AND RECEIPTS.ID = TICKETS.ID AND TICKETS.PERSON = " + p.m_sUserId + " AND RECEIPTS.MONEY = ? " +
+              "WHERE PAYMENTS.RECEIPT = RECEIPTS.ID AND RECEIPTS.ID = TICKETS.ID AND TICKETS.PERSON = '" + p.m_sUserId + "' AND RECEIPTS.MONEY = ? " +
               "GROUP BY PAYMENTS.PAYMENT"
             , SerializerWriteString.INSTANCE
             , new SerializerReadClass(PaymentsModel.PaymentsLine.class)) //new SerializerReadBasic(new Datas[] {Datas.STRING, Datas.DOUBLE}))
@@ -192,7 +192,7 @@ public class PaymentsModel {
         // Sales by user
         Object[] usersales = (Object []) new StaticSentence(app.getSession(),
             "SELECT COUNT(DISTINCT RECEIPTS.ID), SUM(TICKETLINES.UNITS * TICKETLINES.PRICE) " +
-            "FROM RECEIPTS, TICKETLINES, TICKETS WHERE RECEIPTS.ID = TICKETLINES.TICKET AND TICKETS.ID = TICKETLINES.TICKET AND TICKETS.PERSON = " + p.m_sUserId + " AND RECEIPTS.MONEY = ?",
+            "FROM RECEIPTS, TICKETLINES, TICKETS WHERE RECEIPTS.ID = TICKETLINES.TICKET AND TICKETS.ID = TICKETLINES.TICKET AND TICKETS.PERSON = '" + p.m_sUserId + "' AND RECEIPTS.MONEY = ?",
             SerializerWriteString.INSTANCE,
             new SerializerReadBasic(new Datas[] {Datas.INT, Datas.DOUBLE}))
             .find(app.getActiveCashIndex());
@@ -234,7 +234,7 @@ public class PaymentsModel {
         List<SalesLine> asalesbyuser = new StaticSentence(app.getSession(),
                 "SELECT TAXCATEGORIES.NAME, SUM(TAXLINES.AMOUNT) " +
                 "FROM RECEIPTS, TAXLINES, TAXES, TAXCATEGORIES, TICKETS, TICKETLINES WHERE RECEIPTS.ID = TAXLINES.RECEIPT AND TAXLINES.TAXID = TAXES.ID AND TAXES.CATEGORY = TAXCATEGORIES.ID " +
-                "AND TICKETS.ID = TICKETLINES.TICKET AND TICKETS.PERSON = " + p.m_sUserId + " AND RECEIPTS.MONEY = ?" +
+                "AND TICKETS.ID = TICKETLINES.TICKET AND TICKETS.PERSON = '" + p.m_sUserId + "' AND RECEIPTS.MONEY = ?" +
                 "GROUP BY TAXCATEGORIES.NAME"
                 , SerializerWriteString.INSTANCE
                 , new SerializerReadClass(PaymentsModel.SalesLine.class))
