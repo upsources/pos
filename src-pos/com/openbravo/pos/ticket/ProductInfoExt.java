@@ -233,7 +233,6 @@ public class ProductInfoExt implements Serializable {
             // MSL : use serialialbe image
             product.setImage( ImageUtils.readImage(dr.getBytes(12)));
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
-            product.categoryname = dr.getString(14);
             return product;
         }};
     }

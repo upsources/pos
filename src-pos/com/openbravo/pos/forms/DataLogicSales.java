@@ -154,8 +154,8 @@ public class DataLogicSales extends BeanFactoryDataSingle {
     }
 
     public List<ProductInfoExt> getProductComments(String id) throws BasicException {
-        return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES "
-                + "FROM PRODUCTS P, PRODUCTS_CAT O, PRODUCTS_COM M WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND M.PRODUCT = ? "
+        return new PreparedSentence(s, "SELECT P.ID, P.REFERENCE, P.CODE, P.NAME, P.ISCOM, P.ISSCALE, P.PRICEBUY, P.PRICESELL, P.TAXCAT, P.CATEGORY, P.ATTRIBUTESET_ID, P.IMAGE, P.ATTRIBUTES, C.NAME "
+                + "FROM PRODUCTS P, PRODUCTS_CAT O, PRODUCTS_COM M, CATEGORIES C WHERE P.ID = O.PRODUCT AND P.ID = M.PRODUCT2 AND C.ID = P.CATEGORY AND M.PRODUCT = ? "
                 + "AND P.ISCOM = " + s.DB.TRUE() + " "
                 + "ORDER BY O.CATORDER, P.NAME", SerializerWriteString.INSTANCE, ProductInfoExt.getSerializerRead()).list(id);
     }
