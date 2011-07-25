@@ -46,6 +46,7 @@ public class ProductInfoExt implements Serializable {
     protected boolean m_bCom;
     protected boolean m_bScale;
     protected String categoryid;
+    protected String categoryname;
     protected String taxcategoryid;
     protected String attributesetid;
     protected double m_dPriceBuy;
@@ -128,6 +129,10 @@ public class ProductInfoExt implements Serializable {
 
     public final String getCategoryID() {
         return categoryid;
+    }
+    
+    public final String getCategoryName() {
+        return categoryname;
     }
 
     public final void setCategoryID(String sCategoryID) {
@@ -228,6 +233,7 @@ public class ProductInfoExt implements Serializable {
             // MSL : use serialialbe image
             product.setImage( ImageUtils.readImage(dr.getBytes(12)));
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
+            product.categoryname = dr.getString(14);
             return product;
         }};
     }
@@ -252,6 +258,7 @@ public class ProductInfoExt implements Serializable {
             product.attributes = ImageUtils.readProperties(dr.getBytes(13));
             product.warehouse = dr.getString(14);
             product.warehouseId = dr.getString(15);
+            product.categoryname = dr.getString(16);
             return product;
         }};
     }
