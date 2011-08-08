@@ -47,11 +47,11 @@ ORDER BY PRODUCTS.REFERENCE, CLOSEDCASH.HOST, CLOSEDCASH.DATEEND]]>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
         <variable name="LOCTOTAL" class="java.lang.Double" resetType="Group" resetGroup="bylocation" calculation="Sum">
-		<variableExpression><![CDATA[$V{BIGTOTAL}]]></variableExpression>
+		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
         <variable name="LOCUNITS" class="java.lang.Double" resetType="Group" resetGroup="bylocation" calculation="Sum">
-		<variableExpression><![CDATA[$V{BIGUNITS}]]></variableExpression>
+		<variableExpression><![CDATA[$F{UNITS}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
         
