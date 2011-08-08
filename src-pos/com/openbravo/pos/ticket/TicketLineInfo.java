@@ -96,6 +96,9 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
             if (product.getCategoryID() != null) {
                 attributes.setProperty("product.categoryid", product.getCategoryID());
             }
+            if (product.getCategoryName() != null) {
+                attributes.setProperty("product.categoryname", product.getCategoryName());
+            }
             // MSL : get reference
             if (product.getReference() != null) {
                 attributes.setProperty("product.reference", product.getReference());
@@ -259,6 +262,10 @@ public class TicketLineInfo implements SerializableWrite, SerializableRead, Seri
 
     public String getProductCategoryID() {
         return (attributes.getProperty("product.categoryid"));
+    }
+    
+    public String getProductCategoryName() {
+        return (attributes.getProperty("product.categoryname"));
     }
 
     public double getMultiply() {
