@@ -903,7 +903,6 @@ public class ProductsEditor extends JPanel implements EditorRecord {
         jTabbedPane1.addTab(AppLocal.getIntString("label.properties"), jPanel3); // NOI18N
 
         m_jMaterialsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        m_jMaterialsList.setPreferredSize(new java.awt.Dimension(33, 80));
         m_jMaterialsList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 m_jMaterialsListValueChanged(evt);
@@ -942,7 +941,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
                 .add(m_jPanelEscandalloLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel15)
                     .add(jLabel17))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 72, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 38, Short.MAX_VALUE)
                 .add(m_jPanelEscandalloLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(m_jMaterial, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 169, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(m_jPanelEscandalloLayout.createSequentialGroup()
@@ -971,7 +970,7 @@ public class ProductsEditor extends JPanel implements EditorRecord {
                     .add(m_jAmount, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(m_jlblUnit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 83, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 81, Short.MAX_VALUE)
                 .add(m_jPanelEscandalloLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(m_jbtnAddMaterial)
                     .add(m_jbtnDelMaterial))
