@@ -995,7 +995,16 @@ public class ProductsEditor extends JPanel implements EditorRecord {
     }//GEN-LAST:event_m_jInCatalogActionPerformed
 
     private void m_jMaterialsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_m_jMaterialsListValueChanged
-        // TODO add your handling code here:
+        
+        m_selMaterial = ((MaterialProdInfo)m_jMaterialsList.getSelectedValue());
+        
+        try {
+            m_jAmount.setText( Formats.DOUBLE.formatValue(m_selMaterial.getAmount()) );
+            m_jlblUnit.setText( m_selMaterial.getUnit() );
+        } catch (NullPointerException ex) {
+            m_jlblUnit.setText("");
+        }
+        
     }//GEN-LAST:event_m_jMaterialsListValueChanged
 
     private void m_jbtnAddMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jbtnAddMaterialActionPerformed

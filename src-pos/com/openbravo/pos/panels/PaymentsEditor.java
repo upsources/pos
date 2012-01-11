@@ -28,8 +28,15 @@ import com.openbravo.data.user.DirtyManager;
 import com.openbravo.data.user.EditorRecord;
 import com.openbravo.pos.forms.AppLocal;
 import com.openbravo.pos.forms.AppView;
+import com.openbravo.pos.forms.DataLogicSystem;
+import com.openbravo.data.gui.MessageInf;
+import com.openbravo.pos.scripting.ScriptEngine;
+import com.openbravo.pos.scripting.ScriptException;
+import com.openbravo.pos.scripting.ScriptFactory;
 import java.util.Date;
-
+import com.openbravo.pos.printer.TicketParser;
+import com.openbravo.pos.printer.TicketPrinterException;
+import com.openbravo.format.Formats;
 /**
  *
  * @author adrianromero
@@ -41,8 +48,34 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
     private String m_sId;
     private String m_sPaymentId;
     private Date datenew;
+    
+    private DataLogicSystem m_dlSystem;
    
     private AppView m_App;
+    private TicketParser m_TTP;
+    
+    private void printPayment(String report) {
+        
+        String sresource = m_dlSystem.getResourceAsXML(report);
+        if (sresource == null) {
+            MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"));
+            msg.show(this);
+        } else {
+            try {
+                ScriptEngine script = ScriptFactory.getScriptEngine(ScriptFactory.VELOCITY);
+                String formatedTotal = Formats.CURRENCY.formatValue(jTotal.getDoubleValue());
+                script.put("total", formatedTotal);
+                script.put("reason", m_jreason);
+                m_TTP.printTicket(script.eval(sresource).toString());
+            } catch (ScriptException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
+                msg.show(this);
+            } catch (TicketPrinterException e) {
+                MessageInf msg = new MessageInf(MessageInf.SGN_WARNING, AppLocal.getIntString("message.cannotprintticket"), e);
+                msg.show(this);
+            }
+        }
+    }
     
     /** Creates new form JPanelPayments */
     public PaymentsEditor(AppView oApp, DirtyManager dirty) {
@@ -61,6 +94,9 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
 
         m_jreason.addActionListener(dirty);
         jTotal.addPropertyChangeListener("Text", dirty);
+        
+        m_dlSystem = (DataLogicSystem) m_App.getBean("com.openbravo.pos.forms.DataLogicSystem");
+        m_TTP = new TicketParser(m_App.getDeviceTicket(), m_dlSystem);
         
 
         writeValueEOF();
@@ -206,6 +242,7 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         m_jreason = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jTotal = new com.openbravo.editor.JEditorCurrency();
+        m_jPrintPayment = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         m_jKeys = new com.openbravo.editor.JEditorKeys();
 
@@ -216,6 +253,13 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
         m_jreason.setFocusable(false);
 
         jLabel3.setText(AppLocal.getIntString("label.paymenttotal")); // NOI18N
+
+        m_jPrintPayment.setText("Print");
+        m_jPrintPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m_jPrintPaymentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -228,9 +272,10 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(m_jPrintPayment)
                     .addComponent(m_jreason, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,7 +288,9 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(m_jPrintPayment)
+                .addContainerGap(282, Short.MAX_VALUE))
         );
 
         add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -253,6 +300,10 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
 
         add(jPanel2, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void m_jPrintPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_jPrintPaymentActionPerformed
+        printPayment("Printer.PaymentForm");
+    }//GEN-LAST:event_m_jPrintPaymentActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -262,6 +313,7 @@ public class PaymentsEditor extends javax.swing.JPanel implements EditorRecord {
     private javax.swing.JPanel jPanel3;
     private com.openbravo.editor.JEditorCurrency jTotal;
     private com.openbravo.editor.JEditorKeys m_jKeys;
+    private javax.swing.JButton m_jPrintPayment;
     private javax.swing.JComboBox m_jreason;
     // End of variables declaration//GEN-END:variables
     

@@ -34,10 +34,11 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="m_jPrintPayment" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="m_jreason" min="-2" pref="200" max="-2" attributes="1"/>
                       <Component id="jTotal" min="-2" pref="233" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="80" max="32767" attributes="0"/>
+                  <EmptySpace pref="64" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -54,7 +55,9 @@
                       <Component id="jLabel3" min="-2" pref="25" max="-2" attributes="0"/>
                       <Component id="jTotal" min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="320" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="m_jPrintPayment" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="282" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -80,6 +83,14 @@
           </Properties>
         </Component>
         <Component class="com.openbravo.editor.JEditorCurrency" name="jTotal">
+        </Component>
+        <Component class="javax.swing.JButton" name="m_jPrintPayment">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Print"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="m_jPrintPaymentActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
