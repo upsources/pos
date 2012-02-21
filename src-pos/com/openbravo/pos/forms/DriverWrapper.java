@@ -57,7 +57,6 @@ public class DriverWrapper implements Driver {
         return driver.jdbcCompliant();
     }
 
-    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
